@@ -397,10 +397,13 @@ function updateHomeStats() {
   const cards = document.querySelectorAll('.module-card');
   cards.forEach((card, idx) => {
     const moduleNum = idx + 1;
-    const moduleStatus = data.moduleStatuses ? data.moduleStatuses[moduleNum] : null;
+    const moduleStatus = data.moduleStatuses[moduleNum];
 
     if (moduleStatus) {
+      // Remove old status classes
       card.classList.remove('completed', 'locked');
+
+      // Add new status class
       if (moduleStatus.status === 'completed') {
         card.classList.add('completed');
       } else if (moduleStatus.status === 'locked') {
@@ -430,6 +433,9 @@ window.onboardingComplete = function() {
 
   // Hide the chapter-view (which has onboarding loaded)
   document.getElementById('chapter-view').classList.remove('active');
+
+  // Remove the onload handler so setting src=about:blank doesn't re-activate chapter-view
+  document.getElementById('chapter-frame').onload = null;
 
   setTimeout(() => {
     // Clear the iframe
@@ -706,6 +712,9 @@ document.addEventListener('DOMContentLoaded', () => {
     frame.src = 'ayikho-onboarding-v2.html';
 
     frame.onload = () => {
+      // Guard: only activate for onboarding, not for about:blank
+      if (onboardingDone) return;
+
       // Show the chapter-view (which now has onboarding)
       document.getElementById('chapter-view').classList.add('active');
 
