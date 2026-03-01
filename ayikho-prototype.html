@@ -360,6 +360,9 @@ window.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'screenChange' && window.ayikhoData) {
     window.ayikhoData.setModuleScreen(e.data.moduleId, e.data.screenIndex, e.data.totalScreens);
   }
+  if (e.data && e.data.type === 'goHome') {
+    goHome();
+  }
 });
 
 // ═══════════════════════════════════
