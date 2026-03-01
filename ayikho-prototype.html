@@ -559,11 +559,15 @@ function goHome() {
   document.getElementById('chapter-view').classList.remove('active');
   document.getElementById('back-btn').classList.remove('show');
 
+  // Clear onload handler so about:blank doesnt re-activate chapter-view
+  document.getElementById('chapter-frame').onload = null;
+
   setTimeout(() => {
     document.getElementById('home-view').classList.remove('hidden');
     document.getElementById('chapter-frame').src = 'about:blank';
     currentModule = null;
     updateSidebar();
+    updateHomeStats();
   }, 350);
 }
 
