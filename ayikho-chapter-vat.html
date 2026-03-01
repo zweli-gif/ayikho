@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho - Module 7: Value Added Tax (VAT)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
+            --bg-dark: #05090F;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--ink);
+            overflow: hidden;
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            border: 12px solid var(--bg-dark);
+            border-radius: 50px;
+            overflow: hidden;
+            background: var(--w);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 48px;
+            background: var(--ink);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .status-left {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .status-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Progress Strip */
+        .progress-strip {
+            height: 3px;
+            background: var(--bord);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--fa);
+            width: 20%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screen Container */
+        .screen-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .screen.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--p) 0%, var(--pl) 100%);
+            color: var(--w);
+            padding: 24px 20px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Body */
+        .body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--w);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 812px;
+            background: var(--ink);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 1000;
+            border-radius: 0 50px 50px 0;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 60px;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dim);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--fa);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .nav-dot:hover {
+            background: var(--fa-l);
+        }
+
+        /* Typography */
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ink);
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0 12px 0;
+            color: var(--ink);
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--mut);
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        /* Callout Box */
+        .callout {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .callout.exam {
+            background: var(--pxs);
+            border-left-color: var(--p);
+        }
+
+        .callout.real-life {
+            background: var(--green-xs);
+            border-left-color: var(--green);
+        }
+
+        .callout h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .callout p {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* Card */
+        .card {
+            background: var(--surf);
+            border: 1px solid var(--bord);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        /* Button */
+        button {
+            background: var(--p);
+            color: var(--w);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--pl);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--fa);
+        }
+
+        .btn-secondary:hover {
+            background: var(--fa-l);
+        }
+
+        .btn-success {
+            background: var(--green);
+        }
+
+        .btn-success:hover {
+            background: #16A34A;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--p);
+            color: var(--p);
+        }
+
+        .btn-outline:hover {
+            background: var(--pxs);
+        }
+
+        /* Input */
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--bord);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--p);
+            box-shadow: 0 0 0 3px var(--pxs);
+        }
+
+        /* Video Player */
+        .video-player {
+            background: var(--ink);
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--w);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-player svg {
+            width: 60px;
+            height: 60px;
+            opacity: 0.6;
+        }
+
+        .video-time {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--w);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .video-markers {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .marker {
+            background: var(--surf);
+            border: 1px solid var(--bord);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .marker:hover {
+            background: var(--psm);
+            border-color: var(--p);
+        }
+
+        .marker-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--fa);
+            font-weight: 600;
+        }
+
+        .marker-text {
+            font-size: 14px;
+            margin-top: 4px;
+            color: var(--ink);
+        }
+
+        /* Calculator */
+        .calc-input-group {
+            margin-bottom: 20px;
+        }
+
+        .calc-input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--ink);
+        }
+
+        .calc-result {
+            background: var(--fa-xs);
+            border: 2px solid var(--fa);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .result-row.total {
+            border-top: 2px solid var(--fa);
+            padding-top: 12px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .result-label {
+            color: var(--mut);
+        }
+
+        .result-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--fa-d);
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            color: var(--ink);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .mode-btn.active {
+            background: var(--p);
+            border-color: var(--p);
+            color: var(--w);
+        }
+
+        /* Journal Table */
+        .journal-table {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .journal-table th {
+            background: var(--pxs);
+            color: var(--ink);
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--p);
+        }
+
+        .journal-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--bord);
+        }
+
+        .journal-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Quiz */
+        .quiz-question {
+            margin-bottom: 24px;
+        }
+
+        .quiz-question h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--ink);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            padding: 12px 16px;
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--p);
+            background: var(--psm);
+        }
+
+        .quiz-option.selected {
+            background: var(--pxs);
+            border-color: var(--p);
+            color: var(--p);
+            font-weight: 600;
+        }
+
+        .quiz-option.correct {
+            background: var(--green-xs);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(244, 63, 94, 0.1);
+            border-color: var(--rose);
+            color: var(--rose);
+        }
+
+        /* Win Screen */
+        .win-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .win-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .win-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .win-subtitle {
+            font-size: 16px;
+            color: var(--mut);
+            margin-bottom: 24px;
+        }
+
+        .xp-badge {
+            background: linear-gradient(135deg, var(--gold) 0%, #FBBF24 100%);
+            color: var(--w);
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .streak {
+            font-size: 48px;
+            margin: 16px 0;
+        }
+
+        .streak-text {
+            color: var(--mut);
+            font-size: 14px;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--bord);
+        }
+
+        .nav-buttons button {
+            flex: 1;
+        }
+
+        .nav-buttons button:first-child {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            color: var(--ink);
+        }
+
+        .nav-buttons button:first-child:hover {
+            background: var(--psm);
+        }
+
+        /* Worked Example */
+        .example-box {
+            background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%);
+            border-left: 4px solid var(--fa);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: var(--fa-d);
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .example-step {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(2, 132, 199, 0.2);
+        }
+
+        .example-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .step-label {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 13px;
+        }
+
+        .step-calc {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--fa-d);
+            margin-top: 4px;
+        }
+
+        /* Scrollbar */
+        .body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .body::-webkit-scrollbar-track {
+            background: var(--surf);
+        }
+
+        .body::-webkit-scrollbar-thumb {
+            background: var(--bord);
+            border-radius: 3px;
+        }
+
+        .body::-webkit-scrollbar-thumb:hover {
+            background: var(--dim);
+        }
+
+        /* Responsive */
+        @media (max-width: 425px) {
+            .phone-frame {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .sidebar {
+                width: 50px;
+                border-radius: 0;
+            }
+
+            .sidebar-nav {
+                margin-top: 50px;
+            }
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
+        <div class="sidebar-nav" id="sidebarNav"></div>
+        <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
+            <div id="currentScreen">1/10</div>
+        </div>
+    </div>
+
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="status-left">
+                <span>21:32</span>
+            </div>
+            <div style="flex: 1; text-align: center; font-size: 12px;">Ayikho</div>
+            <div class="status-right">
+                <span>4G</span>
+                <span>🔋</span>
+            </div>
+        </div>
+
+        <div class="progress-strip">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="screen-container" id="screenContainer"></div>
+    </div>
+
+    <script>
+        // ── SEND DATA TO PARENT FRAME ──
+        function notifyParent(type, data) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type, ...data }, '*');
+            }
+          } catch(e) {}
+        }
+
+        const MODULE_ID = 7;
+        // Screen Data
+        const screens = [
+            {
+                id: 'intro',
+                title: 'Value Added Tax',
+                subtitle: 'Module 7 of 9',
+                type: 'intro',
+                content: `
+                    <h2>What is VAT?</h2>
+                    <p style="font-size: 16px; line-height: 1.8; color: var(--ink); margin-bottom: 20px;">
+                        VAT is a <strong>15% tax</strong> added to goods and services in South Africa.
+                    </p>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">How it Works:</h3>
+                        <p style="margin: 12px 0;"><strong>1. Business collects VAT</strong> from customers (Output VAT)</p>
+                        <p style="margin: 12px 0;"><strong>2. Business pays VAT</strong> on purchases (Input VAT)</p>
+                        <p style="margin: 12px 0;"><strong>3. Business pays difference</strong> to SARS</p>
+                    </div>
+
+                    <div class="callout real-life">
+                        <h4>🏪 In Real Life</h4>
+                        <p>When you buy something at Pick n Pay for R115, about R15 is VAT. Pick n Pay collects this VAT from thousands of customers daily and pays it to SARS (South African Revenue Service).</p>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>📝 Exam Tip</h4>
+                        <p>Remember: VAT is always 15% in South Africa. Output VAT minus Input VAT = what you owe SARS (or what SARS owes you).</p>
+                    </div>
+                `
+            },
+            {
+                id: 'video',
+                title: 'Video Lesson',
+                subtitle: 'Module 7 of 9',
+                type: 'video',
+                content: `
+                    <div class="video-player">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+                        </svg>
+                        <div class="video-time" id="videoTime">0:00 / 3:00</div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 13px; color: var(--mut); margin-bottom: 16px;"><strong>Video Chapters:</strong></p>
+                        <div class="video-markers">
+                            <div class="marker">
+                                <div class="marker-time">0:00</div>
+                                <div class="marker-text">What is VAT and why should you care?</div>
+                            </div>
+                            <div class="marker">
+                                <div class="marker-time">1:15</div>
+                                <div class="marker-text">Input VAT vs Output VAT</div>
+                            </div>
+                            <div class="marker">
+                                <div class="marker-time">2:20</div>
+                                <div class="marker-text">Calculating what you owe SARS</div>
+                            </div>
+                            <div class="marker">
+                                <div class="marker-time">3:00</div>
+                                <div class="marker-text">Recap + exam tip</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'lesson1',
+                title: 'What is VAT?',
+                subtitle: 'Lesson Part 1',
+                type: 'lesson',
+                content: `
+                    <h2>Understanding VAT in South Africa</h2>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">The 15% Tax Rate</h3>
+                        <p>In South Africa, the standard VAT rate is <strong>15%</strong>. This is the percentage of tax added to most goods and services.</p>
+                    </div>
+
+                    <h3>Output VAT</h3>
+                    <p>This is the VAT that <strong>you charge your customers</strong>. If you're a business, you collect this money as a liability.</p>
+                    <div class="example-box">
+                        <div class="example-title">Example: Hair Salon Sale</div>
+                        <div class="example-step">
+                            <div class="step-label">Service fee: R100</div>
+                            <div class="step-calc">Output VAT: R100 × 15% = R15</div>
+                            <div class="step-calc">Customer pays: R115</div>
+                        </div>
+                    </div>
+
+                    <h3>Input VAT</h3>
+                    <p>This is the VAT that <strong>you pay on your purchases</strong>. This is an asset because SARS will refund it or you can use it to offset your Output VAT.</p>
+                    <div class="example-box">
+                        <div class="example-title">Example: Hair Product Purchase</div>
+                        <div class="example-step">
+                            <div class="step-label">Product cost: R200</div>
+                            <div class="step-calc">Input VAT: R200 × 15% = R30</div>
+                            <div class="step-calc">You pay supplier: R230</div>
+                        </div>
+                    </div>
+
+                    <h3>The VAT Settlement</h3>
+                    <p><strong>If Output VAT > Input VAT:</strong> You owe SARS the difference</p>
+                    <p><strong>If Input VAT > Output VAT:</strong> SARS owes you a refund</p>
+
+                    <div class="callout exam">
+                        <h4>📝 Key Concept</h4>
+                        <p>VAT is a pass-through tax. Businesses don't actually bear the cost—they collect it from customers and pay it to SARS.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'calculator',
+                title: 'Interactive Calculator',
+                subtitle: 'VAT Calculator Tool',
+                type: 'interactive',
+                content: `
+                    <h2>VAT Calculator</h2>
+
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" onclick="switchCalcMode('simple')">Single Item</button>
+                        <button class="mode-btn" onclick="switchCalcMode('monthly')">Monthly Settlement</button>
+                    </div>
+
+                    <!-- Simple Mode -->
+                    <div id="simpleMode">
+                        <h3>Calculate Single Transaction</h3>
+
+                        <div class="calc-input-group">
+                            <label>Price (excl. VAT)</label>
+                            <input type="number" id="priceExcl" placeholder="Enter price without VAT" oninput="calculateSimple()">
+                        </div>
+
+                        <div id="simpleResult" class="calc-result" style="display: none;">
+                            <div class="result-row">
+                                <span class="result-label">Price (excl. VAT):</span>
+                                <span class="result-value" id="resExcl">R0.00</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">VAT (15%):</span>
+                                <span class="result-value" id="resVat">R0.00</span>
+                            </div>
+                            <div class="result-row total">
+                                <span>Total (incl. VAT):</span>
+                                <span id="resTotal">R0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Mode -->
+                    <div id="monthlyMode" style="display: none;">
+                        <h3>Monthly VAT Settlement</h3>
+                        <p style="font-size: 13px; color: var(--mut); margin-bottom: 16px;">Example: Naledi's Hair Salon</p>
+
+                        <div class="calc-input-group">
+                            <label>Total Monthly Sales (incl. VAT)</label>
+                            <input type="number" id="totalSales" placeholder="Enter total sales" oninput="calculateMonthly()">
+                        </div>
+
+                        <div class="calc-input-group">
+                            <label>Total Monthly Purchases (incl. VAT)</label>
+                            <input type="number" id="totalPurchases" placeholder="Enter total purchases" oninput="calculateMonthly()">
+                        </div>
+
+                        <div id="monthlyResult" class="calc-result" style="display: none;">
+                            <div class="result-row">
+                                <span class="result-label">Output VAT (15% of sales):</span>
+                                <span class="result-value" id="resOutputVat">R0.00</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Input VAT (15% of purchases):</span>
+                                <span class="result-value" id="resInputVat">R0.00</span>
+                            </div>
+                            <div class="result-row total">
+                                <span id="settlementLabel">Amount owed to SARS:</span>
+                                <span id="resSettlement">R0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout real-life">
+                        <h4>💡 Naledi's Hair Salon</h4>
+                        <p>Naledi runs a hair salon. She needs to calculate her monthly VAT settlement to send to SARS. Let's use the calculator to see how much she owes.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'lesson2',
+                title: 'Recording VAT',
+                subtitle: 'Lesson Part 2',
+                type: 'lesson',
+                content: `
+                    <h2>Recording VAT in Journals</h2>
+
+                    <p>When recording transactions, VAT is recorded in its own column or account, separate from the main sale or purchase amount.</p>
+
+                    <h3>The Three VAT Accounts</h3>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">1. VAT Input Account</h3>
+                        <p style="margin: 0;"><strong>Classification:</strong> Asset (or Contra-Liability)</p>
+                        <p style="margin: 12px 0 0 0;"><strong>What it is:</strong> VAT you pay on purchases. SARS owes you this money.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">2. VAT Output Account</h3>
+                        <p style="margin: 0;"><strong>Classification:</strong> Liability</p>
+                        <p style="margin: 12px 0 0 0;"><strong>What it is:</strong> VAT you charge customers. You owe SARS this money.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">3. VAT Control Account</h3>
+                        <p style="margin: 0;"><strong>Classification:</strong> Usually a Liability</p>
+                        <p style="margin: 12px 0 0 0;"><strong>What it is:</strong> A summary account that shows whether you owe SARS or SARS owes you.</p>
+                    </div>
+
+                    <h3>Journal Entry Example</h3>
+                    <p>When Naledi sells a hair service for R230 (incl. VAT):</p>
+
+                    <div style="overflow-x: auto;">
+                        <table class="journal-table">
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Bank/Cash</td>
+                                    <td>230</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Sales Revenue</td>
+                                    <td></td>
+                                    <td>200</td>
+                                </tr>
+                                <tr>
+                                    <td>VAT Output</td>
+                                    <td></td>
+                                    <td>30</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>📝 Remember</h4>
+                        <p>Always separate the VAT from the actual sale or purchase amount when journalizing. This makes it easy to calculate what you owe SARS at the end of the period.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'worked-example',
+                title: 'Worked Example',
+                subtitle: 'Naledi\'s Hair Salon Case Study',
+                type: 'lesson',
+                content: `
+                    <h2>Naledi's Monthly VAT Calculation</h2>
+
+                    <p style="font-size: 13px; color: var(--mut); margin-bottom: 16px;">Let's work through a complete example of how to calculate VAT for a month.</p>
+
+                    <h3>Given Information</h3>
+                    <div class="card">
+                        <p style="margin: 8px 0;"><strong>Sales (4 transactions):</strong></p>
+                        <ul style="margin-left: 20px; color: var(--mut);">
+                            <li>Sale 1: R115 (incl. VAT)</li>
+                            <li>Sale 2: R230 (incl. VAT)</li>
+                            <li>Sale 3: R345 (incl. VAT)</li>
+                            <li>Sale 4: R28,060 (incl. VAT)</li>
+                        </ul>
+                        <p style="margin: 16px 0 8px 0;"><strong>Total Sales: R28,750 (incl. VAT)</strong></p>
+
+                        <p style="margin: 16px 0 8px 0;"><strong>Purchases (3 transactions):</strong></p>
+                        <ul style="margin-left: 20px; color: var(--mut);">
+                            <li>Purchase 1: R2,300 (incl. VAT)</li>
+                            <li>Purchase 2: R4,600 (incl. VAT)</li>
+                            <li>Purchase 3: R4,600 (incl. VAT)</li>
+                        </ul>
+                        <p style="margin: 16px 0 0 0;"><strong>Total Purchases: R11,500 (incl. VAT)</strong></p>
+                    </div>
+
+                    <h3>Step-by-Step Calculation</h3>
+
+                    <div class="example-box">
+                        <div class="example-title">Step 1: Calculate Output VAT</div>
+                        <div class="example-step">
+                            <div class="step-label">Total Sales (incl. VAT): R28,750</div>
+                            <div class="step-calc">Formula: Sales ÷ 1.15 = Sales excl. VAT</div>
+                            <div class="step-calc">R28,750 ÷ 1.15 = R25,000</div>
+                            <div class="step-calc">Output VAT = R28,750 - R25,000 = R3,750</div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">Step 2: Calculate Input VAT</div>
+                        <div class="example-step">
+                            <div class="step-label">Total Purchases (incl. VAT): R11,500</div>
+                            <div class="step-calc">R11,500 ÷ 1.15 = R10,000</div>
+                            <div class="step-calc">Input VAT = R11,500 - R10,000 = R1,500</div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">Step 3: Calculate VAT Owed to SARS</div>
+                        <div class="example-step">
+                            <div class="step-label">Output VAT: R3,750</div>
+                            <div class="step-calc">Minus Input VAT: R1,500</div>
+                            <div class="step-calc"><strong>Amount owed to SARS: R2,250</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>📝 Exam Tip</h4>
+                        <p>When you get amounts "incl. VAT", divide by 1.15 to get the amount excluding VAT, then calculate the VAT by subtraction.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz1',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 1 of 3',
+                type: 'quiz',
+                content: `
+                    <h2>Question 1 of 3</h2>
+
+                    <div class="quiz-question">
+                        <h4>What is the standard VAT rate in South Africa?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">A) 10%</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz1')">B) 15%</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">C) 20%</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">D) 25%</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam" style="margin-top: 24px;">
+                        <h4>💡 Hint</h4>
+                        <p>This is mentioned in the very first lesson. South Africa has had this rate for many years.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz2',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 2 of 3',
+                type: 'quiz',
+                content: `
+                    <h2>Question 2 of 3</h2>
+
+                    <div class="quiz-question">
+                        <h4>A business has Output VAT of R5,000 and Input VAT of R3,000. What does it owe SARS?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">A) R3,000</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">B) R5,000</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz2')">C) R2,000</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">D) R8,000</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam" style="margin-top: 24px;">
+                        <h4>💡 Hint</h4>
+                        <p>Output VAT is what you charge customers. Input VAT is what you pay on purchases. The difference is what you owe SARS.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz3',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 3 of 3',
+                type: 'quiz',
+                content: `
+                    <h2>Question 3 of 3</h2>
+
+                    <div class="quiz-question">
+                        <h4>Naledi buys hair products for R200 (excl. VAT). How much does she pay including VAT?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">A) R200</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">B) R215</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz3')">C) R230</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">D) R250</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam" style="margin-top: 24px;">
+                        <h4>💡 Hint</h4>
+                        <p>VAT is 15%. R200 × 0.15 = R30. Add this to the original amount.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'win',
+                title: 'Module Complete!',
+                subtitle: 'Chapter 7 Complete',
+                type: 'win',
+                content: `
+                    <div class="win-container">
+                        <div class="win-icon">🎉</div>
+                        <div class="win-title">Module 7 Complete!</div>
+                        <div class="win-subtitle">Value Added Tax (VAT)</div>
+
+                        <div class="xp-badge">+200 XP</div>
+
+                        <div class="streak">🔥 19</div>
+                        <div class="streak-text">Day Streak!</div>
+
+                        <div style="margin-top: 32px; width: 100%; text-align: center;">
+                            <p style="color: var(--mut); margin-bottom: 20px;">You've mastered VAT calculations, Output VAT, Input VAT, and SARS settlements. Well done!</p>
+                            <p style="font-size: 13px; color: var(--dim); margin-bottom: 20px;">Module 8 is waiting for you...</p>
+                        </div>
+
+                        <div class="nav-buttons" style="flex-direction: column; border-top: none; margin-top: auto;">
+                            <button class="btn btn-ghost" onclick="goToScreen(11)">📝 Past Papers & Practice</button>
+                            <button class="btn-secondary" onclick="goToScreen(0)">Review VAT Module</button>
+                            <button onclick="alert('Great job! In a full app, this would lead to Module 8.')">Next Module →</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'resources',
+                title: 'Practice & Past Papers',
+                subtitle: 'Module 7 · Value Added Tax',
+                type: 'resources',
+                content: `
+                    <div style="text-align:center;margin-bottom:20px">
+                      <div style="font-size:32px;margin-bottom:8px">📝</div>
+                      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink)">Practice & Past Papers</div>
+                      <div style="font-size:13px;color:var(--mut);margin-top:4px">Module 7 · Value Added Tax</div>
+                    </div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                      <div style="font-size:14px;color:var(--fa)">↗</div>
+                    </a>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                      <div style="font-size:14px;color:var(--fa)">↗</div>
+                    </a>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                      <div style="font-size:14px;color:var(--fa)">↗</div>
+                    </a>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs)" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Value Added Tax · 15 questions · 20 min</div></div>
+                      <div style="font-size:14px;color:var(--p)">→</div>
+                    </a>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs)" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Value Added Tax · 15 questions · 20 min</div></div>
+                      <div style="font-size:14px;color:var(--p)">→</div>
+                    </a>
+                    <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+                      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+                      <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+                    </div>
+                `
+            }
+        ];
+
+        let currentScreen = 0;
+
+        // Initialize
+        function init() {
+            renderScreens();
+            renderNavigation();
+            updateProgress();
+            setupKeyboardNavigation();
+        }
+
+        // Render all screens
+        function renderScreens() {
+            const container = document.getElementById('screenContainer');
+            container.innerHTML = '';
+
+            screens.forEach((screen, idx) => {
+                const screenEl = document.createElement('div');
+                screenEl.className = `screen ${idx === 0 ? 'active' : ''}`;
+                screenEl.innerHTML = `
+                    <div class="header">
+                        <h1>${screen.title}</h1>
+                        <p>${screen.subtitle}</p>
+                    </div>
+                    <div class="body">
+                        ${screen.content}
+                        ${screen.type !== 'win' ? `
+                            <div class="nav-buttons">
+                                <button onclick="previousScreen()" ${currentScreen === 0 ? 'disabled' : ''}>← Back</button>
+                                <button class="btn-secondary" onclick="nextScreen()" ${currentScreen === screens.length - 1 ? 'disabled' : ''}>Next →</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.appendChild(screenEl);
+            });
+        }
+
+        // Render navigation dots
+        function renderNavigation() {
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = '';
+
+            screens.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `nav-dot ${idx === currentScreen ? 'active' : ''}`;
+                dot.onclick = () => goToScreen(idx);
+                nav.appendChild(dot);
+            });
+        }
+
+        // Navigation functions
+        function goToScreen(idx) {
+            if (idx < 0 || idx >= screens.length) return;
+
+            const screenEls = document.querySelectorAll('.screen');
+            const direction = idx > currentScreen ? 1 : -1;
+
+            screenEls[currentScreen].classList.remove('active');
+            if (direction > 0) {
+                screenEls[currentScreen].classList.add('prev');
+            }
+
+            currentScreen = idx;
+
+            screenEls[currentScreen].classList.remove('prev');
+            screenEls[currentScreen].classList.add('active');
+
+            notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: screens.length });
+            if (currentScreen === 10) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            // Track screen view
+            if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(7, currentScreen);
+
+            updateProgress();
+            renderNavigation();
+            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/12`;
+        }
+
+        function nextScreen() {
+            goToScreen(currentScreen + 1);
+        }
+
+        function previousScreen() {
+            goToScreen(currentScreen - 1);
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentScreen + 1) / screens.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Keyboard navigation
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') nextScreen();
+                if (e.key === 'ArrowLeft') previousScreen();
+            });
+        }
+
+        // Calculator functions
+        function calculateSimple() {
+            const priceExcl = parseFloat(document.getElementById('priceExcl').value) || 0;
+            const vat = priceExcl * 0.15;
+            const total = priceExcl + vat;
+
+            if (priceExcl > 0) {
+                document.getElementById('simpleResult').style.display = 'block';
+                document.getElementById('resExcl').textContent = `R${priceExcl.toFixed(2)}`;
+                document.getElementById('resVat').textContent = `R${vat.toFixed(2)}`;
+                document.getElementById('resTotal').textContent = `R${total.toFixed(2)}`;
+            } else {
+                document.getElementById('simpleResult').style.display = 'none';
+            }
+        }
+
+        function calculateMonthly() {
+            const sales = parseFloat(document.getElementById('totalSales').value) || 0;
+            const purchases = parseFloat(document.getElementById('totalPurchases').value) || 0;
+
+            const outputVat = sales / 1.15 * 0.15;
+            const inputVat = purchases / 1.15 * 0.15;
+            const settlement = outputVat - inputVat;
+
+            if (sales > 0 || purchases > 0) {
+                document.getElementById('monthlyResult').style.display = 'block';
+                document.getElementById('resOutputVat').textContent = `R${outputVat.toFixed(2)}`;
+                document.getElementById('resInputVat').textContent = `R${inputVat.toFixed(2)}`;
+
+                if (settlement > 0) {
+                    document.getElementById('settlementLabel').textContent = 'Amount owed to SARS:';
+                    document.getElementById('resSettlement').style.color = 'var(--rose)';
+                    document.getElementById('resSettlement').textContent = `R${settlement.toFixed(2)}`;
+                } else if (settlement < 0) {
+                    document.getElementById('settlementLabel').textContent = 'SARS owes you (refund):';
+                    document.getElementById('resSettlement').style.color = 'var(--green)';
+                    document.getElementById('resSettlement').textContent = `R${Math.abs(settlement).toFixed(2)}`;
+                } else {
+                    document.getElementById('settlementLabel').textContent = 'VAT balanced:';
+                    document.getElementById('resSettlement').style.color = 'var(--ink)';
+                    document.getElementById('resSettlement').textContent = 'R0.00';
+                }
+            } else {
+                document.getElementById('monthlyResult').style.display = 'none';
+            }
+        }
+
+        function switchCalcMode(mode) {
+            const simple = document.getElementById('simpleMode');
+            const monthly = document.getElementById('monthlyMode');
+            const btns = document.querySelectorAll('.mode-btn');
+
+            if (mode === 'simple') {
+                simple.style.display = 'block';
+                monthly.style.display = 'none';
+                btns[0].classList.add('active');
+                btns[1].classList.remove('active');
+            } else {
+                simple.style.display = 'none';
+                monthly.style.display = 'block';
+                btns[0].classList.remove('active');
+                btns[1].classList.add('active');
+            }
+        }
+
+        // Quiz functions
+        function checkAnswer(element, isCorrect, quizId) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                setTimeout(() => {
+                    alert('✓ Correct! Great understanding of VAT.');
+                }, 300);
+            } else {
+                element.classList.add('incorrect');
+                options.forEach(opt => {
+                    if (opt.innerHTML.includes('✓') || opt.classList.contains('correct')) {
+                        opt.classList.add('correct');
+                    }
+                });
+                setTimeout(() => {
+                    alert('✗ Not quite. Review the lesson and try again!');
+                }, 300);
+            }
+
+            // Track quiz answer
+            const qNum = quizId.replace('quiz', '');
+            if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(7, 'post', qNum, isCorrect, 0);
+            notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: isCorrect, questionText: `Question ${qNum}`, topic: 'Value Added Tax' });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

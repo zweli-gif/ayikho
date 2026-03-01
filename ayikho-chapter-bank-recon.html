@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho - Module 10: Bank Reconciliation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
+            --bg-dark: #05090F;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--ink);
+            overflow: hidden;
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            border: 12px solid var(--bg-dark);
+            border-radius: 50px;
+            overflow: hidden;
+            background: var(--w);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 48px;
+            background: var(--ink);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .status-left {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .status-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Progress Strip */
+        .progress-strip {
+            height: 3px;
+            background: var(--bord);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--fa);
+            width: 20%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screen Container */
+        .screen-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .screen.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--p) 0%, var(--pl) 100%);
+            color: var(--w);
+            padding: 24px 20px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Body */
+        .body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--w);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 812px;
+            background: var(--ink);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 1000;
+            border-radius: 0 50px 50px 0;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 60px;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dim);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--fa);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .nav-dot:hover {
+            background: var(--fa-l);
+        }
+
+        /* Typography */
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ink);
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0 12px 0;
+            color: var(--ink);
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--mut);
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        /* Callout Box */
+        .callout {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .callout.exam {
+            background: var(--pxs);
+            border-left-color: var(--p);
+        }
+
+        .callout.real-life {
+            background: var(--green-xs);
+            border-left-color: var(--green);
+        }
+
+        .callout h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .callout p {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* Card */
+        .card {
+            background: var(--surf);
+            border: 1px solid var(--bord);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        /* Button */
+        button {
+            background: var(--p);
+            color: var(--w);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--pl);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--fa);
+        }
+
+        .btn-secondary:hover {
+            background: var(--fa-l);
+        }
+
+        .btn-success {
+            background: var(--green);
+        }
+
+        .btn-success:hover {
+            background: #16A34A;
+        }
+
+        /* Input */
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--bord);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--p);
+            box-shadow: 0 0 0 3px var(--pxs);
+        }
+
+        /* Video Player */
+        .video-player {
+            background: var(--ink);
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--w);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-player svg {
+            width: 60px;
+            height: 60px;
+            opacity: 0.6;
+        }
+
+        .video-time {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--w);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .video-markers {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .marker {
+            background: var(--surf);
+            border: 1px solid var(--bord);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .marker:hover {
+            background: var(--psm);
+            border-color: var(--p);
+        }
+
+        .marker-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--fa);
+            font-weight: 600;
+        }
+
+        .marker-text {
+            font-size: 14px;
+            margin-top: 4px;
+            color: var(--ink);
+        }
+
+        /* Interactive Bank Recon Builder */
+        .recon-builder {
+            background: var(--fa-xs);
+            border: 2px solid var(--fa);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .recon-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--bord);
+            font-size: 14px;
+        }
+
+        .recon-line.total {
+            border-bottom: 2px solid var(--fa);
+            border-top: 2px solid var(--fa);
+            padding-top: 12px;
+            margin-top: 12px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .recon-label {
+            color: var(--mut);
+        }
+
+        .recon-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--fa-d);
+        }
+
+        /* Interactive Transactions */
+        .transaction-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .transaction-item {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: grab;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-item:hover {
+            border-color: var(--p);
+            background: var(--psm);
+        }
+
+        .transaction-item.selected {
+            background: var(--pxs);
+            border-color: var(--p);
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 16px;
+        }
+
+        .transaction-desc {
+            font-size: 14px;
+            color: var(--mut);
+            margin-top: 4px;
+        }
+
+        .classification-buttons {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .classify-btn {
+            padding: 8px 12px;
+            font-size: 12px;
+            background: var(--surf);
+            border: 1px solid var(--bord);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--ink);
+        }
+
+        .classify-btn:hover {
+            background: var(--psm);
+            border-color: var(--p);
+        }
+
+        .classify-btn.correct {
+            background: var(--green-xs);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .classify-btn.submitted {
+            background: var(--p);
+            color: var(--w);
+            border-color: var(--p);
+        }
+
+        /* Result Box */
+        .calc-result {
+            background: var(--fa-xs);
+            border: 2px solid var(--fa);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .result-row.total {
+            border-top: 2px solid var(--fa);
+            padding-top: 12px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .result-label {
+            color: var(--mut);
+        }
+
+        .result-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--fa-d);
+        }
+
+        /* Worked Example */
+        .example-box {
+            background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%);
+            border-left: 4px solid var(--fa);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: var(--fa-d);
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .example-step {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(2, 132, 199, 0.2);
+        }
+
+        .example-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .step-label {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 13px;
+        }
+
+        .step-calc {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--fa-d);
+            margin-top: 4px;
+        }
+
+        /* Quiz */
+        .quiz-question {
+            margin-bottom: 24px;
+        }
+
+        .quiz-question h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--ink);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            padding: 12px 16px;
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--p);
+            background: var(--psm);
+        }
+
+        .quiz-option.selected {
+            background: var(--pxs);
+            border-color: var(--p);
+            color: var(--p);
+            font-weight: 600;
+        }
+
+        .quiz-option.correct {
+            background: var(--green-xs);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(244, 63, 94, 0.1);
+            border-color: var(--rose);
+            color: var(--rose);
+        }
+
+        /* Win Screen */
+        .win-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .win-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .win-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .win-subtitle {
+            font-size: 16px;
+            color: var(--mut);
+            margin-bottom: 24px;
+        }
+
+        .xp-badge {
+            background: linear-gradient(135deg, var(--gold) 0%, #FBBF24 100%);
+            color: var(--w);
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .streak {
+            font-size: 48px;
+            margin: 16px 0;
+        }
+
+        .streak-text {
+            color: var(--mut);
+            font-size: 14px;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--bord);
+        }
+
+        .nav-buttons button {
+            flex: 1;
+        }
+
+        .nav-buttons button:first-child {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            color: var(--ink);
+        }
+
+        .nav-buttons button:first-child:hover {
+            background: var(--psm);
+        }
+
+        /* Scrollbar */
+        .body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .body::-webkit-scrollbar-track {
+            background: var(--surf);
+        }
+
+        .body::-webkit-scrollbar-thumb {
+            background: var(--bord);
+            border-radius: 3px;
+        }
+
+        .body::-webkit-scrollbar-thumb:hover {
+            background: var(--dim);
+        }
+
+        /* Responsive */
+        @media (max-width: 425px) {
+            .phone-frame {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .sidebar {
+                width: 50px;
+                border-radius: 0;
+            }
+
+            .sidebar-nav {
+                margin-top: 50px;
+            }
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
+        <div class="sidebar-nav" id="sidebarNav"></div>
+        <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
+            <div id="currentScreen">1/10</div>
+        </div>
+    </div>
+
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="status-left">
+                <span>21:32</span>
+            </div>
+            <div style="flex: 1; text-align: center; font-size: 12px;">Ayikho</div>
+            <div class="status-right">
+                <span>4G</span>
+                <span>🔋</span>
+            </div>
+        </div>
+
+        <div class="progress-strip">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="screen-container" id="screenContainer"></div>
+    </div>
+
+    <script>
+        // ── SEND DATA TO PARENT FRAME ──
+        function notifyParent(type, data) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type, ...data }, '*');
+            }
+          } catch(e) {}
+        }
+
+        const MODULE_ID = 10;
+        // Screen Data
+        const screens = [
+            {
+                id: 'intro',
+                title: 'Bank Reconciliation',
+                subtitle: 'Module 10 of 12',
+                type: 'intro',
+                content: `
+                    <h2>Find the Missing R500</h2>
+                    <p style="font-size: 16px; line-height: 1.8; color: var(--ink); margin-bottom: 20px;">
+                        Your bank statement says R3,500. Your cashbook says R4,000. Where's the R500?
+                    </p>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">What You'll Learn:</h3>
+                        <p style="margin: 12px 0;"><strong>1. Why bank and cashbook differ</strong></p>
+                        <p style="margin: 12px 0;"><strong>2. How to reconcile them</strong></p>
+                        <p style="margin: 12px 0;"><strong>3. When to update the cashbook</strong></p>
+                    </div>
+
+                    <div class="callout real-life">
+                        <h4>🏪 In Real Life</h4>
+                        <p>Zandile's spaza shop deposits R2,000 cash but it only shows on the bank statement 2 days later. Bank recon explains why the timing is different.</p>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>📝 Duration & Quizzes</h4>
+                        <p>9 minutes. 3 quizzes. After this module, you'll understand why the cashbook and bank statement never match exactly—and that's normal!</p>
+                    </div>
+                `
+            },
+            {
+                id: 'video',
+                title: 'Video Lesson',
+                subtitle: 'Module 10 of 12',
+                type: 'video',
+                content: `
+                    <div class="video-player">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+                        </svg>
+                        <div class="video-time" id="videoTime">0:00 / 4:00</div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 13px; color: var(--mut); margin-bottom: 16px;"><strong>Video Chapters:</strong></p>
+                        <div class="video-markers">
+                            <div class="marker">
+                                <div class="marker-time">0:00</div>
+                                <div class="marker-text">Why bank recon matters (30 sec)</div>
+                            </div>
+                            <div class="marker">
+                                <div class="marker-time">0:45</div>
+                                <div class="marker-text">Outstanding deposits and unpresented cheques (1:15)</div>
+                            </div>
+                            <div class="marker">
+                                <div class="marker-time">2:15</div>
+                                <div class="marker-text">Bank charges and direct debits (1:00)</div>
+                            </div>
+                            <div class="marker">
+                                <div class="marker-time">3:20</div>
+                                <div class="marker-text">Worked example walkthrough (0:40)</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'lesson1',
+                title: 'Why Bank Recon Matters',
+                subtitle: 'Lesson Part 1',
+                type: 'lesson',
+                content: `
+                    <h2>Bank vs Cashbook: The Timing Problem</h2>
+
+                    <p>The bank statement and your cashbook record the <strong>same transactions</strong>—but from different perspectives and at different times.</p>
+
+                    <div class="example-box">
+                        <div class="example-title">Zandile's Spaza Shop Example</div>
+                        <div class="example-step">
+                            <div class="step-label">Monday: Zandile deposits R2,000 cash</div>
+                            <div class="step-calc">✓ Recorded in cashbook immediately</div>
+                            <div class="step-calc">✗ Bank processes it in 2-3 days</div>
+                        </div>
+                        <div class="example-step">
+                            <div class="step-label">Wednesday: It appears on bank statement</div>
+                            <div class="step-calc">Now both records match</div>
+                        </div>
+                    </div>
+
+                    <h3>The Four Key Differences</h3>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; color: var(--fa-d);">1. Outstanding Deposits</h3>
+                        <p style="margin-bottom: 0;">Cash or cheques you've deposited but the bank hasn't processed yet. <strong>In cashbook but not on bank statement.</strong></p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; color: var(--fa-d);">2. Unpresented Cheques</h3>
+                        <p style="margin-bottom: 0;">Cheques you've written but the recipient hasn't cashed yet. <strong>In cashbook but not on bank statement.</strong></p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; color: var(--fa-d);">3. Bank Charges</h3>
+                        <p style="margin-bottom: 0;">Monthly service fees, interest, or debit orders. <strong>On bank statement only—must update cashbook.</strong></p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; color: var(--fa-d);">4. Direct Debits</h3>
+                        <p style="margin-bottom: 0;">Automatic payments like insurance. <strong>On bank statement only—must update cashbook.</strong></p>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>📝 Key Concept</h4>
+                        <p>Bank recon explains timing differences. After reconciliation, you'll know which items to add to the cashbook to make both records match.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'interactive',
+                title: 'Interactive: Classify Transactions',
+                subtitle: 'Bank Reconciliation Builder',
+                type: 'interactive',
+                content: `
+                    <h2>Classify These Transactions</h2>
+                    <p style="font-size: 14px; color: var(--mut); margin-bottom: 20px;">Tap each transaction to classify it. This tells you whether it's an outstanding deposit, unpresented cheque, bank charge, or already matched.</p>
+
+                    <div class="transaction-list" id="transactionList"></div>
+
+                    <div id="classificationResults" style="display: none; margin-top: 20px; padding: 16px; background: var(--green-xs); border: 2px solid var(--green); border-radius: 8px;">
+                        <p style="color: var(--green); font-weight: 600; margin-bottom: 12px; font-size: 16px;">🎯 All correct!</p>
+                        <p style="color: var(--green); margin: 0; font-size: 14px;">You've mastered transaction classification. Now let's reconcile!</p>
+                    </div>
+                `
+            },
+            {
+                id: 'lesson2',
+                title: 'Updating the Cashbook',
+                subtitle: 'Lesson Part 2',
+                type: 'lesson',
+                content: `
+                    <h2>After Recon: What Gets Updated?</h2>
+
+                    <p>Once you've reconciled, some items need <strong>updating in the cashbook</strong>. Outstanding deposits and unpresented cheques don't—they'll match when the bank processes them.</p>
+
+                    <h3>What To Update</h3>
+                    <p><strong>Bank charges, direct debits, interest</strong> only appear on the bank statement. You must record them in the cashbook.</p>
+
+                    <div class="example-box">
+                        <div class="example-title">Naledi's Hair Salon - Month End Adjustments</div>
+                        <div class="example-step">
+                            <div class="step-label">Bank statement shows:</div>
+                            <div class="step-calc">Service charge: R30 (deducted by bank)</div>
+                            <div class="step-calc">Direct debit (insurance): R150 (automatic)</div>
+                            <div class="step-calc">Interest earned: R5 (bonus!)</div>
+                        </div>
+                        <div class="example-step">
+                            <div class="step-label">Cashbook needs:</div>
+                            <div class="step-calc">Record these in Bank column of CPJ</div>
+                            <div class="step-calc">Debit: Expense account (for charges)</div>
+                            <div class="step-calc">Credit: Bank account (reduces balance)</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">Journal Entry Example</h3>
+                        <p style="font-size: 13px; margin-bottom: 12px;"><strong>Recording Naledi's Bank Charges:</strong></p>
+                        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin: 0;">
+                            Dr Bank Charges Expense     R30<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Cr Bank Account              R30<br>
+                            <em>(To record May bank service fee)</em>
+                        </p>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>💡 Remember</h4>
+                        <p>Items on bank statement only = update cashbook. Items in cashbook only = wait for bank to process.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'worked-example',
+                title: 'Worked Example',
+                subtitle: 'Sipho\'s Car Wash Case Study',
+                type: 'lesson',
+                content: `
+                    <h2>Full Reconciliation: Sipho's Car Wash</h2>
+
+                    <h3>Given Information</h3>
+                    <div class="card">
+                        <p style="margin: 8px 0;"><strong>Cashbook balance (per cashier):</strong> R11,250</p>
+                        <p style="margin: 8px 0;"><strong>Bank statement balance (from bank):</strong> R12,400</p>
+                        <p style="margin: 8px 0;"><strong>Difference:</strong> R1,150</p>
+                    </div>
+
+                    <h3>Transactions Found During Recon</h3>
+                    <div class="card">
+                        <p style="margin: 8px 0;"><strong>Outstanding Deposits:</strong></p>
+                        <ul style="margin-left: 20px; color: var(--mut); font-size: 14px;">
+                            <li>Cheque from Mrs. Nkosi: R800 (recorded in cashbook, not on bank statement yet)</li>
+                        </ul>
+                        <p style="margin: 16px 0 8px 0;"><strong>Unpresented Cheques:</strong></p>
+                        <ul style="margin-left: 20px; color: var(--mut); font-size: 14px;">
+                            <li>Cheque #402 to supplier: R600 (written, not cashed yet)</li>
+                        </ul>
+                        <p style="margin: 16px 0 8px 0;"><strong>Bank Charges & Interest:</strong></p>
+                        <ul style="margin-left: 20px; color: var(--mut); font-size: 14px;">
+                            <li>Service charge (on bank statement only): R40</li>
+                            <li>Interest earned (on bank statement only): R50</li>
+                        </ul>
+                    </div>
+
+                    <h3>Step-by-Step Reconciliation</h3>
+
+                    <div class="example-box">
+                        <div class="example-title">Starting Point</div>
+                        <div class="example-step">
+                            <div class="step-label">Balance per bank statement: R12,400</div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">Step 1: Add Outstanding Deposits</div>
+                        <div class="example-step">
+                            <div class="step-label">R12,400 + R800 (Nkosi cheque) = R13,200</div>
+                            <div class="step-calc">(These are in cashbook but haven't cleared bank yet)</div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">Step 2: Subtract Unpresented Cheques</div>
+                        <div class="example-step">
+                            <div class="step-label">R13,200 - R600 (cheque #402) = R12,600</div>
+                            <div class="step-calc">(These are in cashbook but haven't been cashed yet)</div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">Result: Adjusted Bank Balance = R12,600</div>
+                        <div class="example-step">
+                            <div class="step-label">Now compare to cashbook...</div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">Step 3: Update Cashbook with Bank Items</div>
+                        <div class="example-step">
+                            <div class="step-label">Cashbook started at: R11,250</div>
+                            <div class="step-calc">Less: Service charge   -R40</div>
+                            <div class="step-calc">Add: Interest earned  +R50</div>
+                            <div class="step-calc"><strong>Cashbook now: R11,260</strong></div>
+                        </div>
+                        <div class="example-step">
+                            <div class="step-label">Wait... still doesn't match!</div>
+                            <div class="step-calc">Adjusted bank = R12,600</div>
+                            <div class="step-calc">Adjusted cashbook = R11,260</div>
+                            <div class="step-calc">Difference = R1,340 (error in cashbook—needs investigation!)</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>📝 Exam Tip</h4>
+                        <p>If reconciliation doesn't balance after proper steps, there's an error in the cashbook records. Check for posting errors, typos, or missing transactions.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz1',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 1 of 3',
+                type: 'quiz',
+                content: `
+                    <h2>Question 1 of 3</h2>
+
+                    <div class="quiz-question">
+                        <h4>What is an unpresented cheque?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">A) A cheque the bank sent to you that hasn't arrived yet</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz1')">B) A cheque you wrote that the recipient hasn't cashed yet</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">C) A cheque that was rejected by the bank</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz1')">D) A cheque that appears on the bank statement</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam" style="margin-top: 24px;">
+                        <h4>💡 Hint</h4>
+                        <p>"Unpresented" means it hasn't been presented to the bank yet. You recorded it in the cashbook, but the bank hasn't processed it.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz2',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 2 of 3',
+                type: 'quiz',
+                content: `
+                    <h2>Question 2 of 3</h2>
+
+                    <div class="quiz-question">
+                        <h4>Bank charges appear on the bank statement but not in your cashbook. What do you do?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">A) Ignore them—the bank made a mistake</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz2')">B) Record them in the cashbook to match the bank statement</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">C) Subtract them from the bank statement balance</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz2')">D) Wait for the bank to remove them next month</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam" style="margin-top: 24px;">
+                        <h4>💡 Hint</h4>
+                        <p>The bank statement is the official record. If something is there that's not in your cashbook, you must update your records.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz3',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 3 of 3',
+                type: 'quiz',
+                content: `
+                    <h2>Question 3 of 3</h2>
+
+                    <div class="quiz-question">
+                        <h4>Bank statement shows R8,600. You find an outstanding deposit of R1,500 and an unpresented cheque of R900. What is your adjusted bank balance?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">A) R8,600</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">B) R10,100 (add both)</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'quiz3')">C) R9,200 (add R1,500, subtract R900)</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'quiz3')">D) R7,800 (subtract both)</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam" style="margin-top: 24px;">
+                        <h4>💡 Hint</h4>
+                        <p>Outstanding deposits: add (they increase the bank balance when processed). Unpresented cheques: subtract (they decrease the balance when cashed).</p>
+                    </div>
+                `
+            },
+            {
+                id: 'win',
+                title: 'Module Complete!',
+                subtitle: 'Chapter 10 Complete',
+                type: 'win',
+                content: `
+                    <div class="win-container">
+                        <div class="win-icon">🎉</div>
+                        <div class="win-title">Module 10 Complete!</div>
+                        <div class="win-subtitle">Bank Reconciliation Mastered</div>
+
+                        <div class="xp-badge">+175 XP</div>
+
+                        <div class="streak">🔥 22</div>
+                        <div class="streak-text">Day Streak!</div>
+
+                        <div style="margin-top: 32px; width: 100%; text-align: center;">
+                            <p style="color: var(--mut); margin-bottom: 20px;">You've learned outstanding deposits, unpresented cheques, bank charges, and how to update the cashbook. You can now reconcile any month!</p>
+                            <p style="font-size: 13px; color: var(--dim); margin-bottom: 20px;">Module 11 - Financial Statements is waiting for you...</p>
+                        </div>
+
+                        <div class="nav-buttons" style="flex-direction: column; border-top: none; margin-top: auto;">
+                            <button class="btn btn-ghost" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                            <button class="btn-secondary" onclick="goToScreen(0)">Review Bank Recon Module</button>
+                            <button onclick="alert('Excellent work! In a full app, this would lead to Module 11.')">Next Module →</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'resources',
+                title: 'Practice & Past Papers',
+                subtitle: 'Module 10 · Bank Reconciliation',
+                type: 'resources',
+                content: `
+                    <div style="text-align:center;margin-bottom:20px">
+                      <div style="font-size:32px;margin-bottom:8px">📝</div>
+                      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink)">Practice & Past Papers</div>
+                      <div style="font-size:13px;color:var(--mut);margin-top:4px">Module 10 · Bank Reconciliation</div>
+                    </div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                      <div style="font-size:14px;color:var(--fa)">↗</div>
+                    </a>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                      <div style="font-size:14px;color:var(--fa)">↗</div>
+                    </a>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                      <div style="font-size:14px;color:var(--fa)">↗</div>
+                    </a>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs)" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Bank Reconciliation · 15 questions · 20 min</div></div>
+                      <div style="font-size:14px;color:var(--p)">→</div>
+                    </a>
+                    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs)" onclick="event.preventDefault()">
+                      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Bank Reconciliation · 15 questions · 20 min</div></div>
+                      <div style="font-size:14px;color:var(--p)">→</div>
+                    </a>
+                    <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+                      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+                      <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+                    </div>
+                `
+            }
+        ];
+
+        let currentScreen = 0;
+
+        // Transaction data for interactive screen
+        const transactions = [
+            { amount: 'R2,000', desc: 'Cash deposit (not yet on bank statement)', correct: 'Outstanding deposit' },
+            { amount: 'R850', desc: 'Cheque to supplier (not yet cashed)', correct: 'Unpresented cheque' },
+            { amount: 'R45', desc: 'Bank service fee (on statement only)', correct: 'Bank charge' },
+            { amount: 'R1,200', desc: 'EFT payment received (on both records)', correct: 'Already matched' },
+            { amount: 'R300', desc: 'Insurance debit order (on statement only)', correct: 'Bank charge' },
+            { amount: 'R500', desc: 'Cheque to landlord (not yet cashed)', correct: 'Unpresented cheque' }
+        ];
+
+        let classifiedCount = 0;
+
+        // Initialize
+        function init() {
+            renderScreens();
+            renderNavigation();
+            updateProgress();
+            setupKeyboardNavigation();
+        }
+
+        // Render all screens
+        function renderScreens() {
+            const container = document.getElementById('screenContainer');
+            container.innerHTML = '';
+
+            screens.forEach((screen, idx) => {
+                const screenEl = document.createElement('div');
+                screenEl.className = `screen ${idx === 0 ? 'active' : ''}`;
+                screenEl.innerHTML = `
+                    <div class="header">
+                        <h1>${screen.title}</h1>
+                        <p>${screen.subtitle}</p>
+                    </div>
+                    <div class="body">
+                        ${screen.content}
+                        ${screen.type !== 'win' ? `
+                            <div class="nav-buttons">
+                                <button onclick="previousScreen()" ${currentScreen === 0 ? 'disabled' : ''}>← Back</button>
+                                <button class="btn-secondary" onclick="nextScreen()" ${currentScreen === screens.length - 1 ? 'disabled' : ''}>Next →</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.appendChild(screenEl);
+            });
+
+            // Populate interactive screen after rendering
+            const transactionList = document.getElementById('transactionList');
+            if (transactionList) {
+                classifiedCount = 0;
+                transactionList.innerHTML = transactions.map((t, idx) => `
+                    <div class="transaction-item" id="trans-${idx}">
+                        <div class="transaction-info">
+                            <div class="transaction-amount">${t.amount}</div>
+                            <div class="transaction-desc">${t.desc}</div>
+                            <div class="classification-buttons" id="buttons-${idx}">
+                                <button class="classify-btn" onclick="classify(${idx}, 'Outstanding deposit')">Outstanding</button>
+                                <button class="classify-btn" onclick="classify(${idx}, 'Unpresented cheque')">Unpresented</button>
+                                <button class="classify-btn" onclick="classify(${idx}, 'Bank charge')">Bank Charge</button>
+                                <button class="classify-btn" onclick="classify(${idx}, 'Already matched')">Matched</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Classify transaction
+        function classify(idx, classification) {
+            const isCorrect = classification === transactions[idx].correct;
+            const buttons = document.getElementById(`buttons-${idx}`).querySelectorAll('.classify-btn');
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.pointerEvents = 'none';
+                btn.style.opacity = '0.5';
+            });
+
+            if (isCorrect) {
+                buttons.forEach(btn => {
+                    if (btn.textContent === (classification === 'Outstanding deposit' ? 'Outstanding' :
+                                            classification === 'Unpresented cheque' ? 'Unpresented' :
+                                            classification === 'Bank charge' ? 'Bank Charge' : 'Matched')) {
+                        btn.classList.add('correct');
+                        btn.style.opacity = '1';
+                    }
+                });
+                classifiedCount++;
+                if (classifiedCount === transactions.length) {
+                    document.getElementById('classificationResults').style.display = 'block';
+                }
+            } else {
+                buttons.forEach(btn => {
+                    if (btn.textContent === (transactions[idx].correct === 'Outstanding deposit' ? 'Outstanding' :
+                                            transactions[idx].correct === 'Unpresented cheque' ? 'Unpresented' :
+                                            transactions[idx].correct === 'Bank charge' ? 'Bank Charge' : 'Matched')) {
+                        btn.classList.add('correct');
+                        btn.style.opacity = '1';
+                    } else if (btn.textContent === classification ||
+                              (btn.textContent === 'Outstanding' && classification === 'Outstanding deposit') ||
+                              (btn.textContent === 'Unpresented' && classification === 'Unpresented cheque') ||
+                              (btn.textContent === 'Bank Charge' && classification === 'Bank charge') ||
+                              (btn.textContent === 'Matched' && classification === 'Already matched')) {
+                        btn.style.opacity = '0.3';
+                    }
+                });
+            }
+        }
+
+        // Render navigation dots
+        function renderNavigation() {
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = '';
+
+            screens.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `nav-dot ${idx === currentScreen ? 'active' : ''}`;
+                dot.onclick = () => goToScreen(idx);
+                nav.appendChild(dot);
+            });
+        }
+
+        // Navigation functions
+        function goToScreen(idx) {
+            if (idx < 0 || idx >= screens.length) return;
+
+            const screenEls = document.querySelectorAll('.screen');
+            const direction = idx > currentScreen ? 1 : -1;
+
+            screenEls[currentScreen].classList.remove('active');
+            if (direction > 0) {
+                screenEls[currentScreen].classList.add('prev');
+            }
+
+            currentScreen = idx;
+
+            screenEls[currentScreen].classList.remove('prev');
+            screenEls[currentScreen].classList.add('active');
+
+            notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: screens.length });
+            if (currentScreen === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            // Track screen view
+            if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(10, currentScreen);
+
+            updateProgress();
+            renderNavigation();
+            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/11`;
+        }
+
+        function nextScreen() {
+            goToScreen(currentScreen + 1);
+        }
+
+        function previousScreen() {
+            goToScreen(currentScreen - 1);
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentScreen + 1) / screens.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Keyboard navigation
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') nextScreen();
+                if (e.key === 'ArrowLeft') previousScreen();
+            });
+        }
+
+        // Quiz functions
+        function checkAnswer(element, isCorrect, quizId) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                setTimeout(() => {
+                    alert('✓ Correct! Great understanding of bank recon.');
+                }, 300);
+            } else {
+                element.classList.add('incorrect');
+                options.forEach(opt => {
+                    if (opt.innerHTML.includes('✓') || opt.classList.contains('correct')) {
+                        opt.classList.add('correct');
+                    }
+                });
+                setTimeout(() => {
+                    alert('✗ Not quite. Review the lesson and try again!');
+                }, 300);
+            }
+
+            // Track quiz answer
+            const qNum = quizId.replace('quiz', '');
+            if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(10, 'post', qNum, isCorrect, 0);
+            notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: isCorrect, questionText: `Question ${qNum}`, topic: 'Bank Reconciliation' });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

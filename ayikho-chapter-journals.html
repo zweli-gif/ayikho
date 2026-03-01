@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · FA N4 · Journals & Ledgers</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+<script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
+  --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
+  --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
+  --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
+  --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
+}
+html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden}
+
+/* ── SHELL ── */
+.shell{display:flex;gap:20px;align-items:flex-start}
+.sidebar{display:flex;flex-direction:column;gap:3px;padding-top:80px}
+@media(max-width:900px){.sidebar{display:none}}
+.si{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.18);cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:7px;padding:3px 0;white-space:nowrap}
+.si::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+.si.active{color:var(--fa-l)}
+.shell-meta{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.15);text-align:center;margin-top:10px}
+
+/* ── PHONE ── */
+.phone{width:375px;height:812px;background:var(--w);border-radius:50px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(2,132,199,.08)}
+
+/* ── SCREEN STACK ── */
+.stack{position:absolute;inset:0;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--w);transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);will-change:transform}
+.screen.active{transform:translateX(0)}
+.screen.exit{transform:translateX(-24%)}
+
+/* ── STATUS BAR ── */
+.sb{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
+.sb-t{font-weight:700;font-size:15px}
+.sb-i{font-size:11px;opacity:.8}
+.sb-w{background:var(--w);color:var(--ink)}
+.sb-fa{background:var(--fa);color:white}
+.sb-ink{background:var(--ink);color:white}
+.sb-win{background:var(--gold);color:var(--ink)}
+
+/* ── PROGRESS STRIP ── */
+.gp{height:3px;background:var(--fa-sm);flex-shrink:0}
+.gp-fill{height:100%;background:var(--fa);transition:width .4s ease;border-radius:0 2px 2px 0}
+
+/* ── SCROLLABLE BODY ── */
+.scr{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scr::-webkit-scrollbar{display:none}
+
+/* ── FOOTER ── */
+.foot{padding:14px 22px 28px;flex-shrink:0}
+.btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-fa{background:var(--fa);color:white}
+.btn-fa:hover{background:var(--fa-l);transform:translateY(-1px);box-shadow:0 6px 24px rgba(2,132,199,.35)}
+.btn-ghost{background:var(--surf);color:var(--mut);margin-top:8px;font-size:13px;padding:12px}
+.btn-p{background:var(--p);color:white}
+.btn-p:hover{background:var(--pl);transform:translateY(-1px)}
+.btn-green{background:var(--green);color:white}
+.btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(34,197,94,.35)}
+
+/* ── NAV HEADER ── */
+.nav-hdr{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--bord);flex-shrink:0}
+.nav-back{width:36px;height:36px;border-radius:10px;background:var(--surf);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--mut);transition:all .2s;flex-shrink:0}
+.nav-back:hover{background:var(--fa-sm);color:var(--fa)}
+.nav-hdr-info{flex:1;min-width:0}
+.nav-hdr-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--fa);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.nav-hdr-title{font-weight:700;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-hdr-right{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);flex-shrink:0}
+
+/* ══════════════════════════════════════
+   SCREEN 1: CHAPTER INTRO
+══════════════════════════════════════ */
+.ci-hero{background:var(--fa);padding:28px 24px 32px;flex-shrink:0;position:relative;overflow:hidden}
+.ci-orb{position:absolute;border-radius:50%;background:rgba(255,255,255,.07)}
+.ci-orb1{width:300px;height:300px;top:-100px;right:-80px}
+.ci-orb2{width:180px;height:180px;bottom:-60px;left:-40px}
+.ci-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:16px}
+.ci-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:4px}
+.ci-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:white;line-height:1.1;margin-bottom:14px}
+.ci-meta-row{display:flex;gap:16px}
+.ci-meta{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,.7)}
+
+.ci-tldr{margin:20px 22px;background:var(--fa-sm);border-left:3px solid var(--fa);border-radius:0 12px 12px 0;padding:14px 16px}
+.ci-tldr-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa);margin-bottom:6px}
+.ci-tldr-text{font-size:14px;color:var(--ink);line-height:1.6;font-weight:500}
+
+.ci-what{padding:0 22px 8px}
+.ci-what-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.ci-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bord)}
+.ci-item:last-child{border-bottom:none}
+.ci-item-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0}
+.ci-item-info{flex:1}
+.ci-item-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ci-item-desc{font-size:11px;color:var(--mut)}
+.ci-item-badge{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 8px;border-radius:100px;flex-shrink:0}
+.cib-new{background:var(--fa-sm);color:var(--fa)}
+.cib-calc{background:var(--pxs);color:var(--p)}
+.cib-eg{background:rgba(34,197,94,.1);color:var(--green)}
+
+/* ══════════════════════════════════════
+   SCREEN 2: VIDEO PLAYER
+══════════════════════════════════════ */
+.vid-container{flex:1;display:flex;flex-direction:column;background:var(--ink)}
+.vid-player-wrap{position:relative;background:#000;flex-shrink:0}
+.vid-thumb{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#0C1445,#1E3A5F);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.vid-thumb-bg{position:absolute;inset:0;background:radial-gradient(circle at 60% 40%,rgba(2,132,199,.3),transparent 60%)}
+.vid-thumb-text{position:absolute;bottom:16px;left:16px;right:16px}
+.vid-thumb-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white;margin-bottom:4px}
+.vid-thumb-sub{font-size:11px;color:rgba(255,255,255,.6)}
+.vid-play-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s;z-index:2;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.vid-play-btn:hover{transform:scale(1.08)}
+.vid-play-icon{font-size:26px;margin-left:4px}
+.vid-synth-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 10px;display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.7);letter-spacing:.06em}
+.vid-progress{height:3px;background:rgba(255,255,255,.15);cursor:pointer}
+.vid-progress-fill{height:100%;width:0%;background:var(--fa-l);transition:width .3s linear}
+.vid-controls{display:flex;align-items:center;gap:14px;padding:10px 16px}
+.vc-btn{font-size:18px;cursor:pointer;opacity:.8;transition:opacity .2s;background:none;border:none;color:white}
+.vc-btn:hover{opacity:1}
+.vc-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);flex:1}
+.vc-cc{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:2px 6px;cursor:pointer}
+.vid-chapters{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06)}
+.vc-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.vc-chapter{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .2s;margin-bottom:4px}
+.vc-chapter:hover{background:rgba(255,255,255,.05)}
+.vc-chapter.active{background:rgba(2,132,199,.15);border-left:2px solid var(--fa-l)}
+.vc-ch-time{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fa-l);min-width:36px}
+.vc-ch-title{font-size:12px;color:rgba(255,255,255,.75)}
+.vc-ch-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.vc-chapter.active .vc-ch-dot{background:var(--fa-l)}
+.vid-skip{padding:0 16px 20px}
+.vid-skip-btn{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-radius:10px;padding:11px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+.vid-skip-btn:hover{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.8)}
+
+/* ══════════════════════════════════════
+   LESSON SCREENS
+══════════════════════════════════════ */
+.lesson-body{padding:18px 22px;display:flex;flex-direction:column;gap:16px}
+.ls-section-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fa);padding-bottom:6px;border-bottom:1px solid var(--fa-sm)}
+.ls-h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink);line-height:1.15}
+.ls-p{font-size:14px;color:var(--mut);line-height:1.7}
+.ls-p strong{color:var(--ink);font-weight:600}
+
+/* SA Example block */
+.sa-example{background:linear-gradient(135deg,var(--fa-sm),var(--fa-xs));border-radius:14px;padding:16px;border:1px solid rgba(2,132,199,.15)}
+.sa-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sa-flag{font-size:14px}
+.sa-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:8px}
+
+/* Memory aid */
+.memory-aid{background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border-radius:12px;padding:14px 16px;border:1px solid rgba(245,158,11,.2)}
+.ma-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.ma-text{font-size:13px;color:var(--ink);line-height:1.6;font-weight:500}
+.ma-sub{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.5}
+
+/* IRL callout */
+.irl-box{background:linear-gradient(135deg,var(--fa-sm),var(--fa-xs));border:1px solid rgba(2,132,199,.15);border-radius:12px;padding:14px 16px}
+.irl-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.irl-text{font-size:13px;color:var(--ink);line-height:1.6}
+
+/* Exam callout */
+.exam-box{background:#FEF3C7;border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:14px 16px}
+.exam-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.exam-text{font-size:13px;color:var(--ink);line-height:1.6}
+
+/* Journal visual */
+.journal-visual{border:2px solid var(--bord);border-radius:14px;overflow:hidden}
+.jv-header{background:var(--fa);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.jv-title{font-weight:700;font-size:13px;color:white}
+.jv-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.6);letter-spacing:.06em}
+.jv-table{width:100%;border-collapse:collapse;font-size:12px}
+.jv-table th{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:8px 10px;text-align:left;border-bottom:1px solid var(--bord);background:var(--surf)}
+.jv-table td{padding:8px 10px;border-bottom:1px solid rgba(2,132,199,.08);vertical-align:top}
+.jv-table tr:last-child td{border-bottom:none}
+.jv-dr{color:var(--fa);font-weight:600}
+.jv-cr{color:var(--gold);font-weight:600;padding-left:20px}
+.jv-amt{font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right}
+
+/* ══════════════════════════════════════
+   SCREEN 4: JOURNAL ENTRY BUILDER
+══════════════════════════════════════ */
+.jb-hdr{background:var(--ink);padding:18px 22px 22px;flex-shrink:0;position:relative;overflow:hidden}
+.jb-hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(2,132,199,.2),transparent 70%)}
+.jb-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa-l);opacity:.8;margin-bottom:8px}
+.jb-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;margin-bottom:4px}
+.jb-sub{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+
+/* Balance indicator */
+.jb-balance{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);transition:all .3s}
+.jb-balance.balanced{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.25)}
+.jb-balance.unbalanced{background:rgba(244,63,94,.08);border-color:rgba(244,63,94,.2)}
+.jb-bal-icon{font-size:18px;flex-shrink:0}
+.jb-bal-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.4}
+.jb-balance.balanced .jb-bal-text{color:rgba(34,197,94,.9)}
+.jb-balance.unbalanced .jb-bal-text{color:rgba(244,63,94,.9)}
+
+/* Journal builder area */
+.jb-area{flex:1;overflow-y:auto;padding:16px 22px;display:flex;flex-direction:column;gap:10px}
+.jb-area::-webkit-scrollbar{display:none}
+
+/* Scenario card */
+.jb-scenario{background:var(--fa-xs);border:1px solid var(--fa-sm);border-radius:12px;padding:12px 14px}
+.jb-scenario-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin-bottom:4px}
+.jb-scenario-text{font-size:13px;color:var(--ink);line-height:1.5;font-weight:500}
+
+/* Entry row */
+.jb-entry{background:var(--surf);border:1.5px solid var(--bord);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;transition:all .2s}
+.jb-entry.valid{border-color:var(--green);background:var(--green-xs)}
+.jb-entry-row{display:flex;align-items:center;gap:8px}
+.jb-select{flex:1;border:1.5px solid var(--bord);border-radius:8px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:13px;color:var(--ink);background:var(--w);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%239580B8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.jb-select:focus{border-color:var(--fa);outline:none}
+.jb-dc-toggle{display:flex;border:1.5px solid var(--bord);border-radius:8px;overflow:hidden;flex-shrink:0}
+.jb-dc-btn{padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;cursor:pointer;transition:all .2s;background:var(--w);border:none;color:var(--dim)}
+.jb-dc-btn.active-dr{background:var(--fa);color:white}
+.jb-dc-btn.active-cr{background:var(--gold);color:white}
+.jb-amount{border:1.5px solid var(--bord);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--ink);width:90px;text-align:right;background:var(--w)}
+.jb-amount:focus{border-color:var(--fa);outline:none}
+.jb-amount::placeholder{color:var(--bord)}
+
+/* Add row button */
+.jb-add{border:1.5px dashed var(--bord);border-radius:12px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);cursor:pointer;text-align:center;background:none;width:100%;transition:all .2s}
+.jb-add:hover{border-color:var(--fa);color:var(--fa)}
+
+/* Result preview */
+.jb-result{background:var(--ink);border-radius:12px;padding:14px;display:none}
+.jb-result.show{display:block}
+.jb-result-title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa-l);margin-bottom:8px}
+.jb-result-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:rgba(255,255,255,.7)}
+.jb-result-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.06)}
+.jb-result-acct{flex:1}
+.jb-result-dr{color:var(--fa-l);font-family:'JetBrains Mono',monospace;font-weight:600;min-width:60px;text-align:right}
+.jb-result-cr{color:#FBBF24;font-family:'JetBrains Mono',monospace;font-weight:600;min-width:60px;text-align:right}
+.jb-result-total{display:flex;justify-content:flex-end;gap:0;padding-top:8px;margin-top:4px;border-top:1px solid rgba(255,255,255,.15);font-family:'JetBrains Mono',monospace;font-size:11px}
+
+/* ══════════════════════════════════════
+   WORKED EXAMPLE
+══════════════════════════════════════ */
+.we-hdr{background:linear-gradient(135deg,var(--fa-d),var(--fa));padding:18px 22px 22px;flex-shrink:0}
+.we-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px}
+.we-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;line-height:1.15;margin-bottom:6px}
+.we-context{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.we-body{flex:1;overflow-y:auto;padding:18px 22px}
+.we-body::-webkit-scrollbar{display:none}
+.we-step{margin-bottom:20px}
+.we-step-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.we-step-num{width:32px;height:32px;border-radius:50%;background:var(--fa);color:white;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;flex-shrink:0}
+.we-step-title{font-weight:700;font-size:14px;color:var(--ink)}
+.we-step-amount{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--fa);font-weight:600;margin-left:auto}
+
+/* T-account */
+.t-account{border:2px solid var(--bord);border-radius:12px;overflow:hidden;margin-top:8px}
+.t-account-top{background:var(--fa);color:white;padding:10px 14px;font-weight:700;font-size:13px;text-align:center}
+.t-account-cols{display:flex}
+.t-col{flex:1;padding:10px 14px}
+.t-col-left{border-right:2px solid var(--bord)}
+.t-col-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;text-align:center}
+.t-entry{font-size:12px;color:var(--ink);padding:4px 0;display:flex;justify-content:space-between;border-bottom:1px solid var(--bord)}
+.t-entry:last-child{border-bottom:none}
+.t-entry-name{color:var(--mut)}
+.t-entry-amt{font-family:'JetBrains Mono',monospace;font-weight:600}
+
+/* ══════════════════════════════════════
+   PRE-QUIZ SCREEN
+══════════════════════════════════════ */
+.pq-hdr{background:var(--gold);padding:14px 22px 20px;flex-shrink:0}
+.pq-progress-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.pq-pb{flex:1;height:4px;background:rgba(0,0,0,.1);border-radius:100px;overflow:hidden}
+.pq-pb-fill{height:100%;background:rgba(0,0,0,.3);border-radius:100px;transition:width .4s ease}
+.pq-cnt{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(0,0,0,.4)}
+.pq-q-text{font-size:16px;font-weight:700;color:var(--ink);line-height:1.45}
+.pq-q-sub{font-size:12px;color:rgba(26,10,58,.5);margin-top:5px;line-height:1.5}
+.pq-opts{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:9px;overflow-y:auto}
+.pq-opts::-webkit-scrollbar{display:none}
+.pq-opt{border:2px solid var(--bord);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all .2s;background:var(--w);user-select:none}
+.pq-opt:hover{border-color:var(--gold);background:#FFFBEB}
+.pq-opt.correct{border-color:var(--green);background:var(--green-xs)}
+.pq-opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.05)}
+.pq-opt.dimmed{opacity:.45}
+.pq-letter{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#FEF3C7,#FFF7ED);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0;transition:all .2s}
+.pq-opt.correct .pq-letter{background:var(--green);color:white}
+.pq-opt.wrong .pq-letter{background:var(--rose);color:white}
+.pq-text{font-size:13px;color:var(--ink);line-height:1.5;padding-top:4px}
+.pq-explanation{background:#FFF7ED;border-radius:10px;padding:12px 14px;margin:0 20px;border-left:3px solid var(--gold);display:none}
+.pq-explanation.show{display:block}
+.pq-exp-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.pq-exp-text{font-size:12px;color:var(--ink);line-height:1.6}
+.pq-next{padding:12px 20px 28px;flex-shrink:0}
+.pq-results{padding:20px;text-align:center}
+.pq-results-num{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.pq-results-text{font-size:14px;color:var(--mut);line-height:1.6;margin-bottom:16px}
+
+/* Pre-quiz callout banner */
+.pq-callout{background:#FFF7ED;border-left:3px solid var(--gold);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:none}
+.pq-callout.show{display:block}
+.pq-callout-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;display:block}
+.pq-callout-text{font-size:13px;color:var(--ink);line-height:1.5;font-family:'Outfit',sans-serif}
+
+/* ══════════════════════════════════════
+   QUIZ SCREENS
+══════════════════════════════════════ */
+.quiz-hdr{background:var(--fa-d);padding:14px 22px 20px;flex-shrink:0}
+.quiz-progress-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.quiz-pb{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden}
+.quiz-pb-fill{height:100%;background:var(--fa-l);border-radius:100px;transition:width .4s ease}
+.quiz-cnt{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.35)}
+.quiz-q-text{font-size:16px;font-weight:700;color:white;line-height:1.45}
+.quiz-scenario{font-size:12px;color:rgba(255,255,255,.5);margin-top:5px;line-height:1.5;font-style:italic}
+.quiz-opts{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:9px;overflow-y:auto}
+.quiz-opts::-webkit-scrollbar{display:none}
+.q-opt{border:2px solid var(--bord);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all .2s;background:var(--w);user-select:none}
+.q-opt:hover{border-color:var(--fa);background:var(--fa-xs)}
+.q-opt.correct{border-color:var(--green);background:var(--green-xs)}
+.q-opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.05)}
+.q-opt.dimmed{opacity:.45}
+.q-letter{width:30px;height:30px;border-radius:50%;background:var(--surf);color:var(--fa);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0;transition:all .2s}
+.q-opt.correct .q-letter{background:var(--green);color:white}
+.q-opt.wrong .q-letter{background:var(--rose);color:white}
+.q-text{font-size:13px;color:var(--ink);line-height:1.5;padding-top:4px}
+.q-explanation{background:var(--fa-sm);border-radius:10px;padding:12px 14px;margin:0 20px;border-left:3px solid var(--fa);display:none}
+.q-explanation.show{display:block}
+.q-exp-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--fa);margin-bottom:5px}
+.q-exp-text{font-size:12px;color:var(--ink);line-height:1.6}
+.quiz-next{padding:12px 20px 28px;flex-shrink:0}
+
+/* ══════════════════════════════════════
+   WIN SCREEN
+══════════════════════════════════════ */
+.win-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 26px 10px;overflow-y:auto}
+.win-body::-webkit-scrollbar{display:none}
+.win-banner{background:linear-gradient(135deg,#F59E0B,#FBBF24);width:100%;border-radius:20px;padding:24px 20px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden}
+.win-banner::before{content:'🌟';position:absolute;font-size:80px;right:-10px;top:-10px;opacity:.15}
+.win-icon{font-size:48px;margin-bottom:8px}
+.win-hl{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.win-sub{font-size:13px;color:rgba(26,10,58,.6)}
+.win-xp{display:inline-flex;align-items:center;gap:6px;background:rgba(26,10,58,.15);border-radius:100px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink);margin-top:10px}
+.win-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bord);border:1px solid var(--bord);border-radius:16px;overflow:hidden;width:100%;margin-bottom:16px}
+.win-stat{background:var(--w);padding:16px 10px;text-align:center}
+.win-stat-n{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--fa);line-height:1;margin-bottom:3px}
+.win-stat-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.win-concepts{width:100%;background:var(--surf);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.win-concepts-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.win-concept{display:flex;align-items:center;gap:10px;padding:5px 0}
+.win-concept-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.win-concept-text{font-size:12px;color:var(--ink);font-weight:500}
+.win-next-card{width:100%;border:1.5px solid var(--bord);border-radius:14px;padding:14px 16px;background:var(--w);margin-bottom:16px}
+.win-next-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.win-next-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px}
+.win-next-meta{font-size:12px;color:var(--mut)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="shell">
+<div class="sidebar" id="sidebar"></div>
+<div>
+<div class="phone"><div class="stack" id="stack">
+
+<!-- ══════════════════════════════
+   S1: CHAPTER INTRO
+══════════════════════════════ -->
+<div class="screen active" id="s-intro">
+  <div class="sb sb-fa"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:10%"></div></div>
+  <div class="scr">
+    <div class="ci-hero">
+      <div class="ci-orb ci-orb1"></div><div class="ci-orb ci-orb2"></div>
+      <div class="ci-badge">💰 Financial Accounting N4</div>
+      <div class="ci-num">Module 3 of 9</div>
+      <div class="ci-title">Journals &<br>Ledgers</div>
+      <div class="ci-meta-row">
+        <div class="ci-meta">⏱ 9 minutes</div>
+        <div class="ci-meta">🎬 3:30 video</div>
+        <div class="ci-meta">❓ 3 questions</div>
+      </div>
+    </div>
+
+    <div class="ci-tldr">
+      <div class="ci-tldr-tag">💬 TL;DR</div>
+      <div class="ci-tldr-text">Journals are where you first write down every transaction (the diary). Ledgers are where you sort them by account (the filing system). Journal first, then post to ledger. Always.</div>
+    </div>
+
+    <div class="ci-what" style="padding-top:4px">
+      <div class="ci-what-title">What you'll learn</div>
+      <div class="ci-item">
+        <div class="ci-item-icon">📓</div>
+        <div class="ci-item-info"><div class="ci-item-name">The General Journal</div><div class="ci-item-desc">Where every transaction gets recorded first — date, accounts, amounts</div></div>
+        <div class="ci-item-badge cib-new">New</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-item-icon">📂</div>
+        <div class="ci-item-info"><div class="ci-item-name">The General Ledger</div><div class="ci-item-desc">Where journal entries get sorted into individual T-accounts</div></div>
+        <div class="ci-item-badge cib-new">New</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-item-icon">🛠️</div>
+        <div class="ci-item-info"><div class="ci-item-name">Journal Entry Builder</div><div class="ci-item-desc">Build your own journal entries — pick accounts, debit or credit, enter amounts</div></div>
+        <div class="ci-item-badge cib-calc">Interactive</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-item-icon">🏪</div>
+        <div class="ci-item-info"><div class="ci-item-name">Zandile's Spaza Shop & Naledi's Salon</div><div class="ci-item-desc">Real SA business examples — follow transactions from journal to ledger</div></div>
+        <div class="ci-item-badge cib-eg">Example</div>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-prequiz')">🎬 Watch intro video first →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S2: PRE-QUIZ (What do you know?)
+══════════════════════════════ -->
+<div class="screen" id="s-prequiz">
+  <div class="sb sb-w"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:15%"></div></div>
+  <div class="pq-hdr">
+    <div class="pq-progress-row">
+      <div class="pq-pb"><div class="pq-pb-fill" style="width:33%"></div></div>
+      <div class="pq-cnt">1 / 3</div>
+    </div>
+    <div class="pq-q-text">What do you already know?</div>
+    <div class="pq-q-sub">Quick check — 3 questions. No pressure, this doesn't count towards your score.</div>
+  </div>
+  <div class="pq-opts" id="pq1-opts">
+    <div class="pq-opt" onclick="answerPQ(1,'a','wrong')">
+      <div class="pq-letter">A</div>
+      <div class="pq-text">Recording only cash transactions</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(1,'b','correct')">
+      <div class="pq-letter">B</div>
+      <div class="pq-text">Recording transactions that don't fit in special journals</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(1,'c','wrong')">
+      <div class="pq-letter">C</div>
+      <div class="pq-text">Summarising the trial balance</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(1,'d','wrong')">
+      <div class="pq-letter">D</div>
+      <div class="pq-text">Calculating VAT</div>
+    </div>
+  </div>
+  <div class="pq-explanation" id="pq1-exp">
+    <div class="pq-exp-lbl">✓ The General Journal is the book of first entry for non-routine transactions</div>
+    <div class="pq-exp-text">We'll cover this in detail in the lesson.</div>
+  </div>
+  <div class="pq-next"><button class="btn btn-fa" id="pq1-next" disabled onclick="goToPQ(2)">Next →</button></div>
+</div>
+
+<!-- Pre-quiz question 2 -->
+<div class="screen" id="s-prequiz2">
+  <div class="sb sb-w"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:30%"></div></div>
+  <div class="pq-hdr">
+    <div class="pq-progress-row">
+      <div class="pq-pb"><div class="pq-pb-fill" style="width:66%"></div></div>
+      <div class="pq-cnt">2 / 3</div>
+    </div>
+    <div class="pq-q-text">In a journal entry, the debit side should always:</div>
+  </div>
+  <div class="pq-opts" id="pq2-opts">
+    <div class="pq-opt" onclick="answerPQ(2,'a','wrong')">
+      <div class="pq-letter">A</div>
+      <div class="pq-text">Be larger than the credit side</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(2,'b','correct')">
+      <div class="pq-letter">B</div>
+      <div class="pq-text">Equal the credit side</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(2,'c','wrong')">
+      <div class="pq-letter">C</div>
+      <div class="pq-text">Be recorded first in the ledger</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(2,'d','wrong')">
+      <div class="pq-letter">D</div>
+      <div class="pq-text">Include only expense accounts</div>
+    </div>
+  </div>
+  <div class="pq-explanation" id="pq2-exp">
+    <div class="pq-exp-lbl">✓ Debits must ALWAYS equal credits</div>
+    <div class="pq-exp-text">This is the fundamental rule of double-entry bookkeeping. We'll reinforce this in the journal builder.</div>
+  </div>
+  <div class="pq-next"><button class="btn btn-fa" id="pq2-next" disabled onclick="goToPQ(3)">Next →</button></div>
+</div>
+
+<!-- Pre-quiz question 3 -->
+<div class="screen" id="s-prequiz3">
+  <div class="sb sb-w"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:45%"></div></div>
+  <div class="pq-hdr">
+    <div class="pq-progress-row">
+      <div class="pq-pb"><div class="pq-pb-fill" style="width:100%"></div></div>
+      <div class="pq-cnt">3 / 3</div>
+    </div>
+    <div class="pq-q-text">A ledger is best described as:</div>
+  </div>
+  <div class="pq-opts" id="pq3-opts">
+    <div class="pq-opt" onclick="answerPQ(3,'a','wrong')">
+      <div class="pq-letter">A</div>
+      <div class="pq-text">A list of all transactions in date order</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(3,'b','correct')">
+      <div class="pq-letter">B</div>
+      <div class="pq-text">A collection of all accounts, each showing its own balance</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(3,'c','wrong')">
+      <div class="pq-letter">C</div>
+      <div class="pq-text">The same thing as a journal</div>
+    </div>
+    <div class="pq-opt" onclick="answerPQ(3,'d','wrong')">
+      <div class="pq-letter">D</div>
+      <div class="pq-text">A summary of bank transactions</div>
+    </div>
+  </div>
+  <div class="pq-explanation" id="pq3-exp">
+    <div class="pq-exp-lbl">✓ The ledger groups transactions by account</div>
+    <div class="pq-exp-text">This is the key difference from the journal. We'll explore ledgers in detail in lesson 2.</div>
+  </div>
+  <div class="pq-next"><button class="btn btn-fa" id="pq3-next" disabled onclick="showPQResults()">See results →</button></div>
+</div>
+
+<!-- Pre-quiz results screen -->
+<div class="screen" id="s-prequiz-results">
+  <div class="sb sb-w"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:60%"></div></div>
+  <div class="pq-hdr" style="text-align:center">
+    <div class="pq-q-text">Pre-quiz results</div>
+  </div>
+  <div class="scr">
+    <div class="pq-results">
+      <div class="pq-results-num" id="pq-score-display">3/3</div>
+      <div class="pq-results-text" id="pq-feedback">Great start! Let's make sure you really understand these concepts.</div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-video')">Start lesson →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S3: VIDEO PLAYER
+══════════════════════════════ -->
+<div class="screen" id="s-video">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:20%;background:var(--fa-l)"></div></div>
+  <div class="vid-container">
+    <div class="vid-player-wrap">
+      <div class="vid-thumb">
+        <div class="vid-thumb-bg"></div>
+        <div class="vid-play-btn" onclick="playVid()"><div class="vid-play-icon">▶</div></div>
+        <div class="vid-thumb-text">
+          <div class="vid-thumb-title">Journals &<br>Ledgers</div>
+          <div class="vid-thumb-sub">FA N4 · Module 3 · 3:30</div>
+        </div>
+        <div class="vid-synth-badge">🎬 Synthesia · AI video</div>
+      </div>
+      <div class="vid-progress" onclick="seekVid(event)"><div class="vid-progress-fill" id="vid-fill"></div></div>
+      <div class="vid-controls">
+        <button class="vc-btn" onclick="playVid()">▶</button>
+        <button class="vc-btn">⏪</button>
+        <button class="vc-btn">⏩</button>
+        <span class="vc-time" id="vid-time">0:00 / 3:30</span>
+        <span class="vc-cc">CC</span>
+        <button class="vc-btn">⛶</button>
+      </div>
+    </div>
+
+    <div class="vid-chapters">
+      <div class="vc-label">Chapter markers</div>
+      <div class="vc-chapter active">
+        <span class="vc-ch-time">0:00</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">What is the General Journal?</span>
+      </div>
+      <div class="vc-chapter">
+        <span class="vc-ch-time">1:00</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">How to write a journal entry</span>
+      </div>
+      <div class="vc-chapter">
+        <span class="vc-ch-time">2:00</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">Posting to the General Ledger</span>
+      </div>
+      <div class="vc-chapter">
+        <span class="vc-ch-time">3:00</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">Recap + exam tip</span>
+      </div>
+    </div>
+
+    <div class="vid-skip">
+      <button class="vid-skip-btn" onclick="goTo('s-lesson1')">Skip video — read the lesson →</button>
+    </div>
+  </div>
+  <div style="padding:0 22px 24px;flex-shrink:0;background:var(--ink)">
+    <button class="btn btn-fa" onclick="goTo('s-lesson1')" style="background:var(--fa)">Got it — start reading →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S3: LESSON PART 1 — THE GENERAL JOURNAL
+══════════════════════════════ -->
+<div class="screen" id="s-lesson1">
+  <div class="sb sb-w"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:35%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="goTo('s-video')">‹</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">FA N4 · Module 3</div>
+      <div class="nav-hdr-title">The General Journal</div>
+    </div>
+    <div class="nav-hdr-right">1 of 2</div>
+  </div>
+  <div class="scr">
+    <div class="lesson-body">
+      <div class="pq-callout" id="pq-callout-1">
+        <span class="pq-callout-tag">⚠️ Pre-quiz reminder</span>
+        <div class="pq-callout-text">The General Journal records non-routine transactions — focus on understanding this concept.</div>
+      </div>
+
+      <div class="ls-section-lbl">The Big Idea</div>
+      <div class="ls-h2">The journal is your business diary</div>
+      <div class="ls-p">Think of the General Journal like a diary for your business. Every time money moves — someone pays you, you buy stock, you pay rent — you write it down here <strong>first</strong>. Date, what happened, which accounts are affected, how much. That's it.<br><br>The journal is the <strong>book of first entry</strong>. Nothing goes anywhere else until it's been recorded here. It's your proof that a transaction actually happened.</div>
+
+      <div class="irl-box">
+        <div class="irl-tag"><span>🇿🇦</span> In Real Life</div>
+        <div class="irl-text">Think of it like your bank statement on the Capitec app. Every transaction shows up in order — date, description, amount. The journal works the same way, except you also show <strong>which accounts</strong> are affected and whether they're debited or credited.</div>
+      </div>
+
+      <div class="ls-section-lbl">What a Journal Entry Looks Like</div>
+      <div class="ls-p">Every journal entry has <strong>five parts</strong>: the date, the account being debited, the account being credited, the amount, and a short description (called a narration). The debit always comes first.</div>
+
+      <div class="sa-example">
+        <div class="sa-tag"><span class="sa-flag">🇿🇦</span> Real SA Example · Zandile's Spaza Shop</div>
+        <div class="sa-title">Zandile buys stock (bread, chips, cold drinks) from a supplier for R2,500 cash.</div>
+        <div class="journal-visual">
+          <div class="jv-header">
+            <div class="jv-title">General Journal</div>
+            <div class="jv-badge">GJ 1</div>
+          </div>
+          <table class="jv-table">
+            <tr><th>Date</th><th>Account</th><th>Dr</th><th>Cr</th></tr>
+            <tr><td style="font-size:11px;color:var(--dim)">Mar 1</td><td class="jv-dr">Trading Stock</td><td class="jv-amt" style="color:var(--fa)">2,500</td><td></td></tr>
+            <tr><td></td><td class="jv-cr">  Bank</td><td></td><td class="jv-amt" style="color:var(--gold)">2,500</td></tr>
+            <tr><td colspan="4" style="font-size:11px;color:var(--dim);font-style:italic;padding-top:4px">Stock purchased for cash — bread, chips, cold drinks for resale</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="ls-p"><strong>Why Trading Stock is debited:</strong> Stock is an asset. When an asset increases, you debit it. <strong>Why Bank is credited:</strong> Cash left the business. When an asset decreases, you credit it. Remember DEAD CLIC from Module 2.</div>
+
+      <div class="memory-aid">
+        <div class="ma-tag">💡 Quick Rule</div>
+        <div class="ma-text">Debit entry is always written first, on the left. Credit entry is indented underneath. Amounts must always be equal — debits = credits.</div>
+        <div class="ma-sub">If your debits don't equal your credits, your entry is wrong. Full stop.</div>
+      </div>
+
+      <div style="height:8px"></div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-builder')">🛠️ Try the journal builder →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S4: JOURNAL ENTRY BUILDER (Interactive)
+══════════════════════════════ -->
+<div class="screen" id="s-builder">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:48%;background:var(--fa-l)"></div></div>
+  <div class="jb-hdr">
+    <div class="jb-badge">Interactive · Journal Entry Builder</div>
+    <div class="jb-title">Build the journal<br>entry yourself.</div>
+    <div class="jb-sub">Pick accounts, choose debit or credit, enter the amount. Debits must equal credits to proceed.</div>
+    <div class="jb-balance" id="jb-balance">
+      <div class="jb-bal-icon">⚖️</div>
+      <div class="jb-bal-text" id="jb-bal-text">Add entries to start building</div>
+    </div>
+  </div>
+
+  <div class="jb-area" id="jb-area">
+    <div class="pq-callout" id="pq-callout-2">
+      <span class="pq-callout-tag">⚠️ Pre-quiz reminder</span>
+      <div class="pq-callout-text">Debits must ALWAYS equal credits in every journal entry. This is the fundamental rule.</div>
+    </div>
+
+    <div class="jb-scenario">
+      <div class="jb-scenario-tag">📝 Your transaction</div>
+      <div class="jb-scenario-text">Zandile pays R1,800 rent for her spaza shop to the landlord, in cash.</div>
+    </div>
+
+    <!-- Entry 1: Debit -->
+    <div class="jb-entry" id="jb-e1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:2px">Line 1</div>
+      <div class="jb-entry-row">
+        <select class="jb-select" id="jb-acct1" onchange="validateBuilder()">
+          <option value="">Select account...</option>
+          <option value="bank">Bank</option>
+          <option value="rent">Rent Expense</option>
+          <option value="stock">Trading Stock</option>
+          <option value="capital">Capital</option>
+          <option value="equipment">Equipment</option>
+          <option value="creditors">Creditors</option>
+          <option value="sales">Sales</option>
+          <option value="loan">Loan: Capitec</option>
+        </select>
+        <div class="jb-dc-toggle">
+          <button class="jb-dc-btn" id="dr1" onclick="setDC(1,'dr')">Dr</button>
+          <button class="jb-dc-btn" id="cr1" onclick="setDC(1,'cr')">Cr</button>
+        </div>
+      </div>
+      <div class="jb-entry-row">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim)">R</span>
+        <input class="jb-amount" type="number" id="jb-amt1" placeholder="0" inputmode="decimal" oninput="validateBuilder()">
+      </div>
+    </div>
+
+    <!-- Entry 2: Credit -->
+    <div class="jb-entry" id="jb-e2">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:2px">Line 2</div>
+      <div class="jb-entry-row">
+        <select class="jb-select" id="jb-acct2" onchange="validateBuilder()">
+          <option value="">Select account...</option>
+          <option value="bank">Bank</option>
+          <option value="rent">Rent Expense</option>
+          <option value="stock">Trading Stock</option>
+          <option value="capital">Capital</option>
+          <option value="equipment">Equipment</option>
+          <option value="creditors">Creditors</option>
+          <option value="sales">Sales</option>
+          <option value="loan">Loan: Capitec</option>
+        </select>
+        <div class="jb-dc-toggle">
+          <button class="jb-dc-btn" id="dr2" onclick="setDC(2,'dr')">Dr</button>
+          <button class="jb-dc-btn" id="cr2" onclick="setDC(2,'cr')">Cr</button>
+        </div>
+      </div>
+      <div class="jb-entry-row">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim)">R</span>
+        <input class="jb-amount" type="number" id="jb-amt2" placeholder="0" inputmode="decimal" oninput="validateBuilder()">
+      </div>
+    </div>
+
+    <!-- Result preview -->
+    <div class="jb-result" id="jb-result">
+      <div class="jb-result-title">Your Journal Entry</div>
+      <div id="jb-result-rows"></div>
+    </div>
+  </div>
+
+  <div class="foot" style="padding-top:8px">
+    <button class="btn btn-fa" id="jb-submit" disabled onclick="submitBuilder()">Check my entry ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S5: LESSON PART 2 — THE GENERAL LEDGER
+══════════════════════════════ -->
+<div class="screen" id="s-lesson2">
+  <div class="sb sb-w"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:58%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="goTo('s-builder')">‹</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">FA N4 · Module 3</div>
+      <div class="nav-hdr-title">The General Ledger</div>
+    </div>
+    <div class="nav-hdr-right">2 of 2</div>
+  </div>
+  <div class="scr">
+    <div class="lesson-body">
+      <div class="pq-callout" id="pq-callout-3">
+        <span class="pq-callout-tag">⚠️ Pre-quiz reminder</span>
+        <div class="pq-callout-text">A ledger groups transactions BY ACCOUNT — not the same as a journal which lists them by date.</div>
+      </div>
+
+      <div class="ls-section-lbl">From Journal to Ledger</div>
+      <div class="ls-h2">The ledger sorts everything by account</div>
+      <div class="ls-p">So the journal records transactions in the order they happened — like a timeline. But what if you want to see <strong>everything that happened to one specific account</strong>? Like, all the money that went in and out of the bank account?<br><br>That's what the <strong>General Ledger</strong> does. You take each journal entry and "post" it to the correct account's T-account in the ledger. Same information, just reorganised.</div>
+
+      <div class="irl-box">
+        <div class="irl-tag"><span>🇿🇦</span> In Real Life</div>
+        <div class="irl-text">Think of the journal like your WhatsApp messages — everything in time order. The ledger is like your contacts list — everything sorted by person. Same chats, different view.</div>
+      </div>
+
+      <div class="ls-section-lbl">How posting works</div>
+      <div class="ls-p">When you "post" a journal entry to the ledger, you take each line and put it in the correct T-account. The debit entry goes on the <strong>left side</strong> of its account. The credit entry goes on the <strong>right side</strong> of its account. And you write where it came from as the "folio reference."</div>
+
+      <div class="sa-example">
+        <div class="sa-tag"><span class="sa-flag">🇿🇦</span> Real SA Example · Naledi's Hair Salon</div>
+        <div class="sa-title">Naledi receives R3,200 cash from a client for braids + treatment.</div>
+
+        <div class="journal-visual" style="margin-bottom:12px">
+          <div class="jv-header">
+            <div class="jv-title">Step 1: Journal Entry</div>
+            <div class="jv-badge">GJ 3</div>
+          </div>
+          <table class="jv-table">
+            <tr><th>Date</th><th>Account</th><th>Dr</th><th>Cr</th></tr>
+            <tr><td style="font-size:11px;color:var(--dim)">Mar 5</td><td class="jv-dr">Bank</td><td class="jv-amt" style="color:var(--fa)">3,200</td><td></td></tr>
+            <tr><td></td><td class="jv-cr">  Sales</td><td></td><td class="jv-amt" style="color:var(--gold)">3,200</td></tr>
+          </table>
+        </div>
+
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin:12px 0 8px">Step 2: Post to Ledger</div>
+
+        <div class="t-account" style="margin-bottom:8px">
+          <div class="t-account-top">Bank Account</div>
+          <div class="t-account-cols">
+            <div class="t-col t-col-left">
+              <div class="t-col-label" style="color:var(--fa)">Debit</div>
+              <div class="t-entry"><span class="t-entry-name">Sales</span><span class="t-entry-amt" style="color:var(--fa)">R3,200</span></div>
+            </div>
+            <div class="t-col">
+              <div class="t-col-label" style="color:var(--gold)">Credit</div>
+              <div class="t-entry" style="opacity:.2"><span class="t-entry-name">—</span><span class="t-entry-amt">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-account">
+          <div class="t-account-top" style="background:var(--gold)">Sales Account</div>
+          <div class="t-account-cols">
+            <div class="t-col t-col-left">
+              <div class="t-col-label" style="color:var(--fa)">Debit</div>
+              <div class="t-entry" style="opacity:.2"><span class="t-entry-name">—</span><span class="t-entry-amt">—</span></div>
+            </div>
+            <div class="t-col">
+              <div class="t-col-label" style="color:var(--gold)">Credit</div>
+              <div class="t-entry"><span class="t-entry-name">Bank</span><span class="t-entry-amt" style="color:var(--gold)">R3,200</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ls-p"><strong>Notice the cross-referencing:</strong> In the Bank account, the debit side says "Sales" — because that's where the money came from. In the Sales account, the credit side says "Bank" — because that's where the money went. This is how you trace any entry back to its source.</div>
+
+      <div class="exam-box">
+        <div class="exam-tag">⭐ Exam tip</div>
+        <div class="exam-text">In FA N4 exams, you'll get journal entries and be asked to "post to the ledger." They want you to draw T-accounts, put debits on the left and credits on the right, and include the contra account name. This section is typically worth 15–20 marks.</div>
+      </div>
+
+      <div class="memory-aid">
+        <div class="ma-tag">💡 The flow</div>
+        <div class="ma-text">Transaction happens → Record in Journal (book of first entry) → Post to Ledger (book of final entry) → Extract a Trial Balance</div>
+        <div class="ma-sub">You'll learn Trial Balance in Module 4. For now, just lock in: Journal first, then Ledger.</div>
+      </div>
+
+      <div style="height:8px"></div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-example')">📋 See a full worked example →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S6: WORKED EXAMPLE
+══════════════════════════════ -->
+<div class="screen" id="s-example">
+  <div class="sb sb-fa"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:68%"></div></div>
+  <div class="we-hdr">
+    <div class="we-badge">🇿🇦 Worked Example</div>
+    <div class="we-title">Zandile's Spaza Shop —<br>3 transactions</div>
+    <div class="we-context">Watch how each transaction flows from journal entry to ledger posting.</div>
+  </div>
+  <div class="we-body">
+
+    <!-- Transaction 1 -->
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">1</div>
+        <div class="we-step-title">Zandile invests R8,000 savings</div>
+        <div class="we-step-amount">R8,000</div>
+      </div>
+      <div class="journal-visual" style="border-radius:10px">
+        <div class="jv-header" style="padding:8px 12px">
+          <div class="jv-title" style="font-size:11px">Journal</div>
+        </div>
+        <table class="jv-table">
+          <tr><th>Date</th><th>Account</th><th>Dr</th><th>Cr</th></tr>
+          <tr><td style="font-size:10px;color:var(--dim)">Mar 1</td><td class="jv-dr" style="font-size:12px">Bank</td><td class="jv-amt" style="color:var(--fa);font-size:12px">8,000</td><td></td></tr>
+          <tr><td></td><td class="jv-cr" style="font-size:12px">  Capital</td><td></td><td class="jv-amt" style="color:var(--gold);font-size:12px">8,000</td></tr>
+        </table>
+      </div>
+      <div style="font-size:12px;color:var(--mut);margin-top:8px;line-height:1.5">Cash comes into the business (Bank ↑ debit), the owner's investment is recorded (Capital ↑ credit). Zandile's money is now the business's money.</div>
+    </div>
+
+    <!-- Transaction 2 -->
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">2</div>
+        <div class="we-step-title">Buys stock from supplier — cash</div>
+        <div class="we-step-amount">R3,500</div>
+      </div>
+      <div class="journal-visual" style="border-radius:10px">
+        <div class="jv-header" style="padding:8px 12px">
+          <div class="jv-title" style="font-size:11px">Journal</div>
+        </div>
+        <table class="jv-table">
+          <tr><th>Date</th><th>Account</th><th>Dr</th><th>Cr</th></tr>
+          <tr><td style="font-size:10px;color:var(--dim)">Mar 3</td><td class="jv-dr" style="font-size:12px">Trading Stock</td><td class="jv-amt" style="color:var(--fa);font-size:12px">3,500</td><td></td></tr>
+          <tr><td></td><td class="jv-cr" style="font-size:12px">  Bank</td><td></td><td class="jv-amt" style="color:var(--gold);font-size:12px">3,500</td></tr>
+        </table>
+      </div>
+      <div style="font-size:12px;color:var(--mut);margin-top:8px;line-height:1.5">Stock comes in (asset ↑ debit). Cash goes out (asset ↓ credit). Total assets stay the same — you just swapped cash for bread, chips and airtime vouchers.</div>
+    </div>
+
+    <!-- Transaction 3 -->
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">3</div>
+        <div class="we-step-title">Pays rent to landlord — cash</div>
+        <div class="we-step-amount">R1,800</div>
+      </div>
+      <div class="journal-visual" style="border-radius:10px">
+        <div class="jv-header" style="padding:8px 12px">
+          <div class="jv-title" style="font-size:11px">Journal</div>
+        </div>
+        <table class="jv-table">
+          <tr><th>Date</th><th>Account</th><th>Dr</th><th>Cr</th></tr>
+          <tr><td style="font-size:10px;color:var(--dim)">Mar 5</td><td class="jv-dr" style="font-size:12px">Rent Expense</td><td class="jv-amt" style="color:var(--fa);font-size:12px">1,800</td><td></td></tr>
+          <tr><td></td><td class="jv-cr" style="font-size:12px">  Bank</td><td></td><td class="jv-amt" style="color:var(--gold);font-size:12px">1,800</td></tr>
+        </table>
+      </div>
+      <div style="font-size:12px;color:var(--mut);margin-top:8px;line-height:1.5">Rent is an expense (expense ↑ debit). Cash leaves (asset ↓ credit). Remember DEAD CLIC: Debits increase Expenses.</div>
+    </div>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin:8px 0 12px">Posted to Ledger — Bank Account</div>
+    <div class="t-account">
+      <div class="t-account-top">Bank Account</div>
+      <div class="t-account-cols">
+        <div class="t-col t-col-left">
+          <div class="t-col-label" style="color:var(--fa)">Debit</div>
+          <div class="t-entry"><span class="t-entry-name">Capital</span><span class="t-entry-amt" style="color:var(--fa)">R8,000</span></div>
+        </div>
+        <div class="t-col">
+          <div class="t-col-label" style="color:var(--gold)">Credit</div>
+          <div class="t-entry"><span class="t-entry-name">Trading Stock</span><span class="t-entry-amt" style="color:var(--gold)">R3,500</span></div>
+          <div class="t-entry"><span class="t-entry-name">Rent Expense</span><span class="t-entry-amt" style="color:var(--gold)">R1,800</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace">Balance: R8,000 − R5,300 = R2,700 (Dr)</div>
+
+    <div style="height:8px"></div>
+  </div>
+  <div class="foot" style="padding-top:8px">
+    <button class="btn btn-fa" onclick="goTo('s-q1')">Take the quiz →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S7: QUIZ Q1
+══════════════════════════════ -->
+<div class="screen" id="s-q1">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:75%;background:var(--fa-l)"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:33%"></div></div>
+      <div class="quiz-cnt">1 / 3</div>
+    </div>
+    <div class="quiz-q-text">Naledi buys hair products for R1,200 on credit from a supplier. Which journal entry is correct?</div>
+  </div>
+  <div class="quiz-opts" id="q1-opts">
+    <div class="q-opt" onclick="answerQ(1,'a','wrong')">
+      <div class="q-letter">A</div>
+      <div class="q-text">Dr Bank R1,200 · Cr Trading Stock R1,200</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(1,'b','correct')">
+      <div class="q-letter">B</div>
+      <div class="q-text">Dr Trading Stock R1,200 · Cr Creditors R1,200</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(1,'c','wrong')">
+      <div class="q-letter">C</div>
+      <div class="q-text">Dr Creditors R1,200 · Cr Trading Stock R1,200</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(1,'d','wrong')">
+      <div class="q-letter">D</div>
+      <div class="q-text">Dr Trading Stock R1,200 · Cr Bank R1,200</div>
+    </div>
+  </div>
+  <div class="q-explanation" id="q1-exp">
+    <div class="q-exp-lbl">✅ Why B is correct</div>
+    <div class="q-exp-text">Naledi bought "on credit" — meaning she hasn't paid yet. Stock comes in (asset ↑ debit Trading Stock). She now owes the supplier (liability ↑ credit Creditors). Bank isn't involved because no cash was paid.</div>
+  </div>
+  <div class="quiz-next"><button class="btn btn-fa" id="q1-next" disabled onclick="goTo('s-q2')">Next question →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+   S8: QUIZ Q2
+══════════════════════════════ -->
+<div class="screen" id="s-q2">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:80%;background:var(--fa-l)"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:66%"></div></div>
+      <div class="quiz-cnt">2 / 3</div>
+    </div>
+    <div class="quiz-q-text">When you "post" a journal entry to the ledger, what goes on the debit side of the account?</div>
+    <div class="quiz-scenario">Think about the T-account structure.</div>
+  </div>
+  <div class="quiz-opts" id="q2-opts">
+    <div class="q-opt" onclick="answerQ(2,'a','correct')">
+      <div class="q-letter">A</div><div class="q-text">The account that was debited in the journal entry</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(2,'b','wrong')">
+      <div class="q-letter">B</div><div class="q-text">The account that was credited in the journal entry</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(2,'c','wrong')">
+      <div class="q-letter">C</div><div class="q-text">Both accounts — debit and credit</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(2,'d','wrong')">
+      <div class="q-letter">D</div><div class="q-text">Whichever account has the larger amount</div>
+    </div>
+  </div>
+  <div class="q-explanation" id="q2-exp">
+    <div class="q-exp-lbl">✅ Why A is correct</div>
+    <div class="q-exp-text">When posting, the account that was debited in the journal goes on the debit (left) side of its T-account in the ledger. The credited account goes on the credit (right) side of its T-account. Each account gets its own T-account — debit stays debit, credit stays credit.</div>
+  </div>
+  <div class="quiz-next"><button class="btn btn-fa" id="q2-next" disabled onclick="goTo('s-q3')">Next question →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+   S9: QUIZ Q3
+══════════════════════════════ -->
+<div class="screen" id="s-q3">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:86%;background:var(--fa-l)"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:100%"></div></div>
+      <div class="quiz-cnt">3 / 3</div>
+    </div>
+    <div class="quiz-q-text">Zandile's spaza shop pays R800 for electricity. What is the correct journal entry?</div>
+    <div class="quiz-scenario">Think: what type of account is electricity? What happens to cash?</div>
+  </div>
+  <div class="quiz-opts" id="q3-opts">
+    <div class="q-opt" onclick="answerQ(3,'a','wrong')">
+      <div class="q-letter">A</div><div class="q-text">Dr Bank R800 · Cr Electricity R800</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(3,'b','wrong')">
+      <div class="q-letter">B</div><div class="q-text">Dr Capital R800 · Cr Bank R800</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(3,'c','correct')">
+      <div class="q-letter">C</div><div class="q-text">Dr Electricity Expense R800 · Cr Bank R800</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(3,'d','wrong')">
+      <div class="q-letter">D</div><div class="q-text">Dr Electricity Expense R800 · Cr Creditors R800</div>
+    </div>
+  </div>
+  <div class="q-explanation" id="q3-exp">
+    <div class="q-exp-lbl">✅ Why C is correct</div>
+    <div class="q-exp-text">Electricity is an expense — expenses increase on the debit side (remember DEAD CLIC: Debits increase Expenses). Cash leaves the business, so Bank decreases on the credit side. D would only be right if she paid on credit, but the question says she paid — meaning cash.</div>
+  </div>
+  <div class="quiz-next"><button class="btn btn-fa" id="q3-next" disabled onclick="goTo('s-win')">See my results →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+   S10: WIN SCREEN
+══════════════════════════════ -->
+<div class="screen" id="s-win">
+  <div class="sb sb-win"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%;background:var(--gold)"></div></div>
+  <div class="win-body" style="padding-top:18px">
+    <div class="win-banner">
+      <div class="win-icon">🏆</div>
+      <div class="win-hl">Siyabonga,<br>Zandile!</div>
+      <div class="win-sub">Module 3 complete · Financial Accounting N4</div>
+      <div class="win-xp">⚡ +175 XP</div>
+    </div>
+
+    <div class="win-stats">
+      <div class="win-stat"><div class="win-stat-n" id="ws-score">3/3</div><div class="win-stat-l">Correct</div></div>
+      <div class="win-stat"><div class="win-stat-n">100%</div><div class="win-stat-l">Score</div></div>
+      <div class="win-stat"><div class="win-stat-n">🔥12</div><div class="win-stat-l">Streak</div></div>
+    </div>
+
+    <div class="win-concepts">
+      <div class="win-concepts-lbl">What you learned today</div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">The General Journal — book of first entry</div></div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">Journal entry format: date, debit, credit, narration</div></div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">Posting from journal to ledger T-accounts</div></div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">Cross-referencing: debit side names the credit account and vice versa</div></div>
+    </div>
+
+    <div class="win-next-card">
+      <div class="win-next-lbl">Next up</div>
+      <div class="win-next-title">Module 4 · Trial Balance</div>
+      <div class="win-next-meta">Checking that your ledger actually balances · 8 min</div>
+    </div>
+  </div>
+  <div class="foot" style="padding-top:4px">
+    <button class="btn btn-ghost" onclick="goTo('s-resources')">📝 Past Papers & Practice</button>
+    <button class="btn btn-fa" onclick="goTo('s-intro')">Start Module 4 →</button>
+    <button class="btn btn-ghost" onclick="goTo('s-intro')">Back to home</button>
+  </div>
+</div>
+
+<!-- Screen: Resources -->
+<div class="screen" id="s-resources">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%;background:var(--gold)"></div></div>
+  <div class="scr" style="padding:20px">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:32px;margin-bottom:8px">📝</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink)">Practice & Past Papers</div>
+      <div style="font-size:13px;color:var(--mut);margin-top:4px">Module 3 · Journals & Ledgers</div>
+    </div>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+      <div style="font-size:14px;color:var(--fa)">↗</div>
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+      <div style="font-size:14px;color:var(--fa)">↗</div>
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+      <div style="font-size:14px;color:var(--fa)">↗</div>
+    </a>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Journals & Ledgers · 15 questions · 20 min</div></div>
+      <div style="font-size:14px;color:var(--p)">→</div>
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Journals & Ledgers · 15 questions · 20 min</div></div>
+      <div style="font-size:14px;color:var(--p)">→</div>
+    </a>
+
+    <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+      <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-win')" style="background:var(--p)">Back to module ←</button>
+  </div>
+</div>
+
+</div></div><!-- /stack /phone -->
+
+<!-- shell meta -->
+<div class="shell-meta" style="margin-top:8px">← → keys · or sidebar</div>
+</div>
+</div><!-- /shell -->
+
+<script>
+// ── SEND DATA TO PARENT FRAME ──
+function notifyParent(type, data) {
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type, ...data }, '*');
+    }
+  } catch(e) {}
+}
+
+const MODULE_ID = 3;
+// ── NAVIGATION ──
+const SCREENS = ['s-intro','s-prequiz','s-prequiz2','s-prequiz3','s-prequiz-results','s-video','s-lesson1','s-builder','s-lesson2','s-example','s-q1','s-q2','s-q3','s-win','s-resources'];
+let current = 's-intro';
+
+function goTo(id) {
+  if (id === current) return;
+  const prev = document.getElementById(current);
+  const next = document.getElementById(id);
+  if (!next) return;
+  const pi = SCREENS.indexOf(current), ni = SCREENS.indexOf(id);
+  const fwd = ni >= pi;
+  prev.classList.remove('active');
+  if (fwd) prev.classList.add('exit');
+  next.style.transform = fwd ? 'translateX(100%)' : 'translateX(-24%)';
+  next.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    next.style.transform = '';
+    next.style.transition = 'transform .32s cubic-bezier(.4,0,.2,1)';
+  }));
+  setTimeout(() => { prev.classList.remove('exit'); next.style.transition = ''; }, 360);
+  current = id;
+  notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: SCREENS.indexOf(id), totalScreens: SCREENS.length });
+  // Track screen view
+  if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(3, SCREENS.indexOf(id));
+  if (id === 's-win') notifyParent('moduleComplete', { moduleId: MODULE_ID });
+  updateSidebar(id);
+  // Reset scroll
+  const scr = next.querySelector('.scr, .we-body, .jb-area, .quiz-opts');
+  if (scr) scr.scrollTop = 0;
+  // Show callouts in lesson screens if needed
+  if (['s-lesson1', 's-builder', 's-lesson2'].includes(id)) {
+    checkAndShowCallouts();
+  }
+}
+
+document.addEventListener('keydown', e => {
+  const i = SCREENS.indexOf(current);
+  if (e.key === 'ArrowRight' && i < SCREENS.length - 1) goTo(SCREENS[i+1]);
+  if (e.key === 'ArrowLeft'  && i > 0)                  goTo(SCREENS[i-1]);
+});
+
+// ── SIDEBAR ──
+const SB_ITEMS = [
+  {id:'s-intro',   label:'Chapter intro'},
+  {id:'s-prequiz', label:'Pre-quiz'},
+  {id:'s-video',   label:'Video · 3:30'},
+  {id:'s-lesson1', label:'General Journal'},
+  {id:'s-builder', label:'Journal builder'},
+  {id:'s-lesson2', label:'General Ledger'},
+  {id:'s-example', label:'Worked example'},
+  {id:'s-q1',      label:'Quiz · Q1'},
+  {id:'s-q2',      label:'Quiz · Q2'},
+  {id:'s-q3',      label:'Quiz · Q3'},
+  {id:'s-win',     label:'Win screen'},
+  {id:'s-resources', label:'Past Papers'},
+];
+(function() {
+  const sb = document.getElementById('sidebar');
+  SB_ITEMS.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'si' + (item.id === 's-intro' ? ' active' : '');
+    el.dataset.id = item.id;
+    el.textContent = item.label;
+    el.onclick = () => goTo(item.id);
+    sb.appendChild(el);
+  });
+})();
+function updateSidebar(id) {
+  document.querySelectorAll('.si').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+}
+
+// ── VIDEO PLAYER (demo) ──
+let vidPlaying = false, vidProgress = 0, vidInterval;
+function playVid() {
+  vidPlaying = !vidPlaying;
+  if (vidPlaying) {
+    vidInterval = setInterval(() => {
+      vidProgress = Math.min(100, vidProgress + 0.48);
+      document.getElementById('vid-fill').style.width = vidProgress + '%';
+      const total = 210, elapsed = Math.floor(total * vidProgress / 100);
+      const m = Math.floor(elapsed/60), s = elapsed%60;
+      document.getElementById('vid-time').textContent = `${m}:${s.toString().padStart(2,'0')} / 3:30`;
+      const chapters = document.querySelectorAll('.vc-chapter');
+      const breaks = [0, 29, 57, 86];
+      let active = 0;
+      breaks.forEach((b,i) => { if (vidProgress >= b) active = i; });
+      chapters.forEach((c,i) => c.classList.toggle('active', i === active));
+      if (vidProgress >= 100) { clearInterval(vidInterval); vidPlaying = false; }
+    }, 80);
+  } else clearInterval(vidInterval);
+}
+function seekVid(e) {
+  const bar = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  vidProgress = Math.max(0, Math.min(100, (e.clientX - rect.left) / rect.width * 100));
+  document.getElementById('vid-fill').style.width = vidProgress + '%';
+}
+
+// ── JOURNAL ENTRY BUILDER ──
+let dc1 = '', dc2 = '';
+
+function setDC(line, type) {
+  if (line === 1) {
+    dc1 = type;
+    document.getElementById('dr1').className = 'jb-dc-btn' + (type === 'dr' ? ' active-dr' : '');
+    document.getElementById('cr1').className = 'jb-dc-btn' + (type === 'cr' ? ' active-cr' : '');
+  } else {
+    dc2 = type;
+    document.getElementById('dr2').className = 'jb-dc-btn' + (type === 'dr' ? ' active-dr' : '');
+    document.getElementById('cr2').className = 'jb-dc-btn' + (type === 'cr' ? ' active-cr' : '');
+  }
+  validateBuilder();
+}
+
+function validateBuilder() {
+  const acct1 = document.getElementById('jb-acct1').value;
+  const acct2 = document.getElementById('jb-acct2').value;
+  const amt1 = parseFloat(document.getElementById('jb-amt1').value) || 0;
+  const amt2 = parseFloat(document.getElementById('jb-amt2').value) || 0;
+
+  const bal = document.getElementById('jb-balance');
+  const txt = document.getElementById('jb-bal-text');
+  const submit = document.getElementById('jb-submit');
+  const result = document.getElementById('jb-result');
+
+  // Calculate totals
+  let totalDr = 0, totalCr = 0;
+  if (dc1 === 'dr') totalDr += amt1; else if (dc1 === 'cr') totalCr += amt1;
+  if (dc2 === 'dr') totalDr += amt2; else if (dc2 === 'cr') totalCr += amt2;
+
+  const hasEntries = acct1 && acct2 && dc1 && dc2 && amt1 > 0 && amt2 > 0;
+  const balanced = Math.abs(totalDr - totalCr) < 0.01 && totalDr > 0;
+
+  if (!hasEntries) {
+    bal.className = 'jb-balance';
+    bal.querySelector('.jb-bal-icon').textContent = '⚖️';
+    txt.textContent = 'Complete both lines to check';
+    submit.disabled = true;
+    result.classList.remove('show');
+    return;
+  }
+
+  if (balanced) {
+    bal.className = 'jb-balance balanced';
+    bal.querySelector('.jb-bal-icon').textContent = '✅';
+    txt.textContent = `Balanced ✓ — Dr R${totalDr.toLocaleString()} = Cr R${totalCr.toLocaleString()}`;
+    submit.disabled = false;
+
+    // Show result preview
+    const rows = document.getElementById('jb-result-rows');
+    const acctNames = {bank:'Bank',rent:'Rent Expense',stock:'Trading Stock',capital:'Capital',equipment:'Equipment',creditors:'Creditors',sales:'Sales',loan:'Loan: Capitec'};
+    rows.innerHTML = '';
+
+    // Debit line first
+    const drLine = dc1 === 'dr' ? {acct:acctNames[acct1],amt:amt1} : {acct:acctNames[acct2],amt:amt2};
+    const crLine = dc1 === 'cr' ? {acct:acctNames[acct1],amt:amt1} : {acct:acctNames[acct2],amt:amt2};
+
+    rows.innerHTML = `
+      <div class="jb-result-row"><span class="jb-result-acct">${drLine.acct}</span><span class="jb-result-dr">R${drLine.amt.toLocaleString()}</span><span class="jb-result-cr" style="opacity:.2">—</span></div>
+      <div class="jb-result-row"><span class="jb-result-acct" style="padding-left:16px">${crLine.acct}</span><span class="jb-result-dr" style="opacity:.2">—</span><span class="jb-result-cr">R${crLine.amt.toLocaleString()}</span></div>
+      <div class="jb-result-total"><span style="color:var(--fa-l);margin-right:16px">R${totalDr.toLocaleString()}</span><span style="color:#FBBF24">R${totalCr.toLocaleString()}</span></div>
+    `;
+    result.classList.add('show');
+  } else {
+    bal.className = 'jb-balance unbalanced';
+    bal.querySelector('.jb-bal-icon').textContent = '⚠️';
+    txt.textContent = `Not balanced — Dr R${totalDr.toLocaleString()} ≠ Cr R${totalCr.toLocaleString()}`;
+    submit.disabled = true;
+    result.classList.remove('show');
+  }
+}
+
+function submitBuilder() {
+  const acct1 = document.getElementById('jb-acct1').value;
+  const acct2 = document.getElementById('jb-acct2').value;
+  const amt1 = parseFloat(document.getElementById('jb-amt1').value) || 0;
+
+  // Correct answer: Dr Rent Expense 1800, Cr Bank 1800
+  const isCorrect = (
+    (acct1 === 'rent' && dc1 === 'dr' && amt1 === 1800 && acct2 === 'bank' && dc2 === 'cr') ||
+    (acct1 === 'bank' && dc1 === 'cr' && amt1 === 1800 && acct2 === 'rent' && dc2 === 'dr')
+  );
+
+  const bal = document.getElementById('jb-balance');
+  const txt = document.getElementById('jb-bal-text');
+  const submit = document.getElementById('jb-submit');
+
+  if (isCorrect) {
+    bal.className = 'jb-balance balanced';
+    bal.querySelector('.jb-bal-icon').textContent = '🎉';
+    txt.textContent = 'Perfect! Rent Expense debited, Bank credited — R1,800.';
+    submit.textContent = 'Correct! Continue →';
+    submit.className = 'btn btn-green';
+    submit.onclick = () => goTo('s-lesson2');
+    document.getElementById('jb-e1').classList.add('valid');
+    document.getElementById('jb-e2').classList.add('valid');
+  } else {
+    bal.className = 'jb-balance unbalanced';
+    bal.querySelector('.jb-bal-icon').textContent = '🤔';
+    txt.textContent = 'Not quite — the entry balances, but check your accounts. Rent is an expense (debit), Bank decreases (credit).';
+    submit.textContent = 'Try again';
+    submit.disabled = true;
+    setTimeout(() => { submit.disabled = false; submit.textContent = 'Check my entry ✓'; }, 2000);
+  }
+}
+
+// ── PRE-QUIZ ──
+let preQuizCorrect = 0;
+let preQuizWrong = [];
+let currentPQScreen = 1;
+
+function answerPQ(qNum, chosen, result) {
+  const opts = document.querySelectorAll(`#pq${qNum}-opts .pq-opt`);
+  opts.forEach((opt, i) => {
+    opt.onclick = null;
+    opt.classList.add('dimmed');
+  });
+  const chosenEl = document.querySelector(`#pq${qNum}-opts .pq-opt:nth-child(${['a','b','c','d'].indexOf(chosen)+1})`);
+  if (chosenEl) { chosenEl.classList.remove('dimmed'); chosenEl.classList.add(result); }
+
+  if (result === 'correct') {
+    preQuizCorrect++;
+  } else {
+    preQuizWrong.push(qNum);
+  }
+
+  const exp = document.getElementById(`pq${qNum}-exp`);
+  if (exp) exp.classList.add('show');
+
+  const nextBtn = document.getElementById(`pq${qNum}-next`);
+  if (nextBtn) {
+    nextBtn.disabled = false;
+    if (result === 'correct') nextBtn.style.background = 'var(--green)';
+  }
+}
+
+function goToPQ(screenNum) {
+  currentPQScreen = screenNum;
+  if (screenNum === 2) goTo('s-prequiz2');
+  else if (screenNum === 3) goTo('s-prequiz3');
+}
+
+function showPQResults() {
+  // Show appropriate feedback based on score
+  const scoreDisplay = document.getElementById('pq-score-display');
+  const feedback = document.getElementById('pq-feedback');
+
+  scoreDisplay.textContent = `${preQuizCorrect}/3`;
+
+  if (preQuizCorrect === 3) {
+    feedback.textContent = 'Nice! You know your stuff. The lesson will help you revise for the exam.';
+  } else if (preQuizCorrect === 2) {
+    feedback.textContent = 'Good foundation! Pay attention to the parts you missed.';
+  } else {
+    feedback.textContent = 'No stress — that\'s exactly why we\'re here. Let\'s learn this.';
+  }
+
+  // Show the callouts in lessons based on what was answered wrong
+  showPreQuizCallouts();
+
+  goTo('s-prequiz-results');
+}
+
+function showPreQuizCallouts() {
+  // Hide all callouts first
+  document.getElementById('pq-callout-1')?.classList.remove('show');
+  document.getElementById('pq-callout-2')?.classList.remove('show');
+  document.getElementById('pq-callout-3')?.classList.remove('show');
+
+  // Show callouts for questions that were answered wrong
+  if (preQuizWrong.includes(1)) {
+    const callout1 = document.getElementById('pq-callout-1');
+    if (callout1) callout1.classList.add('show');
+  }
+  if (preQuizWrong.includes(2)) {
+    const callout2 = document.getElementById('pq-callout-2');
+    if (callout2) callout2.classList.add('show');
+  }
+  if (preQuizWrong.includes(3)) {
+    const callout3 = document.getElementById('pq-callout-3');
+    if (callout3) callout3.classList.add('show');
+  }
+}
+
+// When entering lesson screens, show relevant callouts
+function checkAndShowCallouts() {
+  showPreQuizCallouts();
+}
+
+// ── QUIZ ──
+let scores = {correct:0, total:3};
+function answerQ(qNum, chosen, result) {
+  const opts = document.querySelectorAll(`#q${qNum}-opts .q-opt`);
+  opts.forEach((opt, i) => {
+    const letters = ['a','b','c','d'];
+    opt.onclick = null;
+    opt.classList.add('dimmed');
+  });
+  const chosenEl = document.querySelector(`#q${qNum}-opts .q-opt:nth-child(${['a','b','c','d'].indexOf(chosen)+1})`);
+  if (chosenEl) { chosenEl.classList.remove('dimmed'); chosenEl.classList.add(result); }
+
+  if (result === 'correct') scores.correct++;
+
+  // Track quiz answer
+  if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(3, 'post', qNum, result === 'correct', 0);
+  notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: result === 'correct', questionText: `Question ${qNum}`, topic: 'Journals & Ledgers' });
+
+  const exp = document.getElementById(`q${qNum}-exp`);
+  if (exp) exp.classList.add('show');
+
+  const nextBtn = document.getElementById(`q${qNum}-next`);
+  if (nextBtn) {
+    nextBtn.disabled = false;
+    if (result === 'correct') nextBtn.style.background = 'var(--green)';
+  }
+
+  document.getElementById('ws-score').textContent = `${scores.correct}/3`;
+}
+</script>
+</body>
+</html>

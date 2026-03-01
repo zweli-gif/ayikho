@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho — Module 1: Accounting Concepts & Principles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #05090F;
+            color: var(--ink);
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #0D0E1A;
+            border-right: 1px solid var(--bord);
+            padding: 20px 0;
+            overflow-y: auto;
+            color: var(--dim);
+            font-size: 12px;
+        }
+
+        .sidebar-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--dim);
+        }
+
+        .sidebar-item.active {
+            border-left-color: var(--fa);
+            color: var(--fa);
+            background: rgba(2, 132, 199, 0.05);
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--w);
+            border-radius: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: var(--fa);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .progress-strip {
+            height: 3px;
+            background: var(--bord);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--fa);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .screen-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            background: var(--w);
+        }
+
+        .screens-wrapper {
+            display: flex;
+            height: 100%;
+            position: relative;
+        }
+
+        .screen {
+            width: 375px;
+            height: calc(812px - 48px - 3px);
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .screen.prev {
+            transform: translateX(-100%);
+        }
+
+        .screen.next {
+            transform: translateX(100%);
+        }
+
+        /* Screen Layouts */
+        .screen-dark-header {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dark-header {
+            background: var(--fa);
+            color: var(--w);
+            padding: 32px 20px 24px;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .dark-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .dark-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .screen-body {
+            flex: 1;
+            padding: 24px 20px;
+            overflow-y: auto;
+        }
+
+        .tldr-box {
+            background: var(--fa-xs);
+            border: 1px solid var(--fa-sm);
+            border-left: 4px solid var(--fa);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .tldr-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--fa);
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .tldr-text {
+            font-size: 14px;
+            color: var(--ink);
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .learning-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .learning-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .learning-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--fa);
+            color: var(--w);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .learning-text {
+            font-size: 14px;
+            color: var(--ink);
+            line-height: 1.5;
+        }
+
+        .real-life-box {
+            background: var(--pxs);
+            border-left: 4px solid var(--p);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .real-life-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--p);
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .real-life-text {
+            font-size: 13px;
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        .concept-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+
+        .concept-description {
+            font-size: 14px;
+            color: var(--mut);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .button {
+            background: var(--fa);
+            color: var(--w);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .button:hover {
+            background: var(--fa-d);
+            transform: translateY(-2px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        /* Video Player */
+        .video-container {
+            background: #000;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--w);
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .play-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .video-title {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .video-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            position: absolute;
+            bottom: 0;
+            border-radius: 0;
+        }
+
+        .video-progress-fill {
+            height: 100%;
+            background: var(--fa);
+            width: 35%;
+        }
+
+        .markers {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 16px;
+            font-size: 12px;
+        }
+
+        .marker {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--fa-xs);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .marker:hover {
+            background: var(--fa-sm);
+        }
+
+        .marker-time {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--fa);
+            font-weight: 600;
+        }
+
+        .marker-text {
+            color: var(--ink);
+            flex: 1;
+            margin-left: 12px;
+        }
+
+        /* Concept Matcher */
+        .matcher-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .matcher-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .concept-card {
+            background: var(--fa-xs);
+            border: 2px solid var(--bord);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink);
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .concept-card:hover:not(.matched):not(.disabled) {
+            border-color: var(--fa);
+            background: var(--fa-sm);
+        }
+
+        .concept-card.selected {
+            border-color: var(--fa);
+            background: var(--fa-sm);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+        }
+
+        .concept-card.matched {
+            background: var(--green-xs);
+            border-color: var(--green);
+            color: var(--green);
+            cursor: default;
+        }
+
+        .concept-card.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .concept-card.shake {
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .matcher-progress {
+            text-align: center;
+            font-size: 12px;
+            color: var(--dim);
+            margin-top: 16px;
+            font-weight: 500;
+        }
+
+        .progress-bar-small {
+            height: 4px;
+            background: var(--bord);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--green);
+            transition: width 0.3s ease;
+        }
+
+        /* Quiz */
+        .quiz-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: var(--ink);
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--fa);
+            background: var(--fa-xs);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--fa);
+            background: var(--fa-xs);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--green);
+            background: var(--green-xs);
+            color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--rose);
+            background: rgba(244, 63, 94, 0.05);
+            color: var(--rose);
+        }
+
+        .quiz-explanation {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--ink);
+        }
+
+        .option-label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .option-text {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        /* Win Screen */
+        .win-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .win-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .win-greeting {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--fa);
+            margin-bottom: 8px;
+        }
+
+        .win-message {
+            font-size: 16px;
+            color: var(--dim);
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .xp-badge {
+            background: var(--fa-xs);
+            border: 2px solid var(--fa);
+            border-radius: 16px;
+            padding: 12px 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--fa);
+            font-size: 14px;
+        }
+
+        .streak-badge {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .next-button {
+            background: var(--fa);
+            color: var(--w);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* Scrollbar */
+        .screen-body::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .screen-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .screen-body::-webkit-scrollbar-thumb {
+            background: var(--bord);
+            border-radius: 2px;
+        }
+
+        /* Navigation Hints */
+        .nav-hint {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: var(--dim);
+            opacity: 0.6;
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-item active" data-screen="0">1. Chapter Intro</div>
+            <div class="sidebar-item" data-screen="1">2. Video Player</div>
+            <div class="sidebar-item" data-screen="2">3. Lesson Part 1</div>
+            <div class="sidebar-item" data-screen="3">4. Concept Matcher</div>
+            <div class="sidebar-item" data-screen="4">5. Lesson Part 2</div>
+            <div class="sidebar-item" data-screen="5">6. Worked Example</div>
+            <div class="sidebar-item" data-screen="6">7. Quiz Q1</div>
+            <div class="sidebar-item" data-screen="7">8. Quiz Q2</div>
+            <div class="sidebar-item" data-screen="8">9. Quiz Q3</div>
+            <div class="sidebar-item" data-screen="9">10. Win Screen</div>
+            <div class="sidebar-item" data-screen="10">11. Past Papers</div>
+        </div>
+
+        <div class="main-container">
+            <div class="phone-frame">
+                <div class="status-bar">
+                    <span>09:41</span>
+                    <span>FA N4 • Module 1</span>
+                    <span>100%</span>
+                </div>
+                <div class="progress-strip">
+                    <div class="progress-fill"></div>
+                </div>
+
+                <div class="screen-container">
+                    <div class="screens-wrapper" id="screensWrapper">
+                        <!-- Screen 0: Chapter Intro -->
+                        <div class="screen active" data-screen="0">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>Accounting Concepts & Principles</h1>
+                                    <p>Master the 6 rules that keep South African businesses honest</p>
+                                </div>
+                                <div class="screen-body">
+                                    <div class="tldr-box">
+                                        <div class="tldr-label">TL;DR</div>
+                                        <div class="tldr-text">Accounting isn't just about making up numbers. There are rules (GAAP) that force businesses to record transactions the same way—whether you're a spaza shop in Soweto or Checkers in the Sandton City.</div>
+                                    </div>
+
+                                    <div style="margin-top: 20px;">
+                                        <p style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--fa); letter-spacing: 0.5px; margin-bottom: 14px;">What you'll learn</p>
+                                        <div class="learning-items">
+                                            <div class="learning-item">
+                                                <div class="learning-icon">✓</div>
+                                                <div class="learning-text">What the Entity Concept means and why your tuckshop isn't your personal piggy bank</div>
+                                            </div>
+                                            <div class="learning-item">
+                                                <div class="learning-icon">✓</div>
+                                                <div class="learning-text">Going Concern: why businesses assume they're not shutting down tomorrow</div>
+                                            </div>
+                                            <div class="learning-item">
+                                                <div class="learning-icon">✓</div>
+                                                <div class="learning-text">Historical Cost, Prudence, Matching & Materiality—the 4 hidden rules</div>
+                                            </div>
+                                            <div class="learning-item">
+                                                <div class="learning-icon">✓</div>
+                                                <div class="learning-text">How GAAP stops businesses from lying about their numbers</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()">Let's go →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 1: Video Player -->
+                        <div class="screen" data-screen="1">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>Lesson Video</h1>
+                                    <p>Watch how these concepts apply in real life</p>
+                                </div>
+                                <div class="screen-body">
+                                    <div class="video-container">
+                                        <div class="video-progress">
+                                            <div class="video-progress-fill"></div>
+                                        </div>
+                                        <div class="video-placeholder">
+                                            <div class="play-icon">▶</div>
+                                            <div class="video-title">Synthesia • 3:45</div>
+                                        </div>
+                                    </div>
+
+                                    <p style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--fa); letter-spacing: 0.5px; margin-bottom: 10px;">Chapter markers</p>
+
+                                    <div class="markers">
+                                        <div class="marker" onclick="jumpMarker(0)">
+                                            <div class="marker-time">0:00</div>
+                                            <div class="marker-text">Why do we need rules for accounting?</div>
+                                        </div>
+                                        <div class="marker" onclick="jumpMarker(1)">
+                                            <div class="marker-time">1:00</div>
+                                            <div class="marker-text">The big 6 concepts explained</div>
+                                        </div>
+                                        <div class="marker" onclick="jumpMarker(2)">
+                                            <div class="marker-time">2:15</div>
+                                            <div class="marker-text">How GAAP keeps businesses honest</div>
+                                        </div>
+                                        <div class="marker" onclick="jumpMarker(3)">
+                                            <div class="marker-time">3:00</div>
+                                            <div class="marker-text">Recap + exam tip</div>
+                                        </div>
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()">Done watching →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 2: Lesson Part 1 -->
+                        <div class="screen" data-screen="2">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>What are Accounting Concepts?</h1>
+                                    <p>The rulebook for recording money</p>
+                                </div>
+                                <div class="screen-body">
+                                    <p style="font-size: 14px; color: var(--mut); line-height: 1.6; margin-bottom: 16px;">Accounting concepts are the assumptions and principles that guide how businesses record and report their financial transactions. Think of them as the rules of the game.</p>
+
+                                    <div class="concept-title">The Entity Concept</div>
+                                    <div class="concept-description">Your business finances and your personal finances are SEPARATE. If you own a spaza shop, the R50 you took from the till to buy airtime isn't business profit—it's a withdrawal. The shop and you are different entities.</div>
+
+                                    <div class="real-life-box">
+                                        <div class="real-life-label">In real life</div>
+                                        <div class="real-life-text">When SARS audits Checkers' accounts, they don't care what Checkers' CEO spent on their holiday. They only look at business transactions. But if the CEO's holiday was a "business trip," then it's a business expense.</div>
+                                    </div>
+
+                                    <div class="concept-title">Going Concern</div>
+                                    <div class="concept-description">Unless you know your business is shutting down, you record transactions assuming it will keep running. You don't suddenly write off everything as "we're closing tomorrow."</div>
+
+                                    <div class="real-life-box">
+                                        <div class="real-life-label">In real life</div>
+                                        <div class="real-life-text">Capitec doesn't record all its branch buildings as worthless just because there's a chance they might close a branch in 5 years. They assume the business is going to operate for many more years.</div>
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()">Got it, next →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 3: Concept Matcher -->
+                        <div class="screen" data-screen="3">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>Match the Concepts</h1>
+                                    <p>Tap a concept, then its definition</p>
+                                </div>
+                                <div class="screen-body">
+                                    <p style="font-size: 12px; color: var(--dim); margin-bottom: 14px;">Test your knowledge. Match all 6 concepts to their meanings.</p>
+
+                                    <div class="matcher-container" id="matcherContainer">
+                                        <div class="matcher-column" id="conceptColumn"></div>
+                                        <div class="matcher-column" id="definitionColumn"></div>
+                                    </div>
+
+                                    <div class="matcher-progress">
+                                        <span id="matchProgress">0 / 6 matched</span>
+                                        <div class="progress-bar-small">
+                                            <div class="progress-bar-fill" id="matchProgressBar" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()" id="matcherContinueBtn" style="display: none;">All matched! →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 4: Lesson Part 2 -->
+                        <div class="screen" data-screen="4">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>GAAP & Why It Matters</h1>
+                                    <p>The global accounting rulebook</p>
+                                </div>
+                                <div class="screen-body">
+                                    <p style="font-size: 14px; color: var(--mut); line-height: 1.6; margin-bottom: 16px;"><strong>GAAP = Generally Accepted Accounting Principles.</strong> It's the international standard that says: "If you're recording accounting transactions, do it THIS way, not that way."</p>
+
+                                    <div class="concept-title">Historical Cost Concept</div>
+                                    <div class="concept-description">Assets are recorded at what you paid for them, not what they're worth today. If you bought a taxi for R80,000 three years ago and it's now worth R40,000, you still record it at R80,000 (minus depreciation).</div>
+
+                                    <div class="real-life-box">
+                                        <div class="real-life-label">In real life</div>
+                                        <div class="real-life-text">When a property owner in Soweto buys land for R500,000, that's what goes in the books—even if land prices skyrocket to R700,000 next year. You can't overstate assets.</div>
+                                    </div>
+
+                                    <div class="concept-title">Prudence / Conservatism</div>
+                                    <div class="concept-description">When in doubt, understate profits and overstate losses. Better to surprise people with good news than bad. Never overestimate what you're owed.</div>
+
+                                    <div class="real-life-box">
+                                        <div class="real-life-label">In real life</div>
+                                        <div class="real-life-text">If a customer owes you R10,000 but might not pay (they're running away), you write off R10,000 as "bad debt." You don't hope they'll pay and record it as profit.</div>
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()">Next principles →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 5: Worked Example -->
+                        <div class="screen" data-screen="5">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>Real Life: The Township Tuckshop</h1>
+                                    <p>How concepts apply to an actual South African business</p>
+                                </div>
+                                <div class="screen-body">
+                                    <p style="font-size: 13px; color: var(--dim); line-height: 1.6; margin-bottom: 16px;"><strong>Meet Zandile's Tuckshop</strong> (Alexandra Township). She sells snacks, airtime, and basic groceries. Let's see how accounting concepts apply:</p>
+
+                                    <div style="background: var(--fa-xs); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+                                        <p style="font-size: 12px; font-weight: 600; color: var(--fa); margin-bottom: 8px;">Entity Concept in action</p>
+                                        <p style="font-size: 13px; color: var(--ink); line-height: 1.5;">Zandile takes R500 from the till to buy groceries for her own home. This is NOT a business expense. It's her personal withdrawal. The tuckshop's books show this as a deduction from her equity (owner's drawings), not as a cost of goods sold.</p>
+                                    </div>
+
+                                    <div style="background: var(--fa-xs); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+                                        <p style="font-size: 12px; font-weight: 600; color: var(--fa); margin-bottom: 8px;">Going Concern in action</p>
+                                        <p style="font-size: 13px; color: var(--ink); line-height: 1.5;">Zandile's fridge is worth R8,000. Even though it's broken and needs repair, she records it at cost (R8,000), not as worthless. She assumes the tuckshop will be open next year, so the fridge will be fixed and useful.</p>
+                                    </div>
+
+                                    <div style="background: var(--fa-xs); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+                                        <p style="font-size: 12px; font-weight: 600; color: var(--fa); margin-bottom: 8px;">Matching Principle in action</p>
+                                        <p style="font-size: 13px; color: var(--ink); line-height: 1.5;">In December, Zandile sells R15,000 of airtime. The cost of that airtime (what she paid to Vodacom) is recorded in the same month, so profit = Revenue (R15,000) - Cost (R13,000) = R2,000 in December.</p>
+                                    </div>
+
+                                    <div style="background: var(--fa-xs); border-radius: 12px; padding: 14px;">
+                                        <p style="font-size: 12px; font-weight: 600; color: var(--fa); margin-bottom: 8px;">Prudence in action</p>
+                                        <p style="font-size: 13px; color: var(--ink); line-height: 1.5;">Zandile gave airtime credit to her uncle for R800, but he's been unemployed for 6 months. She records R800 as a bad debt loss NOW, not "maybe we'll collect it later."</p>
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()">Ready for quiz →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 6: Quiz Q1 -->
+                        <div class="screen" data-screen="6">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>Quiz Question 1</h1>
+                                    <p>Test your understanding</p>
+                                </div>
+                                <div class="screen-body">
+                                    <div class="quiz-question">Zandile owns a spaza shop and a personal car. She uses the car to deliver groceries to customers 3 days a week. Where should the car go in the books?</div>
+
+                                    <div class="quiz-options" id="quizOptions1">
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 1, false)">
+                                            <div class="option-label">A) In personal assets</div>
+                                            <div class="option-text">Because Zandile owns it personally</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 1, true)">
+                                            <div class="option-label">B) In the shop's business assets</div>
+                                            <div class="option-text">Because it's used for business purposes 3 days a week</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 1, false)">
+                                            <div class="option-label">C) Split between personal and business</div>
+                                            <div class="option-text">3 days in business, 4 days personal</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 1, false)">
+                                            <div class="option-label">D) Nowhere—it's just a car</div>
+                                            <div class="option-text">Accounting only tracks money, not assets</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="quiz-explanation" id="quizExpl1" style="display: none;">
+                                        <strong>✓ Correct!</strong> The Entity Concept says the business and the owner are separate. If an asset is used for the business, it belongs in the business books. If Zandile had used the car purely for personal use, it would stay personal. But since it's used for business deliveries, the whole car is a business asset, and depreciation becomes a business cost.
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()" id="quiz1NextBtn" style="display: none;">Next question →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 7: Quiz Q2 -->
+                        <div class="screen" data-screen="7">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>Quiz Question 2</h1>
+                                    <p>Test your understanding</p>
+                                </div>
+                                <div class="screen-body">
+                                    <div class="quiz-question">A taxi operator bought a minibus for R120,000 in 2020. It's now worth R60,000 (market value). What's the book value?</div>
+
+                                    <div class="quiz-options" id="quizOptions2">
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 2, false)">
+                                            <div class="option-label">A) R60,000</div>
+                                            <div class="option-text">What it's worth today (current market value)</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 2, true)">
+                                            <div class="option-label">B) R120,000 minus depreciation</div>
+                                            <div class="option-text">We use Historical Cost, adjusted for depreciation over time</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 2, false)">
+                                            <div class="option-label">C) Zero (it's a taxi, it breaks down)</div>
+                                            <div class="option-text">Vehicles are too risky to value</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 2, false)">
+                                            <div class="option-label">D) R90,000</div>
+                                            <div class="option-text">The average of historical cost and current value</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="quiz-explanation" id="quizExpl2" style="display: none;">
+                                        <strong>✓ Correct!</strong> The Historical Cost Concept means we record assets at what we paid for them, then reduce that value by depreciation each year. So if the minibus cost R120,000 and has depreciated, its book value might be R90,000 (roughly)—not the current R60,000 market value. This prevents overstatement of asset values.
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()" id="quiz2NextBtn" style="display: none;">Last question →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 8: Quiz Q3 -->
+                        <div class="screen" data-screen="8">
+                            <div class="screen-dark-header">
+                                <div class="dark-header">
+                                    <h1>Quiz Question 3</h1>
+                                    <p>Test your understanding</p>
+                                </div>
+                                <div class="screen-body">
+                                    <div class="quiz-question">Capitec Bank estimates that R2.5 million of customer loans might not be repaid this year. How should they record this?</div>
+
+                                    <div class="quiz-options" id="quizOptions3">
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 3, false)">
+                                            <div class="option-label">A) Wait until the loans actually default</div>
+                                            <div class="option-text">Only record losses when they happen, not when they might happen</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 3, true)">
+                                            <div class="option-label">B) Record R2.5 million as a provision for bad debts NOW</div>
+                                            <div class="option-text">The Prudence Concept: recognize losses as soon as they're predictable</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 3, false)">
+                                            <div class="option-label">C) Record R1.25 million (half the risk)</div>
+                                            <div class="option-text">Spread the loss across the year</div>
+                                        </div>
+                                        <div class="quiz-option" onclick="selectQuizOption(this, 3, false)">
+                                            <div class="option-label">D) Ignore it, banks always recover some loans</div>
+                                            <div class="option-text">Losses are part of normal banking</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="quiz-explanation" id="quizExpl3" style="display: none;">
+                                        <strong>✓ Correct!</strong> The Prudence / Conservatism Concept means when a loss is likely, you record it immediately—don't wait for confirmation. Capitec records the R2.5 million provision now so their profit isn't overstated. This keeps the financial statements honest and protective.
+                                    </div>
+
+                                    <button class="button" onclick="nextScreen()" id="quiz3NextBtn" style="display: none;">See results →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen 9: Win Screen -->
+                        <div class="screen" data-screen="9">
+                            <div class="win-container">
+                                <div class="win-emoji">🎉</div>
+                                <div class="win-greeting">Siyabonga, Zandile!</div>
+                                <div class="win-message">You've completed<br><strong>Module 1: Accounting Concepts & Principles</strong></div>
+
+                                <div class="xp-badge">+125 XP earned</div>
+                                <div class="streak-badge">🔥 7-day streak</div>
+
+                                <div style="background: var(--fa-xs); border-radius: 12px; padding: 16px; margin-bottom: 20px; width: 100%; text-align: left;">
+                                    <p style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--fa); letter-spacing: 0.5px; margin-bottom: 10px;">Next up</p>
+                                    <p style="font-size: 14px; color: var(--ink); font-weight: 600;">Module 2: The Accounting Equation</p>
+                                    <p style="font-size: 12px; color: var(--dim); margin-top: 6px;">Assets = Liabilities + Equity. The golden formula.</p>
+                                </div>
+
+                                <button class="next-button" style="background: transparent; border: 2px solid var(--p); color: var(--p); margin-bottom: 10px; width: 100%;" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                                <button class="next-button" onclick="completeCourse()">Start Module 2 →</button>
+                            </div>
+                        </div>
+
+                        <!-- Screen 10: Resources -->
+                        <div class="screen" data-screen="10">
+                            <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+                            <div class="gp"><div class="gp-fill" style="width:100%;background:var(--gold)"></div></div>
+                            <div class="scr" style="padding:20px">
+                                <div style="text-align:center;margin-bottom:20px">
+                                    <div style="font-size:32px;margin-bottom:8px">📝</div>
+                                    <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink)">Practice & Past Papers</div>
+                                    <div style="font-size:13px;color:var(--mut);margin-top:4px">Module 1 · Accounting Concepts & Principles</div>
+                                </div>
+
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+                                <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                                    <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                                    <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                                    <div style="font-size:14px;color:var(--fa)">↗</div>
+                                </a>
+                                <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                                    <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                                    <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                                    <div style="font-size:14px;color:var(--fa)">↗</div>
+                                </a>
+                                <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                                    <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                                    <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                                    <div style="font-size:14px;color:var(--fa)">↗</div>
+                                </a>
+
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+                                <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                                    <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                                    <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Accounting Concepts & Principles · 15 questions · 20 min</div></div>
+                                    <div style="font-size:14px;color:var(--p)">→</div>
+                                </a>
+                                <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                                    <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                                    <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Accounting Concepts & Principles · 15 questions · 20 min</div></div>
+                                    <div style="font-size:14px;color:var(--p)">→</div>
+                                </a>
+
+                                <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+                                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+                                    <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+                                </div>
+                            </div>
+                            <div class="foot">
+                                <button class="btn btn-fa" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── SEND DATA TO PARENT FRAME ──
+        function notifyParent(type, data) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type, ...data }, '*');
+            }
+          } catch(e) {}
+        }
+
+        const MODULE_ID = 1;
+        let currentScreen = 0;
+        const totalScreens = 11;
+        let matcherState = {
+            selected: null,
+            matched: new Set(),
+            attempts: 0
+        };
+
+        const concepts = [
+            { id: 'entity', label: 'Entity Concept' },
+            { id: 'going', label: 'Going Concern' },
+            { id: 'historical', label: 'Historical Cost' },
+            { id: 'prudence', label: 'Prudence' },
+            { id: 'matching', label: 'Matching Principle' },
+            { id: 'materiality', label: 'Materiality' }
+        ];
+
+        const definitions = [
+            { id: 'def-entity', label: 'Business is separate from the owner' },
+            { id: 'def-going', label: 'Business will keep operating' },
+            { id: 'def-historical', label: 'Assets recorded at purchase price' },
+            { id: 'def-prudence', label: 'Don\'t overstate profits or understate losses' },
+            { id: 'def-matching', label: 'Match income to expenses in same period' },
+            { id: 'def-materiality', label: 'Only record significant items in detail' }
+        ];
+
+        const matches = {
+            'entity': 'def-entity',
+            'going': 'def-going',
+            'historical': 'def-historical',
+            'prudence': 'def-prudence',
+            'matching': 'def-matching',
+            'materiality': 'def-materiality'
+        };
+
+        function initMatcher() {
+            const conceptCol = document.getElementById('conceptColumn');
+            const defCol = document.getElementById('definitionColumn');
+
+            conceptCol.innerHTML = '';
+            defCol.innerHTML = '';
+
+            concepts.forEach(concept => {
+                const card = document.createElement('div');
+                card.className = 'concept-card';
+                card.id = concept.id;
+                card.textContent = concept.label;
+                card.onclick = () => selectConcept(concept.id);
+                conceptCol.appendChild(card);
+            });
+
+            definitions.forEach(def => {
+                const card = document.createElement('div');
+                card.className = 'concept-card';
+                card.id = def.id;
+                card.textContent = def.label;
+                card.onclick = () => selectDefinition(def.id);
+                defCol.appendChild(card);
+            });
+
+            matcherState = {
+                selected: null,
+                matched: new Set(),
+                attempts: 0
+            };
+        }
+
+        function selectConcept(conceptId) {
+            if (matcherState.matched.has(conceptId)) return;
+
+            const prevSelected = matcherState.selected;
+            if (prevSelected && prevSelected !== conceptId) {
+                document.getElementById(prevSelected).classList.remove('selected');
+            }
+
+            document.getElementById(conceptId).classList.add('selected');
+            matcherState.selected = conceptId;
+        }
+
+        function selectDefinition(defId) {
+            if (!matcherState.selected) return;
+
+            const expectedDef = matches[matcherState.selected];
+
+            if (defId === expectedDef) {
+                // Correct match
+                document.getElementById(matcherState.selected).classList.add('matched');
+                document.getElementById(defId).classList.add('matched');
+                matcherState.matched.add(matcherState.selected);
+                matcherState.matched.add(defId);
+
+                updateMatcherProgress();
+
+                if (matcherState.matched.size === 12) {
+                    document.getElementById('matcherContinueBtn').style.display = 'block';
+                }
+            } else {
+                // Wrong match - shake
+                document.getElementById(defId).classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById(defId).classList.remove('shake');
+                }, 300);
+            }
+
+            document.getElementById(matcherState.selected).classList.remove('selected');
+            matcherState.selected = null;
+        }
+
+        function updateMatcherProgress() {
+            const matched = matcherState.matched.size / 2;
+            document.getElementById('matchProgress').textContent = `${matched} / 6 matched`;
+            document.getElementById('matchProgressBar').style.width = `${(matched / 6) * 100}%`;
+        }
+
+        function selectQuizOption(element, quizNum, isCorrect) {
+            const optionsContainer = document.getElementById(`quizOptions${quizNum}`);
+            const options = optionsContainer.querySelectorAll('.quiz-option');
+
+            // Prevent re-selection
+            if (element.classList.contains('correct') || element.classList.contains('incorrect')) {
+                return;
+            }
+
+            options.forEach(opt => {
+                if (opt !== element) {
+                    opt.classList.remove('selected');
+                }
+            });
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                // Track quiz answer
+                if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(1, 'post', quizNum, true, 0);
+                notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: quizNum, isCorrect: true, questionText: `Question ${quizNum}`, topic: 'Accounting Concepts' });
+                document.getElementById(`quizExpl${quizNum}`).style.display = 'block';
+                document.getElementById(`quiz${quizNum}NextBtn`).style.display = 'block';
+            } else {
+                element.classList.add('incorrect');
+                // Track quiz answer
+                if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(1, 'post', quizNum, false, 0);
+                notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: quizNum, isCorrect: false, questionText: `Question ${quizNum}`, topic: 'Accounting Concepts' });
+            }
+        }
+
+        function goToScreen(screenNum) {
+            if (screenNum < 0 || screenNum >= totalScreens) return;
+
+            const wrapper = document.getElementById('screensWrapper');
+            const screens = document.querySelectorAll('.screen');
+
+            screens.forEach((screen, idx) => {
+                screen.classList.remove('active', 'prev', 'next');
+
+                if (idx === screenNum) {
+                    screen.classList.add('active');
+                } else if (idx < screenNum) {
+                    screen.classList.add('prev');
+                } else {
+                    screen.classList.add('next');
+                }
+            });
+
+            currentScreen = screenNum;
+            notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: totalScreens });
+            // Track screen view
+            if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(1, screenNum);
+            updateProgress();
+            updateSidebar();
+
+            // Initialize matcher when screen 3 is reached
+            if (screenNum === 3) {
+                setTimeout(initMatcher, 100);
+            }
+        }
+
+        function nextScreen() {
+            goToScreen(currentScreen + 1);
+        }
+
+        function prevScreen() {
+            goToScreen(currentScreen - 1);
+        }
+
+        function updateProgress() {
+            const progress = ((currentScreen + 1) / totalScreens) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        function updateSidebar() {
+            document.querySelectorAll('.sidebar-item').forEach((item, idx) => {
+                if (idx === currentScreen) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        function jumpMarker(markerIdx) {
+            const markers = ['0:00', '1:00', '2:15', '3:00'];
+            console.log('Jumped to marker:', markers[markerIdx]);
+        }
+
+        function completeCourse() {
+            notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            alert('🎉 Module 1 Complete! Module 2 coming soon...');
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextScreen();
+            if (e.key === 'ArrowLeft') prevScreen();
+        });
+
+        // Sidebar click navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const screenNum = parseInt(item.getAttribute('data-screen'));
+                goToScreen(screenNum);
+            });
+        });
+
+        // Initialize
+        goToScreen(0);
+    </script>
+</body>
+</html>

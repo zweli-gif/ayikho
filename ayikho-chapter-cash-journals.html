@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho — Module 5: Cash Receipts & Payments Journals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #05090F;
+            color: var(--ink);
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #0A0E1F;
+            border-right: 1px solid var(--bord);
+            padding: 20px 15px;
+            overflow-y: auto;
+            color: var(--dim);
+            font-size: 12px;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--p);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .screen-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .screen-item {
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all .2s;
+            border-left: 3px solid transparent;
+        }
+
+        .screen-item:hover {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--dim);
+        }
+
+        .screen-item.active {
+            background: var(--pxs);
+            color: var(--p);
+            border-left-color: var(--p);
+            font-weight: 600;
+        }
+
+        .phone-frame {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .phone {
+            width: 375px;
+            height: 812px;
+            border: 12px solid #000;
+            border-radius: 50px;
+            overflow: hidden;
+            background: var(--w);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: var(--ink);
+            color: var(--w);
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-time {
+            display: flex;
+            gap: 4px;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .screen-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .32s cubic-bezier(.4,0,.2,1), transform .32s cubic-bezier(.4,0,.2,1);
+            transform: translateX(375px);
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .screen.prev {
+            transform: translateX(-375px);
+        }
+
+        .progress-strip {
+            height: 3px;
+            background: var(--bord);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--fa);
+            transition: width .4s;
+        }
+
+        .header {
+            background: var(--ink);
+            color: var(--w);
+            padding: 20px 20px 16px;
+        }
+
+        .header-pretitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--fa);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--surf);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 12px;
+            margin-top: 16px;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .text-block {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--mut);
+            margin-bottom: 16px;
+        }
+
+        .learning-points {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .learning-points-title {
+            font-weight: 600;
+            color: var(--fa-d);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .learning-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .learning-points li {
+            font-size: 13px;
+            color: var(--mut);
+            margin-bottom: 4px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .learning-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--fa);
+            font-weight: 700;
+        }
+
+        .callout {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(245, 158, 11, 0.08) 100%);
+            border: 1px solid var(--psm);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .callout-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--p);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .callout-text {
+            font-size: 13px;
+            color: var(--mut);
+            line-height: 1.5;
+        }
+
+        .video-player {
+            background: var(--ink);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            height: 220px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--w);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .video-placeholder {
+            text-align: center;
+        }
+
+        .video-placeholder-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+
+        .video-time {
+            font-size: 11px;
+            color: var(--fa-l);
+            margin-top: 12px;
+        }
+
+        .markers {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .marker {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--dim);
+            padding: 8px;
+            background: rgba(124, 58, 237, 0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .marker:hover {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--p);
+        }
+
+        .marker-time {
+            color: var(--fa);
+            font-weight: 600;
+            min-width: 40px;
+        }
+
+        .table-section {
+            margin-bottom: 20px;
+        }
+
+        .table-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            background: var(--w);
+            border-radius: 12px;
+            border: 1px solid var(--bord);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        table th {
+            background: var(--ink);
+            color: var(--w);
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid var(--bord);
+        }
+
+        table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--bord);
+            color: var(--mut);
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table tr:hover {
+            background: var(--pxs);
+        }
+
+        .sorter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sorter-header {
+            background: var(--ink);
+            color: var(--w);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .sorter-header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .sorter-header-subtitle {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 6px;
+        }
+
+        .sorter-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sorter-card {
+            background: var(--w);
+            border: 2px solid var(--bord);
+            border-radius: 12px;
+            padding: 14px;
+            cursor: grab;
+            transition: all .2s;
+            position: relative;
+            user-select: none;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sorter-card:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        .sorter-card.sorted-crj {
+            background: var(--green-xs);
+            border-color: var(--green);
+        }
+
+        .sorter-card.sorted-cpj {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: var(--gold);
+        }
+
+        .sorter-card-text {
+            font-size: 13px;
+            color: var(--ink);
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .sorter-card-hint {
+            font-size: 11px;
+            color: var(--dim);
+            margin-top: 6px;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .sorter-card.sorted-crj .sorter-card-hint {
+            opacity: 1;
+            color: var(--green);
+        }
+
+        .sorter-card.sorted-cpj .sorter-card-hint {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .sorter-zones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .sorter-zone {
+            border: 2px dashed var(--bord);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            min-height: 80px;
+            background: rgba(124, 58, 237, 0.02);
+            transition: all .2s;
+        }
+
+        .sorter-zone.crj {
+            border-color: var(--green);
+            background: rgba(34, 197, 94, 0.04);
+        }
+
+        .sorter-zone.cpj {
+            border-color: var(--gold);
+            background: rgba(245, 158, 11, 0.04);
+        }
+
+        .sorter-zone-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ink);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .sorter-zone-count {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--p);
+        }
+
+        .sorter-progress {
+            text-align: center;
+            padding: 16px;
+            background: var(--fa-xs);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .sorter-progress-text {
+            font-size: 12px;
+            color: var(--mut);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--fa-sm);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--fa);
+            transition: width .3s;
+        }
+
+        .quiz-question {
+            background: var(--w);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid var(--bord);
+        }
+
+        .quiz-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--p);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .quiz-question-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all .2s;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .quiz-option input[type="radio"] {
+            position: absolute;
+            left: 14px;
+            top: 18px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--p);
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--mut);
+            display: block;
+        }
+
+        .quiz-option:hover {
+            background: var(--pxs);
+            border-color: var(--p);
+        }
+
+        .quiz-option.correct {
+            background: var(--green-xs);
+            border-color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(244, 63, 94, 0.08);
+            border-color: var(--rose);
+        }
+
+        .quiz-explanation {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-top: 12px;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all .3s;
+        }
+
+        .quiz-explanation.show {
+            opacity: 1;
+            max-height: 200px;
+        }
+
+        .quiz-explanation-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--fa-d);
+            margin-bottom: 6px;
+        }
+
+        .quiz-explanation-text {
+            font-size: 13px;
+            color: var(--mut);
+            line-height: 1.5;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: var(--w);
+            border-top: 1px solid var(--bord);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--bord);
+            background: var(--w);
+            color: var(--ink);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: var(--pxs);
+            border-color: var(--p);
+            color: var(--p);
+        }
+
+        .btn.primary {
+            background: var(--p);
+            color: var(--w);
+            border-color: var(--p);
+        }
+
+        .btn.primary:hover {
+            background: var(--pd);
+            border-color: var(--pd);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .win-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .win-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 0.6s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .win-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .win-subtitle {
+            font-size: 14px;
+            color: var(--mut);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .win-stats {
+            background: var(--fa-xs);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .win-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .win-stat:last-child {
+            margin-bottom: 0;
+        }
+
+        .win-stat-label {
+            color: var(--mut);
+        }
+
+        .win-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--p);
+        }
+
+        .win-streak {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 16px;
+            color: var(--ink);
+            margin-bottom: 24px;
+        }
+
+        .worked-example-row {
+            background: var(--w);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 2px solid var(--bord);
+        }
+
+        .worked-example-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--p);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .worked-example-content {
+            font-size: 13px;
+            color: var(--ink);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .worked-example-journal {
+            font-size: 12px;
+            background: var(--pxs);
+            padding: 8px 10px;
+            border-radius: 6px;
+            color: var(--p);
+            font-weight: 600;
+        }
+
+        .footer {
+            padding: 20px;
+            background: var(--w);
+            border-top: 1px solid var(--bord);
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 10px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 1400px) {
+            .sidebar {
+                width: 160px;
+            }
+            .sidebar-title {
+                font-size: 12px;
+            }
+            .screen-item {
+                font-size: 11px;
+                padding: 8px 10px;
+            }
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">Module 5</div>
+            <div class="screen-nav" id="screenNav"></div>
+        </div>
+        <div class="phone-frame">
+            <div class="phone">
+                <div class="progress-strip">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="status-bar">
+                    <div class="status-time">21:32</div>
+                    <div class="status-icons">4G 🔋</div>
+                </div>
+                <div class="screen-container" id="screenContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── SEND DATA TO PARENT FRAME ──
+        function notifyParent(type, data) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type, ...data }, '*');
+            }
+          } catch(e) {}
+        }
+
+        const MODULE_ID = 5;
+        const screens = [
+            {
+                id: 'intro',
+                label: '1. Intro',
+                title: 'Cash Receipts & Payments Journals',
+                subtitle: 'Learn how to record all cash in and out',
+                type: 'intro'
+            },
+            {
+                id: 'video',
+                label: '2. Video',
+                title: 'Module Video',
+                subtitle: 'Watch the lesson',
+                type: 'video'
+            },
+            {
+                id: 'lesson-crj',
+                label: '3. Cash Receipts Journal',
+                title: 'Cash Receipts Journal',
+                subtitle: 'Recording money coming IN',
+                type: 'lesson'
+            },
+            {
+                id: 'sorter',
+                label: '4. Transaction Sorter',
+                title: 'Sort the Transactions',
+                subtitle: 'Interactive activity',
+                type: 'sorter'
+            },
+            {
+                id: 'lesson-cpj',
+                label: '5. Cash Payments Journal',
+                title: 'Cash Payments Journal',
+                subtitle: 'Recording money going OUT',
+                type: 'lesson'
+            },
+            {
+                id: 'worked-example',
+                label: '6. Worked Example',
+                title: "Naledi's Hair Salon",
+                subtitle: 'Real-world example',
+                type: 'example'
+            },
+            {
+                id: 'quiz1',
+                label: '7. Quiz Q1',
+                title: 'Check Your Knowledge',
+                subtitle: 'Question 1 of 3',
+                type: 'quiz'
+            },
+            {
+                id: 'quiz2',
+                label: '8. Quiz Q2',
+                title: 'Check Your Knowledge',
+                subtitle: 'Question 2 of 3',
+                type: 'quiz'
+            },
+            {
+                id: 'quiz3',
+                label: '9. Quiz Q3',
+                title: 'Check Your Knowledge',
+                subtitle: 'Question 3 of 3',
+                type: 'quiz'
+            },
+            {
+                id: 'win',
+                label: '10. Complete',
+                title: 'Module Complete!',
+                subtitle: 'You\'ve mastered cash journals',
+                type: 'win'
+            },
+            {
+                id: 'resources',
+                label: '11. Past Papers',
+                title: 'Practice & Past Papers',
+                subtitle: 'Cash Receipts & Payments Journals',
+                type: 'resources'
+            }
+        ];
+
+        let currentScreen = 0;
+
+        // Screen navigation setup
+        function initScreenNav() {
+            const screenNav = document.getElementById('screenNav');
+            screens.forEach((screen, index) => {
+                const item = document.createElement('div');
+                item.className = 'screen-item' + (index === 0 ? ' active' : '');
+                item.textContent = screen.label;
+                item.onclick = () => goToScreen(index);
+                screenNav.appendChild(item);
+            });
+        }
+
+        function goToScreen(index) {
+            const prevScreen = currentScreen;
+            currentScreen = Math.max(0, Math.min(index, screens.length - 1));
+
+            const container = document.getElementById('screenContainer');
+            const prevElement = container.querySelector('.screen.active');
+            if (prevElement) {
+                prevElement.classList.remove('active');
+                if (currentScreen > prevScreen) {
+                    prevElement.classList.remove('prev');
+                } else {
+                    prevElement.classList.add('prev');
+                }
+            }
+
+            const newElement = document.querySelectorAll('.screen')[currentScreen];
+            newElement.classList.remove('prev');
+            setTimeout(() => newElement.classList.add('active'), 10);
+
+            // Update nav
+            document.querySelectorAll('.screen-item').forEach((item, i) => {
+                item.classList.toggle('active', i === currentScreen);
+            });
+
+            notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: screens.length });
+            if (screens[currentScreen] && screens[currentScreen].id === 'win') notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            // Track screen view
+            if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(5, currentScreen);
+
+            // Update progress
+            const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+
+        // Render all screens
+        function renderScreens() {
+            const container = document.getElementById('screenContainer');
+            screens.forEach((screen, index) => {
+                const element = document.createElement('div');
+                element.className = 'screen' + (index === 0 ? ' active' : '');
+
+                if (screen.type === 'intro') {
+                    element.innerHTML = renderIntro();
+                } else if (screen.type === 'video') {
+                    element.innerHTML = renderVideo();
+                } else if (screen.type === 'lesson') {
+                    element.innerHTML = screen.id === 'lesson-crj' ? renderLessonCRJ() : renderLessonCPJ();
+                } else if (screen.type === 'sorter') {
+                    element.innerHTML = renderSorter();
+                } else if (screen.type === 'example') {
+                    element.innerHTML = renderWorkedExample();
+                } else if (screen.type === 'quiz') {
+                    element.innerHTML = renderQuiz(index - 6);
+                } else if (screen.type === 'win') {
+                    element.innerHTML = renderWin();
+                } else if (screen.type === 'resources') {
+                    element.innerHTML = renderResources();
+                }
+
+                container.appendChild(element);
+            });
+
+            // Setup interactions
+            setTimeout(() => setupSorter(), 100);
+            setTimeout(() => setupQuiz(), 100);
+            setTimeout(() => setupNav(), 100);
+        }
+
+        function setupNav() {
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    const action = btn.getAttribute('data-action');
+                    if (action === 'next') {
+                        goToScreen(currentScreen + 1);
+                    } else if (action === 'prev') {
+                        goToScreen(currentScreen - 1);
+                    } else if (action === 'home') {
+                        goToScreen(0);
+                    }
+                };
+            });
+        }
+
+        function renderIntro() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Module 5 of 9</div>
+                    <div class="header-title">Cash Receipts & Payments Journals</div>
+                    <div class="header-subtitle">Master how to record cash transactions</div>
+                </div>
+                <div class="body">
+                    <div class="section-title">TL;DR</div>
+                    <div class="text-block">
+                        Two special journals record ALL cash movements in a business:
+                        <strong>CRJ for cash coming IN, CPJ for cash going OUT</strong>.
+                    </div>
+
+                    <div class="learning-points">
+                        <div class="learning-points-title">What You'll Learn</div>
+                        <ul>
+                            <li>How to identify cash receipts vs payments</li>
+                            <li>Columns in the Cash Receipts Journal (CRJ)</li>
+                            <li>Columns in the Cash Payments Journal (CPJ)</li>
+                            <li>How to record real transactions like Naledi's salon</li>
+                            <li>Why these journals matter for tax & exams</li>
+                        </ul>
+                    </div>
+
+                    <div class="callout">
+                        <div class="callout-label">💡 In Real Life</div>
+                        <div class="callout-text">
+                            Even spaza shops in Soweto use these journals to track their daily cash. SARS checks them when you register for VAT!
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <div class="callout-label">📝 Exam Tip</div>
+                        <div class="callout-text">
+                            Examiners LOVE asking: "Which journal records this transaction?" Get this right, and half your marks are safe.
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn primary" data-action="next">Start Lesson</button>
+                </div>
+            `;
+        }
+
+        function renderVideo() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Video Lesson</div>
+                    <div class="header-title">Module Overview</div>
+                    <div class="header-subtitle">3 min 45 sec</div>
+                </div>
+                <div class="body">
+                    <div class="video-player">
+                        <div class="video-placeholder">
+                            <div class="video-placeholder-icon">▶️</div>
+                            <div>Synthesia Video</div>
+                            <div class="video-time">3:45</div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Video Markers</div>
+                    <div class="markers">
+                        <div class="marker">
+                            <span class="marker-time">0:00</span>
+                            <span>Why do we need special cash journals?</span>
+                        </div>
+                        <div class="marker">
+                            <span class="marker-time">1:10</span>
+                            <span>The Cash Receipts Journal</span>
+                        </div>
+                        <div class="marker">
+                            <span class="marker-time">2:15</span>
+                            <span>The Cash Payments Journal</span>
+                        </div>
+                        <div class="marker">
+                            <span class="marker-time">3:10</span>
+                            <span>Recap + exam tip</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" data-action="prev">Back</button>
+                    <button class="btn primary" data-action="next">Next</button>
+                </div>
+            `;
+        }
+
+        function renderLessonCRJ() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Lesson Part 1</div>
+                    <div class="header-title">Cash Receipts Journal</div>
+                    <div class="header-subtitle">Recording all cash coming IN</div>
+                </div>
+                <div class="body">
+                    <div class="callout">
+                        <div class="callout-label">📥 Cash Receipts Journal (CRJ)</div>
+                        <div class="callout-text">
+                            A special journal that records EVERY transaction where cash (or cheques) COME INTO the business.
+                        </div>
+                    </div>
+
+                    <div class="text-block">
+                        CRJ is used for:
+                        <strong>Cash sales • Cheques received • Loans • Capital introduced • Refunds from suppliers</strong>
+                    </div>
+
+                    <div class="section-title">CRJ Columns</div>
+                    <div class="table-section">
+                        <div class="table-title">Standard Columns</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Details</th>
+                                        <th>Folio</th>
+                                        <th>Bank</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>When</td>
+                                        <td>Who/What</td>
+                                        <td>Ref#</td>
+                                        <td>Amount</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="table-section">
+                        <div class="table-title">Analysis Columns (For Classification)</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sales</th>
+                                        <th>Debtors</th>
+                                        <th>Sundry</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Cash sales</td>
+                                        <td>Money from customers who owed</td>
+                                        <td>Everything else</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <div class="callout-label">📝 Pro Tip</div>
+                        <div class="callout-text">
+                            The "Bank" column shows the TOTAL cash in. The analysis columns show WHY it came in. Always check: Bank = Sales + Debtors + Sundry
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" data-action="prev">Back</button>
+                    <button class="btn primary" data-action="next">Next</button>
+                </div>
+            `;
+        }
+
+        function renderLessonCPJ() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Lesson Part 2</div>
+                    <div class="header-title">Cash Payments Journal</div>
+                    <div class="header-subtitle">Recording all cash going OUT</div>
+                </div>
+                <div class="body">
+                    <div class="callout">
+                        <div class="callout-label">📤 Cash Payments Journal (CPJ)</div>
+                        <div class="callout-text">
+                            A special journal that records EVERY transaction where cash (or cheques) LEAVE the business.
+                        </div>
+                    </div>
+
+                    <div class="text-block">
+                        CPJ is used for:
+                        <strong>Cash purchases • Payments to suppliers • Wages • Rent • Utilities • Drawings</strong>
+                    </div>
+
+                    <div class="section-title">CPJ Columns</div>
+                    <div class="table-section">
+                        <div class="table-title">Standard Columns</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Details</th>
+                                        <th>Folio</th>
+                                        <th>Bank</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>When</td>
+                                        <td>Who/What</td>
+                                        <td>Ref#</td>
+                                        <td>Amount</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="table-section">
+                        <div class="table-title">Analysis Columns (For Classification)</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Trading Stock</th>
+                                        <th>Creditors</th>
+                                        <th>Sundry</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Goods bought for resale</td>
+                                        <td>Paying suppliers who extended credit</td>
+                                        <td>Everything else (rent, utilities, etc)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <div class="callout-label">📝 Pro Tip</div>
+                        <div class="callout-text">
+                            Notice the difference: CRJ has "Sales & Debtors", CPJ has "Trading Stock & Creditors". Why? Different types of money move in vs out!
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <div class="callout-label">🧪 Memory Trick</div>
+                        <div class="callout-text">
+                            CRJ = "in", so you see Sales & Debtors (customer money) | CPJ = "out", so you see Trading Stock & Creditors (supplier money)
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" data-action="prev">Back</button>
+                    <button class="btn primary" data-action="next">Next</button>
+                </div>
+            `;
+        }
+
+        function renderSorter() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Interactive Activity</div>
+                    <div class="header-title">Sort Transactions</div>
+                    <div class="header-subtitle">Naledi's Hair Salon</div>
+                </div>
+                <div class="body">
+                    <div class="sorter-header">
+                        <div class="sorter-header-title">🧔 Naledi's Hair Salon</div>
+                        <div class="sorter-header-subtitle">Tap each transaction, then choose CRJ or CPJ</div>
+                    </div>
+
+                    <div class="sorter-progress">
+                        <div class="sorter-progress-text">Progress</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" id="sorterProgress" style="width: 0%"></div>
+                        </div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--p); margin-top: 8px;" id="sorterCounter">0/6</div>
+                    </div>
+
+                    <div class="sorter-cards" id="sorterCards"></div>
+
+                    <div class="sorter-zones">
+                        <div class="sorter-zone crj">
+                            <div class="sorter-zone-title">💰 CRJ</div>
+                            <div class="sorter-zone-count" id="crjCount">0</div>
+                        </div>
+                        <div class="sorter-zone cpj">
+                            <div class="sorter-zone-title">💸 CPJ</div>
+                            <div class="sorter-zone-count" id="cpjCount">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" data-action="prev">Back</button>
+                    <button class="btn primary" data-action="next">Continue</button>
+                </div>
+            `;
+        }
+
+        function renderWorkedExample() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Worked Example</div>
+                    <div class="header-title">Naledi's Hair Salon</div>
+                    <div class="header-subtitle">Real transactions, step by step</div>
+                </div>
+                <div class="body">
+                    <div class="section-title">📋 The Transactions</div>
+
+                    <div class="worked-example-row">
+                        <div class="worked-example-label">Transaction 1</div>
+                        <div class="worked-example-content">Naledi receives R2,400 cash for braids</div>
+                        <div class="worked-example-journal">→ CRJ: Bank R2,400 | Sales R2,400</div>
+                    </div>
+
+                    <div class="worked-example-row">
+                        <div class="worked-example-label">Transaction 2</div>
+                        <div class="worked-example-content">Client pays R1,500 for outstanding services (they owed money)</div>
+                        <div class="worked-example-journal">→ CRJ: Bank R1,500 | Debtors R1,500</div>
+                    </div>
+
+                    <div class="worked-example-row">
+                        <div class="worked-example-label">Transaction 3</div>
+                        <div class="worked-example-content">Naledi buys hair products for R950 cash</div>
+                        <div class="worked-example-journal">→ CPJ: Bank R950 | Trading Stock R950</div>
+                    </div>
+
+                    <div class="worked-example-row">
+                        <div class="worked-example-label">Transaction 4</div>
+                        <div class="worked-example-content">Naledi pays Eskom R600 for electricity</div>
+                        <div class="worked-example-journal">→ CPJ: Bank R600 | Sundry R600</div>
+                    </div>
+
+                    <div class="callout">
+                        <div class="callout-label">🎯 Key Pattern</div>
+                        <div class="callout-text">
+                            Same business, but some transactions go CRJ (money in) and others go CPJ (money out). The journal depends on the DIRECTION of cash flow, not the account type!
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" data-action="prev">Back</button>
+                    <button class="btn primary" data-action="next">Test Yourself</button>
+                </div>
+            `;
+        }
+
+        function renderQuiz(qNum) {
+            const questions = [
+                {
+                    question: "Which journal records when Naledi receives R1,200 from a cash sale?",
+                    options: [
+                        { text: "Cash Payments Journal (CPJ)", correct: false },
+                        { text: "Cash Receipts Journal (CRJ)", correct: true },
+                        { text: "Sales Journal", correct: false }
+                    ],
+                    explanation: "Cash coming IN always goes to CRJ. Sales (whether cash or credit) can be recorded here. The key word is 'receives' — money flowing toward the business."
+                },
+                {
+                    question: "What goes in the 'Debtors' column of the CRJ?",
+                    options: [
+                        { text: "Money from customers who previously owed", correct: true },
+                        { text: "Money to suppliers who extended credit", correct: false },
+                        { text: "All cash sales", correct: false }
+                    ],
+                    explanation: "Debtors are customers who owe YOU. When they PAY, that payment goes to the Debtors column of CRJ. Creditors (suppliers you owe) appear in CPJ."
+                },
+                {
+                    question: "Naledi pays R500 cash to buy trading stock. Which journal and which column?",
+                    options: [
+                        { text: "CPJ, Trading Stock column", correct: true },
+                        { text: "CRJ, Sales column", correct: false },
+                        { text: "CPJ, Sundry column", correct: false }
+                    ],
+                    explanation: "Cash going OUT = CPJ. Goods bought for resale = Trading Stock column. If it were rent or utilities, it would be Sundry instead."
+                }
+            ];
+
+            const q = questions[qNum];
+            let html = `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Question ${qNum + 1} of 3</div>
+                    <div class="header-title">Check Your Knowledge</div>
+                    <div class="header-subtitle">Cash Journals</div>
+                </div>
+                <div class="body">
+                    <div class="quiz-question">
+                        <div class="quiz-number">Question ${qNum + 1}</div>
+                        <div class="quiz-question-text">${q.question}</div>
+                        <div class="quiz-options" id="quizOptions">
+            `;
+
+            q.options.forEach((opt, i) => {
+                html += `
+                    <div class="quiz-option">
+                        <input type="radio" name="answer" id="opt${i}" value="${i}">
+                        <label for="opt${i}">${opt.text}</label>
+                    </div>
+                `;
+            });
+
+            html += `
+                        </div>
+                        <div class="quiz-explanation" id="quizExplanation">
+                            <div class="quiz-explanation-title">Explanation</div>
+                            <div class="quiz-explanation-text" id="explanationText"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" data-action="prev">Back</button>
+                    <button class="btn primary" id="nextQuizBtn" data-action="next" disabled>Next Question</button>
+                </div>
+            `;
+
+            setTimeout(() => {
+                document.querySelectorAll('#quizOptions input').forEach((radio, i) => {
+                    radio.onchange = () => {
+                        const correct = q.options[i].correct;
+                        document.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('correct', 'incorrect'));
+
+                        // Track quiz answer
+                        if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(5, 'post', qNum + 1, correct, 0);
+                        notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum + 1, isCorrect: correct, questionText: `Question ${qNum + 1}`, topic: 'Cash Journals' });
+
+                        if (correct) {
+                            document.querySelectorAll('.quiz-option')[i].classList.add('correct');
+                        } else {
+                            document.querySelectorAll('.quiz-option')[i].classList.add('incorrect');
+                        }
+
+                        document.getElementById('explanationText').textContent = q.explanation;
+                        document.getElementById('quizExplanation').classList.add('show');
+                        document.getElementById('nextQuizBtn').disabled = false;
+                    };
+                });
+            }, 50);
+
+            return html;
+        }
+
+        function renderWin() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Module 5 Complete</div>
+                    <div class="header-title">Amazing Work!</div>
+                    <div class="header-subtitle">You've mastered cash journals</div>
+                </div>
+                <div class="body">
+                    <div class="win-screen">
+                        <div class="win-icon">🎉</div>
+                        <div class="win-title">Module Complete!</div>
+                        <div class="win-subtitle">You now understand how to record and classify cash transactions in both CRJ and CPJ.</div>
+
+                        <div class="win-stats">
+                            <div class="win-stat">
+                                <span class="win-stat-label">XP Earned</span>
+                                <span class="win-stat-value">+175</span>
+                            </div>
+                            <div class="win-stat">
+                                <span class="win-stat-label">Module</span>
+                                <span class="win-stat-value">5/9</span>
+                            </div>
+                            <div class="win-stat">
+                                <span class="win-stat-label">Streak</span>
+                                <span class="win-stat-value">🔥 15 days</span>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--fa-xs); border-radius: 12px; padding: 16px; width: 100%; text-align: center; margin-bottom: 24px;">
+                            <div style="font-size: 12px; color: var(--mut); margin-bottom: 8px;">Next Up</div>
+                            <div style="font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--ink);">Module 6: Bank Reconciliation</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                    <button class="btn" data-action="home">Home</button>
+                    <button class="btn primary" data-action="next">Next Module</button>
+                </div>
+            `;
+        }
+
+        function renderResources() {
+            return `
+                <div class="progress-strip"></div>
+                <div class="header">
+                    <div class="header-pretitle">Module 5</div>
+                    <div class="header-title">Practice & Past Papers</div>
+                    <div class="header-subtitle">Cash Receipts & Payments Journals</div>
+                </div>
+                <div class="body">
+                    <div style="padding: 20px">
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                            <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                            <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                            <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Cash Journals · 15 questions · 20 min</div></div>
+                            <div style="font-size:14px;color:var(--p)">→</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Cash Journals · 15 questions · 20 min</div></div>
+                            <div style="font-size:14px;color:var(--p)">→</div>
+                        </a>
+                        <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+                            <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn primary" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                </div>
+            `;
+        }
+
+        function setupSorter() {
+            const transactions = [
+                { text: "Naledi receives R2,400 from a client for braids", journal: 'crj' },
+                { text: "Naledi pays R800 rent to landlord", journal: 'cpj' },
+                { text: "Client pays R1,500 outstanding debt", journal: 'crj' },
+                { text: "Naledi buys hair products for R950 cash", journal: 'cpj' },
+                { text: "Cash sale: relaxer treatment R350", journal: 'crj' },
+                { text: "Naledi pays Eskom R600 for electricity", journal: 'cpj' }
+            ];
+
+            const cardsContainer = document.getElementById('sorterCards');
+            if (!cardsContainer) return;
+
+            cardsContainer.innerHTML = '';
+            transactions.forEach((trans, i) => {
+                const card = document.createElement('div');
+                card.className = 'sorter-card';
+                card.dataset.index = i;
+                card.dataset.correct = trans.journal;
+                card.innerHTML = `
+                    <div class="sorter-card-text">${trans.text}</div>
+                    <div class="sorter-card-hint" id="hint${i}"></div>
+                `;
+
+                card.onclick = () => showSorterChoice(i);
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        function showSorterChoice(index) {
+            const card = document.querySelector(`[data-index="${index}"]`);
+            if (card.classList.contains('sorted-crj') || card.classList.contains('sorted-cpj')) return;
+
+            const choice = prompt("Choose: CRJ (cash in) or CPJ (cash out)?\n\nType: CRJ or CPJ");
+            if (!choice) return;
+
+            const normalized = choice.toUpperCase().trim();
+            const correct = card.dataset.correct;
+
+            if (normalized === correct.toUpperCase()) {
+                card.classList.add(normalized === 'CRJ' ? 'sorted-crj' : 'sorted-cpj');
+                const hint = document.getElementById(`hint${index}`);
+                hint.textContent = normalized === 'CRJ' ? '✓ Cash In' : '✓ Cash Out';
+                updateSorterCounts();
+            } else {
+                card.style.animation = 'none';
+                setTimeout(() => {
+                    card.style.animation = 'shake 0.4s';
+                }, 10);
+                alert(`❌ Not quite. This is ${correct.toUpperCase()}. Remember: CRJ for money IN, CPJ for money OUT.`);
+            }
+        }
+
+        function updateSorterCounts() {
+            const sorted = document.querySelectorAll('.sorter-card.sorted-crj, .sorter-card.sorted-cpj').length;
+            const total = 6;
+
+            document.getElementById('sorterCounter').textContent = `${sorted}/6`;
+            document.getElementById('crjCount').textContent = document.querySelectorAll('.sorter-card.sorted-crj').length;
+            document.getElementById('cpjCount').textContent = document.querySelectorAll('.sorter-card.sorted-cpj').length;
+            document.getElementById('sorterProgress').style.width = (sorted / total * 100) + '%';
+        }
+
+        function setupQuiz() {
+            // Quiz setup happens in renderQuiz
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Init
+        initScreenNav();
+        renderScreens();
+        goToScreen(0);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') goToScreen(currentScreen + 1);
+            if (e.key === 'ArrowLeft') goToScreen(currentScreen - 1);
+        });
+    </script>
+</body>
+</html>

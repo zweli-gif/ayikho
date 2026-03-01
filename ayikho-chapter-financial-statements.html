@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho N4 Financial Accounting - Module 9: Financial Statements</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #05090F;
+            color: var(--ink);
+            overflow: hidden;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            border-radius: 50px;
+            background: #05090F;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 12px solid #05090F;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: linear-gradient(135deg, var(--fa) 0%, var(--fa-d) 100%);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-bar-left, .status-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-strip {
+            height: 3px;
+            background: var(--bord);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--fa);
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .screen-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            background: var(--w);
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(375px);
+            transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .screen.prev {
+            transform: translateX(-375px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--fa) 0%, var(--fa-d) 100%);
+            color: var(--w);
+            padding: 24px 16px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .header-title p {
+            font-size: 12px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .header-progress {
+            text-align: right;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .sidebar-nav {
+            width: 60px;
+            background: var(--surf);
+            border-right: 1px solid var(--bord);
+            display: flex;
+            flex-direction: column;
+            padding: 12px 8px;
+            gap: 8px;
+            overflow-y: auto;
+        }
+
+        .nav-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--psm);
+            border: 2px solid var(--bord);
+            cursor: pointer;
+            transition: all 0.24s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--mut);
+        }
+
+        .nav-dot.active {
+            background: var(--p);
+            color: var(--w);
+            border-color: var(--p);
+            transform: scale(1.15);
+        }
+
+        .nav-dot:hover {
+            transform: scale(1.1);
+            background: var(--pxs);
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-inner {
+            padding: 20px 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .intro-section {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .intro-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        .intro-section .badge {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--ink);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .intro-section p {
+            color: var(--mut);
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .tldr-box {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 24px;
+        }
+
+        .tldr-box h3 {
+            color: var(--fa-d);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .tldr-box p {
+            color: var(--ink);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .tldr-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .video-player.playing {
+            background: linear-gradient(135deg, var(--fa-d) 0%, var(--ink) 100%);
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.24s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            background: #FCD34D;
+        }
+
+        .video-player.playing .play-button {
+            display: none;
+        }
+
+        .video-time {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--w);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .video-markers {
+            margin-top: 16px;
+        }
+
+        .marker {
+            padding: 12px;
+            background: var(--psm);
+            border-left: 4px solid var(--p);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.24s ease;
+        }
+
+        .marker:hover {
+            background: var(--pxs);
+            transform: translateX(4px);
+        }
+
+        .marker-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--p);
+            font-weight: 600;
+        }
+
+        .marker-text {
+            font-size: 13px;
+            color: var(--ink);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .lesson-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .lesson-block {
+            background: var(--surf);
+            padding: 16px;
+            border-radius: 12px;
+            border-left: 4px solid var(--p);
+        }
+
+        .lesson-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .lesson-block p {
+            color: var(--mut);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .lesson-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .formula-box {
+            background: var(--fa-xs);
+            border: 1px solid var(--fa-sm);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--fa-d);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .callout {
+            background: linear-gradient(135deg, var(--green-xs) 0%, #F0FDF4 100%);
+            border-left: 4px solid var(--green);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #166534;
+            line-height: 1.5;
+        }
+
+        .callout strong {
+            font-weight: 700;
+        }
+
+        .statement-builder {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .builder-header {
+            background: linear-gradient(135deg, var(--fa) 0%, var(--fa-d) 100%);
+            color: var(--w);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .accounts-pool {
+            background: var(--pxs);
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px dashed var(--p);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .account-item {
+            background: var(--w);
+            border: 2px solid var(--p);
+            padding: 10px;
+            border-radius: 6px;
+            cursor: grab;
+            transition: all 0.24s ease;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            color: var(--ink);
+        }
+
+        .account-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        .account-item.dragging {
+            opacity: 0.5;
+        }
+
+        .statement-section {
+            background: var(--surf);
+            border: 2px dashed var(--dim);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 60px;
+            position: relative;
+        }
+
+        .statement-section.active {
+            border-color: var(--p);
+            background: var(--pxs);
+        }
+
+        .statement-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--mut);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .placed-item {
+            background: var(--w);
+            border: 1px solid var(--p);
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            cursor: grab;
+        }
+
+        .placed-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .placed-item-name {
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .placed-item-amount {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--p);
+            font-weight: 600;
+        }
+
+        .section-total {
+            border-top: 2px solid var(--p);
+            padding-top: 8px;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 13px;
+        }
+
+        .statement-total {
+            background: linear-gradient(135deg, var(--green-xs) 0%, #F0FDF4 100%);
+            border: 2px solid var(--green);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            font-weight: 700;
+            color: #166534;
+            font-size: 14px;
+        }
+
+        .worked-example {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .statement-card {
+            background: var(--surf);
+            border: 1px solid var(--bord);
+            border-radius: 12px;
+            padding: 16px;
+            overflow-x: auto;
+        }
+
+        .statement-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+
+        .statement-table th {
+            background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%);
+            color: var(--fa-d);
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid var(--fa);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .statement-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--bord);
+            color: var(--ink);
+        }
+
+        .statement-table td:last-child {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .statement-table tr:last-child td {
+            border-bottom: 2px solid var(--p);
+            font-weight: 700;
+            background: var(--pxs);
+        }
+
+        .profit-flow {
+            background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%);
+            border: 1px solid var(--fa-sm);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .profit-flow p {
+            font-size: 12px;
+            color: var(--fa-d);
+            margin-bottom: 6px;
+        }
+
+        .profit-flow .amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--p);
+            margin: 8px 0;
+        }
+
+        .quiz-question {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-question-number {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--mut);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .quiz-question-text {
+            font-size: 14px;
+            color: var(--ink);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 12px;
+            border: 2px solid var(--bord);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.24s ease;
+            background: var(--w);
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--p);
+            background: var(--pxs);
+        }
+
+        .quiz-option.selected {
+            background: var(--p);
+            color: var(--w);
+            border-color: var(--p);
+        }
+
+        .quiz-option.correct {
+            background: var(--green);
+            color: var(--w);
+            border-color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            background: var(--rose);
+            color: var(--w);
+            border-color: var(--rose);
+        }
+
+        .quiz-feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: var(--green-xs);
+            color: #166534;
+            border-left: 4px solid var(--green);
+        }
+
+        .quiz-feedback.incorrect {
+            background: #FFE7E7;
+            color: #7F1D1D;
+            border-left: 4px solid var(--rose);
+        }
+
+        .win-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .celebration-banner {
+            background: linear-gradient(135deg, var(--gold) 0%, #FCD34D 50%, #F59E0B 100%);
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3); }
+            50% { box-shadow: 0 12px 32px rgba(245, 158, 11, 0.5); }
+        }
+
+        .celebration-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        .celebration-banner p {
+            color: #78350F;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .badge-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--p) 0%, var(--pl) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--w);
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .badge-large .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+        }
+
+        .badge-large .label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
+
+        .stats-summary {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--bord);
+            font-size: 13px;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--mut);
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--p);
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.24s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--p);
+            color: var(--w);
+        }
+
+        .btn-primary:hover {
+            background: var(--pl);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surf);
+            color: var(--p);
+            border: 2px solid var(--p);
+        }
+
+        .btn-secondary:hover {
+            background: var(--pxs);
+            transform: translateY(-2px);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--surf);
+            border-top: 1px solid var(--bord);
+            gap: 12px;
+        }
+
+        .nav-button {
+            padding: 8px 12px;
+            background: var(--p);
+            color: var(--w);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.24s ease;
+        }
+
+        .nav-button:hover {
+            background: var(--pl);
+            transform: translateY(-1px);
+        }
+
+        .nav-button:disabled {
+            background: var(--dim);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .nav-info {
+            font-size: 12px;
+            color: var(--mut);
+            font-weight: 500;
+        }
+
+        .keyboard-hint {
+            position: absolute;
+            bottom: 60px;
+            right: 16px;
+            font-size: 10px;
+            color: var(--dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Scrollbar styling */
+        .content::-webkit-scrollbar,
+        .sidebar-nav::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content::-webkit-scrollbar-track,
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content::-webkit-scrollbar-thumb,
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: var(--dim);
+            border-radius: 3px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover,
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+            background: var(--mut);
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="status-bar-left">
+                <span>21:32</span>
+            </div>
+            <div class="status-bar-right">
+                <span>4G</span>
+                <span>🔋</span>
+            </div>
+        </div>
+
+        <div class="progress-strip">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="screen-container">
+            <!-- Screen 1: Chapter Intro -->
+            <div class="screen active">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Financial Statements</h1>
+                        <p>Module 9 of 9 — The Final Module!</p>
+                    </div>
+                    <div class="header-progress">
+                        <div>Module 9</div>
+                        <div style="font-size: 14px; font-weight: 700; margin-top: 4px;">Final</div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="intro-section">
+                            <span class="badge">CAPSTONE MODULE</span>
+                            <h2>Financial Statements</h2>
+                            <p>You've made it to the final module! Now you'll learn how to read and prepare the two most important statements every business owner needs.</p>
+
+                            <div class="tldr-box">
+                                <h3>TL;DR</h3>
+                                <p><strong>The Income Statement</strong> shows if you made profit or loss. It's a snapshot of your business's financial performance over a period (usually a month or year).</p>
+                                <p><strong>The Balance Sheet</strong> shows what you own, what you owe, and how much equity you have — at a specific date. It's like a financial photograph of your business.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 2: Video Player -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Watch & Learn</h1>
+                        <p>Understanding Financial Statements</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="video-player" id="videoPlayer">
+                            <div class="play-button" id="playBtn">▶</div>
+                            <div class="video-time" id="videoTime">0:00 / 3:45</div>
+                        </div>
+                        <div class="video-markers">
+                            <div class="marker" onclick="jumpToMarker(0)">
+                                <div class="marker-time">0:00</div>
+                                <div class="marker-text">What are Financial Statements?</div>
+                            </div>
+                            <div class="marker" onclick="jumpToMarker(75)">
+                                <div class="marker-time">1:15</div>
+                                <div class="marker-text">The Income Statement</div>
+                            </div>
+                            <div class="marker" onclick="jumpToMarker(140)">
+                                <div class="marker-time">2:20</div>
+                                <div class="marker-text">The Balance Sheet</div>
+                            </div>
+                            <div class="marker" onclick="jumpToMarker(195)">
+                                <div class="marker-time">3:15</div>
+                                <div class="marker-text">Recap + Exam Tip</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: Lesson Part 1 - Income Statement -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Income Statement</h1>
+                        <p>Part 1: The Profit Machine</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="lesson-content">
+                            <div class="lesson-block">
+                                <h3>What is an Income Statement?</h3>
+                                <p>An Income Statement (also called a Profit & Loss Statement) shows whether your business made a profit or a loss over a <strong>period of time</strong> — like a month, quarter, or year.</p>
+                                <p>Think of it like a report card for your money: it tells you how much you earned, how much you spent, and what's left.</p>
+                            </div>
+
+                            <div class="lesson-block">
+                                <h3>The Basic Formula</h3>
+                                <div class="formula-box">
+                                    Sales − Cost of Sales = Gross Profit<br>
+                                    Gross Profit − Operating Expenses = Net Profit
+                                </div>
+                            </div>
+
+                            <div class="lesson-block">
+                                <h3>Breaking It Down</h3>
+                                <p><strong>Sales (Revenue):</strong> All the money you made from selling products or services.</p>
+                                <p><strong>Cost of Sales:</strong> The direct costs to produce what you sold (e.g., materials, labour to make products).</p>
+                                <p><strong>Gross Profit:</strong> Sales minus Cost of Sales. This shows profit before operating expenses.</p>
+                                <p><strong>Operating Expenses:</strong> Costs to run the business (rent, electricity, salaries, marketing, etc.).</p>
+                                <p><strong>Net Profit:</strong> Your final profit — what's left after all expenses. This flows into owner's equity!</p>
+                            </div>
+
+                            <div class="callout">
+                                <strong>💡 In Real Life:</strong> Zandile's spaza shop made R4,200 in sales last month. Her Cost of Sales was R2,100 (stock she bought to resell). Her Gross Profit was R2,100. Then she paid R1,400 in expenses (rent, electricity, delivery), leaving her with R700 net profit!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: Interactive Statement Builder -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Build the Statement</h1>
+                        <p>Interactive: Drag & Drop Exercise</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="statement-builder">
+                            <p style="color: var(--mut); font-size: 12px; text-align: center; margin-bottom: 12px;">Drag accounts from the pool below into the correct sections of Zandile's Income Statement.</p>
+
+                            <div class="builder-header">
+                                <span>Net Profit:</span>
+                                <span id="netProfitDisplay" style="font-family: 'JetBrains Mono', monospace; font-weight: 600;">R0.00</span>
+                            </div>
+
+                            <div class="accounts-pool" id="accountsPool">
+                                <div class="account-item" draggable="true">Sales R4,200</div>
+                                <div class="account-item" draggable="true">Rent R800</div>
+                                <div class="account-item" draggable="true">Cost of Sales R2,100</div>
+                                <div class="account-item" draggable="true">Electricity R300</div>
+                                <div class="account-item" draggable="true">Depreciation R200</div>
+                                <div class="account-item" draggable="true">Bad Debts R100</div>
+                            </div>
+
+                            <div class="statement-section" data-section="sales">
+                                <span class="statement-section-title">Sales</span>
+                                <div class="section-content"></div>
+                            </div>
+
+                            <div class="statement-section" data-section="cost-of-sales">
+                                <span class="statement-section-title">Cost of Sales</span>
+                                <div class="section-content"></div>
+                                <div class="section-total">
+                                    <span>Gross Profit:</span>
+                                    <span id="gpTotal" class="placed-item-amount">R0.00</span>
+                                </div>
+                            </div>
+
+                            <div class="statement-section" data-section="expenses">
+                                <span class="statement-section-title">Operating Expenses</span>
+                                <div class="section-content"></div>
+                                <div class="section-total">
+                                    <span>Total Expenses:</span>
+                                    <span id="expTotal" class="placed-item-amount">R0.00</span>
+                                </div>
+                            </div>
+
+                            <div class="statement-total">
+                                <span>Net Profit / (Loss):</span>
+                                <span id="npTotal" class="placed-item-amount">R0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5: Lesson Part 2 - Balance Sheet -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Balance Sheet</h1>
+                        <p>Part 2: The Financial Position</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="lesson-content">
+                            <div class="lesson-block">
+                                <h3>What is a Balance Sheet?</h3>
+                                <p>A Balance Sheet shows what your business owns and owes at a <strong>specific point in time</strong> — like December 31st. It's a financial photograph, not a movie.</p>
+                                <p>It follows the fundamental accounting equation: <strong>Assets = Liabilities + Owner's Equity</strong></p>
+                            </div>
+
+                            <div class="lesson-block">
+                                <h3>The Three Sections</h3>
+                                <p><strong>Assets:</strong> What your business owns (cash, inventory, equipment, vehicles, property)</p>
+                                <p><strong>Liabilities:</strong> What your business owes (loans, supplier invoices you haven't paid, rent owing)</p>
+                                <p><strong>Owner's Equity:</strong> What's left for the owner after all debts are paid. This includes opening equity + net profit from the Income Statement.</p>
+                            </div>
+
+                            <div class="lesson-block">
+                                <h3>The Key Difference</h3>
+                                <p><strong>Income Statement:</strong> A PERIOD of time (Jan–Dec 2024)</p>
+                                <p><strong>Balance Sheet:</strong> A POINT in time (As at 31 Dec 2024)</p>
+                            </div>
+
+                            <div class="callout">
+                                <strong>💡 In Real Life:</strong> On 31 Dec, Zandile's spaza shop had R15,000 in total assets (cash, stock, equipment). She owed R10,000 to her supplier. So her owner's equity was R5,000 (R15,000 − R10,000). That R700 profit from the Income Statement gets added to her equity!
+                            </div>
+
+                            <div class="formula-box">
+                                Assets = Liabilities + Owner's Equity<br>
+                                R15,000 = R10,000 + R5,000 ✓ It balances!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 6: Worked Example -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Worked Example</h1>
+                        <p>Zandile's Spaza Shop Complete</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="worked-example">
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 16px; color: var(--ink); margin-bottom: 12px;">Income Statement for Month Ended 31 January 2024</h3>
+                            <div class="statement-card">
+                                <table class="statement-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Amount (R)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Sales</td>
+                                            <td>4,200</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cost of Sales</td>
+                                            <td>(2,100)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gross Profit</td>
+                                            <td>2,100</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Rent</td>
+                                            <td>(800)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Electricity</td>
+                                            <td>(300)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Depreciation</td>
+                                            <td>(200)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bad Debts</td>
+                                            <td>(100)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Net Profit</td>
+                                            <td>700</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="profit-flow">
+                                <p>This R700 profit flows into the Balance Sheet as:</p>
+                                <div class="amount">↓ R700 ↓</div>
+                                <p>Added to Owner's Equity</p>
+                            </div>
+
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 16px; color: var(--ink); margin: 16px 0 12px;">Balance Sheet as at 31 January 2024</h3>
+                            <div class="statement-card">
+                                <table class="statement-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Assets</th>
+                                            <th style="text-align: right;">Amount (R)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: 700; padding: 10px 8px; background: var(--fa-xs); font-size: 11px; text-transform: uppercase; color: var(--fa-d);">Non-Current Assets</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Equipment</td>
+                                            <td>3,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: 700; padding: 10px 8px; background: var(--fa-xs); font-size: 11px; text-transform: uppercase; color: var(--fa-d);">Current Assets</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cash</td>
+                                            <td>5,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Inventory</td>
+                                            <td>7,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total Assets</strong></td>
+                                            <td><strong>15,000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="statement-card">
+                                <table class="statement-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Equity & Liabilities</th>
+                                            <th style="text-align: right;">Amount (R)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: 700; padding: 10px 8px; background: var(--green-xs); font-size: 11px; text-transform: uppercase; color: #166534;">Owner's Equity</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opening Equity</td>
+                                            <td>4,300</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Add: Net Profit</td>
+                                            <td>700</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Owner's Equity</strong></td>
+                                            <td><strong>5,000</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: 700; padding: 10px 8px; background: var(--fa-xs); font-size: 11px; text-transform: uppercase; color: var(--fa-d);">Current Liabilities</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Trade Payables</td>
+                                            <td>10,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total Equity & Liabilities</strong></td>
+                                            <td><strong>15,000</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="callout">
+                                <strong>✓ It Balances!</strong> Assets (R15,000) = Equity & Liabilities (R5,000 + R10,000). The R700 profit increased owner's equity and the overall financial position.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 7: Quiz Question 1 -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Test Your Knowledge</h1>
+                        <p>Quiz: Question 1 of 3</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="quiz-question">
+                            <div class="quiz-question-number">Question 1 of 3</div>
+                            <div class="quiz-question-text">What does an Income Statement show?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q1', false)">
+                                    A) What your business owns at a specific date
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q1', true)">
+                                    B) Whether you made a profit or loss over a period
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q1', false)">
+                                    C) How much debt your business has
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q1', false)">
+                                    D) The value of owner's equity
+                                </div>
+                            </div>
+                            <div class="quiz-feedback" id="feedback-q1">
+                                <strong>Correct!</strong> An Income Statement is a PERIOD statement — it shows profit/loss over a month, quarter, or year.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 8: Quiz Question 2 -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Test Your Knowledge</h1>
+                        <p>Quiz: Question 2 of 3</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="quiz-question">
+                            <div class="quiz-question-number">Question 2 of 3</div>
+                            <div class="quiz-question-text">If Sales are R10,000, Cost of Sales is R4,000, and Operating Expenses are R3,000, what is the Net Profit?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q2', false)">
+                                    A) R7,000
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q2', false)">
+                                    B) R4,000
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q2', true)">
+                                    C) R3,000
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q2', false)">
+                                    D) R6,000
+                                </div>
+                            </div>
+                            <div class="quiz-feedback" id="feedback-q2">
+                                <strong>Correct!</strong> R10,000 − R4,000 = R6,000 Gross Profit. R6,000 − R3,000 = R3,000 Net Profit.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 9: Quiz Question 3 -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Test Your Knowledge</h1>
+                        <p>Quiz: Question 3 of 3</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="quiz-question">
+                            <div class="quiz-question-number">Question 3 of 3</div>
+                            <div class="quiz-question-text">On a Balance Sheet, where does the Net Profit from the Income Statement flow?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q3', false)">
+                                    A) Current Assets
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q3', false)">
+                                    B) Current Liabilities
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q3', true)">
+                                    C) Owner's Equity
+                                </div>
+                                <div class="quiz-option" onclick="selectQuizOption(this, 'q3', false)">
+                                    D) Non-Current Assets
+                                </div>
+                            </div>
+                            <div class="quiz-feedback" id="feedback-q3">
+                                <strong>Correct!</strong> Profit earned increases owner's equity. This is how the Income Statement and Balance Sheet are connected!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 10: Win Screen - Graduation! -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Celebration! 🎉</h1>
+                        <p>You Did It!</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner" style="justify-content: center;">
+                        <div class="win-screen">
+                            <div class="celebration-banner">
+                                <h2>🏆 Course Complete! 🏆</h2>
+                                <p>You've Mastered TVET N4 Financial Accounting!</p>
+                            </div>
+
+                            <div class="badge-container">
+                                <div class="badge-large">
+                                    <div class="number">9</div>
+                                    <div class="label">Modules</div>
+                                </div>
+                                <div class="badge-large" style="background: linear-gradient(135deg, var(--gold) 0%, #F59E0B 100%); color: #92400E; animation: bounce 2s ease-in-out 0.3s infinite;">
+                                    <div class="number">250</div>
+                                    <div class="label">XP</div>
+                                </div>
+                                <div class="badge-large" style="background: linear-gradient(135deg, var(--green) 0%, #16A34A 100%); animation: bounce 2s ease-in-out 0.6s infinite;">
+                                    <div class="number">100%</div>
+                                    <div class="label">Done</div>
+                                </div>
+                            </div>
+
+                            <div class="stats-summary">
+                                <div class="stat-row">
+                                    <span class="stat-label">This Module XP:</span>
+                                    <span class="stat-value">+ 250 XP</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Total XP Earned:</span>
+                                    <span class="stat-value">1,675 XP</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Quiz Completion:</span>
+                                    <span class="stat-value">100%</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Final Badge:</span>
+                                    <span class="stat-value">Accountant ✨</span>
+                                </div>
+                            </div>
+
+                            <p style="color: var(--mut); font-size: 13px; line-height: 1.6; text-align: center; margin-top: 12px;">
+                                You've learned everything from the basics of accounting to complex financial statements. You're ready to manage finances like a pro!
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="btn btn-ghost" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                                <button class="btn btn-secondary" onclick="goToScreen(0)">← Back</button>
+                                <button class="btn btn-primary" onclick="restartCourse()">Restart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 11: Resources -->
+            <div class="screen">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Practice & Past Papers</h1>
+                        <p>Module 9 · Financial Statements</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div style="text-align:center;margin-bottom:20px">
+                          <div style="font-size:32px;margin-bottom:8px">📝</div>
+                          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink)">Practice & Past Papers</div>
+                          <div style="font-size:13px;color:var(--mut);margin-top:4px">Module 9 · Financial Statements</div>
+                        </div>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                          <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                          <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                          <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                          <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                          <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                          <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none" onclick="event.preventDefault()">
+                          <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                          <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                          <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs)" onclick="event.preventDefault()">
+                          <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                          <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Financial Statements · 15 questions · 20 min</div></div>
+                          <div style="font-size:14px;color:var(--p)">→</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs)" onclick="event.preventDefault()">
+                          <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                          <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Financial Statements · 15 questions · 20 min</div></div>
+                          <div style="font-size:14px;color:var(--p)">→</div>
+                        </a>
+                        <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+                          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+                          <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-fa" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-nav">
+            <button class="nav-button" id="prevBtn" onclick="previousScreen()" disabled>← Previous</button>
+            <span class="nav-info" id="screenInfo">Screen 1 of 11</span>
+            <button class="nav-button" id="nextBtn" onclick="nextScreen()">Next →</button>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <div class="sidebar-nav" id="sidebarNav"></div>
+
+        <!-- Keyboard hint -->
+        <div class="keyboard-hint">← → arrow keys</div>
+    </div>
+
+    <script>
+        // ── SEND DATA TO PARENT FRAME ──
+        function notifyParent(type, data) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type, ...data }, '*');
+            }
+          } catch(e) {}
+        }
+
+        const MODULE_ID = 9;
+        let currentScreen = 0;
+        const totalScreens = 11;
+        let videoTime = 0;
+        let videoPlaying = false;
+        const videoDuration = 225; // 3:45 in seconds
+
+        // Initialize sidebar navigation
+        function initSidebar() {
+            const sidebar = document.getElementById('sidebarNav');
+            sidebar.innerHTML = '';
+            for (let i = 0; i < totalScreens; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot';
+                if (i === currentScreen) dot.classList.add('active');
+                dot.textContent = i + 1;
+                dot.onclick = () => goToScreen(i);
+                sidebar.appendChild(dot);
+            }
+        }
+
+        // Update screen display and sidebar
+        function updateScreen() {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach((screen, index) => {
+                screen.classList.remove('active', 'prev');
+                if (index === currentScreen) {
+                    screen.classList.add('active');
+                } else if (index < currentScreen) {
+                    screen.classList.add('prev');
+                }
+            });
+
+            // Update sidebar
+            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentScreen);
+            });
+
+            // Update footer info
+            document.getElementById('screenInfo').textContent = `Screen ${currentScreen + 1} of ${totalScreens}`;
+            document.getElementById('prevBtn').disabled = currentScreen === 0;
+            document.getElementById('nextBtn').disabled = currentScreen === totalScreens - 1;
+
+            // Update progress bar
+            const progress = ((currentScreen + 1) / totalScreens) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        function goToScreen(index) {
+            currentScreen = Math.max(0, Math.min(index, totalScreens - 1));
+            notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: totalScreens });
+            if (currentScreen === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            // Track screen view
+            if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(9, currentScreen);
+            updateScreen();
+            scrollScreenIntoView();
+        }
+
+        function nextScreen() {
+            if (currentScreen < totalScreens - 1) {
+                currentScreen++;
+                updateScreen();
+                scrollScreenIntoView();
+            }
+        }
+
+        function previousScreen() {
+            if (currentScreen > 0) {
+                currentScreen--;
+                updateScreen();
+                scrollScreenIntoView();
+            }
+        }
+
+        function scrollScreenIntoView() {
+            const content = document.querySelector('.screen-container');
+            content.scrollLeft = 0;
+        }
+
+        // Video player functionality
+        document.getElementById('playBtn').addEventListener('click', function() {
+            const player = document.getElementById('videoPlayer');
+            player.classList.add('playing');
+            simulateVideoPlayback();
+        });
+
+        function simulateVideoPlayback() {
+            videoPlaying = true;
+            const interval = setInterval(() => {
+                if (videoPlaying && videoTime < videoDuration) {
+                    videoTime++;
+                    updateVideoTime();
+                } else if (videoTime >= videoDuration) {
+                    videoPlaying = false;
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+
+        function updateVideoTime() {
+            const minutes = Math.floor(videoTime / 60);
+            const seconds = videoTime % 60;
+            const paddedSeconds = seconds.toString().padStart(2, '0');
+            document.getElementById('videoTime').textContent = `${minutes}:${paddedSeconds} / 3:45`;
+        }
+
+        function jumpToMarker(seconds) {
+            videoTime = seconds;
+            updateVideoTime();
+            simulateVideoPlayback();
+        }
+
+        // Interactive Statement Builder
+        const accountsPool = document.getElementById('accountsPool');
+        const accountItems = document.querySelectorAll('.account-item');
+        const sections = document.querySelectorAll('.statement-section');
+
+        accountItems.forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', e.target.innerHTML);
+                item.classList.add('dragging');
+            });
+
+            item.addEventListener('dragend', (e) => {
+                item.classList.remove('dragging');
+            });
+        });
+
+        sections.forEach(section => {
+            section.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                section.classList.add('active');
+            });
+
+            section.addEventListener('dragleave', (e) => {
+                section.classList.remove('active');
+            });
+
+            section.addEventListener('drop', (e) => {
+                e.preventDefault();
+                section.classList.remove('active');
+
+                const accountText = e.dataTransfer.getData('text/html');
+                const sectionContent = section.querySelector('.section-content');
+
+                // Parse the amount from the account text
+                const match = accountText.match(/R([\d,]+)/);
+                if (match) {
+                    const amount = parseInt(match[1].replace(',', ''));
+                    const accountName = accountText.replace(/R[\d,]+/, '').trim();
+
+                    const placedItem = document.createElement('div');
+                    placedItem.className = 'placed-item';
+                    placedItem.draggable = true;
+                    placedItem.innerHTML = `
+                        <span class="placed-item-name">${accountName}</span>
+                        <span class="placed-item-amount">R${amount.toLocaleString()}</span>
+                    `;
+
+                    sectionContent.appendChild(placedItem);
+                    updateCalculations();
+                }
+            });
+        });
+
+        function updateCalculations() {
+            // Sales section
+            const salesItems = document.querySelector('[data-section="sales"] .section-content').querySelectorAll('.placed-item');
+            let totalSales = 0;
+            salesItems.forEach(item => {
+                const amount = parseInt(item.querySelector('.placed-item-amount').textContent.replace('R', '').replace(',', ''));
+                totalSales += amount;
+            });
+
+            // Cost of Sales section
+            const cosItems = document.querySelector('[data-section="cost-of-sales"] .section-content').querySelectorAll('.placed-item');
+            let totalCOS = 0;
+            cosItems.forEach(item => {
+                const amount = parseInt(item.querySelector('.placed-item-amount').textContent.replace('R', '').replace(',', ''));
+                totalCOS += amount;
+            });
+
+            // Calculate Gross Profit
+            const grossProfit = totalSales - totalCOS;
+            document.getElementById('gpTotal').textContent = 'R' + grossProfit.toLocaleString();
+
+            // Expenses section
+            const expItems = document.querySelector('[data-section="expenses"] .section-content').querySelectorAll('.placed-item');
+            let totalExp = 0;
+            expItems.forEach(item => {
+                const amount = parseInt(item.querySelector('.placed-item-amount').textContent.replace('R', '').replace(',', ''));
+                totalExp += amount;
+            });
+            document.getElementById('expTotal').textContent = 'R' + totalExp.toLocaleString();
+
+            // Net Profit
+            const netProfit = grossProfit - totalExp;
+            document.getElementById('npTotal').textContent = 'R' + Math.max(0, netProfit).toLocaleString();
+            document.getElementById('netProfitDisplay').textContent = 'R' + Math.max(0, netProfit).toLocaleString();
+        }
+
+        // Quiz functionality
+        function selectQuizOption(element, questionId, isCorrect) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+
+            element.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            feedback.classList.add('show');
+            feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+            // Track quiz answer
+            const qNum = questionId.replace('q', '');
+            if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(9, 'post', qNum, isCorrect, 0);
+            notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: isCorrect, questionText: `Question ${qNum}`, topic: 'Financial Statements' });
+        }
+
+        // Win screen restart
+        function restartCourse() {
+            currentScreen = 0;
+            updateScreen();
+            scrollScreenIntoView();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextScreen();
+            if (e.key === 'ArrowLeft') previousScreen();
+        });
+
+        // Initialize on load
+        initSidebar();
+        updateScreen();
+    </script>
+</body>
+</html>

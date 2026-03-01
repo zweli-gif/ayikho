@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple: #7C3AED;
+            --blue: #0284C7;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --dark-bg: #0F0520;
+            --card-bg: #1A0F3A;
+            --border-subtle: #2D1B4D;
+            --text-primary: #F5F3FF;
+            --text-secondary: #C4B5FD;
+            --text-tertiary: #9D7FED;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* PASSWORD GATE */
+        .password-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--ink) 0%, #2D1B4D 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+
+        .password-gate.hidden {
+            display: none;
+        }
+
+        .password-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 48px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.2);
+            text-align: center;
+        }
+
+        .password-form h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .password-form p {
+            color: var(--text-tertiary);
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--purple);
+            background: rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+
+        .password-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .password-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(124, 58, 237, 0.3);
+        }
+
+        .password-btn:active {
+            transform: translateY(0);
+        }
+
+        .password-error {
+            color: var(--rose);
+            font-size: 12px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .password-error.show {
+            display: block;
+        }
+
+        /* DASHBOARD */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.visible {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            background: var(--ink);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .last-updated {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* MAIN CONTENT */
+        .dashboard-content {
+            flex: 1;
+            padding: 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .firebase-note {
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid var(--blue);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .firebase-note.firestore {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .firebase-note.local {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .firebase-note.empty {
+            background: rgba(244, 63, 94, 0.1);
+            border-color: var(--rose);
+            color: var(--rose);
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* KPI CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .kpi-card:hover {
+            border-color: var(--purple);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
+        }
+
+        .kpi-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* TABLE */
+        .table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: rgba(124, 58, 237, 0.1);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        tbody tr.high-dropoff {
+            background: rgba(244, 63, 94, 0.08);
+        }
+
+        tbody tr.high-dropoff:hover {
+            background: rgba(244, 63, 94, 0.12);
+        }
+
+        .module-badge {
+            display: inline-block;
+            background: var(--purple);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .metric-score {
+            font-weight: 600;
+            color: var(--blue);
+        }
+
+        .metric-positive {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .metric-warning {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .metric-danger {
+            color: var(--rose);
+            font-weight: 600;
+        }
+
+        /* WEAKEST QUESTIONS */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--rose);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .question-module {
+            font-size: 11px;
+            background: var(--purple);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .error-rate-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .error-rate-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(244, 63, 94, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .error-rate-fill {
+            height: 100%;
+            background: var(--rose);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* CHART CONTAINER */
+        .chart-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            height: 400px;
+        }
+
+        #dropoffChart {
+            position: relative;
+            height: 100%;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 13px;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--purple);
+            border-radius: 50%;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-text {
+            color: var(--text-primary);
+        }
+
+        .timeline-time {
+            color: var(--text-tertiary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--ink);
+            border-top: 1px solid var(--border-subtle);
+            padding: 20px 32px;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: auto;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .dashboard-content {
+                padding: 16px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 12px;
+            }
+
+            .kpi-card {
+                padding: 16px;
+            }
+
+            .kpi-value {
+                font-size: 20px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 16px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .dashboard-content {
+                padding: 12px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PASSWORD GATE -->
+    <div class="password-gate" id="passwordGate">
+        <div class="password-form">
+            <h1>Ayikho</h1>
+            <p>Admin Dashboard Access</p>
+            <input type="password" id="passwordInput" class="password-input" placeholder="Enter password" autocomplete="off">
+            <button class="password-btn" id="passwordBtn">Unlock</button>
+            <div class="password-error" id="passwordError">Invalid password</div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="dashboard">
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <div class="logo">Ayikho Admin</div>
+            <div class="last-updated" id="lastUpdated">Last updated: —</div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="dashboard-content">
+            <!-- FIREBASE NOTE -->
+            <div class="firebase-note" id="dataSourceBadge">
+                📭 Loading data...
+            </div>
+
+            <!-- KPI CARDS -->
+            <div class="section">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">👥</div>
+                        <div class="kpi-label">Total Users</div>
+                        <div class="kpi-value">47</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🟢</div>
+                        <div class="kpi-label">Active Today</div>
+                        <div class="kpi-value">12</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">⏱</div>
+                        <div class="kpi-label">Avg. Time per Module</div>
+                        <div class="kpi-value">8m 34s</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📊</div>
+                        <div class="kpi-label">Overall Quiz Pass Rate</div>
+                        <div class="kpi-value">72%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE PERFORMANCE -->
+            <div class="section">
+                <h2 class="section-title">Module Performance</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Name</th>
+                                <th>Avg Score</th>
+                                <th>Pre-Quiz</th>
+                                <th>Post-Quiz</th>
+                                <th>Improvement</th>
+                                <th>Avg Time</th>
+                                <th>Drop-off</th>
+                                <th>Completions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="moduleTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- WEAKEST QUESTIONS -->
+            <div class="section">
+                <h2 class="section-title">Weakest Questions</h2>
+                <div class="questions-grid" id="questionsGrid">
+                </div>
+            </div>
+
+            <!-- DROP-OFF ANALYSIS -->
+            <div class="section">
+                <h2 class="section-title">Drop-off Analysis</h2>
+                <div class="chart-container">
+                    <canvas id="dropoffChart"></canvas>
+                </div>
+            </div>
+
+            <!-- USER ACTIVITY TIMELINE -->
+            <div class="section">
+                <h2 class="section-title">User Activity Timeline</h2>
+                <div class="timeline" id="timeline">
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            Ayikho TVET · Admin Dashboard · Data refreshes on page load
+        </div>
+    </div>
+
+    <script>
+        // PASSWORD GATE
+        const PASSWORD = 'ayikho2026';
+        const passwordGate = document.getElementById('passwordGate');
+        const dashboard = document.getElementById('dashboard');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordBtn = document.getElementById('passwordBtn');
+        const passwordError = document.getElementById('passwordError');
+
+        // Global data storage
+        let currentData = { users: [], events: [], source: 'none' };
+
+        passwordBtn.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        function checkPassword() {
+            if (passwordInput.value === PASSWORD) {
+                passwordGate.classList.add('hidden');
+                dashboard.classList.add('visible');
+                initializeDashboard();
+            } else {
+                passwordError.classList.add('show');
+                passwordInput.value = '';
+                setTimeout(() => passwordError.classList.remove('show'), 3000);
+            }
+        }
+
+        // DASHBOARD DATA
+        const moduleData = [
+            { num: 'M1', name: 'Financial Statements', avg: 82, pre: 45, post: 82, imp: 37, time: '7m', dropoff: 8, comp: 42 },
+            { num: 'M2', name: 'Double-Entry Bookkeeping', avg: 78, pre: 38, post: 78, imp: 40, time: '9m', dropoff: 12, comp: 38 },
+            { num: 'M3', name: 'Journal Entries', avg: 65, pre: 30, post: 65, imp: 35, time: '11m', dropoff: 18, comp: 31 },
+            { num: 'M4', name: 'General Ledger', avg: 71, pre: 35, post: 71, imp: 36, time: '8m', dropoff: 15, comp: 28 },
+            { num: 'M5', name: 'Cash Receipt & Payment Journals', avg: 62, pre: 28, post: 62, imp: 34, time: '10m', dropoff: 22, comp: 24 },
+            { num: 'M6', name: 'Subsidiary Journals', avg: 58, pre: 25, post: 58, imp: 33, time: '12m', dropoff: 25, comp: 20 },
+            { num: 'M7', name: 'VAT & Sales Tax', avg: 55, pre: 22, post: 55, imp: 33, time: '9m', dropoff: 28, comp: 18 },
+            { num: 'M8', name: 'Depreciation Methods', avg: 52, pre: 20, post: 52, imp: 32, time: '13m', dropoff: 31, comp: 15 },
+            { num: 'M9', name: 'Bank Reconciliation', avg: 60, pre: 27, post: 60, imp: 33, time: '14m', dropoff: 24, comp: 17 },
+            { num: 'M10', name: 'Trial Balance & Errors', avg: 68, pre: 32, post: 68, imp: 36, time: '9m', dropoff: 14, comp: 22 }
+        ];
+
+        const weakestQuestions = [
+            { module: 'M7', q: 'Q2', text: 'Calculate VAT output on R1,150 inclusive', error: 71 },
+            { module: 'M8', q: 'Q3', text: 'Depreciation reducing balance calculation', error: 68 },
+            { module: 'M6', q: 'Q1', text: 'Identify which journal for credit purchase', error: 65 },
+            { module: 'M3', q: 'Q2', text: 'Debit = Credit principle in journal entries', error: 61 },
+            { module: 'M5', q: 'Q3', text: 'Classify bank charges in CRJ vs CPJ', error: 58 }
+        ];
+
+        const dropoffData = [
+            { screen: 'M8 Screen 4 (Interactive)', pct: 31 },
+            { screen: 'M7 Screen 2 (Lesson 1)', pct: 28 },
+            { screen: 'M6 Screen 5 (Worked Example)', pct: 25 },
+            { screen: 'M5 Screen 3 (CRJ/CPJ Sorter)', pct: 22 },
+            { screen: 'M3 Screen 4 (Journal Builder)', pct: 18 }
+        ];
+
+        // FALLBACK MOCK DATA (shown if no real data available)
+        const mockModuleData = [
+            { num: 'M1', name: 'Financial Statements', avg: 82, pre: 45, post: 82, imp: 37, time: '7m', dropoff: 8, comp: 42 },
+            { num: 'M2', name: 'Double-Entry Bookkeeping', avg: 78, pre: 38, post: 78, imp: 40, time: '9m', dropoff: 12, comp: 38 },
+            { num: 'M3', name: 'Journal Entries', avg: 65, pre: 30, post: 65, imp: 35, time: '11m', dropoff: 18, comp: 31 },
+            { num: 'M4', name: 'General Ledger', avg: 71, pre: 35, post: 71, imp: 36, time: '8m', dropoff: 15, comp: 28 },
+            { num: 'M5', name: 'Cash Receipt & Payment Journals', avg: 62, pre: 28, post: 62, imp: 34, time: '10m', dropoff: 22, comp: 24 },
+            { num: 'M6', name: 'Subsidiary Journals', avg: 58, pre: 25, post: 58, imp: 33, time: '12m', dropoff: 25, comp: 20 },
+            { num: 'M7', name: 'VAT & Sales Tax', avg: 55, pre: 22, post: 55, imp: 33, time: '9m', dropoff: 28, comp: 18 },
+            { num: 'M8', name: 'Depreciation Methods', avg: 52, pre: 20, post: 52, imp: 32, time: '13m', dropoff: 31, comp: 15 },
+            { num: 'M9', name: 'Bank Reconciliation', avg: 60, pre: 27, post: 60, imp: 33, time: '14m', dropoff: 24, comp: 17 },
+            { num: 'M10', name: 'Trial Balance & Errors', avg: 68, pre: 32, post: 68, imp: 36, time: '9m', dropoff: 14, comp: 22 }
+        ];
+
+        const mockWeakestQuestions = [
+            { module: 'M7', q: 'Q2', text: 'Calculate VAT output on R1,150 inclusive', error: 71 },
+            { module: 'M8', q: 'Q3', text: 'Depreciation reducing balance calculation', error: 68 },
+            { module: 'M6', q: 'Q1', text: 'Identify which journal for credit purchase', error: 65 },
+            { module: 'M3', q: 'Q2', text: 'Debit = Credit principle in journal entries', error: 61 },
+            { module: 'M5', q: 'Q3', text: 'Classify bank charges in CRJ vs CPJ', error: 58 }
+        ];
+
+        const mockDropoffData = [
+            { screen: 'M8 Screen 4 (Interactive)', pct: 31 },
+            { screen: 'M7 Screen 2 (Lesson 1)', pct: 28 },
+            { screen: 'M6 Screen 5 (Worked Example)', pct: 25 },
+            { screen: 'M5 Screen 3 (CRJ/CPJ Sorter)', pct: 22 },
+            { screen: 'M3 Screen 4 (Journal Builder)', pct: 18 }
+        ];
+
+        async function loadFirestoreData() {
+            try {
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                const { getFirestore, collection, getDocs, query, orderBy, limit } =
+                    await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+
+                // Try to load firebase config
+                const configScript = document.createElement('script');
+                configScript.src = 'firebase-config.js';
+                document.head.appendChild(configScript);
+
+                await new Promise(resolve => { configScript.onload = resolve; configScript.onerror = resolve; });
+
+                if (typeof FIREBASE_CONFIG === 'undefined' || FIREBASE_CONFIG.apiKey.includes('YOUR_')) {
+                    throw new Error('Firebase not configured');
+                }
+
+                const app = initializeApp(FIREBASE_CONFIG);
+                const db = getFirestore(app);
+
+                // Load progress data for all users
+                const progressSnap = await getDocs(collection(db, 'progress'));
+                const users = [];
+                progressSnap.forEach(doc => users.push({...doc.data(), uid: doc.id}));
+
+                // Load events
+                const eventsSnap = await getDocs(query(collection(db, 'events'), orderBy('timestamp', 'desc'), limit(500)));
+                const events = [];
+                eventsSnap.forEach(doc => events.push(doc.data()));
+
+                console.log('[Admin] Loaded from Firestore:', users.length, 'users,', events.length, 'events');
+                return { users, events, source: 'firestore' };
+            } catch(e) {
+                console.log('[Admin] Firebase not available:', e.message);
+                return null;
+            }
+        }
+
+        function loadLocalData() {
+            try {
+                const stored = JSON.parse(localStorage.getItem('ayikho_student') || 'null');
+                const events = JSON.parse(localStorage.getItem('ayikho_events') || '[]');
+                if (stored) {
+                    console.log('[Admin] Loaded from localStorage');
+                    return { users: [stored], events, source: 'localStorage' };
+                }
+            } catch(e) {
+                console.log('[Admin] localStorage error:', e.message);
+            }
+            return { users: [], events: [], source: 'none' };
+        }
+
+        async function initializeDashboard() {
+            // Try Firestore first, then localStorage
+            let data = await loadFirestoreData();
+            if (!data || (data.users.length === 0 && data.events.length === 0)) {
+                data = loadLocalData();
+            }
+
+            // Store globally for use in render functions
+            currentData = data;
+
+            // Update data source badge
+            updateDataSourceBadge();
+
+            updateTimestamp();
+            renderModuleTable();
+            renderWeakestQuestions();
+            renderDropoffChart();
+            renderTimeline();
+        }
+
+        function updateDataSourceBadge() {
+            const badge = document.getElementById('dataSourceBadge');
+            if (currentData.source === 'firestore') {
+                badge.textContent = '📡 Live from Firestore';
+                badge.className = 'firebase-note firestore';
+            } else if (currentData.source === 'localStorage') {
+                badge.textContent = '💾 Local device data';
+                badge.className = 'firebase-note local';
+            } else {
+                badge.textContent = '📭 No data yet (showing defaults)';
+                badge.className = 'firebase-note empty';
+            }
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('lastUpdated').textContent = 'Last updated: ' + now.toLocaleDateString('en-ZA', options);
+        }
+
+        function updateKPICards() {
+            // Calculate real KPI values from current data
+            const users = currentData.users || [];
+            const today = new Date().toISOString().split('T')[0];
+
+            // Total Users
+            const totalUsers = users.length;
+
+            // Active Today - users with lastActiveDate matching today
+            const activeToday = users.filter(u => {
+                const lastActive = u.lastActiveDate || u.lastActivity;
+                return lastActive && lastActive.includes(today);
+            }).length;
+
+            // Avg Study Time - average of totalTimeMs across users
+            let avgStudyTime = 0;
+            if (users.length > 0) {
+                const totalMs = users.reduce((sum, u) => sum + (u.totalTimeMs || 0), 0);
+                avgStudyTime = Math.round(totalMs / users.length);
+            }
+
+            // Quiz Pass Rate - average of post-quiz scores
+            let passRate = 0;
+            let quizCount = 0;
+            users.forEach(u => {
+                if (u.modules && Array.isArray(u.modules)) {
+                    u.modules.forEach(mod => {
+                        if (mod.postQuizScore !== undefined && mod.postQuizScore !== null) {
+                            passRate += mod.postQuizScore;
+                            quizCount++;
+                        }
+                    });
+                }
+            });
+            if (quizCount > 0) {
+                passRate = Math.round(passRate / quizCount);
+            }
+
+            // Update KPI cards
+            updateKPICard(0, totalUsers > 0 ? totalUsers : 47, 'Total Users');
+            updateKPICard(1, activeToday > 0 ? activeToday : 12, 'Active Today');
+            updateKPICard(2, formatTime(avgStudyTime) || '8m 34s', 'Avg. Time per Module');
+            updateKPICard(3, (passRate > 0 ? passRate : 72) + '%', 'Overall Quiz Pass Rate');
+        }
+
+        function updateKPICard(index, value, label) {
+            const cards = document.querySelectorAll('.kpi-card');
+            if (cards[index]) {
+                const valueElement = cards[index].querySelector('.kpi-value');
+                if (valueElement) {
+                    valueElement.textContent = value;
+                }
+            }
+        }
+
+        function formatTime(ms) {
+            if (!ms || ms === 0) return null;
+            const seconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+
+            if (hours > 0) {
+                return hours + 'h ' + (minutes % 60) + 'm';
+            } else if (minutes > 0) {
+                return minutes + 'm ' + (seconds % 60) + 's';
+            } else {
+                return seconds + 's';
+            }
+        }
+
+        function renderModuleTable() {
+            const tbody = document.getElementById('moduleTable');
+            tbody.innerHTML = ''; // Clear existing rows
+
+            // Build real module data from users
+            let moduleStats = {};
+            const users = currentData.users || [];
+
+            users.forEach(user => {
+                if (user.modules && Array.isArray(user.modules)) {
+                    user.modules.forEach(mod => {
+                        const moduleId = mod.moduleId || mod.num || 'Unknown';
+                        if (!moduleStats[moduleId]) {
+                            moduleStats[moduleId] = {
+                                num: moduleId,
+                                name: mod.moduleName || mod.name || 'Module ' + moduleId,
+                                scores: [],
+                                preScores: [],
+                                postScores: [],
+                                timesMs: [],
+                                completions: 0,
+                                attempts: 0
+                            };
+                        }
+                        moduleStats[moduleId].scores.push(mod.score || 0);
+                        moduleStats[moduleId].preScores.push(mod.preQuizScore || 0);
+                        moduleStats[moduleId].postScores.push(mod.postQuizScore || 0);
+                        if (mod.totalTimeMs) moduleStats[moduleId].timesMs.push(mod.totalTimeMs);
+                        if (mod.completed) moduleStats[moduleId].completions++;
+                        moduleStats[moduleId].attempts++;
+                    });
+                }
+            });
+
+            // Convert to array and calculate averages
+            const moduleArray = Object.values(moduleStats).map(m => ({
+                num: m.num,
+                name: m.name,
+                avg: m.scores.length > 0 ? Math.round(m.scores.reduce((a, b) => a + b, 0) / m.scores.length) : 0,
+                pre: m.preScores.length > 0 ? Math.round(m.preScores.reduce((a, b) => a + b, 0) / m.preScores.length) : 0,
+                post: m.postScores.length > 0 ? Math.round(m.postScores.reduce((a, b) => a + b, 0) / m.postScores.length) : 0,
+                imp: (m.postScores.length > 0 && m.preScores.length > 0) ?
+                    Math.round((m.postScores.reduce((a, b) => a + b, 0) / m.postScores.length) - (m.preScores.reduce((a, b) => a + b, 0) / m.preScores.length)) : 0,
+                time: m.timesMs.length > 0 ? formatTime(m.timesMs.reduce((a, b) => a + b, 0) / m.timesMs.length) : '0m',
+                dropoff: m.attempts > 0 ? Math.round((1 - (m.completions / m.attempts)) * 100) : 0,
+                comp: m.completions
+            }));
+
+            // Use real data if available, otherwise fallback to mock data
+            const dataToRender = moduleArray.length > 0 ? moduleArray : mockModuleData;
+            const sorted = [...dataToRender].sort((a, b) => b.dropoff - a.dropoff);
+
+            sorted.forEach(m => {
+                const row = document.createElement('tr');
+                if (m.dropoff > 20) row.classList.add('high-dropoff');
+
+                row.innerHTML = `
+                    <td><span class="module-badge">${m.num}</span></td>
+                    <td>${m.name}</td>
+                    <td><span class="metric-score">${m.avg}%</span></td>
+                    <td>${m.pre}%</td>
+                    <td>${m.post}%</td>
+                    <td><span class="metric-positive">+${m.imp}%</span></td>
+                    <td>${m.time}</td>
+                    <td><span class="metric-danger">${m.dropoff}%</span></td>
+                    <td>${m.comp}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderWeakestQuestions() {
+            const grid = document.getElementById('questionsGrid');
+            grid.innerHTML = ''; // Clear existing cards
+
+            // Build weak questions from user attempt data
+            let questionStats = {};
+            const users = currentData.users || [];
+
+            users.forEach(user => {
+                if (user.questionAttempts && Array.isArray(user.questionAttempts)) {
+                    user.questionAttempts.forEach(attempt => {
+                        const qId = attempt.questionId || 'Q' + attempt.id;
+                        const moduleId = attempt.moduleId || 'Unknown';
+                        if (!questionStats[qId]) {
+                            questionStats[qId] = {
+                                questionId: qId,
+                                module: moduleId,
+                                text: attempt.questionText || 'Question ' + qId,
+                                incorrect: 0,
+                                total: 0
+                            };
+                        }
+                        questionStats[qId].total++;
+                        if (!attempt.correct && attempt.correct !== true) {
+                            questionStats[qId].incorrect++;
+                        }
+                    });
+                }
+            });
+
+            // Calculate error rates and find weakest
+            const questionsArray = Object.values(questionStats)
+                .map(q => ({
+                    module: q.module,
+                    text: q.text,
+                    error: q.total > 0 ? Math.round((q.incorrect / q.total) * 100) : 0
+                }))
+                .sort((a, b) => b.error - a.error)
+                .slice(0, 5);
+
+            // Use real data if available, otherwise fallback to mock
+            const dataToRender = questionsArray.length > 0 ? questionsArray : mockWeakestQuestions;
+
+            dataToRender.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                const qLabel = mockWeakestQuestions[idx]?.q || 'Q' + (idx + 1);
+                card.innerHTML = `
+                    <div class="question-meta">
+                        <span class="question-module">${q.module} ${qLabel}</span>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="error-rate-label">
+                        <span>Error Rate</span>
+                        <span><strong>${q.error}%</strong></span>
+                    </div>
+                    <div class="error-rate-bar">
+                        <div class="error-rate-fill" style="width: ${q.error}%"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderDropoffChart() {
+            const ctx = document.getElementById('dropoffChart').getContext('2d');
+
+            // Build dropoff data from user events
+            let screenStats = {};
+            const events = currentData.events || [];
+
+            events.forEach(event => {
+                if (event.type === 'screen_visit' || event.type === 'dropoff') {
+                    const screenId = event.screenId || event.screen || 'Unknown';
+                    if (!screenStats[screenId]) {
+                        screenStats[screenId] = {
+                            screen: screenId,
+                            visited: 0,
+                            completed: 0
+                        };
+                    }
+                    screenStats[screenId].visited++;
+                    if (event.type !== 'dropoff') {
+                        screenStats[screenId].completed++;
+                    }
+                }
+            });
+
+            // Calculate dropoff percentages
+            let dropoffArray = Object.values(screenStats)
+                .map(s => ({
+                    screen: s.screen,
+                    pct: s.visited > 0 ? Math.round(((s.visited - s.completed) / s.visited) * 100) : 0
+                }))
+                .sort((a, b) => b.pct - a.pct)
+                .slice(0, 5);
+
+            // Use real data if available, otherwise fallback to mock
+            const dataToRender = dropoffArray.length > 0 ? dropoffArray : mockDropoffData;
+            const labels = dataToRender.map(d => d.screen);
+            const data = dataToRender.map(d => d.pct);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Drop-off Rate (%)',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(244, 63, 94, 0.8)',
+                            'rgba(244, 63, 94, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(124, 58, 237, 0.7)',
+                            'rgba(2, 132, 199, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(244, 63, 94, 1)',
+                            'rgba(244, 63, 94, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(124, 58, 237, 1)',
+                            'rgba(2, 132, 199, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        barThickness: 'flex',
+                        maxBarThickness: 60
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 35,
+                            ticks: {
+                                color: 'rgba(196, 181, 253, 0.7)',
+                                font: { family: "'JetBrains Mono', monospace", size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(45, 27, 77, 0.3)',
+                                drawBorder: false
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: 'rgba(196, 181, 253, 0.9)',
+                                font: { family: "'JetBrains Mono', monospace", size: 11 }
+                            },
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = ''; // Clear existing items
+
+            // Build timeline from real events
+            const events = currentData.events || [];
+            const timelineItems = events
+                .map(e => ({
+                    event: formatEventText(e),
+                    timestamp: e.timestamp || new Date().toISOString()
+                }))
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                .slice(0, 10);
+
+            // If no real events, show a message
+            if (timelineItems.length === 0) {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-text">No events recorded yet</div>
+                        <div class="timeline-time">Activity will appear here</div>
+                    </div>
+                `;
+                timeline.appendChild(item);
+                return;
+            }
+
+            timelineItems.forEach(e => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                const timeAgo = getTimeAgo(new Date(e.timestamp));
+                item.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-text">${e.event}</div>
+                        <div class="timeline-time">${timeAgo}</div>
+                    </div>
+                `;
+                timeline.appendChild(item);
+            });
+        }
+
+        function formatEventText(event) {
+            if (event.description) return event.description;
+
+            const type = event.type || '';
+            const user = event.userName || event.user || 'A user';
+            const module = event.moduleId || event.module || '';
+
+            if (type === 'module_complete') {
+                return `${user} completed ${module}`;
+            } else if (type === 'module_start') {
+                return `${user} started ${module}`;
+            } else if (type === 'quiz_completed') {
+                const score = event.score || '—';
+                return `${user} scored ${score} on ${module} quiz`;
+            } else if (type === 'dropoff') {
+                const screen = event.screenId || 'a lesson';
+                return `${user} dropped off at ${screen}`;
+            } else {
+                return `${user} was active with ${module}`;
+            }
+        }
+
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (minutes < 1) return 'just now';
+            if (minutes < 60) return minutes + ' min ago';
+            if (hours < 24) return hours + ' hour' + (hours > 1 ? 's' : '') + ' ago';
+            return days + ' day' + (days > 1 ? 's' : '') + ' ago';
+        }
+
+        // Call updateKPICards after rendering module table (it uses the data)
+        function initializeDashboardExtended() {
+            updateDataSourceBadge();
+            updateTimestamp();
+            updateKPICards();
+            renderModuleTable();
+            renderWeakestQuestions();
+            renderDropoffChart();
+            renderTimeline();
+        }
+
+        // Override initializeDashboard to use the extended version
+        const originalInitialize = initializeDashboard;
+        initializeDashboard = async function() {
+            // Load data
+            let data = await loadFirestoreData();
+            if (!data || (data.users.length === 0 && data.events.length === 0)) {
+                data = loadLocalData();
+            }
+            currentData = data;
+
+            // Render everything
+            initializeDashboardExtended();
+        };
+
+        // Focus password input on load
+        window.addEventListener('load', () => {
+            passwordInput.focus();
+        });
+    </script>
+</body>
+</html>

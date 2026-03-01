@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho - Module 6: Debtors & Creditors Journals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #05090F;
+            color: var(--ink);
+            overflow: hidden;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #05090F;
+            border-radius: 50px;
+            border: 10px solid #05090F;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: var(--ink);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 3px solid var(--fa);
+        }
+
+        .status-left, .status-right {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .progress-strip {
+            height: 3px;
+            background: linear-gradient(90deg, var(--fa) 0%, var(--green) 100%);
+            width: 100%;
+        }
+
+        .screen-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--w);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(100%);
+            transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .screen.prev {
+            transform: translateX(-100%);
+        }
+
+        .screen-header {
+            background: var(--ink);
+            color: var(--w);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screen-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .screen-header .breadcrumb {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .screen-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--w);
+        }
+
+        .screen-footer {
+            padding: 16px;
+            background: var(--surf);
+            border-top: 1px solid var(--bord);
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--fa);
+            color: var(--w);
+        }
+
+        .btn-primary:hover {
+            background: var(--fa-d);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background: var(--pxs);
+            color: var(--p);
+        }
+
+        .btn-secondary:hover {
+            background: var(--psm);
+        }
+
+        .btn-success {
+            background: var(--green);
+            color: var(--w);
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--ink);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--p);
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--ink);
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .callout {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 16px 0;
+            font-size: 12px;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: var(--fa-d);
+            margin-bottom: 4px;
+        }
+
+        .exam-tip {
+            background: var(--pxs);
+            border-left: 4px solid var(--gold);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 12px;
+        }
+
+        .exam-tip-title {
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .module-card {
+            background: linear-gradient(135deg, var(--fa) 0%, var(--fa-l) 100%);
+            color: var(--w);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .module-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .learning-outcomes {
+            background: var(--green-xs);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .learning-outcomes-title {
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .learning-outcomes ul {
+            list-style: none;
+            font-size: 12px;
+        }
+
+        .learning-outcomes li {
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .learning-outcomes li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, var(--ink) 0%, var(--p) 100%);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--w);
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .video-placeholder:hover {
+            transform: scale(1.02);
+        }
+
+        .video-placeholder svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+        }
+
+        .video-timestamp {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .markers-list {
+            margin-top: 12px;
+        }
+
+        .marker {
+            background: var(--psm);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .marker-time {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--p);
+            font-weight: 600;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        th {
+            background: var(--ink);
+            color: var(--w);
+            padding: 8px;
+            text-align: left;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid var(--bord);
+        }
+
+        tr:hover {
+            background: var(--pxs);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--bord);
+            border-radius: 6px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--fa);
+            background: var(--fa-xs);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .summary-box {
+            background: var(--surf);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid var(--p);
+        }
+
+        .summary-box-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--p);
+            margin-bottom: 4px;
+        }
+
+        .summary-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .quiz-question {
+            background: var(--pxs);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-question-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .quiz-option {
+            background: var(--w);
+            border: 2px solid var(--bord);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 12px;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--p);
+            background: var(--psm);
+        }
+
+        .quiz-option.selected {
+            background: var(--p);
+            color: var(--w);
+            border-color: var(--p);
+        }
+
+        .quiz-option.correct {
+            background: var(--green);
+            color: var(--w);
+            border-color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            background: var(--rose);
+            color: var(--w);
+            border-color: var(--rose);
+        }
+
+        .quiz-feedback {
+            background: var(--green-xs);
+            border-left: 4px solid var(--green);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.error {
+            background: #FEE2E2;
+            border-left-color: var(--rose);
+        }
+
+        .win-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .win-icon {
+            font-size: 72px;
+            margin-bottom: 16px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .win-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .win-subtitle {
+            font-size: 13px;
+            color: var(--mut);
+            margin-bottom: 16px;
+        }
+
+        .xp-badge {
+            background: linear-gradient(135deg, var(--gold) 0%, #FBBF24 100%);
+            color: var(--ink);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 16px 0;
+            font-weight: 700;
+        }
+
+        .xp-value {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .xp-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .streak-badge {
+            font-size: 32px;
+            margin: 12px 0;
+        }
+
+        .streak-label {
+            font-size: 13px;
+            color: var(--mut);
+            margin-bottom: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -100%;
+            top: 0;
+            width: 200px;
+            height: 100vh;
+            background: var(--ink);
+            color: var(--w);
+            padding: 20px;
+            z-index: 1000;
+            transition: left 0.3s;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 12px;
+        }
+
+        .sidebar-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 12px;
+            display: block;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a:hover {
+            background: var(--p);
+            color: var(--w);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.open {
+            display: block;
+        }
+
+        .invoice-generated {
+            background: var(--fa-xs);
+            border: 2px dashed var(--fa);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .invoice-generated-title {
+            color: var(--fa);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .invoice-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--bord);
+        }
+
+        .example-box {
+            background: var(--surf);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            border-top: 4px solid var(--p);
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .nav-hint {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 10px;
+            color: var(--mut);
+            opacity: 0.6;
+        }
+
+        .chapter-toc {
+            background: var(--psm);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        .chapter-toc-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--p);
+            margin-bottom: 8px;
+        }
+
+        .chapter-toc-list {
+            list-style: none;
+            font-size: 11px;
+        }
+
+        .chapter-toc-list li {
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .chapter-toc-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--p);
+        }
+
+        .worked-example-box {
+            background: var(--green-xs);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            border-left: 4px solid var(--green);
+        }
+
+        .worked-example-title {
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--w);
+            padding: 24px;
+            border-radius: 12px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--mut);
+        }
+
+        .modal-close:hover {
+            color: var(--ink);
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-title">Module 6</div>
+        <ul class="sidebar-menu" id="sidebarMenu">
+            <li><a onclick="goToScreen(0)">1. Intro</a></li>
+            <li><a onclick="goToScreen(1)">2. Video</a></li>
+            <li><a onclick="goToScreen(2)">3. Lesson: DJ</a></li>
+            <li><a onclick="goToScreen(3)">4. Invoice Builder</a></li>
+            <li><a onclick="goToScreen(4)">5. Lesson: CJ</a></li>
+            <li><a onclick="goToScreen(5)">6. Worked Example</a></li>
+            <li><a onclick="goToScreen(6)">7. Quiz Q1</a></li>
+            <li><a onclick="goToScreen(7)">8. Quiz Q2</a></li>
+            <li><a onclick="goToScreen(8)">9. Quiz Q3</a></li>
+            <li><a onclick="goToScreen(9)">10. Win Screen</a></li>
+            <li><a onclick="goToScreen(10)">11. Past Papers</a></li>
+        </ul>
+    </div>
+
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="status-left">
+                <span>21:32</span>
+            </div>
+            <div class="status-right">
+                <span>4G</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        <div class="progress-strip" id="progressStrip"></div>
+        <div class="screen-container">
+            <!-- Screen 0: Intro -->
+            <div class="screen active" id="screen0">
+                <div class="screen-header">
+                    <h1>Module 6</h1>
+                    <div class="breadcrumb">6 of 9</div>
+                </div>
+                <div class="screen-content">
+                    <div class="module-card">
+                        <div class="module-number">6</div>
+                        <div class="module-title">Debtors & Creditors Journals</div>
+                    </div>
+                    <div class="learning-outcomes">
+                        <div class="learning-outcomes-title">What you'll learn:</div>
+                        <ul>
+                            <li>What makes someone a debtor or creditor</li>
+                            <li>How to record credit sales in the Debtors Journal</li>
+                            <li>How to record credit purchases in the Creditors Journal</li>
+                            <li>Why these journals matter for your spaza shop</li>
+                        </ul>
+                    </div>
+                    <div class="exam-tip">
+                        <div class="exam-tip-title">💡 Real Life Tip</div>
+                        <p>In Zandile's spaza shop, when customers buy on credit, they become debtors. When Zandile buys stock on credit from suppliers, they become creditors.</p>
+                    </div>
+                    <p style="font-size: 12px; color: var(--mut); margin-top: 16px;">You've got this! By the end of this module, you'll understand how credit transactions work in SA businesses.</p>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-primary" onclick="nextScreen()">Start Module</button>
+                </div>
+                <div class="nav-hint">→ Press RIGHT arrow or click Next</div>
+            </div>
+
+            <!-- Screen 1: Video Player -->
+            <div class="screen" id="screen1">
+                <div class="screen-header">
+                    <h1>Video Lesson</h1>
+                    <div class="breadcrumb">1 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <div class="video-placeholder" onclick="alert('🎬 Synthesia Video Placeholder\n\nWhat are Debtors & Creditors?\n→ The Debtors Journal\n→ The Creditors Journal\n→ Recap + Exam Tips')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <div>Click to play video (3:45)</div>
+                        <div class="video-timestamp">Synthesia • Financial Accounting</div>
+                    </div>
+                    <div class="markers-list">
+                        <div class="marker">
+                            <span>What are Debtors & Creditors?</span>
+                            <span class="marker-time">0:00</span>
+                        </div>
+                        <div class="marker">
+                            <span>The Debtors Journal</span>
+                            <span class="marker-time">1:10</span>
+                        </div>
+                        <div class="marker">
+                            <span>The Creditors Journal</span>
+                            <span class="marker-time">2:15</span>
+                        </div>
+                        <div class="marker">
+                            <span>Recap + Exam Tips</span>
+                            <span class="marker-time">3:10</span>
+                        </div>
+                    </div>
+                    <div class="callout">
+                        <div class="callout-title">📱 Remember:</div>
+                        <p>Debtors owe YOU money (sales on credit). Creditors are the people YOU owe money to (purchases on credit).</p>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Screen 2: Lesson Part 1 - Debtors Journal -->
+            <div class="screen" id="screen2">
+                <div class="screen-header">
+                    <h1>Debtors Journal</h1>
+                    <div class="breadcrumb">2 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <h2>What is a Debtors Journal?</h2>
+                    <p>The Debtors Journal (DJ) records all <strong>credit sales</strong>—when you sell goods and the customer promises to pay later.</p>
+
+                    <div class="callout">
+                        <div class="callout-title">💰 Key Concept:</div>
+                        <p>When you sell on credit, the customer becomes a DEBTOR. They owe you money.</p>
+                    </div>
+
+                    <h3>Columns in a Debtors Journal:</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>What it means</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Date</strong></td>
+                                    <td>When the sale happened</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Debtor Name</strong></td>
+                                    <td>Who bought from you</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Folio</strong></td>
+                                    <td>Page reference (advanced)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sales</strong></td>
+                                    <td>Amount before VAT</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cost of Sales</strong></td>
+                                    <td>How much it cost you</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VAT</strong></td>
+                                    <td>15% tax (South Africa)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-title">📚 Exam Tip</div>
+                        <p>Remember: VAT in SA is 15%. If you sell for R100, you add R15 VAT, so total is R115.</p>
+                    </div>
+
+                    <h3>Why it matters:</h3>
+                    <p>In Zandile's spaza shop, tracking debtors is CRUCIAL. She needs to know who owes her money so she can follow up for payment!</p>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">Next</button>
+                </div>
+            </div>
+
+            <!-- Screen 3: Interactive Invoice Entry Builder -->
+            <div class="screen" id="screen3">
+                <div class="screen-header">
+                    <h1>Invoice Builder</h1>
+                    <div class="breadcrumb">3 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <h2>Try it yourself!</h2>
+                    <p>Zandile made a credit sale. Help her record it in the Debtors Journal.</p>
+
+                    <form onsubmit="processInvoice(event)">
+                        <div class="form-group">
+                            <label for="customer">Select Customer:</label>
+                            <select id="customer" required>
+                                <option value="">-- Choose customer --</option>
+                                <option value="Thandi Mkhize">Thandi Mkhize</option>
+                                <option value="Sipho Dlamini">Sipho Dlamini</option>
+                                <option value="Mrs. Dlamini">Mrs. Dlamini</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Sale Amount (before VAT):</label>
+                            <input type="number" id="amount" placeholder="e.g., 500" step="0.01" required min="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="costSales">Cost of Sales:</label>
+                            <input type="number" id="costSales" placeholder="e.g., 300" step="0.01" required min="0">
+                        </div>
+
+                        <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 12px;">Generate DJ Entry</button>
+                    </form>
+
+                    <div id="invoiceOutput"></div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-title">💡 Tip</div>
+                        <p>The system automatically calculates VAT at 15%. That's the SA standard rate!</p>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">Next</button>
+                </div>
+            </div>
+
+            <!-- Screen 4: Lesson Part 2 - Creditors Journal -->
+            <div class="screen" id="screen4">
+                <div class="screen-header">
+                    <h1>Creditors Journal</h1>
+                    <div class="breadcrumb">4 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <h2>What is a Creditors Journal?</h2>
+                    <p>The Creditors Journal (CJ) records all <strong>credit purchases</strong>—when you buy goods and promise to pay the supplier later.</p>
+
+                    <div class="callout">
+                        <div class="callout-title">💳 Key Concept:</div>
+                        <p>When you buy on credit, the supplier becomes a CREDITOR. You owe them money.</p>
+                    </div>
+
+                    <h3>The relationship:</h3>
+                    <p><strong>DEBTORS ← YOU → CREDITORS</strong></p>
+                    <ul style="margin: 12px 0; padding-left: 20px;">
+                        <li><strong>Debtors:</strong> Owe money TO you (you gave them goods)</li>
+                        <li><strong>Creditors:</strong> You owe money TO them (they gave you goods)</li>
+                    </ul>
+
+                    <h3>Columns in a Creditors Journal:</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>What it means</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Date</strong></td>
+                                    <td>When you bought the goods</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Creditor Name</strong></td>
+                                    <td>Who you bought from</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Folio</strong></td>
+                                    <td>Page reference</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Purchases</strong></td>
+                                    <td>Amount before VAT</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VAT</strong></td>
+                                    <td>15% tax (South Africa)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-title">📚 Exam Tip</div>
+                        <p>CJ is almost like the opposite of DJ! Instead of tracking who owes you, you track who you owe.</p>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">Next</button>
+                </div>
+            </div>
+
+            <!-- Screen 5: Worked Example -->
+            <div class="screen" id="screen5">
+                <div class="screen-header">
+                    <h1>Worked Example</h1>
+                    <div class="breadcrumb">5 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <h2>Zandile's Spaza Shop</h2>
+                    <p>Let's see how a real business (Zandile's spaza) uses these journals.</p>
+
+                    <div class="worked-example-box">
+                        <div class="worked-example-title">📊 Credit Sales (Debtors Journal)</div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Debtor</th>
+                                        <th>Sales</th>
+                                        <th>VAT</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1 Mar</td>
+                                        <td>Thandi M.</td>
+                                        <td>R400</td>
+                                        <td>R60</td>
+                                        <td>R460</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3 Mar</td>
+                                        <td>Sipho D.</td>
+                                        <td>R600</td>
+                                        <td>R90</td>
+                                        <td>R690</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5 Mar</td>
+                                        <td>Mrs. Dlamini</td>
+                                        <td>R250</td>
+                                        <td>R37.50</td>
+                                        <td>R287.50</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p style="margin-top: 12px; font-weight: 600;">Total credit sales: R1,250 | Total VAT: R187.50</p>
+                    </div>
+
+                    <div class="worked-example-box">
+                        <div class="worked-example-title">📦 Credit Purchases (Creditors Journal)</div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Creditor</th>
+                                        <th>Purchases</th>
+                                        <th>VAT</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2 Mar</td>
+                                        <td>City Wholesale</td>
+                                        <td>R800</td>
+                                        <td>R120</td>
+                                        <td>R920</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4 Mar</td>
+                                        <td>Fresh Suppliers CC</td>
+                                        <td>R500</td>
+                                        <td>R75</td>
+                                        <td>R575</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p style="margin-top: 12px; font-weight: 600;">Total credit purchases: R1,300 | Total VAT: R195</p>
+                    </div>
+
+                    <div class="callout">
+                        <div class="callout-title">🎯 The Big Picture:</div>
+                        <p>Zandile sold R1,250 on credit (3 debtors) and bought R1,300 on credit (2 creditors). She needs to manage both to keep her spaza shop running smoothly!</p>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">Next</button>
+                </div>
+            </div>
+
+            <!-- Screen 6: Quiz Question 1 -->
+            <div class="screen" id="screen6">
+                <div class="screen-header">
+                    <h1>Quiz Time!</h1>
+                    <div class="breadcrumb">6 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <div class="quiz-question">
+                        <div class="quiz-question-title">Question 1 of 3</div>
+                        <p style="margin-bottom: 16px;"><strong>Thandi buys groceries from Zandile's spaza shop and promises to pay next week. What is Thandi in relation to Zandile?</strong></p>
+
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">A) A creditor (because she will pay later)</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'correct')">B) A debtor (because she owes money to Zandile)</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">C) A supplier (because she buys from Zandile)</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">D) A customer on cash basis (not relevant to credit)</div>
+
+                        <div class="quiz-feedback">
+                            <strong>✓ Correct!</strong> Thandi bought on credit, so she owes Zandile money—making her a debtor. Zandile would record this in her Debtors Journal.
+                        </div>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-title">💡 Memory Trick:</div>
+                        <p><strong>D</strong>ebtor = <strong>D</strong>ues to <strong>Y</strong>ou | <strong>C</strong>reditor = <strong>C</strong>redit given by them</p>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">Next Question</button>
+                </div>
+            </div>
+
+            <!-- Screen 7: Quiz Question 2 -->
+            <div class="screen" id="screen7">
+                <div class="screen-header">
+                    <h1>Quiz Time!</h1>
+                    <div class="breadcrumb">7 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <div class="quiz-question">
+                        <div class="quiz-question-title">Question 2 of 3</div>
+                        <p style="margin-bottom: 16px;"><strong>Zandile buys stock from City Wholesale on credit (30 days payment terms). Which journal should she use to record this?</strong></p>
+
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">A) Sales Journal</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">B) Debtors Journal</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'correct')">C) Creditors Journal</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">D) Cash Receipts Journal</div>
+
+                        <div class="quiz-feedback">
+                            <strong>✓ Correct!</strong> City Wholesale is a creditor (Zandile owes them money). Credit purchases go in the Creditors Journal, not the Debtors Journal.
+                        </div>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-title">📝 Key Difference:</div>
+                        <p><strong>Debtors Journal:</strong> When YOU make the sale | <strong>Creditors Journal:</strong> When YOU make the purchase</p>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">Next Question</button>
+                </div>
+            </div>
+
+            <!-- Screen 8: Quiz Question 3 -->
+            <div class="screen" id="screen8">
+                <div class="screen-header">
+                    <h1>Quiz Time!</h1>
+                    <div class="breadcrumb">8 of 10</div>
+                </div>
+                <div class="screen-content">
+                    <div class="quiz-question">
+                        <div class="quiz-question-title">Question 3 of 3</div>
+                        <p style="margin-bottom: 16px;"><strong>If Zandile sells goods worth R800 (before VAT) on credit, what is the total amount including VAT that should be recorded?</strong></p>
+
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">A) R800</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">B) R880</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'correct')">C) R920</div>
+                        <div class="quiz-option" onclick="selectQuizOption(this, 'incorrect')">D) R1,000</div>
+
+                        <div class="quiz-feedback">
+                            <strong>✓ Correct!</strong> R800 + 15% VAT (R120) = R920 total. Remember: 15% is SA's standard VAT rate. Quick calc: R800 × 1.15 = R920.
+                        </div>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-title">🧮 VAT Formula:</div>
+                        <p><strong>Total = Amount × 1.15</strong> (adds 15% VAT in one step) | Or: Amount × 0.15 = VAT amount</p>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                    <button class="btn btn-primary" onclick="nextScreen()">See Results</button>
+                </div>
+            </div>
+
+            <!-- Screen 9: Win Screen -->
+            <div class="screen" id="screen9">
+                <div class="screen-header">
+                    <h1>Complete!</h1>
+                    <div class="breadcrumb">9 of 10</div>
+                </div>
+                <div class="screen-content win-screen">
+                    <div class="win-icon">🎉</div>
+                    <div class="win-title">Module 6 Complete!</div>
+                    <div class="win-subtitle">Debtors & Creditors Journals Mastered</div>
+
+                    <div class="xp-badge">
+                        <div class="xp-value">+200 XP</div>
+                        <div class="xp-label">Experience Points Earned</div>
+                    </div>
+
+                    <div class="streak-badge">🔥 17</div>
+                    <div class="streak-label">Day Streak</div>
+
+                    <div class="summary-box">
+                        <div class="summary-box-title">What You Learned:</div>
+                        <p style="font-size: 12px; margin: 0;">✓ Debtors owe money to YOU<br>
+                        ✓ Creditors are suppliers YOU owe<br>
+                        ✓ DJ records credit sales<br>
+                        ✓ CJ records credit purchases<br>
+                        ✓ VAT is 15% in South Africa</p>
+                    </div>
+
+                    <p style="font-size: 12px; margin-top: 20px; color: var(--mut);">You're crushing it! Ready for Module 7?</p>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-secondary" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                    <button class="btn btn-secondary" onclick="goToScreen(0)">Start Over</button>
+                    <button class="btn btn-primary" onclick="alert('🎓 Module 7 coming soon: Bank Reconciliation!')">Next Module</button>
+                </div>
+                <div class="nav-hint">← Press LEFT arrow to go back</div>
+            </div>
+
+            <!-- Screen 10: Resources -->
+            <div class="screen" id="screen10">
+                <div class="screen-header">
+                    <h1>Practice & Past Papers</h1>
+                    <div class="breadcrumb">10 of 11</div>
+                </div>
+                <div class="screen-content">
+                    <div style="padding: 20px">
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                            <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                            <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                            <div style="font-size:14px;color:var(--fa)">↗</div>
+                        </a>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Debtors & Creditors · 15 questions · 20 min</div></div>
+                            <div style="font-size:14px;color:var(--p)">→</div>
+                        </a>
+                        <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                            <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                            <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Debtors & Creditors · 15 questions · 20 min</div></div>
+                            <div style="font-size:14px;color:var(--p)">→</div>
+                        </a>
+                        <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+                            <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-footer">
+                    <button class="btn btn-primary" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                </div>
+                <div class="nav-hint">← Press LEFT arrow to go back</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── SEND DATA TO PARENT FRAME ──
+        function notifyParent(type, data) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type, ...data }, '*');
+            }
+          } catch(e) {}
+        }
+
+        const MODULE_ID = 6;
+        let currentScreen = 0;
+        const totalScreens = 11;
+
+        function updateProgress() {
+            const progressPercent = ((currentScreen + 1) / totalScreens) * 100;
+            document.getElementById('progressStrip').style.width = progressPercent + '%';
+        }
+
+        function showScreen(screenIndex) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach((screen, index) => {
+                screen.classList.remove('active', 'prev');
+                if (index === screenIndex) {
+                    screen.classList.add('active');
+                } else if (index < screenIndex) {
+                    screen.classList.add('prev');
+                }
+            });
+            currentScreen = screenIndex;
+            notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: totalScreens });
+            updateProgress();
+            closeOverlay();
+        }
+
+        function nextScreen() {
+            if (currentScreen < totalScreens - 1) {
+                showScreen(currentScreen + 1);
+            }
+        }
+
+        function prevScreen() {
+            if (currentScreen > 0) {
+                showScreen(currentScreen - 1);
+            }
+        }
+
+        function goToScreen(screenIndex) {
+            if (screenIndex >= 0 && screenIndex < totalScreens) {
+                if (screenIndex === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+                // Track screen view
+                if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(6, screenIndex);
+                showScreen(screenIndex);
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('open');
+        }
+
+        function closeOverlay() {
+            document.getElementById('overlay').classList.remove('open');
+            document.getElementById('sidebar').classList.remove('open');
+        }
+
+        document.getElementById('overlay').addEventListener('click', toggleSidebar);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextScreen();
+            } else if (e.key === 'ArrowLeft') {
+                prevScreen();
+            } else if (e.key === 'm' || e.key === 'M') {
+                toggleSidebar();
+            }
+        });
+
+        function processInvoice(event) {
+            event.preventDefault();
+            const customer = document.getElementById('customer').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const costSales = parseFloat(document.getElementById('costSales').value);
+
+            if (!customer || !amount || !costSales) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            const vat = amount * 0.15;
+            const total = amount + vat;
+
+            const html = `
+                <div class="invoice-generated">
+                    <div class="invoice-generated-title">✓ DJ Entry Generated!</div>
+                    <div class="invoice-row">
+                        <span>Date:</span>
+                        <span>${new Date().toLocaleDateString('en-ZA')}</span>
+                    </div>
+                    <div class="invoice-row">
+                        <span>Debtor:</span>
+                        <span>${customer}</span>
+                    </div>
+                    <div class="invoice-row">
+                        <span>Sales (before VAT):</span>
+                        <span>R${amount.toFixed(2)}</span>
+                    </div>
+                    <div class="invoice-row">
+                        <span>Cost of Sales:</span>
+                        <span>R${costSales.toFixed(2)}</span>
+                    </div>
+                    <div class="invoice-row">
+                        <span>VAT (15%):</span>
+                        <span>R${vat.toFixed(2)}</span>
+                    </div>
+                    <div class="invoice-row" style="border-bottom: 2px solid var(--fa); padding-top: 8px;">
+                        <strong>Total Debtor Owes:</strong>
+                        <strong>R${total.toFixed(2)}</strong>
+                    </div>
+                    <p style="margin-top: 12px; font-size: 11px; color: var(--mut);">This entry would be posted to the Debtors Journal. The customer now owes you R${total.toFixed(2)}.</p>
+                </div>
+            `;
+
+            document.getElementById('invoiceOutput').innerHTML = html;
+        }
+
+        function selectQuizOption(element, result) {
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('.quiz-option');
+
+            // Track quiz answer
+            const quizContainer = parent.closest('[data-screen]');
+            const qNum = quizContainer ? (parseInt(quizContainer.getAttribute('data-screen')) - 6) : 1;
+            if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(6, 'post', qNum, result === 'correct', 0);
+            notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: result === 'correct', questionText: `Question ${qNum}`, topic: 'Debtors & Creditors' });
+
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            element.classList.add('selected', result);
+
+            const feedback = parent.querySelector('.quiz-feedback');
+            if (feedback) {
+                feedback.classList.add('show');
+                if (result === 'incorrect') {
+                    feedback.classList.add('error');
+                } else {
+                    feedback.classList.remove('error');
+                }
+            }
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

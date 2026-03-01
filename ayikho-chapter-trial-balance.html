@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho - Module 4: Trial Balance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #05090F;
+            color: var(--ink);
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            gap: 20px;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            max-height: 100vh;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--w);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .screen-nav {
+            list-style: none;
+        }
+
+        .screen-nav li {
+            margin-bottom: 8px;
+        }
+
+        .screen-nav button {
+            width: 100%;
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .screen-nav button:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--w);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .screen-nav button.active {
+            background: var(--fa);
+            color: var(--w);
+            border-color: var(--fa);
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--w);
+            border-radius: 50px;
+            border: 12px solid #05090F;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: var(--ink);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            border-bottom: 1px solid var(--bord);
+        }
+
+        .status-bar-time {
+            font-weight: 600;
+        }
+
+        .status-bar-right {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .progress-strip {
+            height: 3px;
+            background: var(--fa-xs);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--fa);
+            transition: width 0.3s ease;
+        }
+
+        .screen-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screens {
+            display: flex;
+            height: 100%;
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1), transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(100px);
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+            pointer-events: auto;
+        }
+
+        .screen.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Screen styling */
+        .hero-header {
+            background: linear-gradient(135deg, var(--fa) 0%, var(--fa-d) 100%);
+            padding: 32px 20px 24px;
+            color: var(--w);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-header::before,
+        .hero-header::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        }
+
+        .hero-header::before {
+            width: 200px;
+            height: 200px;
+            top: -80px;
+            right: -80px;
+        }
+
+        .hero-header::after {
+            width: 150px;
+            height: 150px;
+            bottom: -60px;
+            left: -60px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, var(--fa) 0%, var(--fa-d) 100%);
+            padding: 20px 20px 16px;
+            color: var(--w);
+        }
+
+        .lesson-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .lesson-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .tldr-box {
+            background: var(--green-xs);
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .tldr-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .tldr-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
+            line-height: 1.5;
+        }
+
+        .learn-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .learn-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: var(--fa-xs);
+            border-radius: 8px;
+            border-left: 4px solid var(--fa);
+        }
+
+        .learn-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .learn-content {
+            flex: 1;
+        }
+
+        .learn-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-new {
+            background: var(--rose);
+            color: var(--w);
+        }
+
+        .badge-interactive {
+            background: var(--gold);
+            color: var(--w);
+        }
+
+        .badge-example {
+            background: var(--green);
+            color: var(--w);
+        }
+
+        .video-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            border-radius: 12px;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.1), rgba(7, 89, 133, 0.1));
+            position: relative;
+        }
+
+        .play-button {
+            width: 64px;
+            height: 64px;
+            background: var(--fa);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.3);
+        }
+
+        .play-button:hover {
+            background: var(--fa-l);
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(2, 132, 199, 0.4);
+        }
+
+        .video-title {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--w);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .chapter-markers {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .marker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--fa-sm);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--ink);
+        }
+
+        .marker-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--fa);
+            min-width: 40px;
+        }
+
+        .lesson-body {
+            padding: 20px;
+        }
+
+        .lesson-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        .formula-box {
+            background: var(--pxs);
+            border-left: 4px solid var(--p);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .real-life-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 16px 0;
+        }
+
+        .real-life-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .real-life-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--ink);
+        }
+
+        .error-list {
+            margin: 16px 0;
+            padding-left: 20px;
+        }
+
+        .error-item {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .error-item strong {
+            color: var(--fa);
+        }
+
+        /* Interactive Trial Balance Builder */
+        .builder-header {
+            background: linear-gradient(135deg, var(--fa) 0%, var(--fa-d) 100%);
+            padding: 16px 20px;
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .builder-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .balance-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .balance-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .balance-status.balanced {
+            background: var(--green);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .builder-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .accounts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .account-item {
+            background: var(--fa-sm);
+            border: 2px solid var(--fa);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .account-item.placed {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .account-info {
+            flex: 1;
+        }
+
+        .account-name {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .account-balance {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--mut);
+            font-weight: 500;
+        }
+
+        .account-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-debit, .btn-credit {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-debit {
+            background: var(--fa);
+            color: var(--w);
+        }
+
+        .btn-debit:hover {
+            background: var(--fa-l);
+        }
+
+        .btn-credit {
+            background: var(--rose);
+            color: var(--w);
+        }
+
+        .btn-credit:hover {
+            background: #e11d48;
+        }
+
+        .columns-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .column {
+            background: var(--surf);
+            border-radius: 8px;
+            border: 2px solid var(--bord);
+            padding: 12px;
+            min-height: 120px;
+        }
+
+        .column-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--fa);
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--bord);
+        }
+
+        .placed-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 40px;
+        }
+
+        .placed-item {
+            background: var(--w);
+            border: 1px solid var(--bord);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 12px;
+            color: var(--ink);
+        }
+
+        .placed-item-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .placed-item-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--mut);
+        }
+
+        .column-total {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 2px solid var(--bord);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--fa);
+            font-size: 13px;
+        }
+
+        .success-message {
+            background: var(--green-xs);
+            border: 2px solid var(--green);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-message-text {
+            font-weight: 600;
+            color: var(--green);
+            font-size: 14px;
+        }
+
+        /* Worked Example */
+        .example-accounts {
+            margin-bottom: 20px;
+        }
+
+        .example-account {
+            background: var(--fa-sm);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .example-account-name {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 14px;
+        }
+
+        .example-account-balance {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fa);
+        }
+
+        /* Quiz */
+        .quiz-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--mut);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .quiz-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            padding: 14px;
+            border: 2px solid var(--bord);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--w);
+            font-size: 14px;
+            color: var(--ink);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--fa);
+            background: var(--fa-xs);
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        .quiz-option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 8px;
+        }
+
+        .quiz-explanation {
+            background: var(--green-xs);
+            border: 2px solid var(--green);
+            border-radius: 8px;
+            padding: 12px;
+            display: none;
+            margin-bottom: 16px;
+        }
+
+        .quiz-explanation.show {
+            display: block;
+        }
+
+        .explanation-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .explanation-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--ink);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--fa);
+            color: var(--w);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--fa-l);
+        }
+
+        .submit-btn:disabled {
+            background: var(--dim);
+            cursor: not-allowed;
+        }
+
+        /* Win Screen */
+        .win-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%);
+        }
+
+        .win-emoji {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-16px); }
+        }
+
+        .win-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .win-module {
+            font-size: 14px;
+            color: var(--mut);
+            margin-bottom: 20px;
+        }
+
+        .win-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--w);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--bord);
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--fa);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--mut);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            background: var(--fa);
+            color: var(--w);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--fa-l);
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            background: transparent;
+            color: var(--fa);
+            border: 2px solid var(--fa);
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--fa-xs);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bord);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dim);
+        }
+
+        .keyboard-hint {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">Module 4</div>
+            <ul class="screen-nav" id="screenNav">
+                <li><button class="active" data-screen="0">1. Chapter Intro</button></li>
+                <li><button data-screen="1">2. Video Player</button></li>
+                <li><button data-screen="2">3. Lesson Part 1</button></li>
+                <li><button data-screen="3">4. TB Builder</button></li>
+                <li><button data-screen="4">5. Lesson Part 2</button></li>
+                <li><button data-screen="5">6. Worked Example</button></li>
+                <li><button data-screen="6">7. Quiz Q1</button></li>
+                <li><button data-screen="7">8. Quiz Q2</button></li>
+                <li><button data-screen="8">9. Quiz Q3</button></li>
+                <li><button data-screen="9">10. Win Screen</button></li>
+                <li><button data-screen="10">11. Past Papers</button></li>
+            </ul>
+        </div>
+
+        <div class="phone-frame">
+            <div class="status-bar">
+                <div class="status-bar-time">21:32</div>
+                <div class="status-bar-right">
+                    <span>4G</span>
+                    <span>🔋</span>
+                </div>
+            </div>
+
+            <div class="progress-strip">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="screen-wrapper">
+                <div class="screens" id="screens">
+                    <!-- Screen 0: Chapter Intro -->
+                    <div class="screen active">
+                        <div class="hero-header">
+                            <div class="hero-content">
+                                <div class="module-badge">Module 4 of 9</div>
+                                <h1 class="hero-title">Trial Balance</h1>
+                                <p style="font-size: 13px; margin-bottom: 16px;">The financial checkpoint that catches errors before they become problems.</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="tldr-box">
+                                <div class="tldr-label">TL;DR</div>
+                                <div class="tldr-text">A trial balance is a list of all ledger account balances. If total debits ≠ total credits, there's an error. It's your financial first-aid kit.</div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mut); text-transform: uppercase; font-weight: 600; margin-bottom: 12px;">What you'll learn</div>
+                                <div class="learn-items">
+                                    <div class="learn-item">
+                                        <div class="learn-icon">📋</div>
+                                        <div class="learn-content">
+                                            <div class="learn-text">What a trial balance is and why it matters</div>
+                                            <div class="badge-group">
+                                                <span class="badge badge-new">New</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="learn-item">
+                                        <div class="learn-icon">🔧</div>
+                                        <div class="learn-content">
+                                            <div class="learn-text">How to extract balances and build one</div>
+                                            <div class="badge-group">
+                                                <span class="badge badge-interactive">Interactive</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="learn-item">
+                                        <div class="learn-icon">🚨</div>
+                                        <div class="learn-content">
+                                            <div class="learn-text">What errors it catches (and doesn't)</div>
+                                            <div class="badge-group">
+                                                <span class="badge badge-example">Example</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screen 1: Video Player -->
+                    <div class="screen">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Video Lesson</div>
+                            <div class="lesson-subtitle">Chapter markers below</div>
+                        </div>
+                        <div class="content">
+                            <div class="video-container">
+                                <div class="video-placeholder">
+                                    <div class="play-button">▶</div>
+                                    <div class="video-title">Synthesia</div>
+                                </div>
+                            </div>
+
+                            <div class="chapter-markers">
+                                <div class="marker">
+                                    <span class="marker-time">0:00</span>
+                                    <span>What is the Trial Balance?</span>
+                                </div>
+                                <div class="marker">
+                                    <span class="marker-time">1:05</span>
+                                    <span>Extracting balances from the ledger</span>
+                                </div>
+                                <div class="marker">
+                                    <span class="marker-time">2:10</span>
+                                    <span>What errors the TB catches (and doesn't)</span>
+                                </div>
+                                <div class="marker">
+                                    <span class="marker-time">3:05</span>
+                                    <span>Recap + exam tip</span>
+                                </div>
+                            </div>
+
+                            <button class="submit-btn" style="margin-top: 16px;">Skip to Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Screen 2: Lesson Part 1 -->
+                    <div class="screen">
+                        <div class="lesson-header">
+                            <div class="lesson-title">What is a Trial Balance?</div>
+                            <div class="lesson-subtitle">The concept explained</div>
+                        </div>
+                        <div class="lesson-body">
+                            <div class="lesson-text">
+                                A <strong>trial balance</strong> is literally what it sounds like — a balance check. It's a list of <strong>all the accounts in your ledger</strong> with their balances, arranged into two columns: Debit and Credit.
+                            </div>
+
+                            <div class="lesson-text">
+                                The golden rule of double-entry bookkeeping says: <strong>every debit must have an equal credit</strong>. So in a trial balance, the total debits should <strong>always equal the total credits</strong>.
+                            </div>
+
+                            <div class="formula-box">
+                                Total Debits = Total Credits ✓
+                            </div>
+
+                            <div class="lesson-text">
+                                If they don't match? Boom — there's an error somewhere in your books. Not a big error, necessarily. But an error nonetheless.
+                            </div>
+
+                            <div class="real-life-box">
+                                <div class="real-life-label">💡 In real life</div>
+                                <div class="real-life-text">Imagine you're running a spaza shop in Soweto (like Zandile's). At the end of the month, you list every account — your bank, stock, rent owing, sales made, electricity paid. You add up the debit side, add up the credit side. If they match, you can sleep. If they don't? You've got homework.</div>
+                            </div>
+
+                            <div class="lesson-text">
+                                It's called a <strong>trial</strong> because you're testing whether your books are correct. Not a perfect test — it won't catch everything — but a good starting point.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screen 3: Interactive Trial Balance Builder -->
+                    <div class="screen">
+                        <div class="builder-header">
+                            <div class="builder-title">Build the TB</div>
+                            <div class="balance-indicator">
+                                <span class="balance-status" id="balanceStatus"></span>
+                                <span id="balanceText">Placing...</span>
+                            </div>
+                        </div>
+                        <div class="builder-content">
+                            <div style="font-size: 13px; color: var(--mut); margin-bottom: 12px;">Zandile's spaza shop accounts. Place each into Debit or Credit:</div>
+
+                            <div class="accounts-list" id="accountsList"></div>
+
+                            <div class="columns-container">
+                                <div class="column">
+                                    <div class="column-header">Debit</div>
+                                    <div class="placed-items" id="debitColumn"></div>
+                                    <div class="column-total">R<span id="debitTotal">0</span></div>
+                                </div>
+                                <div class="column">
+                                    <div class="column-header">Credit</div>
+                                    <div class="placed-items" id="creditColumn"></div>
+                                    <div class="column-total">R<span id="creditTotal">0</span></div>
+                                </div>
+                            </div>
+
+                            <div class="success-message" id="successMessage">
+                                <div class="success-message-text">✓ Trial Balance balanced! R13,400 = R13,400</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screen 4: Lesson Part 2 -->
+                    <div class="screen">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Why TB Matters</div>
+                            <div class="lesson-subtitle">What it catches and what it doesn't</div>
+                        </div>
+                        <div class="lesson-body">
+                            <div class="lesson-text">
+                                Here's the thing: a trial balance is <strong>not</strong> a complete audit. It won't catch every type of error. It's like a smoke detector — it catches some fires, not all.
+                            </div>
+
+                            <div class="real-life-box">
+                                <div class="real-life-label">✓ What TB catches</div>
+                                <div class="real-life-text"><strong>Posting errors</strong> (you posted a debit as a credit), <strong>calculation errors</strong> (you added wrong), <strong>incomplete entries</strong> (you recorded one side of the transaction but forgot the other).</div>
+                            </div>
+
+                            <div class="lesson-text" style="margin-top: 16px; margin-bottom: 8px;">
+                                <strong>Errors the TB DOESN'T catch:</strong>
+                            </div>
+
+                            <div class="error-list">
+                                <div class="error-item"><strong>Errors of omission:</strong> You didn't record a transaction at all. If you forgot to write up a sale, neither side is in the books.</div>
+                                <div class="error-item"><strong>Errors of commission:</strong> You recorded the right amount in the right accounts... but the wrong transaction entirely.</div>
+                                <div class="error-item"><strong>Errors of principle:</strong> You recorded a debit and credit in the right accounts, but those accounts are the wrong type.</div>
+                                <div class="error-item"><strong>Compensating errors:</strong> Two errors cancel each other out. R500 overstated here, R500 understated there. The TB balances, but you're still wrong.</div>
+                            </div>
+
+                            <div class="lesson-text" style="margin-top: 16px;">
+                                This is why <strong>a balanced trial balance doesn't mean your books are perfect</strong>. It just means they're mechanically balanced. You still need to do more detailed checking.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screen 5: Worked Example -->
+                    <div class="screen">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Worked Example</div>
+                            <div class="lesson-subtitle">Thabo's Taxi Repair Shop</div>
+                        </div>
+                        <div class="lesson-body">
+                            <div class="lesson-text" style="margin-bottom: 20px;">
+                                Thabo runs a taxi repair shop in Alexandra. Here are his ledger account balances at 28 Feb. Let's build his trial balance.
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mut); text-transform: uppercase; font-weight: 600; margin-bottom: 12px;">His accounts:</div>
+                                <div class="example-accounts">
+                                    <div class="example-account">
+                                        <div class="example-account-name">Bank</div>
+                                        <div class="example-account-balance">R5,200 (Dr)</div>
+                                    </div>
+                                    <div class="example-account">
+                                        <div class="example-account-name">Capital</div>
+                                        <div class="example-account-balance">R10,000 (Cr)</div>
+                                    </div>
+                                    <div class="example-account">
+                                        <div class="example-account-name">Equipment</div>
+                                        <div class="example-account-balance">R8,500 (Dr)</div>
+                                    </div>
+                                    <div class="example-account">
+                                        <div class="example-account-name">Parts Expense</div>
+                                        <div class="example-account-balance">R2,100 (Dr)</div>
+                                    </div>
+                                    <div class="example-account">
+                                        <div class="example-account-name">Service Income</div>
+                                        <div class="example-account-balance">R9,200 (Cr)</div>
+                                    </div>
+                                    <div class="example-account">
+                                        <div class="example-account-name">Creditors</div>
+                                        <div class="example-account-balance">R3,600 (Cr)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mut); text-transform: uppercase; font-weight: 600; margin-bottom: 12px;">Thabo's Trial Balance:</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <div style="background: var(--fa-sm); padding: 12px; border-radius: 8px; border-left: 4px solid var(--fa);">
+                                        <div style="font-weight: 600; color: var(--fa); font-size: 13px; margin-bottom: 8px;">Debit</div>
+                                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink); line-height: 1.6;">
+                                            Bank: R5,200<br>
+                                            Equipment: R8,500<br>
+                                            Parts Exp: R2,100<br>
+                                            <strong style="margin-top: 8px; display: block; border-top: 1px solid var(--bord); padding-top: 8px;">Total: R15,800</strong>
+                                        </div>
+                                    </div>
+                                    <div style="background: var(--fa-sm); padding: 12px; border-radius: 8px; border-left: 4px solid var(--rose);">
+                                        <div style="font-weight: 600; color: var(--rose); font-size: 13px; margin-bottom: 8px;">Credit</div>
+                                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink); line-height: 1.6;">
+                                            Capital: R10,000<br>
+                                            Service Inc: R9,200<br>
+                                            Creditors: R3,600<br>
+                                            <strong style="margin-top: 8px; display: block; border-top: 1px solid var(--bord); padding-top: 8px;">Total: R15,800</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="real-life-box">
+                                <div class="real-life-label">✓ Result</div>
+                                <div class="real-life-text">Debits = Credits = R15,800. Thabo's trial balance is balanced. No mechanical errors detected. He can proceed with confidence (and still do more checking).</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screen 6: Quiz Q1 -->
+                    <div class="screen">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Quick Quiz</div>
+                            <div class="lesson-subtitle">Let's test your knowledge</div>
+                        </div>
+                        <div class="lesson-body">
+                            <div class="quiz-number">Question 1 of 3</div>
+                            <div class="quiz-question">A trial balance shows total debits of R45,000 and total credits of R44,200. What does this mean?</div>
+
+                            <div class="quiz-explanation" id="q1Explanation">
+                                <div class="explanation-label">Correct!</div>
+                                <div class="explanation-text">The debits and credits must always equal. If they don't, there's a mechanical error in your books — maybe a posting mistake, a calculation error, or an incomplete entry. Time to investigate.</div>
+                            </div>
+
+                            <div class="quiz-options">
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q1" value="a">
+                                        The books are balanced
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q1" value="b">
+                                        There's an error somewhere
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q1" value="c">
+                                        The difference is profit
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q1" value="d">
+                                        It's fine, small differences are normal
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="submit-btn" onclick="checkQuiz('q1', 'b', 'q1Explanation')">Check Answer</button>
+                        </div>
+                    </div>
+
+                    <!-- Screen 7: Quiz Q2 -->
+                    <div class="screen">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Quick Quiz</div>
+                            <div class="lesson-subtitle">Let's test your knowledge</div>
+                        </div>
+                        <div class="lesson-body">
+                            <div class="quiz-number">Question 2 of 3</div>
+                            <div class="quiz-question">Which of these errors would NOT be detected by a trial balance?</div>
+
+                            <div class="quiz-explanation" id="q2Explanation">
+                                <div class="explanation-label">Correct!</div>
+                                <div class="explanation-text">An error of omission is when you don't record a transaction at all. Since neither side of the transaction appears in the books, the trial balance remains balanced. The trial balance only catches errors in transactions that are partially recorded.</div>
+                            </div>
+
+                            <div class="quiz-options">
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q2" value="a">
+                                        Posting a debit as a credit
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q2" value="b">
+                                        Error of omission (transaction not recorded)
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q2" value="c">
+                                        Calculation error in account balance
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q2" value="d">
+                                        Recording only one side of a transaction
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="submit-btn" onclick="checkQuiz('q2', 'b', 'q2Explanation')">Check Answer</button>
+                        </div>
+                    </div>
+
+                    <!-- Screen 8: Quiz Q3 -->
+                    <div class="screen">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Quick Quiz</div>
+                            <div class="lesson-subtitle">Let's test your knowledge</div>
+                        </div>
+                        <div class="lesson-body">
+                            <div class="quiz-number">Question 3 of 3</div>
+                            <div class="quiz-question">Where does the balance of the Sales account appear in the trial balance?</div>
+
+                            <div class="quiz-explanation" id="q3Explanation">
+                                <div class="explanation-label">Correct!</div>
+                                <div class="explanation-text">Sales is an income account. Income accounts have credit balances in the trial balance. Expenses have debit balances. Assets have debit balances. Liabilities and equity have credit balances. It's all about the account type.</div>
+                            </div>
+
+                            <div class="quiz-options">
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q3" value="a">
+                                        Debit column
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q3" value="b">
+                                        Credit column
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q3" value="c">
+                                        Both columns equally
+                                    </label>
+                                </div>
+                                <div class="quiz-option">
+                                    <label>
+                                        <input type="radio" name="q3" value="d">
+                                        It doesn't appear in the trial balance
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="submit-btn" onclick="checkQuiz('q3', 'b', 'q3Explanation')">Check Answer</button>
+                        </div>
+                    </div>
+
+                    <!-- Screen 9: Win Screen -->
+                    <div class="screen">
+                        <div class="win-container">
+                            <div class="win-emoji">🎉</div>
+                            <div class="win-message">Siyabonga, Zandile!</div>
+                            <div class="win-module">Module 4 — Trial Balance</div>
+
+                            <div class="win-stats">
+                                <div class="stat">
+                                    <div class="stat-value">+175</div>
+                                    <div class="stat-label">XP</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">🔥 13</div>
+                                    <div class="stat-label">Streak</div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--fa-sm); padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
+                                <div style="font-size: 13px; color: var(--ink); line-height: 1.6;">
+                                    You learned:<br>
+                                    ✓ What a trial balance is<br>
+                                    ✓ How to build one<br>
+                                    ✓ What errors it catches (and doesn't)<br>
+                                </div>
+                            </div>
+
+                            <div class="nav-buttons">
+                                <button class="btn-secondary" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                                <button class="btn-primary">Module 5 →</button>
+                                <button class="btn-secondary">Review</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screen 10: Resources -->
+                    <div class="screen">
+                        <div style="padding:20px">
+                            <div style="text-align:center;margin-bottom:20px">
+                                <div style="font-size:32px;margin-bottom:8px">📝</div>
+                                <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink)">Practice & Past Papers</div>
+                                <div style="font-size:13px;color:var(--mut);margin-top:4px">Module 4 · Trial Balance</div>
+                            </div>
+
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+                            <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                                <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                                <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                                <div style="font-size:14px;color:var(--fa)">↗</div>
+                            </a>
+                            <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                                <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                                <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                                <div style="font-size:14px;color:var(--fa)">↗</div>
+                            </a>
+                            <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+                                <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+                                <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+                                <div style="font-size:14px;color:var(--fa)">↗</div>
+                            </a>
+
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+                            <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                                <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                                <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Trial Balance · 15 questions · 20 min</div></div>
+                                <div style="font-size:14px;color:var(--p)">→</div>
+                            </a>
+                            <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+                                <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+                                <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Trial Balance · 15 questions · 20 min</div></div>
+                                <div style="font-size:14px;color:var(--p)">→</div>
+                            </a>
+
+                            <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+                                <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+                            </div>
+                        </div>
+                        <div style="padding:14px 20px;border-top:1px solid var(--bord)">
+                            <button class="btn-primary" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="keyboard-hint">← →</div>
+        </div>
+    </div>
+
+    <script>
+        // ── SEND DATA TO PARENT FRAME ──
+        function notifyParent(type, data) {
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type, ...data }, '*');
+            }
+          } catch(e) {}
+        }
+
+        const MODULE_ID = 4;
+        let currentScreen = 0;
+        const totalScreens = 11;
+
+        // Trial Balance Builder Data
+        const accounts = [
+            { name: 'Bank', balance: 2700, type: 'Dr' },
+            { name: 'Capital', balance: 8000, type: 'Cr' },
+            { name: 'Trading Stock', balance: 3500, type: 'Dr' },
+            { name: 'Sales', balance: 4200, type: 'Cr' },
+            { name: 'Rent Expense', balance: 1800, type: 'Dr' },
+            { name: 'Electricity', balance: 800, type: 'Dr' },
+            { name: 'Creditors', balance: 1200, type: 'Cr' },
+            { name: 'Equipment', balance: 4600, type: 'Dr' }
+        ];
+
+        let placedAccounts = {
+            debit: [],
+            credit: []
+        };
+
+        function initScreen() {
+            if (currentScreen === 3) {
+                initTrialBalanceBuilder();
+            }
+            updateProgress();
+            updateNavButtons();
+        }
+
+        function initTrialBalanceBuilder() {
+            placedAccounts = { debit: [], credit: [] };
+            const accountsList = document.getElementById('accountsList');
+            accountsList.innerHTML = '';
+
+            accounts.forEach((account, index) => {
+                const div = document.createElement('div');
+                div.className = 'account-item';
+                div.id = `account-${index}`;
+                div.innerHTML = `
+                    <div class="account-info">
+                        <div class="account-name">${account.name}</div>
+                        <div class="account-balance">R${account.balance.toLocaleString()}</div>
+                    </div>
+                    <div class="account-buttons">
+                        <button class="btn-debit" onclick="placeAccount(${index}, 'debit')">Debit</button>
+                        <button class="btn-credit" onclick="placeAccount(${index}, 'credit')">Credit</button>
+                    </div>
+                `;
+                accountsList.appendChild(div);
+            });
+
+            updateBuilderDisplay();
+        }
+
+        function placeAccount(index, column) {
+            const account = accounts[index];
+            const correctColumn = account.type === 'Dr' ? 'debit' : 'credit';
+
+            if (column !== correctColumn) {
+                alert(`${account.name} should go in the ${correctColumn === 'debit' ? 'Debit' : 'Credit'} column!`);
+                return;
+            }
+
+            placedAccounts[column].push({ ...account, index });
+            document.getElementById(`account-${index}`).classList.add('placed');
+
+            updateBuilderDisplay();
+            checkIfBalanced();
+        }
+
+        function updateBuilderDisplay() {
+            const debitTotal = placedAccounts.debit.reduce((sum, acc) => sum + acc.balance, 0);
+            const creditTotal = placedAccounts.credit.reduce((sum, acc) => sum + acc.balance, 0);
+
+            document.getElementById('debitTotal').textContent = debitTotal.toLocaleString();
+            document.getElementById('creditTotal').textContent = creditTotal.toLocaleString();
+
+            const debitColumn = document.getElementById('debitColumn');
+            const creditColumn = document.getElementById('creditColumn');
+
+            debitColumn.innerHTML = placedAccounts.debit.map(acc => `
+                <div class="placed-item">
+                    <div class="placed-item-name">${acc.name}</div>
+                    <div class="placed-item-amount">R${acc.balance.toLocaleString()}</div>
+                </div>
+            `).join('');
+
+            creditColumn.innerHTML = placedAccounts.credit.map(acc => `
+                <div class="placed-item">
+                    <div class="placed-item-name">${acc.name}</div>
+                    <div class="placed-item-amount">R${acc.balance.toLocaleString()}</div>
+                </div>
+            `).join('');
+
+            updateBalanceIndicator(debitTotal === creditTotal);
+        }
+
+        function checkIfBalanced() {
+            if (placedAccounts.debit.length + placedAccounts.credit.length === accounts.length) {
+                const debitTotal = placedAccounts.debit.reduce((sum, acc) => sum + acc.balance, 0);
+                const creditTotal = placedAccounts.credit.reduce((sum, acc) => sum + acc.balance, 0);
+                if (debitTotal === creditTotal) {
+                    document.getElementById('successMessage').classList.add('show');
+                }
+            }
+        }
+
+        function updateBalanceIndicator(isBalanced) {
+            const status = document.getElementById('balanceStatus');
+            const text = document.getElementById('balanceText');
+            const debitTotal = placedAccounts.debit.reduce((sum, acc) => sum + acc.balance, 0);
+            const creditTotal = placedAccounts.credit.reduce((sum, acc) => sum + acc.balance, 0);
+
+            if (isBalanced && placedAccounts.debit.length + placedAccounts.credit.length === accounts.length) {
+                status.classList.add('balanced');
+                text.textContent = 'Balanced!';
+            } else {
+                status.classList.remove('balanced');
+                text.textContent = `Dr ${debitTotal.toLocaleString()} vs Cr ${creditTotal.toLocaleString()}`;
+            }
+        }
+
+        function checkQuiz(questionId, correctAnswer, explanationId) {
+            const selected = document.querySelector(`input[name="${questionId}"]:checked`);
+            if (!selected) {
+                alert('Please select an answer');
+                return;
+            }
+
+            const explanation = document.getElementById(explanationId);
+            const isCorrect = selected.value === correctAnswer;
+            // Track quiz answer
+            const qNum = parseInt(questionId.replace(/\D/g, '')) || 1;
+            if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(4, 'post', qNum, isCorrect, 0);
+            notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: isCorrect, questionText: `Question ${qNum}`, topic: 'Trial Balance' });
+
+            if (isCorrect) {
+                explanation.classList.add('show');
+            } else {
+                alert('Incorrect. Try again!');
+            }
+        }
+
+        function goToScreen(n) {
+            const screens = document.querySelectorAll('.screen');
+            const maxScreen = screens.length - 1;
+
+            if (n > maxScreen) currentScreen = maxScreen;
+            if (n < 0) currentScreen = 0;
+
+            screens.forEach((screen, index) => {
+                screen.classList.remove('active', 'prev');
+                if (index === currentScreen) {
+                    screen.classList.add('active');
+                } else if (index < currentScreen) {
+                    screen.classList.add('prev');
+                }
+            });
+
+            notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: totalScreens });
+            if (currentScreen === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            // Track screen view
+            if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(4, currentScreen);
+            updateNavButtons();
+            updateProgress();
+            initScreen();
+
+            // Scroll to top
+            const content = document.querySelector('.screen.active .content');
+            if (content) content.scrollTop = 0;
+        }
+
+        function nextScreen() {
+            goToScreen(currentScreen + 1);
+        }
+
+        function prevScreen() {
+            goToScreen(currentScreen - 1);
+        }
+
+        function updateProgress() {
+            const progress = ((currentScreen + 1) / totalScreens) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateNavButtons() {
+            document.querySelectorAll('.screen-nav button').forEach((btn, index) => {
+                btn.classList.toggle('active', index === currentScreen);
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextScreen();
+            if (e.key === 'ArrowLeft') prevScreen();
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.screen-nav button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentScreen = parseInt(e.target.dataset.screen);
+                goToScreen(currentScreen);
+            });
+        });
+
+        // Initialize
+        initScreen();
+    </script>
+</body>
+</html>

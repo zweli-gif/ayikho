@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · FA N4 · Double Entry & Accounting Equation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+<script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
+  --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
+  --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
+  --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
+  --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
+}
+html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden}
+
+/* ── SHELL ── */
+.shell{display:flex;gap:20px;align-items:flex-start}
+.sidebar{display:flex;flex-direction:column;gap:3px;padding-top:80px}
+@media(max-width:900px){.sidebar{display:none}}
+.si{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.18);cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:7px;padding:3px 0;white-space:nowrap}
+.si::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+.si.active{color:var(--fa-l)}
+.shell-meta{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.15);text-align:center;margin-top:10px}
+
+/* ── PHONE ── */
+.phone{width:375px;height:812px;background:var(--w);border-radius:50px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(2,132,199,.08)}
+
+/* ── SCREEN STACK ── */
+.stack{position:absolute;inset:0;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--w);transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);will-change:transform}
+.screen.active{transform:translateX(0)}
+.screen.exit{transform:translateX(-24%)}
+
+/* ── STATUS BAR ── */
+.sb{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
+.sb-t{font-weight:700;font-size:15px}
+.sb-i{font-size:11px;opacity:.8}
+.sb-w{background:var(--w);color:var(--ink)}
+.sb-fa{background:var(--fa);color:white}
+.sb-ink{background:var(--ink);color:white}
+.sb-win{background:var(--gold);color:var(--ink)}
+
+/* ── PROGRESS STRIP ── */
+.gp{height:3px;background:var(--fa-sm);flex-shrink:0}
+.gp-fill{height:100%;background:var(--fa);transition:width .4s ease;border-radius:0 2px 2px 0}
+
+/* ── SCROLLABLE BODY ── */
+.scr{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scr::-webkit-scrollbar{display:none}
+
+/* ── FOOTER ── */
+.foot{padding:14px 22px 28px;flex-shrink:0}
+.btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-fa{background:var(--fa);color:white}
+.btn-fa:hover{background:var(--fa-l);transform:translateY(-1px);box-shadow:0 6px 24px rgba(2,132,199,.35)}
+.btn-ghost{background:var(--surf);color:var(--mut);margin-top:8px;font-size:13px;padding:12px}
+.btn-p{background:var(--p);color:white}
+.btn-p:hover{background:var(--pl);transform:translateY(-1px)}
+
+/* ── NAV HEADER ── */
+.nav-hdr{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--bord);flex-shrink:0}
+.nav-back{width:36px;height:36px;border-radius:10px;background:var(--surf);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--mut);transition:all .2s;flex-shrink:0}
+.nav-back:hover{background:var(--fa-sm);color:var(--fa)}
+.nav-hdr-info{flex:1;min-width:0}
+.nav-hdr-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--fa);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.nav-hdr-title{font-weight:700;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-hdr-right{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);flex-shrink:0}
+
+/* ══════════════════════════════════════
+   SCREEN 1: CHAPTER INTRO
+══════════════════════════════════════ */
+.ci-hero{background:var(--fa);padding:28px 24px 32px;flex-shrink:0;position:relative;overflow:hidden}
+.ci-orb{position:absolute;border-radius:50%;background:rgba(255,255,255,.07)}
+.ci-orb1{width:300px;height:300px;top:-100px;right:-80px}
+.ci-orb2{width:180px;height:180px;bottom:-60px;left:-40px}
+.ci-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:16px}
+.ci-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:4px}
+.ci-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:white;line-height:1.1;margin-bottom:14px}
+.ci-meta-row{display:flex;gap:16px}
+.ci-meta{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,.7)}
+
+.ci-tldr{margin:20px 22px;background:var(--fa-sm);border-left:3px solid var(--fa);border-radius:0 12px 12px 0;padding:14px 16px}
+.ci-tldr-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa);margin-bottom:6px}
+.ci-tldr-text{font-size:14px;color:var(--ink);line-height:1.6;font-weight:500}
+
+.ci-what{padding:0 22px 8px}
+.ci-what-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.ci-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bord)}
+.ci-item:last-child{border-bottom:none}
+.ci-item-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0}
+.ci-item-info{flex:1}
+.ci-item-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ci-item-desc{font-size:11px;color:var(--mut)}
+.ci-item-badge{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 8px;border-radius:100px;flex-shrink:0}
+.cib-new{background:var(--fa-sm);color:var(--fa)}
+.cib-calc{background:var(--pxs);color:var(--p)}
+.cib-eg{background:rgba(34,197,94,.1);color:var(--green)}
+
+/* ══════════════════════════════════════
+   SCREEN 2: VIDEO PLAYER
+══════════════════════════════════════ */
+.vid-container{flex:1;display:flex;flex-direction:column;background:var(--ink)}
+
+.vid-player-wrap{position:relative;background:#000;flex-shrink:0}
+.vid-thumb{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#0C1445,#1E3A5F);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.vid-thumb-bg{position:absolute;inset:0;background:radial-gradient(circle at 60% 40%,rgba(2,132,199,.3),transparent 60%)}
+.vid-thumb-text{position:absolute;bottom:16px;left:16px;right:16px}
+.vid-thumb-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white;margin-bottom:4px}
+.vid-thumb-sub{font-size:11px;color:rgba(255,255,255,.6)}
+.vid-play-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s;z-index:2;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.vid-play-btn:hover{transform:scale(1.08)}
+.vid-play-icon{font-size:26px;margin-left:4px}
+
+/* Synthesia badge */
+.vid-synth-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 10px;display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.7);letter-spacing:.06em}
+
+/* Progress bar */
+.vid-progress{height:3px;background:rgba(255,255,255,.15);cursor:pointer}
+.vid-progress-fill{height:100%;width:0%;background:var(--fa-l);transition:width .3s linear}
+
+/* Video controls */
+.vid-controls{display:flex;align-items:center;gap:14px;padding:10px 16px}
+.vc-btn{font-size:18px;cursor:pointer;opacity:.8;transition:opacity .2s;background:none;border:none;color:white}
+.vc-btn:hover{opacity:1}
+.vc-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);flex:1}
+.vc-cc{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:2px 6px;cursor:pointer}
+
+/* Chapter markers */
+.vid-chapters{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06)}
+.vc-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.vc-chapter{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .2s;margin-bottom:4px}
+.vc-chapter:hover{background:rgba(255,255,255,.05)}
+.vc-chapter.active{background:rgba(2,132,199,.15);border-left:2px solid var(--fa-l)}
+.vc-ch-time{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fa-l);min-width:36px}
+.vc-ch-title{font-size:12px;color:rgba(255,255,255,.75)}
+.vc-ch-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.vc-chapter.active .vc-ch-dot{background:var(--fa-l)}
+
+.vid-skip{padding:0 16px 20px}
+.vid-skip-btn{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-radius:10px;padding:11px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+.vid-skip-btn:hover{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.8)}
+
+/* ══════════════════════════════════════
+   SCREEN 3: LESSON PART 1
+══════════════════════════════════════ */
+.lesson-body{padding:18px 22px;display:flex;flex-direction:column;gap:16px}
+.ls-section-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fa);padding-bottom:6px;border-bottom:1px solid var(--fa-sm)}
+.ls-h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink);line-height:1.15}
+.ls-p{font-size:14px;color:var(--mut);line-height:1.7}
+.ls-p strong{color:var(--ink);font-weight:600}
+
+/* Equation display */
+.eq-display{background:var(--ink);border-radius:16px;padding:22px 20px;text-align:center}
+.eq-text{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:white;line-height:1.3;letter-spacing:-.01em}
+.eq-text .eq-a{color:var(--fa-l)}
+.eq-text .eq-op{color:rgba(255,255,255,.3);font-size:18px;margin:0 6px}
+.eq-text .eq-l{color:#F59E0B}
+.eq-text .eq-c{color:var(--green)}
+.eq-labels{display:flex;justify-content:space-between;margin-top:12px;padding:0 4px}
+.eq-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;color:white}
+
+/* Key terms */
+.term-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bord)}
+.term-row:last-child{border-bottom:none}
+.term-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.term-word{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px}
+.term-def{font-size:12px;color:var(--mut);line-height:1.5}
+.term-eg{font-size:11px;color:var(--fa);margin-top:3px;font-style:italic}
+
+/* SA Example block */
+.sa-example{background:linear-gradient(135deg,var(--fa-sm),var(--fa-xs));border-radius:14px;padding:16px;border:1px solid rgba(2,132,199,.15)}
+.sa-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sa-flag{font-size:14px}
+.sa-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:8px}
+.sa-table{width:100%;border-collapse:collapse;font-size:12px}
+.sa-table th{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:6px 10px;text-align:left;border-bottom:1px solid var(--bord);background:rgba(255,255,255,.6)}
+.sa-table td{padding:8px 10px;border-bottom:1px solid rgba(2,132,199,.08);vertical-align:top}
+.sa-table tr:last-child td{border-bottom:none}
+.sa-table .assets{color:var(--fa);font-weight:600}
+.sa-table .liab{color:var(--gold);font-weight:600}
+.sa-table .cap{color:var(--green);font-weight:600}
+.sa-table .num{font-family:'JetBrains Mono',monospace;font-weight:600}
+.sa-balance{margin-top:10px;background:rgba(255,255,255,.7);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--ink);font-weight:600;text-align:center}
+
+/* ══════════════════════════════════════
+   SCREEN 4: FORMULA CALCULATOR
+══════════════════════════════════════ */
+.calc-hdr{background:var(--ink);padding:18px 22px 22px;flex-shrink:0;position:relative;overflow:hidden}
+.calc-hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(2,132,199,.2),transparent 70%)}
+.calc-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa-l);opacity:.8;margin-bottom:8px}
+.calc-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;margin-bottom:4px}
+.calc-sub{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+
+/* Equation balance indicator */
+.eq-balance{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);transition:all .3s}
+.eq-balance.balanced{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.25)}
+.eq-balance.unbalanced{background:rgba(244,63,94,.08);border-color:rgba(244,63,94,.2)}
+.eb-icon{font-size:18px;flex-shrink:0}
+.eb-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.4}
+.eq-balance.balanced .eb-text{color:rgba(34,197,94,.9)}
+.eq-balance.unbalanced .eb-text{color:rgba(244,63,94,.9)}
+
+/* The three calc fields */
+.calc-fields{flex:1;padding:16px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.calc-fields::-webkit-scrollbar{display:none}
+
+.cf-field{border:2px solid var(--bord);border-radius:16px;padding:16px 18px;background:var(--w);transition:all .25s;cursor:pointer;position:relative}
+.cf-field:hover{border-color:var(--fa)}
+.cf-field.solve{border-color:var(--p);background:var(--pxs);cursor:default}
+.cf-field.active-input{border-color:var(--fa);background:var(--fa-xs)}
+
+.cf-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cf-label-row{display:flex;align-items:center;gap:8px}
+.cf-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cf-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:600}
+.cf-solve-badge{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;background:var(--p);color:white;padding:2px 8px;border-radius:100px}
+.cf-solve-hint{font-size:10px;color:var(--dim);padding:2px 8px;border:1px solid var(--bord);border-radius:100px;cursor:pointer;transition:all .2s}
+.cf-solve-hint:hover{border-color:var(--p);color:var(--p)}
+
+.cf-input-row{display:flex;align-items:center;gap:8px}
+.cf-r{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--mut);flex-shrink:0}
+.cf-input{border:none;outline:none;background:transparent;font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--ink);width:100%;min-width:0}
+.cf-input::placeholder{color:var(--bord)}
+.cf-input::-webkit-inner-spin-button{-webkit-appearance:none}
+.cf-field.solve .cf-input{color:var(--p);pointer-events:none}
+
+.cf-desc{font-size:11px;color:var(--dim);margin-top:6px;line-height:1.4}
+
+/* Calc operator strip */
+.calc-op-strip{display:flex;align-items:center;justify-content:center;gap:6px;padding:0 22px}
+.calc-eq-op{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--dim);text-align:center;flex:1}
+
+/* Examples row */
+.calc-examples{padding:4px 22px 0}
+.calc-eg-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.calc-eg-chips{display:flex;flex-wrap:wrap;gap:6px}
+.calc-eg-chip{border:1px solid var(--bord);border-radius:100px;padding:6px 12px;font-size:11px;color:var(--mut);cursor:pointer;transition:all .2s;background:var(--w)}
+.calc-eg-chip:hover{border-color:var(--fa);color:var(--fa);background:var(--fa-xs)}
+
+/* Reset */
+.calc-reset{margin:0 22px 6px;border:1.5px dashed var(--bord);border-radius:12px;padding:11px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);cursor:pointer;text-align:center;background:none;width:calc(100% - 44px);transition:all .2s}
+.calc-reset:hover{border-color:var(--rose);color:var(--rose)}
+
+/* ══════════════════════════════════════
+   SCREEN 5: LESSON PART 2 — DOUBLE ENTRY
+══════════════════════════════════════ */
+.debit-credit-visual{background:var(--ink);border-radius:16px;overflow:hidden}
+.dc-header{display:flex}
+.dc-hdr-half{flex:1;padding:12px 16px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.dc-hdr-debit{background:rgba(2,132,199,.2);color:var(--fa-l);border-right:1px solid rgba(255,255,255,.06)}
+.dc-hdr-credit{background:rgba(245,158,11,.15);color:#FBBF24}
+.dc-body{display:flex}
+.dc-col{flex:1;padding:14px 14px}
+.dc-col-d{border-right:1px solid rgba(255,255,255,.06)}
+.dc-row{font-size:12px;color:rgba(255,255,255,.65);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px}
+.dc-row:last-child{border-bottom:none}
+.dc-row-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.dc-row-dot-blue{background:var(--fa-l)}
+.dc-row-dot-gold{background:#FBBF24}
+
+/* T-account */
+.t-account{border:2px solid var(--bord);border-radius:12px;overflow:hidden}
+.t-account-top{background:var(--fa);color:white;padding:10px 14px;font-weight:700;font-size:13px;text-align:center}
+.t-account-cols{display:flex}
+.t-col{flex:1;padding:10px 14px}
+.t-col-left{border-right:2px solid var(--bord)}
+.t-col-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;text-align:center}
+.t-entry{font-size:12px;color:var(--ink);padding:4px 0;display:flex;justify-content:space-between;border-bottom:1px solid var(--bord)}
+.t-entry:last-child{border-bottom:none}
+.t-entry-name{color:var(--mut)}
+.t-entry-amt{font-family:'JetBrains Mono',monospace;font-weight:600}
+
+/* Memory aid */
+.memory-aid{background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border-radius:12px;padding:14px 16px;border:1px solid rgba(245,158,11,.2)}
+.ma-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.ma-text{font-size:13px;color:var(--ink);line-height:1.6;font-weight:500}
+.ma-sub{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.5}
+
+/* ══════════════════════════════════════
+   SCREEN 6: WORKED EXAMPLE
+══════════════════════════════════════ */
+.we-hdr{background:linear-gradient(135deg,var(--fa-d),var(--fa));padding:18px 22px 22px;flex-shrink:0}
+.we-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px}
+.we-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;line-height:1.15;margin-bottom:6px}
+.we-context{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+
+.we-body{flex:1;overflow-y:auto;padding:18px 22px}
+.we-body::-webkit-scrollbar{display:none}
+
+/* Transaction steps */
+.we-step{margin-bottom:20px}
+.we-step-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.we-step-num{width:32px;height:32px;border-radius:50%;background:var(--fa);color:white;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;flex-shrink:0}
+.we-step-title{font-weight:700;font-size:14px;color:var(--ink)}
+.we-step-amount{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--fa);font-weight:600;margin-left:auto}
+
+.we-transaction{background:var(--surf);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+.we-txn-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13px}
+.we-txn-row:not(:last-child){border-bottom:1px solid var(--bord)}
+.we-txn-arrow{font-size:16px;flex-shrink:0}
+.we-txn-account{flex:1;font-weight:600;color:var(--ink)}
+.we-txn-dr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fa);background:var(--fa-sm);padding:2px 8px;border-radius:6px}
+.we-txn-cr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);background:rgba(245,158,11,.1);padding:2px 8px;border-radius:6px}
+.we-txn-amt{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ink);min-width:60px;text-align:right}
+
+.we-equation{background:var(--ink);border-radius:10px;padding:12px 15px;display:flex;align-items:center;gap:0}
+.we-eq-part{flex:1;text-align:center}
+.we-eq-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px}
+.we-eq-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;line-height:1}
+.we-eq-val-a{color:var(--fa-l)}
+.we-eq-val-l{color:#FBBF24}
+.we-eq-val-c{color:var(--green)}
+.we-eq-op{font-size:18px;color:rgba(255,255,255,.25);padding:0 6px;flex-shrink:0;padding-top:12px}
+.we-eq-check{text-align:center;margin-top:6px;font-size:11px;color:rgba(34,197,94,.8);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+
+/* ══════════════════════════════════════
+   QUIZ SCREENS
+══════════════════════════════════════ */
+.quiz-hdr{background:var(--fa-d);padding:14px 22px 20px;flex-shrink:0}
+.quiz-progress-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.quiz-pb{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden}
+.quiz-pb-fill{height:100%;background:var(--fa-l);border-radius:100px;transition:width .4s ease}
+.quiz-cnt{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.35)}
+.quiz-q-text{font-size:16px;font-weight:700;color:white;line-height:1.45}
+.quiz-scenario{font-size:12px;color:rgba(255,255,255,.5);margin-top:5px;line-height:1.5;font-style:italic}
+
+.quiz-opts{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:9px;overflow-y:auto}
+.quiz-opts::-webkit-scrollbar{display:none}
+.q-opt{border:2px solid var(--bord);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all .2s;background:var(--w);user-select:none}
+.q-opt:hover{border-color:var(--fa);background:var(--fa-xs)}
+.q-opt.correct{border-color:var(--green);background:var(--green-xs)}
+.q-opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.05)}
+.q-opt.dimmed{opacity:.45}
+.q-letter{width:30px;height:30px;border-radius:50%;background:var(--surf);color:var(--fa);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0;transition:all .2s}
+.q-opt.correct .q-letter{background:var(--green);color:white}
+.q-opt.wrong .q-letter{background:var(--rose);color:white}
+.q-text{font-size:13px;color:var(--ink);line-height:1.5;padding-top:4px}
+
+.q-explanation{background:var(--fa-sm);border-radius:10px;padding:12px 14px;margin:0 20px;border-left:3px solid var(--fa);display:none}
+.q-explanation.show{display:block}
+.q-exp-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--fa);margin-bottom:5px}
+.q-exp-text{font-size:12px;color:var(--ink);line-height:1.6}
+
+.quiz-next{padding:12px 20px 28px;flex-shrink:0}
+
+/* ══════════════════════════════════════
+   WIN SCREEN
+══════════════════════════════════════ */
+.win-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 26px 10px;overflow-y:auto}
+.win-body::-webkit-scrollbar{display:none}
+.win-banner{background:linear-gradient(135deg,#F59E0B,#FBBF24);width:100%;border-radius:20px;padding:24px 20px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden}
+.win-banner::before{content:'🌟';position:absolute;font-size:80px;right:-10px;top:-10px;opacity:.15}
+.win-icon{font-size:48px;margin-bottom:8px}
+.win-hl{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.win-sub{font-size:13px;color:rgba(26,10,58,.6)}
+.win-xp{display:inline-flex;align-items:center;gap:6px;background:rgba(26,10,58,.15);border-radius:100px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink);margin-top:10px}
+
+.win-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bord);border:1px solid var(--bord);border-radius:16px;overflow:hidden;width:100%;margin-bottom:16px}
+.win-stat{background:var(--w);padding:16px 10px;text-align:center}
+.win-stat-n{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--fa);line-height:1;margin-bottom:3px}
+.win-stat-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+
+/* New concepts learned */
+.win-concepts{width:100%;background:var(--surf);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.win-concepts-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.win-concept{display:flex;align-items:center;gap:10px;padding:5px 0}
+.win-concept-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.win-concept-text{font-size:12px;color:var(--ink);font-weight:500}
+
+.win-next-card{width:100%;border:1.5px solid var(--bord);border-radius:14px;padding:14px 16px;background:var(--w);margin-bottom:16px}
+.win-next-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.win-next-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px}
+.win-next-meta{font-size:12px;color:var(--mut)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="shell">
+<div class="sidebar" id="sidebar"></div>
+<div>
+<div class="phone"><div class="stack" id="stack">
+
+<!-- ══════════════════════════════
+   S1: CHAPTER INTRO
+══════════════════════════════ -->
+<div class="screen active" id="s-intro">
+  <div class="sb sb-fa"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:10%"></div></div>
+  <div class="scr">
+    <div class="ci-hero">
+      <div class="ci-orb ci-orb1"></div><div class="ci-orb ci-orb2"></div>
+      <div class="ci-badge">💰 Financial Accounting N4</div>
+      <div class="ci-num">Module 2 of 9</div>
+      <div class="ci-title">Double Entry &<br>The Accounting<br>Equation</div>
+      <div class="ci-meta-row">
+        <div class="ci-meta">⏱ 8 minutes</div>
+        <div class="ci-meta">🎬 3:42 video</div>
+        <div class="ci-meta">❓ 3 questions</div>
+      </div>
+    </div>
+
+    <div class="ci-tldr">
+      <div class="ci-tldr-tag">💬 TL;DR</div>
+      <div class="ci-tldr-text">Every single thing a business does with money affects exactly two accounts — always. And the equation Assets = Liabilities + Capital must balance every single time, no exceptions.</div>
+    </div>
+
+    <div class="ci-what" style="padding-top:4px">
+      <div class="ci-what-title">What you'll learn</div>
+      <div class="ci-item">
+        <div class="ci-item-icon">⚖️</div>
+        <div class="ci-item-info"><div class="ci-item-name">The Accounting Equation</div><div class="ci-item-desc">Assets = Liabilities + Capital — the rule everything else is built on</div></div>
+        <div class="ci-item-badge cib-new">New</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-item-icon">🔄</div>
+        <div class="ci-item-info"><div class="ci-item-name">Double Entry Principle</div><div class="ci-item-desc">Why every transaction touches two accounts — always</div></div>
+        <div class="ci-item-badge cib-new">New</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-item-icon">🧮</div>
+        <div class="ci-item-info"><div class="ci-item-name">Live Formula Calculator</div><div class="ci-item-desc">Plug in real numbers and see the equation in action</div></div>
+        <div class="ci-item-badge cib-calc">Interactive</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-item-icon">🚗</div>
+        <div class="ci-item-info"><div class="ci-item-name">Sipho's Car Wash</div><div class="ci-item-desc">Real SA business example — follow 3 transactions step by step</div></div>
+        <div class="ci-item-badge cib-eg">Example</div>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-video')">🎬 Watch intro video first →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S2: VIDEO PLAYER
+══════════════════════════════ -->
+<div class="screen" id="s-video">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:20%;background:var(--fa-l)"></div></div>
+  <div class="vid-container">
+    <div class="vid-player-wrap">
+      <div class="vid-thumb">
+        <div class="vid-thumb-bg"></div>
+        <div class="vid-play-btn" onclick="playVid()"><div class="vid-play-icon">▶</div></div>
+        <div class="vid-thumb-text">
+          <div class="vid-thumb-title">Double Entry &<br>The Accounting Equation</div>
+          <div class="vid-thumb-sub">FA N4 · Module 2 · 3:42</div>
+        </div>
+        <div class="vid-synth-badge">🎬 Synthesia · AI video</div>
+      </div>
+      <div class="vid-progress" onclick="seekVid(event)"><div class="vid-progress-fill" id="vid-fill"></div></div>
+      <div class="vid-controls">
+        <button class="vc-btn" onclick="playVid()">▶</button>
+        <button class="vc-btn">⏪</button>
+        <button class="vc-btn">⏩</button>
+        <span class="vc-time" id="vid-time">0:00 / 3:42</span>
+        <span class="vc-cc">CC</span>
+        <button class="vc-btn">⛶</button>
+      </div>
+    </div>
+
+    <div class="vid-chapters">
+      <div class="vc-label">Chapter markers</div>
+      <div class="vc-chapter active">
+        <span class="vc-ch-time">0:00</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">What is the Accounting Equation?</span>
+      </div>
+      <div class="vc-chapter">
+        <span class="vc-ch-time">1:12</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">Assets, Liabilities & Capital explained</span>
+      </div>
+      <div class="vc-chapter">
+        <span class="vc-ch-time">2:05</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">Why every transaction touches two accounts</span>
+      </div>
+      <div class="vc-chapter">
+        <span class="vc-ch-time">3:00</span>
+        <div class="vc-ch-dot"></div>
+        <span class="vc-ch-title">Quick recap + exam tip</span>
+      </div>
+    </div>
+
+    <div class="vid-skip">
+      <button class="vid-skip-btn" onclick="goTo('s-lesson1')">Skip video — read the lesson →</button>
+    </div>
+  </div>
+  <div style="padding:0 22px 24px;flex-shrink:0;background:var(--ink)">
+    <button class="btn btn-fa" onclick="goTo('s-lesson1')" style="background:var(--fa)">Got it — start reading →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S3: LESSON PART 1 — THE EQUATION
+══════════════════════════════ -->
+<div class="screen" id="s-lesson1">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:35%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="goTo('s-video')">‹</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">FA N4 · Module 2</div>
+      <div class="nav-hdr-title">The Accounting Equation</div>
+    </div>
+    <div class="nav-hdr-right">1 of 2</div>
+  </div>
+  <div class="scr">
+    <div class="lesson-body">
+      <div class="ls-section-lbl">The Big Idea</div>
+      <div class="ls-h2">Everything a business owns came from somewhere</div>
+      <div class="ls-p">Think about it like this: if Sipho starts a car wash with R10,000 — where did that money come from? Either <strong>he put it in himself</strong> (that's Capital), or <strong>someone lent it to him</strong> (that's a Liability, like a bank loan). There's no third option.<br><br>That's the Accounting Equation. It says that everything a business <strong>owns</strong> (Assets) must equal everything it <strong>owes</strong> (Liabilities) plus what the <strong>owner put in</strong> (Capital). Always. No exceptions.</div>
+
+      <div class="eq-display">
+        <div class="eq-text">
+          <span class="eq-a">Assets</span>
+          <span class="eq-op">=</span>
+          <span class="eq-l">Liabilities</span>
+          <span class="eq-op">+</span>
+          <span class="eq-c">Capital</span>
+        </div>
+        <div class="eq-labels">
+          <span class="eq-lbl">What you OWN</span>
+          <span class="eq-lbl">What you OWE</span>
+          <span class="eq-lbl">Owner's money</span>
+        </div>
+      </div>
+
+      <div class="ls-p">If this equation <strong>doesn't balance</strong>, something went wrong. An entry was missed, or a number was captured incorrectly. The equation is your built-in error detector.</div>
+
+      <div class="ls-section-lbl">The Three Parts</div>
+
+      <div>
+        <div class="term-row">
+          <div class="term-icon">🏦</div>
+          <div><div class="term-word" style="color:var(--fa)">Assets</div><div class="term-def">Everything the business OWNS or is owed. Things that have value.</div><div class="term-eg">Cash in the till · Stock on the shelves · Debtors (people who owe you) · Buildings · Equipment · Vehicles</div></div>
+        </div>
+        <div class="term-row">
+          <div class="term-icon">💳</div>
+          <div><div class="term-word" style="color:var(--gold)">Liabilities</div><div class="term-def">Everything the business OWES to outsiders. Money that must be paid back.</div><div class="term-eg">Capitec business loan · Creditors (suppliers you owe) · Bank overdraft · SARS VAT owed</div></div>
+        </div>
+        <div class="term-row">
+          <div class="term-icon">👤</div>
+          <div><div class="term-word" style="color:var(--green)">Capital (Owner's Equity)</div><div class="term-def">The owner's share of the business. What's left if you paid off all debts.</div><div class="term-eg">Money the owner invested + Profits earned − Money the owner withdrew (Drawings)</div></div>
+        </div>
+      </div>
+
+      <div class="sa-example">
+        <div class="sa-tag"><span class="sa-flag">🇿🇦</span> Real SA Example · Sipho opens a car wash</div>
+        <div class="sa-title">Sipho starts with R15,000. R10,000 was his own savings. R5,000 was a loan from Capitec.</div>
+        <table class="sa-table">
+          <tr><th>Item</th><th>Amount</th><th>Category</th></tr>
+          <tr><td>Cash in business account</td><td class="num">R15,000</td><td class="assets">Asset ↑</td></tr>
+          <tr><td>Capitec loan</td><td class="num">R5,000</td><td class="liab">Liability ↑</td></tr>
+          <tr><td>Sipho's own investment</td><td class="num">R10,000</td><td class="cap">Capital ↑</td></tr>
+        </table>
+        <div class="sa-balance">✅ R15,000 = R5,000 + R10,000 · Equation balances ✓</div>
+      </div>
+
+      <div style="height:8px"></div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-calc')">🧮 Try the live calculator →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S4: FORMULA CALCULATOR
+══════════════════════════════ -->
+<div class="screen" id="s-calc">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:48%;background:var(--fa-l)"></div></div>
+  <div class="calc-hdr">
+    <div class="calc-badge">Live calculator · Assets = Liabilities + Capital</div>
+    <div class="calc-title">Plug in numbers,<br>see the equation work.</div>
+    <div class="calc-sub">Enter any two values. Tap "Solve for" on the field you want to calculate — it fills in automatically.</div>
+    <div class="eq-balance" id="eq-balance">
+      <div class="eb-icon">⚖️</div>
+      <div class="eb-text" id="eb-text">Enter values to check the equation</div>
+    </div>
+  </div>
+
+  <div class="calc-fields">
+    <!-- ASSETS -->
+    <div class="cf-field active-input" id="field-a" onclick="setInput('a')">
+      <div class="cf-top">
+        <div class="cf-label-row">
+          <div class="cf-dot" style="background:var(--fa-l)"></div>
+          <div class="cf-label" style="color:var(--fa)">Assets</div>
+        </div>
+        <div class="cf-solve-hint" id="solve-a" onclick="setSolve('a',event)">Solve for this</div>
+      </div>
+      <div class="cf-input-row">
+        <div class="cf-r">R</div>
+        <input class="cf-input" type="number" id="inp-a" placeholder="0" inputmode="decimal" oninput="calcUpdate()">
+      </div>
+      <div class="cf-desc">Cash · Stock · Equipment · Debtors · Buildings</div>
+    </div>
+
+    <!-- EQUALS SIGN -->
+    <div style="display:flex;align-items:center;gap:6px;padding:0 8px">
+      <div style="flex:1;height:1px;background:var(--bord)"></div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--dim)">=</div>
+      <div style="flex:1;height:1px;background:var(--bord)"></div>
+    </div>
+
+    <!-- LIABILITIES -->
+    <div class="cf-field" id="field-l" onclick="setInput('l')">
+      <div class="cf-top">
+        <div class="cf-label-row">
+          <div class="cf-dot" style="background:var(--gold)"></div>
+          <div class="cf-label" style="color:var(--gold)">Liabilities</div>
+        </div>
+        <div class="cf-solve-hint" id="solve-l" onclick="setSolve('l',event)">Solve for this</div>
+      </div>
+      <div class="cf-input-row">
+        <div class="cf-r">R</div>
+        <input class="cf-input" type="number" id="inp-l" placeholder="0" inputmode="decimal" oninput="calcUpdate()">
+      </div>
+      <div class="cf-desc">Bank loans · Creditors · Overdraft · VAT owed</div>
+    </div>
+
+    <!-- PLUS SIGN -->
+    <div style="display:flex;align-items:center;gap:6px;padding:0 8px">
+      <div style="flex:1;height:1px;background:var(--bord)"></div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--dim)">+</div>
+      <div style="flex:1;height:1px;background:var(--bord)"></div>
+    </div>
+
+    <!-- CAPITAL -->
+    <div class="cf-field solve" id="field-c">
+      <div class="cf-top">
+        <div class="cf-label-row">
+          <div class="cf-dot" style="background:var(--green)"></div>
+          <div class="cf-label" style="color:var(--green)">Capital</div>
+        </div>
+        <div class="cf-solve-badge" id="solve-c">Solving for this ✓</div>
+      </div>
+      <div class="cf-input-row">
+        <div class="cf-r">R</div>
+        <input class="cf-input" type="number" id="inp-c" placeholder="—" inputmode="decimal" readonly oninput="calcUpdate()">
+      </div>
+      <div class="cf-desc">Owner's investment + Profits − Drawings</div>
+    </div>
+
+    <!-- EXAMPLE CHIPS -->
+    <div style="padding-top:4px">
+      <div class="calc-eg-lbl">Try a scenario</div>
+      <div class="calc-eg-chips">
+        <div class="calc-eg-chip" onclick="loadExample(15000,5000)">Sipho's car wash</div>
+        <div class="calc-eg-chip" onclick="loadExample(85000,32000)">Small retail shop</div>
+        <div class="calc-eg-chip" onclick="loadExample(250000,180000)">Medium business</div>
+        <div class="calc-eg-chip" onclick="loadExample(8000,0)">Solo startup</div>
+      </div>
+    </div>
+
+    <button class="calc-reset" onclick="resetCalc()">↺ Clear all values</button>
+    <div style="height:4px"></div>
+  </div>
+
+  <div class="foot" style="padding-top:8px">
+    <button class="btn btn-fa" onclick="goTo('s-lesson2')">Continue → Double Entry</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S5: LESSON PART 2 — DOUBLE ENTRY
+══════════════════════════════ -->
+<div class="screen" id="s-lesson2">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:58%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="goTo('s-calc')">‹</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">FA N4 · Module 2</div>
+      <div class="nav-hdr-title">Double Entry Principle</div>
+    </div>
+    <div class="nav-hdr-right">2 of 2</div>
+  </div>
+  <div class="scr">
+    <div class="lesson-body">
+      <div class="ls-section-lbl">The Golden Rule</div>
+      <div class="ls-h2">Every transaction touches exactly two accounts</div>
+      <div class="ls-p">When Sipho buys a pressure washer for R3,000 cash — two things happen at the same time. His <strong>cash goes down R3,000</strong> (one account). His <strong>equipment goes up R3,000</strong> (another account). One entry in, one entry out. This is double entry.<br><br>The reason this matters: if only one side gets recorded, the equation breaks. You'd have more equipment but your assets would look wrong. Double entry keeps everything honest.</div>
+
+      <div class="debit-credit-visual">
+        <div class="dc-header">
+          <div class="dc-hdr-half dc-hdr-debit">Debit (Dr) — Left side</div>
+          <div class="dc-hdr-half dc-hdr-credit">Credit (Cr) — Right side</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-col dc-col-d">
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-blue"></div>Assets INCREASE</div>
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-blue"></div>Liabilities DECREASE</div>
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-blue"></div>Capital DECREASES</div>
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-blue"></div>Expenses INCREASE</div>
+          </div>
+          <div class="dc-col">
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-gold"></div>Assets DECREASE</div>
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-gold"></div>Liabilities INCREASE</div>
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-gold"></div>Capital INCREASES</div>
+            <div class="dc-row"><div class="dc-row-dot dc-row-dot-gold"></div>Income INCREASES</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ls-p">Don't try to memorise the table above yet. Just remember the principle: <strong>every transaction has two sides</strong>. You'll get the debit/credit rules through practice.</div>
+
+      <div class="ls-section-lbl">What a T-Account looks like</div>
+      <div class="ls-p">Accountants draw accounts like a T — debit on the left, credit on the right. Here's the Bank Account for Sipho's car wash:</div>
+
+      <div class="t-account">
+        <div class="t-account-top">Bank Account</div>
+        <div class="t-account-cols">
+          <div class="t-col t-col-left">
+            <div class="t-col-label" style="color:var(--fa)">Debit (money IN)</div>
+            <div class="t-entry"><span class="t-entry-name">Capital</span><span class="t-entry-amt" style="color:var(--fa)">R10,000</span></div>
+            <div class="t-entry"><span class="t-entry-name">Loan — Capitec</span><span class="t-entry-amt" style="color:var(--fa)">R5,000</span></div>
+          </div>
+          <div class="t-col">
+            <div class="t-col-label" style="color:var(--gold)">Credit (money OUT)</div>
+            <div class="t-entry"><span class="t-entry-name">Pressure washer</span><span class="t-entry-amt" style="color:var(--gold)">R3,000</span></div>
+            <div class="t-entry"><span class="t-entry-name">Rent deposit</span><span class="t-entry-amt" style="color:var(--gold)">R1,500</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="memory-aid">
+        <div class="ma-tag">💡 Memory trick for the exam</div>
+        <div class="ma-text">"DEAD CLIC" — Debits increase: Expenses, Assets, Drawings. Credits increase: Liabilities, Income, Capital.</div>
+        <div class="ma-sub">This comes up in almost every FA exam. Write it on your hand before you go in.</div>
+      </div>
+
+      <div class="ls-section-lbl">Exam callout</div>
+      <div style="background:#FEF3C7;border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:14px 16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">⭐ This is how it appears in FA N4 exams</div>
+        <div style="font-size:13px;color:var(--ink);line-height:1.6">You'll be given a list of transactions and asked to: (1) identify which accounts are affected, (2) state whether each is debited or credited, and (3) show the effect on the Accounting Equation. 10–15 marks in most papers.</div>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-example')">📋 See a full worked example →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S6: WORKED EXAMPLE
+══════════════════════════════ -->
+<div class="screen" id="s-example">
+  <div class="sb sb-fa"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:68%"></div></div>
+  <div class="we-hdr">
+    <div class="we-badge">🇿🇦 Worked Example</div>
+    <div class="we-title">Sipho's Car Wash —<br>3 transactions</div>
+    <div class="we-context">Watch how the Accounting Equation stays balanced through every single step.</div>
+  </div>
+  <div class="we-body">
+
+    <!-- Transaction 1 -->
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">1</div>
+        <div class="we-step-title">Sipho invests his own savings</div>
+        <div class="we-step-amount">R10,000</div>
+      </div>
+      <div class="we-transaction">
+        <div class="we-txn-row">
+          <div class="we-txn-arrow">💳</div>
+          <div class="we-txn-account">Bank Account</div>
+          <div class="we-txn-dr">Debit</div>
+          <div class="we-txn-amt" style="color:var(--fa)">+R10,000</div>
+        </div>
+        <div class="we-txn-row">
+          <div class="we-txn-arrow">👤</div>
+          <div class="we-txn-account">Capital Account</div>
+          <div class="we-txn-cr">Credit</div>
+          <div class="we-txn-amt" style="color:var(--gold)">+R10,000</div>
+        </div>
+      </div>
+      <div class="we-equation">
+        <div class="we-eq-part"><div class="we-eq-label">Assets</div><div class="we-eq-val we-eq-val-a">R10,000</div></div>
+        <div class="we-eq-op">=</div>
+        <div class="we-eq-part"><div class="we-eq-label">Liabilities</div><div class="we-eq-val we-eq-val-l">R0</div></div>
+        <div class="we-eq-op">+</div>
+        <div class="we-eq-part"><div class="we-eq-label">Capital</div><div class="we-eq-val we-eq-val-c">R10,000</div></div>
+        <div class="we-eq-check" style="grid-column:1/-1;margin-top:8px">✓ Balances</div>
+      </div>
+    </div>
+
+    <!-- Transaction 2 -->
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">2</div>
+        <div class="we-step-title">Capitec business loan</div>
+        <div class="we-step-amount">R5,000</div>
+      </div>
+      <div class="we-transaction">
+        <div class="we-txn-row">
+          <div class="we-txn-arrow">💳</div>
+          <div class="we-txn-account">Bank Account</div>
+          <div class="we-txn-dr">Debit</div>
+          <div class="we-txn-amt" style="color:var(--fa)">+R5,000</div>
+        </div>
+        <div class="we-txn-row">
+          <div class="we-txn-arrow">🏦</div>
+          <div class="we-txn-account">Loan — Capitec</div>
+          <div class="we-txn-cr">Credit</div>
+          <div class="we-txn-amt" style="color:var(--gold)">+R5,000</div>
+        </div>
+      </div>
+      <div class="we-equation">
+        <div class="we-eq-part"><div class="we-eq-label">Assets</div><div class="we-eq-val we-eq-val-a">R15,000</div></div>
+        <div class="we-eq-op">=</div>
+        <div class="we-eq-part"><div class="we-eq-label">Liabilities</div><div class="we-eq-val we-eq-val-l">R5,000</div></div>
+        <div class="we-eq-op">+</div>
+        <div class="we-eq-part"><div class="we-eq-label">Capital</div><div class="we-eq-val we-eq-val-c">R10,000</div></div>
+      </div>
+      <div style="text-align:center;margin-top:6px;font-size:11px;color:rgba(34,197,94,.9);font-family:'JetBrains Mono',monospace">✓ Still balances</div>
+    </div>
+
+    <!-- Transaction 3 -->
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">3</div>
+        <div class="we-step-title">Buys pressure washer for cash</div>
+        <div class="we-step-amount">R3,000</div>
+      </div>
+      <div class="we-transaction">
+        <div class="we-txn-row">
+          <div class="we-txn-arrow">🚿</div>
+          <div class="we-txn-account">Equipment Account</div>
+          <div class="we-txn-dr">Debit</div>
+          <div class="we-txn-amt" style="color:var(--fa)">+R3,000</div>
+        </div>
+        <div class="we-txn-row">
+          <div class="we-txn-arrow">💳</div>
+          <div class="we-txn-account">Bank Account</div>
+          <div class="we-txn-cr">Credit</div>
+          <div class="we-txn-amt" style="color:var(--gold)">−R3,000</div>
+        </div>
+      </div>
+      <div style="background:var(--fa-sm);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--fa-d);margin-bottom:8px">💡 Assets just swap — cash goes down, equipment goes up. Total assets stay R15,000.</div>
+      <div class="we-equation">
+        <div class="we-eq-part"><div class="we-eq-label">Assets</div><div class="we-eq-val we-eq-val-a">R15,000</div></div>
+        <div class="we-eq-op">=</div>
+        <div class="we-eq-part"><div class="we-eq-label">Liabilities</div><div class="we-eq-val we-eq-val-l">R5,000</div></div>
+        <div class="we-eq-op">+</div>
+        <div class="we-eq-part"><div class="we-eq-label">Capital</div><div class="we-eq-val we-eq-val-c">R10,000</div></div>
+      </div>
+      <div style="text-align:center;margin-top:6px;font-size:11px;color:rgba(34,197,94,.9);font-family:'JetBrains Mono',monospace">✓ Still balances — always will</div>
+    </div>
+
+    <div style="height:8px"></div>
+  </div>
+  <div class="foot" style="padding-top:8px">
+    <button class="btn btn-fa" onclick="goTo('s-q1')">Take the quiz →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+   S7: QUIZ Q1
+══════════════════════════════ -->
+<div class="screen" id="s-q1">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:75%;background:var(--fa-l)"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:33%"></div></div>
+      <div class="quiz-cnt">1 / 3</div>
+    </div>
+    <div class="quiz-q-text">Sipho takes a R8,000 loan from FNB for his car wash. What is the correct effect on the Accounting Equation?</div>
+  </div>
+  <div class="quiz-opts" id="q1-opts">
+    <div class="q-opt" onclick="answerQ(1,'a','wrong')">
+      <div class="q-letter">A</div>
+      <div class="q-text">Assets increase R8,000 · Capital increases R8,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(1,'b','correct')">
+      <div class="q-letter">B</div>
+      <div class="q-text">Assets increase R8,000 · Liabilities increase R8,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(1,'c','wrong')">
+      <div class="q-letter">C</div>
+      <div class="q-text">Liabilities increase R8,000 · Capital decreases R8,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(1,'d','wrong')">
+      <div class="q-letter">D</div>
+      <div class="q-text">Assets decrease R8,000 · Liabilities decrease R8,000</div>
+    </div>
+  </div>
+  <div class="q-explanation" id="q1-exp">
+    <div class="q-exp-lbl">✅ Why B is correct</div>
+    <div class="q-exp-text">A loan means the bank gives Sipho cash (Asset goes up) and Sipho now owes the bank (Liability goes up). Capital doesn't change — the owner didn't put anything in. R8,000 = R8,000 + R0 still balances.</div>
+  </div>
+  <div class="quiz-next"><button class="btn btn-fa" id="q1-next" disabled onclick="goTo('s-q2')">Next question →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+   S8: QUIZ Q2
+══════════════════════════════ -->
+<div class="screen" id="s-q2">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:80%;background:var(--fa-l)"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:66%"></div></div>
+      <div class="quiz-cnt">2 / 3</div>
+    </div>
+    <div class="quiz-q-text">A business has Assets of R45,000 and Liabilities of R18,000. What is the Capital?</div>
+    <div class="quiz-scenario">Use the Accounting Equation: Assets = Liabilities + Capital</div>
+  </div>
+  <div class="quiz-opts" id="q2-opts">
+    <div class="q-opt" onclick="answerQ(2,'a','wrong')">
+      <div class="q-letter">A</div><div class="q-text">R63,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(2,'b','wrong')">
+      <div class="q-letter">B</div><div class="q-text">R18,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(2,'c','correct')">
+      <div class="q-letter">C</div><div class="q-text">R27,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(2,'d','wrong')">
+      <div class="q-letter">D</div><div class="q-text">R45,000</div>
+    </div>
+  </div>
+  <div class="q-explanation" id="q2-exp">
+    <div class="q-exp-lbl">✅ Why C is correct</div>
+    <div class="q-exp-text">Rearrange the equation: Capital = Assets − Liabilities. So Capital = R45,000 − R18,000 = R27,000. This is the owner's share — what would be left if all debts were paid.</div>
+  </div>
+  <div class="quiz-next"><button class="btn btn-fa" id="q2-next" disabled onclick="goTo('s-q3')">Next question →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+   S9: QUIZ Q3
+══════════════════════════════ -->
+<div class="screen" id="s-q3">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:86%;background:var(--fa-l)"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:100%"></div></div>
+      <div class="quiz-cnt">3 / 3</div>
+    </div>
+    <div class="quiz-q-text">Zinhle's business buys stock worth R2,000 cash. Which statement is TRUE about this transaction?</div>
+  </div>
+  <div class="quiz-opts" id="q3-opts">
+    <div class="q-opt" onclick="answerQ(3,'a','wrong')">
+      <div class="q-letter">A</div><div class="q-text">Total Assets increase by R2,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(3,'b','correct')">
+      <div class="q-letter">B</div><div class="q-text">Total Assets stay the same — cash decreases, stock increases</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(3,'c','wrong')">
+      <div class="q-letter">C</div><div class="q-text">Liabilities increase by R2,000</div>
+    </div>
+    <div class="q-opt" onclick="answerQ(3,'d','wrong')">
+      <div class="q-letter">D</div><div class="q-text">Capital decreases by R2,000</div>
+    </div>
+  </div>
+  <div class="q-explanation" id="q3-exp">
+    <div class="q-exp-lbl">✅ Why B is correct</div>
+    <div class="q-exp-text">Buying stock for cash swaps one asset (cash) for another (stock). Total assets don't change. Liabilities and Capital are untouched. The equation stays perfectly balanced — this is double entry in action.</div>
+  </div>
+  <div class="quiz-next"><button class="btn btn-fa" id="q3-next" disabled onclick="goTo('s-win')">See my results →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+   S10: WIN SCREEN
+══════════════════════════════ -->
+<div class="screen" id="s-win">
+  <div class="sb sb-win"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%;background:var(--gold)"></div></div>
+  <div class="win-body" style="padding-top:18px">
+    <div class="win-banner">
+      <div class="win-icon">🏆</div>
+      <div class="win-hl">Siyabonga,<br>Zandile!</div>
+      <div class="win-sub">Module 2 complete · Financial Accounting N4</div>
+      <div class="win-xp">⚡ +150 XP</div>
+    </div>
+
+    <div class="win-stats">
+      <div class="win-stat"><div class="win-stat-n" id="ws-score">3/3</div><div class="win-stat-l">Correct</div></div>
+      <div class="win-stat"><div class="win-stat-n">100%</div><div class="win-stat-l">Score</div></div>
+      <div class="win-stat"><div class="win-stat-n">🔥9</div><div class="win-stat-l">Streak</div></div>
+    </div>
+
+    <div class="win-concepts">
+      <div class="win-concepts-lbl">What you learned today</div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">The Accounting Equation: Assets = Liabilities + Capital</div></div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">Every transaction always affects exactly two accounts</div></div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">Debits (left) and Credits (right) — DEAD CLIC</div></div>
+      <div class="win-concept"><div class="win-concept-dot"></div><div class="win-concept-text">Asset swaps don't change the equation total</div></div>
+    </div>
+
+    <div class="win-next-card">
+      <div class="win-next-lbl">Next up</div>
+      <div class="win-next-title">Module 3 · Journals & Ledgers</div>
+      <div class="win-next-meta">Where double entry gets recorded · 9 min</div>
+    </div>
+  </div>
+  <div class="foot" style="padding-top:4px">
+    <button class="btn btn-ghost" onclick="goTo('s-resources')">📝 Past Papers & Practice</button>
+    <button class="btn btn-fa" onclick="goTo('s-intro')">Start Module 3 →</button>
+    <button class="btn btn-ghost" onclick="goTo('s-intro')">Back to home</button>
+  </div>
+</div>
+
+<!-- Screen: Resources -->
+<div class="screen" id="s-resources">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%;background:var(--gold)"></div></div>
+  <div class="scr" style="padding:20px">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:32px;margin-bottom:8px">📝</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink)">Practice & Past Papers</div>
+      <div style="font-size:13px;color:var(--mut);margin-top:4px">Module 2 · Double Entry & Accounting Equation</div>
+    </div>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px">NATED Past Papers<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+      <div style="font-size:14px;color:var(--fa)">↗</div>
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">June 2024 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+      <div style="font-size:14px;color:var(--fa)">↗</div>
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--bord);border-radius:12px;margin-bottom:8px;text-decoration:none;transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--fa-xs);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">November 2023 — FA N4</div><div style="font-size:11px;color:var(--mut)">NATED Past Paper · Full exam · 3 hours</div></div>
+      <div style="font-size:14px;color:var(--fa)">↗</div>
+    </a>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:18px 0 10px;display:flex;align-items:center;gap:8px">Ayikho Practice Exams<span style="flex:1;height:1px;background:var(--bord)"></span></div>
+
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 1</div><div style="font-size:11px;color:var(--mut)">Double Entry & Accounting Equation · 15 questions · 20 min</div></div>
+      <div style="font-size:14px;color:var(--p)">→</div>
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--p);border-radius:12px;margin-bottom:8px;text-decoration:none;background:var(--pxs);transition:all .2s" onclick="event.preventDefault()">
+      <div style="width:40px;height:40px;background:var(--psm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)">Practice Exam 2</div><div style="font-size:11px;color:var(--mut)">Double Entry & Accounting Equation · 15 questions · 20 min</div></div>
+      <div style="font-size:14px;color:var(--p)">→</div>
+    </a>
+
+    <div style="text-align:center;margin-top:20px;padding:14px;background:var(--surf);border-radius:12px;border:1px solid var(--bord)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">Exam tip</div>
+      <div style="font-size:13px;color:var(--mut)">This topic is worth <strong style="color:var(--ink)">15–20 marks</strong> in the final exam. Practice until you score 80%+.</div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-fa" onclick="goTo('s-win')" style="background:var(--p)">Back to module ←</button>
+  </div>
+</div>
+
+</div></div><!-- /stack /phone -->
+
+<!-- shell meta -->
+<div class="shell-meta" style="margin-top:8px">← → keys · or sidebar</div>
+</div>
+</div><!-- /shell -->
+
+<script>
+// ── SEND DATA TO PARENT FRAME ──
+function notifyParent(type, data) {
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type, ...data }, '*');
+    }
+  } catch(e) {}
+}
+
+const MODULE_ID = 2;
+// ── NAVIGATION ──
+const SCREENS = ['s-intro','s-video','s-lesson1','s-calc','s-lesson2','s-example','s-q1','s-q2','s-q3','s-win','s-resources'];
+let current = 's-intro';
+
+function goTo(id) {
+  if (id === current) return;
+  const prev = document.getElementById(current);
+  const next = document.getElementById(id);
+  if (!next) return;
+  const pi = SCREENS.indexOf(current), ni = SCREENS.indexOf(id);
+  const fwd = ni >= pi;
+  prev.classList.remove('active');
+  if (fwd) prev.classList.add('exit');
+  next.style.transform = fwd ? 'translateX(100%)' : 'translateX(-24%)';
+  next.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    next.style.transform = '';
+    next.style.transition = 'transform .32s cubic-bezier(.4,0,.2,1)';
+  }));
+  setTimeout(() => { prev.classList.remove('exit'); next.style.transition = ''; }, 360);
+  current = id;
+  notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: SCREENS.indexOf(id), totalScreens: SCREENS.length });
+  // Track screen view
+  if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(2, SCREENS.indexOf(id));
+  if (id === 's-win') notifyParent('moduleComplete', { moduleId: MODULE_ID });
+  updateSidebar(id);
+}
+
+document.addEventListener('keydown', e => {
+  const i = SCREENS.indexOf(current);
+  if (e.key === 'ArrowRight' && i < SCREENS.length - 1) goTo(SCREENS[i+1]);
+  if (e.key === 'ArrowLeft'  && i > 0)                  goTo(SCREENS[i-1]);
+});
+
+// ── SIDEBAR ──
+const SB_ITEMS = [
+  {id:'s-intro',   label:'Chapter intro'},
+  {id:'s-video',   label:'Video · 3:42'},
+  {id:'s-lesson1', label:'The Equation'},
+  {id:'s-calc',    label:'Live calculator'},
+  {id:'s-lesson2', label:'Double entry'},
+  {id:'s-example', label:'Worked example'},
+  {id:'s-q1',      label:'Quiz · Q1'},
+  {id:'s-q2',      label:'Quiz · Q2'},
+  {id:'s-q3',      label:'Quiz · Q3'},
+  {id:'s-win',     label:'Win screen'},
+  {id:'s-resources', label:'Past Papers'},
+];
+(function() {
+  const sb = document.getElementById('sidebar');
+  SB_ITEMS.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'si' + (item.id === 's-intro' ? ' active' : '');
+    el.dataset.id = item.id;
+    el.textContent = item.label;
+    el.onclick = () => goTo(item.id);
+    sb.appendChild(el);
+  });
+})();
+function updateSidebar(id) {
+  document.querySelectorAll('.si').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+}
+
+// ── VIDEO PLAYER (demo) ──
+let vidPlaying = false, vidProgress = 0, vidInterval;
+function playVid() {
+  vidPlaying = !vidPlaying;
+  if (vidPlaying) {
+    vidInterval = setInterval(() => {
+      vidProgress = Math.min(100, vidProgress + 0.45);
+      document.getElementById('vid-fill').style.width = vidProgress + '%';
+      const total = 222, elapsed = Math.floor(total * vidProgress / 100);
+      const m = Math.floor(elapsed/60), s = elapsed%60;
+      document.getElementById('vid-time').textContent = `${m}:${s.toString().padStart(2,'0')} / 3:42`;
+      // highlight chapter
+      const chapters = document.querySelectorAll('.vc-chapter');
+      const breaks = [0, 32, 55, 81]; // percentages
+      let active = 0;
+      breaks.forEach((b,i) => { if (vidProgress >= b) active = i; });
+      chapters.forEach((c,i) => c.classList.toggle('active', i === active));
+      if (vidProgress >= 100) { clearInterval(vidInterval); vidPlaying = false; }
+    }, 80);
+  } else clearInterval(vidInterval);
+}
+function seekVid(e) {
+  const bar = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  vidProgress = Math.max(0, Math.min(100, (e.clientX - rect.left) / rect.width * 100));
+  document.getElementById('vid-fill').style.width = vidProgress + '%';
+}
+
+// ── FORMULA CALCULATOR ──
+let solveFor = 'c'; // which field to auto-calculate
+
+function setSolve(field, e) {
+  e.stopPropagation();
+  solveFor = field;
+  ['a','l','c'].forEach(f => {
+    const fieldEl = document.getElementById(`field-${f}`);
+    const badgeEl = document.getElementById(`solve-${f}`);
+    const inp     = document.getElementById(`inp-${f}`);
+    if (f === field) {
+      fieldEl.classList.add('solve');
+      fieldEl.classList.remove('active-input');
+      badgeEl.className = 'cf-solve-badge';
+      badgeEl.textContent = 'Solving for this ✓';
+      inp.readOnly = true;
+      inp.value = '';
+      inp.placeholder = '—';
+    } else {
+      fieldEl.classList.remove('solve');
+      badgeEl.className = 'cf-solve-hint';
+      badgeEl.textContent = 'Solve for this';
+      badgeEl.onclick = (ev) => setSolve(f, ev);
+      inp.readOnly = false;
+      inp.placeholder = '0';
+    }
+  });
+  calcUpdate();
+}
+
+function setInput(field) {
+  if (field === solveFor) return;
+  document.querySelectorAll('.cf-field').forEach(el => el.classList.remove('active-input'));
+  document.getElementById(`field-${field}`).classList.add('active-input');
+  document.getElementById(`inp-${field}`).focus();
+}
+
+function calcUpdate() {
+  const a = parseFloat(document.getElementById('inp-a').value) || 0;
+  const l = parseFloat(document.getElementById('inp-l').value) || 0;
+  const c = parseFloat(document.getElementById('inp-c').value) || 0;
+
+  const fmt = n => 'R' + Math.abs(n).toLocaleString('en-ZA', {minimumFractionDigits:0});
+
+  if (solveFor === 'c') {
+    const result = a - l;
+    document.getElementById('inp-c').value = result || '';
+    document.getElementById('inp-c').placeholder = result ? fmt(result) : '—';
+    checkBalance(a, l, result);
+  } else if (solveFor === 'l') {
+    const result = a - c;
+    document.getElementById('inp-l').value = result || '';
+    document.getElementById('inp-l').placeholder = result ? fmt(result) : '—';
+    checkBalance(a, result, c);
+  } else if (solveFor === 'a') {
+    const result = l + c;
+    document.getElementById('inp-a').value = result || '';
+    document.getElementById('inp-a').placeholder = result ? fmt(result) : '—';
+    checkBalance(result, l, c);
+  }
+}
+
+function checkBalance(a, l, c) {
+  const bal = document.getElementById('eq-balance');
+  const txt = document.getElementById('eb-text');
+  if (!a && !l && !c) {
+    bal.className = 'eq-balance';
+    txt.textContent = 'Enter values to check the equation';
+    return;
+  }
+  const balances = Math.abs(a - l - c) < 0.01;
+  bal.className = 'eq-balance ' + (balances ? 'balanced' : 'unbalanced');
+  bal.querySelector('.eb-icon').textContent = balances ? '✅' : '⚠️';
+  txt.textContent = balances
+    ? `Balanced ✓ — R${a.toLocaleString()} = R${l.toLocaleString()} + R${c.toLocaleString()}`
+    : `Not balanced — difference of R${Math.abs(a - l - c).toLocaleString()} · check your numbers`;
+}
+
+function loadExample(assets, liabilities) {
+  setSolve('c', { stopPropagation: ()=>{} });
+  document.getElementById('inp-a').value = assets;
+  document.getElementById('inp-l').value = liabilities;
+  setInput('a');
+  calcUpdate();
+}
+
+function resetCalc() {
+  ['a','l','c'].forEach(f => {
+    const inp = document.getElementById(`inp-${f}`);
+    if (f !== solveFor) inp.value = '';
+  });
+  document.getElementById('eq-balance').className = 'eq-balance';
+  document.getElementById('eb-text').textContent = 'Enter values to check the equation';
+  document.getElementById('eq-balance').querySelector('.eb-icon').textContent = '⚖️';
+}
+
+// ── QUIZ ──
+let scores = {correct:0, total:3};
+function answerQ(qNum, chosen, result) {
+  const opts = document.querySelectorAll(`#q${qNum}-opts .q-opt`);
+  opts.forEach((opt, i) => {
+    const letters = ['a','b','c','d'];
+    opt.onclick = null;
+    if (letters[i] === chosen) {
+      opt.classList.add(result);
+    } else if (result === 'wrong' && opt.querySelector('.q-text')) {
+      // Find the correct answer to highlight it
+    }
+    opt.classList.add('dimmed');
+  });
+  // Un-dim and style chosen
+  const chosenEl = document.querySelector(`#q${qNum}-opts .q-opt:nth-child(${['a','b','c','d'].indexOf(chosen)+1})`);
+  if (chosenEl) { chosenEl.classList.remove('dimmed'); chosenEl.classList.add(result); }
+
+  // Show correct answer if wrong
+  if (result === 'wrong') {
+    opts.forEach((opt,i) => {
+      if (['a','b','c','d'][i] !== chosen) {
+        // We need to re-highlight correct by checking which onclick was 'correct'
+      }
+    });
+  }
+
+  if (result === 'correct') scores.correct++;
+
+  // Track quiz answer
+  if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(2, 'post', qNum, result === 'correct', 0);
+  notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: result === 'correct', questionText: `Question ${qNum}`, topic: 'Double Entry' });
+
+  // Show explanation
+  const exp = document.getElementById(`q${qNum}-exp`);
+  if (exp) exp.classList.add('show');
+
+  // Enable next
+  const nextBtn = document.getElementById(`q${qNum}-next`);
+  if (nextBtn) {
+    nextBtn.disabled = false;
+    if (result === 'correct') nextBtn.style.background = 'var(--green)';
+  }
+
+  // Update win screen score
+  document.getElementById('ws-score').textContent = `${scores.correct}/3`;
+}
+</script>
+</body>
+</html>

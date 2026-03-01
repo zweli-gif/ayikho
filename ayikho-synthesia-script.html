@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · Synthesia Script · Double Entry & The Accounting Equation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
+  --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
+  --gold:#F59E0B;--green:#22C55E;--rose:#F43F5E;
+  --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
+  --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
+}
+body{background:var(--w);color:var(--ink);font-family:'Outfit',sans-serif;font-size:15px;line-height:1.7;padding:0 0 80px}
+.page{max-width:780px;margin:0 auto;padding:0 28px}
+
+/* Header */
+.doc-header{padding:56px 0 40px;border-bottom:2px solid var(--ink);margin-bottom:40px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--fa);margin-bottom:12px}
+.doc-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,48px);font-weight:900;line-height:1;letter-spacing:-.02em;color:var(--ink);margin-bottom:16px}
+.doc-title span{color:var(--fa)}
+
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px}
+.meta-card{background:var(--fa-xs);border:1px solid var(--fa-sm);border-radius:10px;padding:12px 14px}
+.meta-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--fa);margin-bottom:4px}
+.meta-value{font-weight:700;font-size:14px;color:var(--ink)}
+
+/* Sections */
+.section{margin-top:40px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--fa);margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--fa-sm)}
+
+/* Chapters */
+.chapter{margin-top:32px;border:1.5px solid var(--bord);border-radius:16px;overflow:hidden}
+.chapter-header{background:var(--ink);padding:16px 20px;display:flex;align-items:center;gap:14px}
+.ch-time{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--fa-l);min-width:48px}
+.ch-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white}
+.ch-duration{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.35);margin-left:auto}
+
+.chapter-body{padding:20px}
+
+/* Script lines */
+.line{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--bord)}
+.line:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.line-timestamp{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fa);letter-spacing:.06em;margin-bottom:6px}
+.line-direction{font-size:12px;color:var(--dim);font-style:italic;margin-bottom:6px;padding-left:12px;border-left:2px solid var(--psm)}
+.line-speech{font-size:15px;color:var(--ink);line-height:1.7}
+.line-speech strong{color:var(--fa);font-weight:700}
+
+/* On-screen callout */
+.onscreen{background:var(--fa-xs);border:1px solid var(--fa-sm);border-radius:10px;padding:10px 14px;margin-top:8px;display:flex;align-items:flex-start;gap:10px}
+.onscreen-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);white-space:nowrap;padding-top:2px}
+.onscreen-text{font-size:13px;color:var(--fa-d);font-weight:500}
+
+/* Avatar direction */
+.avatar-note{background:#FEF3C7;border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:10px 14px;margin-top:8px;display:flex;align-items:flex-start;gap:10px}
+.avatar-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:2px}
+.avatar-text{font-size:12px;color:#92400E;line-height:1.5}
+
+/* Real life callout */
+.irl{background:linear-gradient(135deg,var(--fa-sm),var(--fa-xs));border:1px solid rgba(2,132,199,.15);border-radius:10px;padding:10px 14px;margin-top:8px}
+.irl-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin-bottom:4px}
+.irl-text{font-size:13px;color:var(--ink);line-height:1.6}
+
+/* Exam tip */
+.exam-tip{background:var(--pxs);border:1px solid rgba(124,58,237,.15);border-radius:10px;padding:10px 14px;margin-top:8px}
+.exam-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--p);margin-bottom:4px}
+.exam-text{font-size:13px;color:var(--pd);line-height:1.6}
+
+/* Footer */
+.doc-footer{margin-top:48px;padding-top:24px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center}
+.footer-left{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.footer-right{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--p)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════
+     HEADER
+═══════════════════════════════ -->
+<div class="doc-header">
+  <div class="eyebrow">Synthesia Script · Production Ready</div>
+  <div class="doc-title">Double Entry &<br>The Accounting <span>Equation</span></div>
+  <p style="font-size:15px;color:var(--mut);max-width:520px;margin-top:8px">
+    AI avatar video script for Ayikho — Financial Accounting N4, Module 2. Uses Sipho's Car Wash as the running example. South African English, Gen Z direct tone.
+  </p>
+
+  <div class="meta-grid">
+    <div class="meta-card">
+      <div class="meta-label">Duration</div>
+      <div class="meta-value">3:42</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Avatar</div>
+      <div class="meta-value">Young Black SA Female</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Subject</div>
+      <div class="meta-value">FA N4 · Module 2</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Chapters</div>
+      <div class="meta-value">4 markers</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Tone</div>
+      <div class="meta-value">Direct, warm, peer-to-peer</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Running Example</div>
+      <div class="meta-value">Sipho's Car Wash</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     PRODUCTION NOTES
+═══════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Production Notes</div>
+  <div style="background:var(--surf);border-radius:12px;padding:18px 20px;margin-top:12px;font-size:14px;color:var(--ink);line-height:1.7">
+    <strong>Avatar setup:</strong> Young Black South African female. Natural, conversational delivery — like she's explaining this to a friend in a study group, not lecturing. Slight warmth. No corporate energy. She should gesture naturally when introducing concepts.<br><br>
+    <strong>Background:</strong> Clean, minimal. Slight gradient — deep navy to dark blue (matches app dark header aesthetic). No distracting elements.<br><br>
+    <strong>On-screen elements:</strong> Text callouts appear next to the avatar as described per line. Use the app's colour system — blue (#0284C7) for Assets, gold (#F59E0B) for Liabilities, green (#22C55E) for Capital. Equation displays use white text on dark background.<br><br>
+    <strong>Pacing:</strong> Slightly slower than conversational. These students are often studying in noisy environments (taxis, late at night) on budget phones with small speakers. Clear enunciation matters more than speed.<br><br>
+    <strong>Captions:</strong> Always on by default. Large, high-contrast CC text.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     CHAPTER 1: WHAT IS THE ACCOUNTING EQUATION
+     0:00 — 1:12
+═══════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="ch-time">0:00</div>
+    <div class="ch-title">What is the Accounting Equation?</div>
+    <div class="ch-duration">1m 12s</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="line">
+      <div class="line-timestamp">0:00 — 0:08</div>
+      <div class="line-direction">Avatar looks directly at camera, slight smile. Relaxed posture.</div>
+      <div class="line-speech">Hey. So you've heard people talk about "the accounting equation" like it's this big complicated thing. It's not. I'm going to break it down for you in under four minutes. No textbook nonsense — just the actual logic.</div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">0:08 — 0:22</div>
+      <div class="line-direction">Avatar gestures with one hand, casual emphasis.</div>
+      <div class="line-speech">Let's start with a real example. Meet <strong>Sipho</strong>. He wants to open a car wash in Soweto. He's got R10,000 of his own savings, and he borrows R5,000 from Capitec. So now he's sitting on R15,000 total.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Animated: Sipho's photo/icon appears. R10,000 (own savings) + R5,000 (Capitec loan) = R15,000 total. Numbers animate in.</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">0:22 — 0:38</div>
+      <div class="line-direction">Avatar counts on fingers — three points.</div>
+      <div class="line-speech">Now here's the question accounting asks: where did that R15,000 come from? And the answer is always one of two places. Either <strong>the owner put it in</strong> — that's what we call Capital. Or <strong>someone else lent it</strong> — that's a Liability. There's literally no third option. Every single rand came from somewhere.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Two columns appear: "Owner put it in → Capital (R10,000)" and "Someone lent it → Liability (R5,000)"</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">0:38 — 0:55</div>
+      <div class="line-direction">Avatar steps back slightly, gestures at the equation appearing on screen.</div>
+      <div class="line-speech">So that gives us the Accounting Equation. Everything Sipho's business <strong>owns</strong> — that's called Assets — must equal everything it <strong>owes</strong> plus what the <strong>owner invested</strong>. Assets equals Liabilities plus Capital. That's it. That's the whole thing.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Large animated equation: <strong style="color:#0284C7">Assets</strong> = <strong style="color:#F59E0B">Liabilities</strong> + <strong style="color:#22C55E">Capital</strong><br>Below: R15,000 = R5,000 + R10,000</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">0:55 — 1:12</div>
+      <div class="line-direction">Avatar leans in slightly, more direct.</div>
+      <div class="line-speech">And here's the key part — <strong>this equation must always balance</strong>. If it doesn't? Something went wrong. Someone messed up an entry, or forgot to record something. Think of it like your balance detector. If the left side doesn't equal the right side, go find the mistake.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Scale/balance animation — left side (Assets) weighs equal to right side (Liabilities + Capital). Green checkmark: "Balanced ✓"</div>
+      </div>
+      <div class="irl">
+        <div class="irl-tag">🇿🇦 In Real Life</div>
+        <div class="irl-text">Every business you walk past — Shoprite, your local spaza, even the guy selling airtime on the corner — this equation applies to all of them. If they've got stuff, that stuff came from somewhere.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     CHAPTER 2: ASSETS, LIABILITIES & CAPITAL
+     1:12 — 2:05
+═══════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="ch-time">1:12</div>
+    <div class="ch-title">Assets, Liabilities & Capital Explained</div>
+    <div class="ch-duration">53s</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="line">
+      <div class="line-timestamp">1:12 — 1:25</div>
+      <div class="line-direction">Avatar holds up one finger — first item.</div>
+      <div class="line-speech">Let's break down the three parts. First: <strong>Assets</strong>. These are everything the business owns or is owed. For Sipho, that's his cash in his Capitec business account, his pressure washer, his buckets, his cleaning supplies. If someone owes him money — like a fleet company that hasn't paid yet — that's also an asset. We call those debtors.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Blue card: "ASSETS — What you OWN" with icons: Cash 💵 · Equipment 🔧 · Stock 📦 · Debtors 📋</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">1:25 — 1:38</div>
+      <div class="line-direction">Avatar holds up two fingers.</div>
+      <div class="line-speech">Second: <strong>Liabilities</strong>. Everything the business owes to outsiders. Sipho's Capitec loan? That's a liability. If he buys cleaning supplies from a supplier and they say "pay us end of month" — he owes them. That's a creditor, and that's a liability too. Even SARS VAT he hasn't paid yet — liability.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Gold card: "LIABILITIES — What you OWE" with icons: Bank Loan 🏦 · Creditors 💳 · SARS VAT 📄</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">1:38 — 1:52</div>
+      <div class="line-direction">Avatar holds up three fingers, then brings hand down naturally.</div>
+      <div class="line-speech">Third: <strong>Capital</strong>. Also called owner's equity. This is the owner's share. It's what would be left if Sipho sold everything and paid off all his debts. It starts with what he invested — his R10,000 savings — and it grows as the business makes profit, or shrinks if he takes money out. We call that drawings.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Green card: "CAPITAL — Owner's share" with formula: Investment + Profits − Drawings</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">1:52 — 2:05</div>
+      <div class="line-direction">Avatar brings all three together visually.</div>
+      <div class="line-speech">So to recap real quick — Assets are what you <strong>have</strong>, Liabilities are what you <strong>owe to others</strong>, and Capital is what's <strong>yours</strong>. Three buckets. Everything in a business fits into one of these. No exceptions.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Three cards merge into the equation: A = L + C. Quick pulse animation showing balance.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     CHAPTER 3: WHY EVERY TRANSACTION TOUCHES TWO ACCOUNTS
+     2:05 — 3:00
+═══════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="ch-time">2:05</div>
+    <div class="ch-title">Why Every Transaction Touches Two Accounts</div>
+    <div class="ch-duration">55s</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="line">
+      <div class="line-timestamp">2:05 — 2:20</div>
+      <div class="line-direction">Avatar's energy picks up slightly — this is the "aha" moment.</div>
+      <div class="line-speech">OK so here's where it gets interesting. Every time Sipho does <em>anything</em> with money in his business, <strong>two things happen at the same time</strong>. Not one — two. Always. This is called the <strong>double entry principle</strong>, and it's the reason that equation always balances.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Bold text: "DOUBLE ENTRY — Every transaction affects exactly 2 accounts"</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">2:20 — 2:38</div>
+      <div class="line-direction">Avatar uses hands to show "one side, other side" gesture.</div>
+      <div class="line-speech">Let me show you. Sipho takes R3,000 cash and buys a pressure washer. What happened? His <strong>cash went down</strong> by R3,000. But his <strong>equipment went up</strong> by R3,000. Two accounts changed. And notice — his total assets didn't even change. He still has R15,000 worth of stuff. Cash just turned into equipment.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Animation: Cash (R15,000 → R12,000) ↓ and Equipment (R0 → R3,000) ↑. Total Assets stays at R15,000. Green: "Still balanced ✓"</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">2:38 — 2:50</div>
+      <div class="line-direction">Avatar nods, reinforcing the point.</div>
+      <div class="line-speech">Here's another one. Remember that R5,000 Capitec loan? When the money landed in Sipho's account, two things happened: his <strong>bank balance went up</strong> R5,000 — that's an asset increase. And his <strong>loan balance went up</strong> R5,000 — that's a liability increase. Two sides. Every single time.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">T-account animation: Bank (Debit +R5,000) and Loan: Capitec (Credit +R5,000). Both highlighted with arrows.</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">2:50 — 3:00</div>
+      <div class="line-direction">Avatar makes a direct, "remember this" gesture.</div>
+      <div class="line-speech">If you only record one side, the equation breaks. That's why accountants are so strict about this. <strong>Every transaction, two entries.</strong> One debit, one credit. You'll learn debit and credit rules properly in the lesson — but for now just remember: two sides, always.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Split screen: Left = "Debit (Dr)" in blue, Right = "Credit (Cr)" in gold. Text: "Every transaction has both."</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     CHAPTER 4: RECAP + EXAM TIP
+     3:00 — 3:42
+═══════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="ch-time">3:00</div>
+    <div class="ch-title">Quick Recap + Exam Tip</div>
+    <div class="ch-duration">42s</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="line">
+      <div class="line-timestamp">3:00 — 3:12</div>
+      <div class="line-direction">Avatar counts off on fingers — recap energy, quick and clear.</div>
+      <div class="line-speech">Alright, quick recap. Three things to remember from this video. <strong>One</strong> — the Accounting Equation is Assets equals Liabilities plus Capital. <strong>Two</strong> — it must always balance. If it doesn't, something's wrong. <strong>Three</strong> — every transaction hits two accounts. That's double entry.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Three bullet points appear one by one: 1. A = L + C  2. Must always balance  3. Every transaction → 2 accounts</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">3:12 — 3:30</div>
+      <div class="line-direction">Avatar leans in — sharing a secret, conspiratorial tone.</div>
+      <div class="line-speech">Now here's your exam tip. In almost every FA N4 paper, they give you a list of transactions and ask you to show the effect on the Accounting Equation. That's worth <strong>10 to 15 marks</strong>. If you understand what we just covered — you're basically getting free marks. Just ask yourself for each transaction: what went up? What went down? Does it still balance? That's it.</div>
+      <div class="exam-tip">
+        <div class="exam-tag">⭐ Exam Tip</div>
+        <div class="exam-text">FA N4 frequently asks: "Show the effect of these transactions on the Accounting Equation." Worth 10–15 marks. For each transaction, identify: which accounts change, direction (increase/decrease), and confirm A = L + C still holds.</div>
+      </div>
+    </div>
+
+    <div class="line">
+      <div class="line-timestamp">3:30 — 3:42</div>
+      <div class="line-direction">Avatar gives a genuine, encouraging smile. Direct to camera.</div>
+      <div class="line-speech">You've got this. In the lesson, you're going to play with the live calculator, work through Sipho's transactions step by step, and then hit a quick quiz. Three questions, nothing hectic. Let's go.</div>
+      <div class="onscreen">
+        <div class="onscreen-tag">On screen</div>
+        <div class="onscreen-text">Ayikho logo + "Continue to lesson →" button animation. Subtle confetti/sparkle.</div>
+      </div>
+      <div class="avatar-note">
+        <div class="avatar-tag">Avatar</div>
+        <div class="avatar-text">Warm, encouraging close. Natural smile — not forced corporate grin. Energy should feel like "we're in this together." Hold eye contact with camera through to end.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     WORD COUNT & TIMING
+═══════════════════════════════ -->
+<div class="section">
+  <div class="section-label">Timing Breakdown</div>
+  <div style="margin-top:12px">
+    <table style="width:100%;border-collapse:collapse;font-size:14px">
+      <tr style="border-bottom:1px solid var(--bord)">
+        <td style="padding:10px 0;font-weight:700">Chapter 1 — What is the Accounting Equation?</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fa);text-align:right">0:00 → 1:12</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);text-align:right;padding-left:16px">~185 words</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--bord)">
+        <td style="padding:10px 0;font-weight:700">Chapter 2 — Assets, Liabilities & Capital</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fa);text-align:right">1:12 → 2:05</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);text-align:right;padding-left:16px">~155 words</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--bord)">
+        <td style="padding:10px 0;font-weight:700">Chapter 3 — Why Every Transaction Touches Two Accounts</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fa);text-align:right">2:05 → 3:00</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);text-align:right;padding-left:16px">~165 words</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0;font-weight:700">Chapter 4 — Recap + Exam Tip</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fa);text-align:right">3:00 → 3:42</td>
+        <td style="padding:10px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);text-align:right;padding-left:16px">~125 words</td>
+      </tr>
+    </table>
+    <div style="margin-top:16px;background:var(--surf);border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)">Total Script</div>
+        <div style="font-weight:700;font-size:16px;color:var(--ink);margin-top:2px">~630 words · 3 minutes 42 seconds</div>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mut)">~170 wpm pacing</div>
+    </div>
+    <div style="margin-top:8px;font-size:12px;color:var(--dim);line-height:1.6">
+      Pacing is set at ~170 words per minute — slightly slower than standard Synthesia output (180 wpm) to account for the target audience studying in noisy environments on budget phone speakers. Pauses between sections are built into the chapter transitions.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     FOOTER
+═══════════════════════════════ -->
+<div class="doc-footer">
+  <div class="footer-left">Ayikho · FA N4 · Synthesia Script v1.0</div>
+  <div class="footer-right">ayikho</div>
+</div>
+
+</div>
+</body>
+</html>

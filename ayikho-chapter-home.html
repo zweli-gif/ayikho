@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · FA N4 · Chapter Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
+  --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
+  --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
+  --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
+  --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
+}
+html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden}
+
+.shell{display:flex;gap:20px;align-items:flex-start}
+.phone{width:375px;height:812px;background:var(--w);border-radius:50px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(2,132,199,.08)}
+
+/* ── STATUS BAR ── */
+.sb{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;background:var(--ink);color:white}
+.sb-t{font-weight:700;font-size:15px}
+.sb-i{font-size:11px;opacity:.8}
+
+/* ── HEADER ── */
+.home-header{background:var(--ink);padding:0 22px 24px;position:relative;overflow:hidden}
+.home-header::before{content:'';position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(2,132,199,.15),transparent 70%)}
+.home-header::after{content:'';position:absolute;bottom:-30px;left:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.1),transparent 70%)}
+
+.hh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:1}
+.hh-greeting{font-size:12px;color:rgba(255,255,255,.5)}
+.hh-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white}
+.hh-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--fa));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;border:2px solid rgba(255,255,255,.2)}
+.hh-xp-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.hh-xp-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
+.hh-xp-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--fa));border-radius:100px;transition:width .6s ease}
+.hh-xp-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fa-l);min-width:60px;text-align:right}
+
+.hh-stats{display:flex;gap:8px;margin-top:12px;position:relative;z-index:1}
+.hh-stat{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;text-align:center}
+.hh-stat-n{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:white;line-height:1}
+.hh-stat-l{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:3px}
+
+/* ── MODULE CARDS ── */
+.modules-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 18px}
+.modules-area::-webkit-scrollbar{display:none}
+
+.modules-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.modules-label::after{content:'';flex:1;height:1px;background:var(--bord)}
+
+.module-card{border:2px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;background:var(--w)}
+.module-card:hover{border-color:var(--fa);transform:translateY(-1px);box-shadow:0 8px 24px rgba(2,132,199,.1)}
+.module-card:active{transform:scale(.98)}
+.module-card.locked{opacity:.55;cursor:default;border-color:var(--bord)}
+.module-card.locked:hover{border-color:var(--bord);transform:none;box-shadow:none}
+.module-card.completed{border-color:var(--green);background:var(--green-xs)}
+
+/* Progress ring */
+.prog-ring-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
+.prog-ring{transform:rotate(-90deg)}
+.prog-ring-bg{fill:none;stroke:var(--bord);stroke-width:4}
+.prog-ring-fill{fill:none;stroke:var(--fa);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.module-card.completed .prog-ring-fill{stroke:var(--green)}
+.module-card.locked .prog-ring-fill{stroke:var(--bord)}
+.prog-ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px}
+.prog-ring-num{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--fa)}
+.module-card.completed .prog-ring-num{color:var(--green)}
+.module-card.locked .prog-ring-num{color:var(--dim)}
+
+/* Card info */
+.mc-info{flex:1;min-width:0}
+.mc-module-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin-bottom:2px}
+.module-card.completed .mc-module-num{color:var(--green)}
+.module-card.locked .mc-module-num{color:var(--dim)}
+.mc-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mut)}
+.mc-meta-item{display:flex;align-items:center;gap:3px}
+
+/* Right side badges */
+.mc-right{flex-shrink:0;text-align:right}
+.mc-xp{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--green);background:var(--green-xs);padding:3px 8px;border-radius:100px;display:inline-block}
+.mc-locked-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);border:1px solid var(--bord);padding:3px 8px;border-radius:100px}
+.mc-arrow{font-size:16px;color:var(--fa);opacity:.5}
+.module-card.completed .mc-arrow{color:var(--green)}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{display:flex;align-items:center;justify-content:space-around;padding:10px 16px 28px;border-top:1px solid var(--bord);flex-shrink:0;background:var(--w)}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.4;transition:opacity .2s}
+.bn-item.active{opacity:1}
+.bn-icon{font-size:22px}
+.bn-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase}
+.bn-item.active .bn-label{color:var(--fa)}
+
+/* Connector line between modules */
+.connector{display:flex;align-items:center;justify-content:center;height:20px;position:relative}
+.connector-line{width:2px;height:100%;background:var(--bord)}
+.connector.done .connector-line{background:var(--green)}
+</style>
+</head>
+<body>
+
+<div class="shell">
+<div class="phone">
+
+<!-- STATUS BAR -->
+<div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+
+<!-- HEADER -->
+<div class="home-header">
+  <div class="hh-top">
+    <div>
+      <div class="hh-greeting">Sawubona 👋</div>
+      <div class="hh-name">Zandile</div>
+    </div>
+    <div class="hh-avatar">Z</div>
+  </div>
+  <div class="hh-xp-row">
+    <div class="hh-xp-bar"><div class="hh-xp-fill" style="width:38%"></div></div>
+    <div class="hh-xp-text">⚡ 325 XP</div>
+  </div>
+  <div class="hh-stats">
+    <div class="hh-stat"><div class="hh-stat-n">🔥9</div><div class="hh-stat-l">Day streak</div></div>
+    <div class="hh-stat"><div class="hh-stat-n">2/10</div><div class="hh-stat-l">Modules done</div></div>
+    <div class="hh-stat"><div class="hh-stat-n">85%</div><div class="hh-stat-l">Avg. score</div></div>
+  </div>
+</div>
+
+<!-- MODULE CARDS -->
+<div class="modules-area">
+  <div class="modules-label">Financial Accounting N4 · 10 Modules</div>
+
+  <!-- MODULE 1: Accounting Concepts — COMPLETED -->
+  <div class="module-card completed" onclick="openModule(1)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="0"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">✓</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 1</div>
+      <div class="mc-title">Accounting Concepts & Principles</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 7 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">3/3 correct</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-xp">+150 XP</div>
+    </div>
+  </div>
+
+  <div class="connector done"><div class="connector-line"></div></div>
+
+  <!-- MODULE 2: Double Entry & Accounting Equation — COMPLETED -->
+  <div class="module-card completed" onclick="openModule(2)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="0"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">✓</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 2</div>
+      <div class="mc-title">Double Entry & Accounting Equation</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 8 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">3/3 correct</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-xp">+150 XP</div>
+    </div>
+  </div>
+
+  <div class="connector done"><div class="connector-line"></div></div>
+
+  <!-- MODULE 3: Journals & Ledgers — UNLOCKED (current) -->
+  <div class="module-card" onclick="openModule(3)" style="border-color:var(--fa);box-shadow:0 0 0 1px var(--fa),0 4px 16px rgba(2,132,199,.12)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">3</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num" style="color:var(--fa)">Module 3 · Up Next</div>
+      <div class="mc-title">Journals & Ledgers</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 9 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🛠️ Journal builder</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- MODULE 4: Trial Balance — LOCKED -->
+  <div class="module-card locked" onclick="openModule(4)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">4</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 4</div>
+      <div class="mc-title">Trial Balance</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 8 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🔒 Complete Module 3</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-locked-badge">🔒 Locked</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- MODULE 5: Cash Journals — LOCKED -->
+  <div class="module-card locked" onclick="openModule(5)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">5</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 5</div>
+      <div class="mc-title">Cash Receipts & Payments Journals</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 10 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🔒 Complete Module 4</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-locked-badge">🔒 Locked</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- MODULE 6: Debtors & Creditors — LOCKED -->
+  <div class="module-card locked" onclick="openModule(6)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">6</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 6</div>
+      <div class="mc-title">Debtors & Creditors Journals</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 10 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🔒 Complete Module 5</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-locked-badge">🔒 Locked</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- MODULE 7: VAT — LOCKED -->
+  <div class="module-card locked" onclick="openModule(7)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">7</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 7</div>
+      <div class="mc-title">Value Added Tax (VAT)</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 8 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🔒 Complete Module 6</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-locked-badge">🔒 Locked</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- MODULE 8: Year-End Adjustments — LOCKED -->
+  <div class="module-card locked" onclick="openModule(8)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">8</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 8</div>
+      <div class="mc-title">Year-End Adjustments</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 11 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🔒 Complete Module 7</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-locked-badge">🔒 Locked</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- MODULE 9: Financial Statements — LOCKED -->
+  <div class="module-card locked" onclick="openModule(9)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">9</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 9</div>
+      <div class="mc-title">Financial Statements</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 12 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🔒 Complete Module 8</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-locked-badge">🔒 Locked</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- MODULE 10: Bank Reconciliation — LOCKED -->
+  <div class="module-card locked" onclick="openModule(10)">
+    <div class="prog-ring-wrap">
+      <svg class="prog-ring" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+      </svg>
+      <div class="prog-ring-center"><span class="prog-ring-num">10</span></div>
+    </div>
+    <div class="mc-info">
+      <div class="mc-module-num">Module 10</div>
+      <div class="mc-title">Bank Reconciliation</div>
+      <div class="mc-meta">
+        <div class="mc-meta-item">⏱ 9 min</div>
+        <div class="mc-meta-item">·</div>
+        <div class="mc-meta-item">🔒 Complete Module 9</div>
+      </div>
+    </div>
+    <div class="mc-right">
+      <div class="mc-locked-badge">🔒 Locked</div>
+    </div>
+  </div>
+
+  <div style="height:16px"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="bn-item active">
+    <div class="bn-icon">📚</div>
+    <div class="bn-label">Learn</div>
+  </div>
+  <div class="bn-item">
+    <div class="bn-icon">📊</div>
+    <div class="bn-label">Progress</div>
+  </div>
+  <div class="bn-item">
+    <div class="bn-icon">🏆</div>
+    <div class="bn-label">Badges</div>
+  </div>
+  <div class="bn-item">
+    <div class="bn-icon">👤</div>
+    <div class="bn-label">Profile</div>
+  </div>
+</div>
+
+<div class="shell-meta" style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.15);text-align:center;margin-top:10px">Press D to unlock all modules · Click any card to open</div>
+</div><!-- /phone -->
+</div><!-- /shell -->
+
+<script>
+const MODULE_FILES = {
+  1: 'ayikho-chapter-concepts.html',
+  2: 'ayikho-chapter-accounting.html',
+  3: 'ayikho-chapter-journals.html',
+  4: 'ayikho-chapter-trial-balance.html',
+  5: 'ayikho-chapter-cash-journals.html',
+  6: 'ayikho-chapter-debtors-creditors.html',
+  7: 'ayikho-chapter-vat.html',
+  8: 'ayikho-chapter-adjustments.html',
+  9: 'ayikho-chapter-financial-statements.html',
+  10: 'ayikho-chapter-bank-recon.html'
+};
+
+function openModule(num) {
+  const file = MODULE_FILES[num];
+  if (!file) return;
+  const cards = document.querySelectorAll('.module-card');
+  const card = cards[num - 1];
+  if (!card || card.classList.contains('locked')) return;
+  card.style.transform = 'scale(.96)';
+  card.style.transition = 'transform .15s ease';
+  setTimeout(() => {
+    card.style.transform = '';
+    window.location.href = file;
+  }, 150);
+}
+
+// Demo mode: unlock all modules for prototype testing
+// Toggle by pressing 'D' key
+let demoMode = false;
+document.addEventListener('keydown', e => {
+  if (e.key === 'd' || e.key === 'D') {
+    demoMode = !demoMode;
+    document.querySelectorAll('.module-card.locked').forEach(card => {
+      if (demoMode) {
+        card.style.opacity = '1';
+        card.style.cursor = 'pointer';
+        card.style.pointerEvents = 'auto';
+        // Temporarily remove locked class for navigation
+        card.dataset.wasLocked = 'true';
+        card.classList.remove('locked');
+      } else {
+        if (card.dataset.wasLocked) {
+          card.classList.add('locked');
+          card.style.opacity = '.55';
+          card.style.cursor = 'default';
+        }
+      }
+    });
+    // Visual indicator
+    const indicator = document.createElement('div');
+    indicator.textContent = demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF';
+    indicator.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:' + (demoMode ? 'var(--green)' : 'var(--ink)') + ';color:white;padding:8px 16px;border-radius:100px;font-family:JetBrains Mono,monospace;font-size:11px;z-index:999;transition:opacity .5s';
+    document.body.appendChild(indicator);
+    setTimeout(() => { indicator.style.opacity = '0'; }, 2000);
+    setTimeout(() => indicator.remove(), 2500);
+  }
+});
+
+// Animate progress rings on load
+document.addEventListener('DOMContentLoaded', () => {
+  // Small entrance animation for cards
+  const cards = document.querySelectorAll('.module-card');
+  cards.forEach((card, i) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(12px)';
+    card.style.transition = 'opacity .3s ease, transform .3s ease';
+    setTimeout(() => {
+      card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
+      card.style.transform = 'translateY(0)';
+    }, 100 + i * 60);
+  });
+
+  // Animate connectors
+  const connectors = document.querySelectorAll('.connector');
+  connectors.forEach((c, i) => {
+    c.style.opacity = '0';
+    setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
+  });
+});
+</script>
+</body>
+</html>
