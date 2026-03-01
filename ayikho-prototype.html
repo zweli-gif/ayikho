@@ -397,13 +397,10 @@ function updateHomeStats() {
   const cards = document.querySelectorAll('.module-card');
   cards.forEach((card, idx) => {
     const moduleNum = idx + 1;
-    const moduleStatus = data.moduleStatuses[moduleNum];
+    const moduleStatus = data.moduleStatuses ? data.moduleStatuses[moduleNum] : null;
 
     if (moduleStatus) {
-      // Remove old status classes
       card.classList.remove('completed', 'locked');
-
-      // Add new status class
       if (moduleStatus.status === 'completed') {
         card.classList.add('completed');
       } else if (moduleStatus.status === 'locked') {
@@ -529,11 +526,11 @@ function openModule(num) {
         const style = iDoc.createElement('style');
         style.textContent = `
           html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
           .shell-meta{display:none!important}
-          .phone-col{display:block!important}
+          .phone-col{display:block!important;height:100%!important}
         `;
         iDoc.head.appendChild(style);
       } catch(e) { /* cross-origin, ignore */ }
@@ -586,11 +583,11 @@ function openDashboard() {
         const style = iDoc.createElement('style');
         style.textContent = `
           html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
           .shell-meta{display:none!important}
-          .phone-col{display:block!important}
+          .phone-col{display:block!important;height:100%!important}
         `;
         iDoc.head.appendChild(style);
       } catch(e) {}
@@ -718,11 +715,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const style = iDoc.createElement('style');
         style.textContent = `
           html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
           .shell-meta{display:none!important}
-          .phone-col{display:block!important}
+          .phone-col{display:block!important;height:100%!important}
         `;
         iDoc.head.appendChild(style);
       } catch(e) { /* cross-origin, ignore */ }
