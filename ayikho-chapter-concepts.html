@@ -661,6 +661,34 @@
             opacity: 0.6;
         }
 
+        /* ===== SIMPLE / DETAILED TOGGLE ===== */
+        .mode-toggle {
+            position: absolute; bottom: 16px; right: 16px; z-index: 200;
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(26,26,46,0.9); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 12px; border-radius: 20px; cursor: pointer;
+            font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85);
+            transition: all 0.3s ease; user-select: none;
+            font-family: 'Outfit', sans-serif; letter-spacing: 0.3px;
+        }
+        .mode-toggle:hover { background: rgba(2,132,199,0.9); }
+        .mode-toggle .toggle-track {
+            width: 28px; height: 16px; background: rgba(255,255,255,0.2);
+            border-radius: 8px; position: relative; transition: background 0.3s ease;
+        }
+        .mode-toggle .toggle-knob {
+            width: 12px; height: 12px; background: #fff; border-radius: 50%;
+            position: absolute; top: 2px; left: 2px; transition: transform 0.3s ease;
+        }
+        .mode-toggle.detailed .toggle-track { background: var(--fa); }
+        .mode-toggle.detailed .toggle-knob { transform: translateX(12px); }
+        .simple-mode .real-life-box { display: none; }
+        .simple-mode .concept-description[data-simple] .detail-text { display: none; }
+        .simple-mode .concept-description[data-simple] .simple-text { display: inline; }
+        .concept-description[data-simple] .simple-text { display: none; }
+        .simple-mode .screen-body > p { display: none; }
+
         /* ===== PEN-ON-BOARD VIDEO PLAYER ===== */
         .landoh-video-wrap {
             position: relative;
@@ -893,7 +921,13 @@
                     <div class="progress-fill"></div>
                 </div>
 
-                <div class="screen-container">
+                <!-- Floating Simple/Detailed Toggle -->
+                <div class="mode-toggle detailed" id="modeToggle" title="Switch between simple and detailed view">
+                    <span id="modeLabel">Detailed</span>
+                    <div class="toggle-track"><div class="toggle-knob"></div></div>
+                </div>
+
+                <div class="screen-container" id="screenContainer">
                     <div class="screens-wrapper" id="screensWrapper">
                         <!-- Screen 0: Chapter Intro -->
                         <div class="screen active" data-screen="0">
@@ -1008,7 +1042,7 @@
                                     <p style="font-size: 14px; color: var(--mut); line-height: 1.6; margin-bottom: 16px;">Accounting concepts are the assumptions and principles that guide how businesses record and report their financial transactions. Think of them as the rules of the game.</p>
 
                                     <div class="concept-title">The Entity Concept</div>
-                                    <div class="concept-description">Your business finances and your personal finances are SEPARATE. If you own a spaza shop, the R50 you took from the till to buy airtime isn't business profit—it's a withdrawal. The shop and you are different entities.</div>
+                                    <div class="concept-description" data-simple><span class="simple-text">Business money ≠ your money. Keep them separate.</span><span class="detail-text">Your business finances and your personal finances are SEPARATE. If you own a spaza shop, the R50 you took from the till to buy airtime isn't business profit—it's a withdrawal. The shop and you are different entities.</span></div>
 
                                     <div class="real-life-box">
                                         <div class="real-life-label">In real life</div>
@@ -1016,7 +1050,7 @@
                                     </div>
 
                                     <div class="concept-title">Going Concern</div>
-                                    <div class="concept-description">Unless you know your business is shutting down, you record transactions assuming it will keep running. You don't suddenly write off everything as "we're closing tomorrow."</div>
+                                    <div class="concept-description" data-simple><span class="simple-text">Assume the business will keep running — don’t panic-write-off assets.</span><span class="detail-text">Unless you know your business is shutting down, you record transactions assuming it will keep running. You don't suddenly write off everything as "we're closing tomorrow."</span></div>
 
                                     <div class="real-life-box">
                                         <div class="real-life-label">In real life</div>
@@ -1066,7 +1100,7 @@
                                     <p style="font-size: 14px; color: var(--mut); line-height: 1.6; margin-bottom: 16px;"><strong>GAAP = Generally Accepted Accounting Principles.</strong> It's the international standard that says: "If you're recording accounting transactions, do it THIS way, not that way."</p>
 
                                     <div class="concept-title">Historical Cost Concept</div>
-                                    <div class="concept-description">Assets are recorded at what you paid for them, not what they're worth today. If you bought a taxi for R80,000 three years ago and it's now worth R40,000, you still record it at R80,000 (minus depreciation).</div>
+                                    <div class="concept-description" data-simple><span class="simple-text">Record assets at purchase price, not current market value.</span><span class="detail-text">Assets are recorded at what you paid for them, not what they're worth today. If you bought a taxi for R80,000 three years ago and it's now worth R40,000, you still record it at R80,000 (minus depreciation).</span></div>
 
                                     <div class="real-life-box">
                                         <div class="real-life-label">In real life</div>
@@ -1074,7 +1108,7 @@
                                     </div>
 
                                     <div class="concept-title">Prudence / Conservatism</div>
-                                    <div class="concept-description">When in doubt, understate profits and overstate losses. Better to surprise people with good news than bad. Never overestimate what you're owed.</div>
+                                    <div class="concept-description" data-simple><span class="simple-text">When unsure, understate profits and overstate losses.</span><span class="detail-text">When in doubt, understate profits and overstate losses. Better to surprise people with good news than bad. Never overestimate what you're owed.</span></div>
 
                                     <div class="real-life-box">
                                         <div class="real-life-label">In real life</div>
@@ -1684,8 +1718,23 @@
             });
         });
 
-        // Initialize
-        goToScreen(0);
+        // Initialize — support ?screen=N to deep-link into any screen
+        const urlParams = new URLSearchParams(window.location.search);
+        const startScreen = parseInt(urlParams.get('screen')) || 0;
+        goToScreen(startScreen);
+
+        // ===== SIMPLE / DETAILED TOGGLE =====
+        const modeToggle = document.getElementById('modeToggle');
+        const modeLabel = document.getElementById('modeLabel');
+        const screenContainer = document.getElementById('screenContainer');
+        let isDetailed = true;
+
+        modeToggle.addEventListener('click', () => {
+            isDetailed = !isDetailed;
+            modeToggle.classList.toggle('detailed', isDetailed);
+            modeLabel.textContent = isDetailed ? 'Detailed' : 'Simple';
+            screenContainer.classList.toggle('simple-mode', !isDetailed);
+        });
     </script>
 </body>
 </html>
