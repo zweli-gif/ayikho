@@ -1589,6 +1589,36 @@
             const lvPen = document.getElementById('lvPen');
             const lvVoiceInd = document.getElementById('lvVoiceInd');
 
+            // ===== TEXT-TO-SPEECH ENGINE =====
+            const lvTTS = 'speechSynthesis' in window;
+            let lvUtterance = null;
+            let lvTTSKeepAlive = null; // Chrome bug workaround
+
+            function lvSpeak(text, onEnd) {
+                if (!lvTTS) { if (onEnd) onEnd(); return; }
+                speechSynthesis.cancel();
+                clearInterval(lvTTSKeepAlive);
+                lvUtterance = new SpeechSynthesisUtterance(text);
+                lvUtterance.rate = 0.92;
+                lvUtterance.pitch = 1.0;
+                // Prefer a natural English voice
+                const voices = speechSynthesis.getVoices();
+                const preferred = voices.find(v => /Google UK English Male|Daniel|Rishi|Aaron/i.test(v.name))
+                    || voices.find(v => v.lang.startsWith('en') && v.localService)
+                    || voices.find(v => v.lang.startsWith('en'));
+                if (preferred) lvUtterance.voice = preferred;
+                lvUtterance.onstart = () => lvStartTalk();
+                lvUtterance.onend = () => { clearInterval(lvTTSKeepAlive); lvStopTalk(); if (onEnd) onEnd(); };
+                lvUtterance.onerror = () => { clearInterval(lvTTSKeepAlive); lvStopTalk(); if (onEnd) onEnd(); };
+                speechSynthesis.speak(lvUtterance);
+                // Chrome pauses speech after ~15s — keep-alive workaround
+                lvTTSKeepAlive = setInterval(() => { speechSynthesis.pause(); speechSynthesis.resume(); }, 10000);
+            }
+
+            function lvSpeechCancel() {
+                if (lvTTS) { speechSynthesis.cancel(); clearInterval(lvTTSKeepAlive); }
+            }
+
             function lvStartTalk() {
                 lvVoiceInd.classList.remove('lv-paused');
             }
@@ -1614,9 +1644,12 @@
                 const s = lvSlides[idx];
                 lvSpeech.textContent = s.speech;
                 lvSpeech.classList.add('lv-vis');
-                lvStartTalk();
-                const words = s.speech.split(' ').length;
-                setTimeout(lvStopTalk, Math.max(2000, words * 180));
+                // Waveform: TTS events handle start/stop; fallback to timer if no TTS
+                if (!lvTTS) {
+                    lvStartTalk();
+                    const words = s.speech.split(' ').length;
+                    setTimeout(lvStopTalk, Math.max(2000, words * 180));
+                }
                 lvChapter.textContent = s.chapter;
                 const div = document.createElement('div');
                 div.innerHTML = s.board;
@@ -1643,20 +1676,26 @@
 
             function lvAutoAdv() {
                 const s = lvSlides[lvCurrent];
-                const words = s ? s.speech.split(' ').length : 10;
-                lvTimer = setTimeout(() => {
+                function advanceNext() {
+                    if (!lvPlaying) return;
                     if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
                     else {
                         lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
                         lvSpeech.classList.remove('lv-vis');
                         setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
                     }
-                }, Math.max(4000, words * 220));
+                }
+                if (lvTTS) {
+                    lvSpeak(s.speech, advanceNext);
+                } else {
+                    const words = s ? s.speech.split(' ').length : 10;
+                    lvTimer = setTimeout(advanceNext, Math.max(4000, words * 220));
+                }
             }
 
             function lvTogglePlay() {
                 if (lvPlaying) {
-                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvStopTalk();
+                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
                 } else {
                     lvPlaying = true; lvPlayBtn.textContent = '⏸';
                     if (lvCurrent === -1) {
@@ -1669,6 +1708,7 @@
             }
 
             function lvRestart() {
+                lvSpeechCancel();
                 lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProg.style.width = '0%';
                 lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
                 lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
@@ -1683,17 +1723,23 @@
                 setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
             });
             document.getElementById('lvNext').addEventListener('click', () => {
+                lvSpeechCancel(); clearTimeout(lvTimer);
                 if (lvCurrent === -1) {
                     lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                    setTimeout(() => lvShowSlide(0), 600);
-                } else if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); }
+                    setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
+                } else if (lvCurrent < lvSlides.length - 1) {
+                    lvShowSlide(lvCurrent + 1);
+                    if (lvPlaying) lvAutoAdv();
+                }
                 else { nextScreen(); }
             });
             document.getElementById('lvPrev').addEventListener('click', () => {
+                lvSpeechCancel(); clearTimeout(lvTimer);
                 if (lvCurrent > 0) {
                     const items = lvBoardContent.querySelectorAll('.lv-bi');
                     if (items.length > 0) items[items.length - 1].remove();
                     lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
+                    if (lvPlaying) lvAutoAdv();
                 }
             });
             lvOutro.addEventListener('click', () => { nextScreen(); });
