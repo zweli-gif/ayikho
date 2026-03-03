@@ -703,6 +703,15 @@
             margin-top: 20px; opacity: 0; animation: lvFadeUp 0.6s 1.2s ease forwards;
             font-size: 36px;
         }
+        .lv-start-btn {
+            margin-top: 28px; opacity: 0; animation: lvFadeUp 0.6s 1.5s ease forwards;
+            background: var(--fa); color: #fff; border: none; border-radius: 40px;
+            padding: 12px 32px; font-family: 'Outfit', sans-serif; font-size: 14px;
+            font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; letter-spacing: 0.5px;
+        }
+        .lv-start-btn:hover { background: #0369A1; transform: scale(1.05); }
+        .lv-start-btn::before { content: '\25B6'; font-size: 10px; }
         @keyframes lvFadeUp { to { opacity: 1; transform: translateY(0); } }
         /* Outro card */
         .lv-outro {
@@ -935,6 +944,7 @@
                                     <h1>Accounting Concepts<br>& Principles</h1>
                                     <div class="lv-accent-line"></div>
                                     <div class="lv-mini-icon">✏️</div>
+                                    <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
                                 </div>
                                 <!-- Outro Card -->
                                 <div class="lv-outro" id="lvOutro">
@@ -1633,6 +1643,11 @@
             }
 
             lvPlayBtn.addEventListener('click', lvTogglePlay);
+            document.getElementById('lvStartBtn').addEventListener('click', () => {
+                lvPlaying = true; lvPlayBtn.textContent = '\u23F8';
+                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
+                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
+            });
             document.getElementById('lvNext').addEventListener('click', () => {
                 if (lvCurrent === -1) {
                     lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
