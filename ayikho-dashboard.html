@@ -4,680 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayikho — Your Progress Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         :root {
-            --p: #7C3AED;
-            --pl: #9D5FFF;
-            --pd: #4C1A99;
-            --pxs: #F5F0FF;
-            --psm: #EDE8FF;
-            --fa: #0284C7;
-            --fa-l: #38BDF8;
-            --fa-d: #075985;
-            --fa-xs: #F0F9FF;
-            --fa-sm: #E0F2FE;
-            --gold: #F59E0B;
-            --green: #22C55E;
-            --green-xs: #F0FDF4;
-            --rose: #F43F5E;
-            --ink: #1A0A3A;
-            --mut: #6B5A8A;
-            --dim: #9580B8;
-            --bord: #DDD5F5;
-            --surf: #F7F4FF;
-            --w: #FFFFFF;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: #05090F;
-            color: var(--ink);
-            overflow: hidden;
-        }
-
-        .app-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        .sidebar {
-            width: 200px;
-            background: #0D0E1A;
-            border-right: 1px solid var(--bord);
-            padding: 20px 0;
-            overflow-y: auto;
-            color: var(--dim);
-            font-size: 12px;
-        }
-
-        .sidebar-item {
-            padding: 12px 16px;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .sidebar-item:hover {
-            background: rgba(124, 58, 237, 0.1);
-            color: var(--dim);
-        }
-
-        .sidebar-item.active {
-            border-left-color: var(--fa);
-            color: var(--fa);
-            background: rgba(2, 132, 199, 0.05);
-        }
-
-        .main-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .phone-frame {
-            width: 375px;
-            height: 812px;
-            background: var(--w);
-            border-radius: 50px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .status-bar {
-            height: 48px;
-            background: var(--fa);
-            color: var(--w);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .progress-strip {
-            height: 3px;
-            background: var(--bord);
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--fa);
-            width: 100%;
-            transition: width 0.3s ease;
-        }
-
-        .screen-container {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-            background: var(--w);
-        }
-
-        .screen {
-            width: 375px;
-            height: calc(812px - 48px - 3px - 60px);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .screen-body {
-            flex: 1;
-            padding: 24px 20px;
-            overflow-y: auto;
-        }
-
-        .dark-header {
-            background: var(--ink);
-            color: var(--w);
-            padding: 32px 20px 24px;
-            border-radius: 0 0 24px 24px;
-        }
-
-        .dark-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 8px;
-        }
-
-        .dark-header p {
-            font-size: 14px;
-            opacity: 0.85;
-            line-height: 1.5;
-            margin-bottom: 16px;
-        }
-
-        /* Stats Row */
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .stat-box {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 18px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Section Headers */
-        .section-header {
-            margin-top: 28px;
-            margin-bottom: 12px;
-        }
-
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 4px;
-        }
-
-        .section-subtitle {
-            font-size: 13px;
-            color: var(--mut);
-        }
-
-        /* Module Time Bars */
-        .module-bars-container {
-            background: var(--surf);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        .total-time {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--ink);
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .module-bar-item {
-            margin-bottom: 12px;
-        }
-
-        .module-bar-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            font-size: 12px;
-        }
-
-        .module-bar-name {
-            font-weight: 500;
-            color: var(--ink);
-        }
-
-        .module-bar-time {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 500;
-            color: var(--mut);
-        }
-
-        .module-bar-status {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .status-completed {
-            color: var(--green);
-        }
-
-        .status-in-progress {
-            color: var(--fa);
-        }
-
-        .status-locked {
-            color: var(--dim);
-        }
-
-        .bar-background {
-            height: 8px;
-            background: #E0D5F0;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        .bar-completed {
-            background: var(--green);
-        }
-
-        .bar-in-progress {
-            background: var(--fa);
-        }
-
-        .bar-locked {
-            background: var(--dim);
-        }
-
-        /* Quiz Performance Cards */
-        .quiz-card {
-            background: var(--fa-xs);
-            border-left: 4px solid var(--fa);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-
-        .quiz-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 8px;
-        }
-
-        .quiz-module-name {
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--ink);
-        }
-
-        .improvement-badge {
-            background: var(--green);
-            color: var(--w);
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-
-        .quiz-scores {
-            display: flex;
-            gap: 16px;
-            font-size: 13px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .quiz-score {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .quiz-score-label {
-            font-size: 10px;
-            color: var(--mut);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 2px;
-        }
-
-        .quiz-score-value {
-            font-weight: 600;
-            color: var(--ink);
-        }
-
-        /* Weak Spots Section */
-        .weak-spot-card {
-            background: var(--w);
-            border-left: 4px solid var(--rose);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            border: 1px solid var(--bord);
-        }
-
-        .weak-spot-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .module-tag {
-            background: var(--p);
-            color: var(--w);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 6px;
-            white-space: nowrap;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .weak-spot-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--ink);
-            line-height: 1.4;
-        }
-
-        .weak-spot-description {
-            font-size: 12px;
-            color: var(--mut);
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        .revise-btn {
-            display: inline-block;
-            background: transparent;
-            border: none;
-            color: var(--fa);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .revise-btn:hover {
-            color: var(--fa-d);
-        }
-
-        /* Action Cards */
-        .action-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .action-card {
-            border-radius: 12px;
-            padding: 14px 16px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            min-height: 48px;
-        }
-
-        .action-card-primary {
-            background: var(--fa);
-            color: var(--w);
-            border: 2px solid var(--fa);
-        }
-
-        .action-card-primary:hover {
-            background: var(--fa-d);
-            border-color: var(--fa-d);
-        }
-
-        .action-card-outline {
-            background: var(--w);
-            color: var(--ink);
-            border: 2px solid var(--bord);
-        }
-
-        .action-card-outline:hover {
-            background: var(--surf);
-            border-color: var(--p);
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            height: 60px;
-            background: var(--w);
-            border-top: 1px solid var(--bord);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            cursor: pointer;
-            flex: 1;
-            height: 100%;
-            transition: all 0.2s;
-            color: var(--dim);
-            font-size: 10px;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .nav-item.active {
-            color: var(--fa);
-        }
-
-        .nav-icon {
-            font-size: 20px;
-        }
-
-        /* Scrollbar styling */
-        .screen::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .screen::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .screen::-webkit-scrollbar-thumb {
-            background: var(--bord);
-            border-radius: 2px;
-        }
-
-        .screen::-webkit-scrollbar-thumb:hover {
-            background: var(--dim);
-        }
+            --p: #7C3AED; --pl: #9D5FFF; --pd: #4C1A99;
+            --pxs: #F5F0FF; --psm: #EDE8FF;
+            --fa: #0284C7; --fa-l: #38BDF8; --fa-d: #075985;
+            --fa-xs: #F0F9FF; --fa-sm: #E0F2FE;
+            --gold: #F59E0B; --green: #22C55E; --rose: #F43F5E;
+            --ink: #1A0A3A; --mut: #6B5A8A; --dim: #9580B8;
+            --bord: #DDD5F5; --surf: #F7F4FF; --w: #FFFFFF;
+        }
+
+        body { font-family: 'Outfit', sans-serif; background: #05090F; color: var(--ink); overflow: hidden; display: flex; align-items: center; justify-content: center; height: 100vh; }
+
+        .phone-frame { width: 375px; height: 812px; background: var(--w); border-radius: 50px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; display: flex; flex-direction: column; position: relative; }
+
+        /* STATUS BAR */
+        .status-bar { height: 48px; background: var(--fa); color: var(--w); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+        
+        .progress-strip { height: 3px; background: var(--bord); }
+        .progress-fill { height: 100%; background: var(--fa); width: 100%; }
+
+        /* HEADER */
+        .dark-header { background: var(--ink); color: var(--w); padding: 28px 20px 24px; border-radius: 0 0 24px 24px; position: relative; overflow: hidden; }
+        .dark-header::before { content:''; position:absolute; top:-50px; right:-50px; width:150px; height:150px; border-radius:50%; background:radial-gradient(circle, rgba(2,132,199,0.2), transparent 70%); }
+        .dark-header h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; line-height: 1.2; margin-bottom: 4px; position: relative; z-index: 1; }
+        .dark-header p { font-size: 13px; color: rgba(255,255,255,0.6); position: relative; z-index: 1; }
+
+        /* TOP STATS ROW */
+        .stats-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; position: relative; z-index: 1; }
+        .stat-box { flex: 1; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; text-align: center; }
+        .stat-value { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; display: block; margin-bottom: 2px; line-height: 1; }
+        .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* SCROLLABLE BODY */
+        .screen-body { flex: 1; padding: 20px; overflow-y: auto; background: var(--w); }
+        .screen-body::-webkit-scrollbar { display: none; }
+
+        /* EXAM REMINDER WIDGET */
+        .reminder-card { background: linear-gradient(135deg, var(--gold) 0%, #FBBF24 100%); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2); }
+        .reminder-icon { background: rgba(255,255,255,0.3); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .reminder-info { flex: 1; }
+        .reminder-title { font-weight: 700; font-size: 14px; color: #78350F; margin-bottom: 2px; }
+        .reminder-countdown { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: #92400E; text-transform: uppercase; }
+        .reminder-btn { background: #78350F; color: var(--w); border: none; border-radius: 8px; padding: 8px 12px; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; transition: transform 0.2s; }
+        .reminder-btn:active { transform: scale(0.95); }
+
+        /* SECTIONS */
+        .section-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+        .section-sub { font-size: 12px; color: var(--mut); margin-bottom: 12px; }
+
+        /* ZERO STATE (Day 0) */
+        .zero-state { text-align: center; padding: 30px 20px; background: var(--surf); border: 2px dashed var(--bord); border-radius: 16px; margin-bottom: 24px; }
+        .zero-icon { font-size: 48px; margin-bottom: 12px; }
+        .zero-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 8px; }
+        .zero-desc { font-size: 13px; color: var(--mut); line-height: 1.5; margin-bottom: 20px; }
+        .btn-start { background: var(--p); color: var(--w); border: none; width: 100%; padding: 14px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn-start:hover { background: var(--pd); }
+
+        /* MODULE PROGRESS BARS */
+        .progress-container { background: var(--w); border: 1px solid var(--bord); border-radius: 16px; padding: 16px; margin-bottom: 24px; }
+        .mod-row { margin-bottom: 14px; }
+        .mod-row:last-child { margin-bottom: 0; }
+        .mod-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; }
+        .mod-name { font-weight: 600; color: var(--ink); }
+        .mod-time { font-family: 'JetBrains Mono', monospace; color: var(--mut); font-size: 10px; }
+        .mod-track { height: 6px; background: var(--fa-xs); border-radius: 100px; overflow: hidden; display: flex; }
+        .mod-fill { height: 100%; border-radius: 100px; }
+        .fill-done { background: var(--green); }
+        .fill-active { background: var(--fa); }
+
+        /* WEAK SPOTS */
+        .weak-spot { background: #FFF1F2; border-left: 4px solid var(--rose); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+        .ws-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .ws-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: var(--rose); text-transform: uppercase; }
+        .ws-action { font-size: 11px; font-weight: 700; color: var(--rose); cursor: pointer; }
+        .ws-q { font-size: 13px; color: var(--ink); line-height: 1.4; font-weight: 500; }
+
+        /* BOTTOM NAV */
+        .bottom-nav { height: 64px; background: var(--w); border-top: 1px solid var(--bord); display: flex; justify-content: space-around; align-items: center; flex-shrink: 0; padding-bottom: 8px; }
+        .bn-item { display: flex; flex-direction: column; align-items: center; gap: 4px; opacity: 0.4; cursor: pointer; }
+        .bn-item.active { opacity: 1; }
+        .bn-icon { font-size: 20px; }
+        .bn-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink); }
+        .bn-item.active .bn-label { color: var(--fa); }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="sidebar">
-            <div class="sidebar-item">Dashboard</div>
-            <div class="sidebar-item active">Your Progress</div>
-            <div class="sidebar-item">Module 1: Concepts</div>
-            <div class="sidebar-item">Module 2: Double Entry</div>
-            <div class="sidebar-item">Module 3: Journals</div>
-            <div class="sidebar-item">Badges & Rewards</div>
-            <div class="sidebar-item">Profile Settings</div>
-        </div>
 
-        <div class="main-container">
-            <div class="phone-frame">
-                <!-- Status Bar -->
-                <div class="status-bar">
-                    <span>21:07</span>
-                    <span>4G ●●●●●</span>
-                    <span>🔋</span>
-                </div>
+<div class="phone-frame">
+    <div class="status-bar">
+        <span>21:07</span>
+        <span>Ayikho Dashboard</span>
+    </div>
+    <div class="progress-strip"><div class="progress-fill"></div></div>
 
-                <!-- Progress Strip -->
-                <div class="progress-strip">
-                    <div class="progress-fill"></div>
-                </div>
-
-                <!-- Main Screen -->
-                <div class="screen-container">
-                    <div class="screen">
-                        <!-- Dark Header -->
-                        <div class="dark-header">
-                            <h1>Your Progress</h1>
-                            <p>Financial Accounting N4</p>
-                            <div class="stats-row" id="stats-row">
-                                <!-- Populated by JS -->
-                            </div>
-                        </div>
-
-                        <!-- Screen Body -->
-                        <div class="screen-body">
-                            <div id="dashboard-content">
-                                <!-- Populated by JS -->
-                            </div>
-
-                            <div style="height: 20px;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bottom Navigation -->
-                <div class="bottom-nav">
-                    <div class="nav-item">
-                        <div class="nav-icon">📚</div>
-                        <span>Learn</span>
-                    </div>
-                    <div class="nav-item active">
-                        <div class="nav-icon">📊</div>
-                        <span>Progress</span>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-icon">🏆</div>
-                        <span>Badges</span>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-icon">👤</div>
-                        <span>Profile</span>
-                    </div>
-                </div>
+    <div class="dark-header">
+        <h1 id="user-greeting">Your Progress</h1>
+        <p>Financial Accounting N4</p>
+        <div class="stats-row" id="stats-row">
             </div>
-        </div>
     </div>
 
-    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+    <div class="screen-body" id="dashboard-content">
+        </div>
 
-    <script>
-        // Wait for student-data.js to load and populate the dashboard
-        function initializeDashboard() {
-            if (!window.ayikhoData) {
-                console.error('ayikhoData not available');
-                return;
-            }
+    <div class="bottom-nav">
+        <div class="bn-item" onclick="goHome()">
+            <div class="bn-icon">📚</div>
+            <div class="bn-label">Learn</div>
+        </div>
+        <div class="bn-item active">
+            <div class="bn-icon">📊</div>
+            <div class="bn-label">Progress</div>
+        </div>
+        <div class="bn-item">
+            <div class="bn-icon">🏆</div>
+            <div class="bn-label">Badges</div>
+        </div>
+        <div class="bn-item">
+            <div class="bn-icon">👤</div>
+            <div class="bn-label">Profile</div>
+        </div>
+    </div>
+</div>
 
-            const dashboardData = window.ayikhoData.getDashboardData();
-            const statsRow = document.getElementById('stats-row');
-            const dashboardContent = document.getElementById('dashboard-content');
+<script>
+    // Navigation back to home inside the prototype shell
+    function goHome() {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'goHome' }, '*');
+        } else {
+            window.location.href = 'ayikho-chapter-home.html';
+        }
+    }
 
-            // Check if student has any progress data
-            const hasProgress = dashboardData.completedCount > 0 || dashboardData.totalTimeMs > 0;
+    // Exam Date Generator (Mocks a date ~45 days from today for realism)
+    function getDaysToExam() {
+        const today = new Date();
+        const examDate = new Date(today);
+        examDate.setDate(today.getDate() + 42); // 6 weeks away
+        
+        const diffTime = Math.abs(examDate - today);
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
 
-            if (!hasProgress) {
-                // Empty state for new students
-                statsRow.innerHTML = `
-                    <div class="stat-box">
-                        <span class="stat-value">0</span>
-                        <span class="stat-label">XP</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-value">0🔥</span>
-                        <span class="stat-label">Streak</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-value">0%</span>
-                        <span class="stat-label">Avg</span>
-                    </div>
-                `;
-                dashboardContent.innerHTML = `
-                    <div style="text-align: center; padding: 40px 20px; color: var(--mut);">
-                        <p style="font-size: 14px; line-height: 1.6;">
-                            Start your first module to see your progress here!
-                        </p>
-                    </div>
-                `;
-                return;
-            }
+    function renderDashboard() {
+        // 1. Fetch data from persistence layer
+        let data = { totalXP: 0, streakDays: 0, avgScore: 0, completedCount: 0, moduleStats: [], weakSpots: [] };
+        if (window.ayikhoData) {
+            data = window.ayikhoData.getDashboardData();
+        }
 
-            // Populate header stats
-            statsRow.innerHTML = `
-                <div class="stat-box">
-                    <span class="stat-value">${dashboardData.totalXP}</span>
-                    <span class="stat-label">XP</span>
+        const hasProgress = data.completedCount > 0 || data.totalTimeMs > 0;
+        const daysToExam = getDaysToExam();
+
+        // 2. Render Top Stats
+        const statsRow = document.getElementById('stats-row');
+        statsRow.innerHTML = `
+            <div class="stat-box">
+                <span class="stat-value" style="color:var(--fa-l)">${data.totalXP}</span>
+                <span class="stat-label" style="color:var(--fa-xs)">XP Earned</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value" style="color:var(--gold)">${data.streakDays}</span>
+                <span class="stat-label" style="color:#FEF3C7">Day Streak</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value" style="color:var(--green-xs)">${hasProgress ? data.avgScore : 0}%</span>
+                <span class="stat-label" style="color:var(--green-xs)">Avg Score</span>
+            </div>
+        `;
+
+        // 3. Render Main Content
+        const content = document.getElementById('dashboard-content');
+        let html = '';
+
+        // -- EXAM REMINDER WIDGET (Always shows) --
+        html += `
+            <div class="reminder-card">
+                <div class="reminder-icon">⏰</div>
+                <div class="reminder-info">
+                    <div class="reminder-title">FA N4 Final Exam</div>
+                    <div class="reminder-countdown">${daysToExam} days remaining</div>
                 </div>
-                <div class="stat-box">
-                    <span class="stat-value">${dashboardData.streakDays}🔥</span>
-                    <span class="stat-label">Streak</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-value">${dashboardData.avgScore}%</span>
-                    <span class="stat-label">Avg</span>
-                </div>
-            `;
+                <button class="reminder-btn" onclick="alert('Opening past papers...')">Prep Now</button>
+            </div>
+        `;
 
-            // Build main dashboard content
-            let html = '';
-
-            // ── STUDY TIME SECTION ──
+        if (!hasProgress) {
+            // -- DAY 0: EMPTY STATE --
             html += `
-                <div class="section-header">
-                    <div class="section-title">Study Time</div>
-                    <div class="section-subtitle">Time spent per module</div>
+                <div class="zero-state">
+                    <div class="zero-icon">🌱</div>
+                    <div class="zero-title">Your journey starts here</div>
+                    <div class="zero-desc">Every great accountant started at Module 1. Complete lessons to earn XP and build your daily streak.</div>
+                    <button class="btn-start" onclick="goHome()">Start Module 1 →</button>
                 </div>
-                <div class="module-bars-container">
-                    <div class="total-time">${dashboardData.totalTimeMin} min total study time</div>
+            `;
+        } else {
+            // -- ACTIVE USER: SHOW STATS --
+            
+            // Time & Module Progress
+            html += `
+                <div class="section-title">Study Time</div>
+                <div class="section-sub">Where you've spent your effort</div>
+                <div class="progress-container">
             `;
 
-            // Find max time for proportional bars
-            const maxTime = Math.max(...dashboardData.moduleStats.map(m => m.timeMs), 1);
+            // Sort modules by time spent, show top 4
+            const sortedModules = [...data.moduleStats]
+                .filter(m => m.timeMs > 0 || m.status === 'completed')
+                .sort((a, b) => b.timeMs - a.timeMs)
+                .slice(0, 4);
 
-            dashboardData.moduleStats.forEach(module => {
-                const statusText = module.status === 'completed' ? 'Done' :
-                                   module.status === 'in_progress' ? 'Going' : 'Locked';
-                const statusClass = module.status === 'completed' ? 'status-completed' :
-                                    module.status === 'in_progress' ? 'status-in-progress' : 'status-locked';
-                const barClass = module.status === 'completed' ? 'bar-completed' :
-                                 module.status === 'in_progress' ? 'bar-in-progress' : 'bar-locked';
-                const barWidth = maxTime > 0 ? (module.timeMs / maxTime) * 100 : 0;
+            const maxTime = Math.max(...sortedModules.map(m => m.timeMs), 60000); // Prevent div by 0
 
+            sortedModules.forEach(mod => {
+                const pct = Math.max(5, (mod.timeMs / maxTime) * 100);
+                const colorClass = mod.status === 'completed' ? 'fill-done' : 'fill-active';
+                const timeText = mod.timeMin > 0 ? `${mod.timeMin} min` : '< 1 min';
+                
                 html += `
-                    <div class="module-bar-item">
-                        <div class="module-bar-label">
-                            <span class="module-bar-name">M${module.id}: ${module.name.split(' ')[0]}</span>
-                            <span class="module-bar-time">${module.timeMin} min</span>
+                    <div class="mod-row">
+                        <div class="mod-top">
+                            <span class="mod-name">M${mod.id}: ${mod.name.split(' ')[0]}</span>
+                            <span class="mod-time">${timeText}</span>
                         </div>
-                        <div style="display: flex; gap: 8px; align-items: center;">
-                            <div class="bar-background" style="flex: 1;">
-                                <div class="bar-fill ${barClass}" style="width: ${barWidth}%;"></div>
-                            </div>
-                            <span class="module-bar-status ${statusClass}">${statusText}</span>
+                        <div class="mod-track">
+                            <div class="mod-fill ${colorClass}" style="width: ${pct}%"></div>
                         </div>
                     </div>
                 `;
@@ -685,149 +243,44 @@
 
             html += `</div>`;
 
-            // ── QUIZ PERFORMANCE SECTION ──
-            const quizModules = dashboardData.moduleStats.filter(m => m.postQuiz && m.postQuiz.total > 0);
-            if (quizModules.length > 0) {
+            // Weak Spots (If they got quiz questions wrong)
+            if (data.weakSpots && data.weakSpots.length > 0) {
                 html += `
-                    <div class="section-header">
-                        <div class="section-title">Quiz Performance</div>
-                        <div class="section-subtitle">How you're doing in assessments</div>
-                    </div>
+                    <div class="section-title">⚠️ Weak Spots to Revise</div>
+                    <div class="section-sub">Concepts you missed in recent quizzes</div>
                 `;
 
-                quizModules.forEach(module => {
-                    const preScore = module.preQuiz.total > 0 ? module.preQuiz.score : 0;
-                    const postScore = module.postQuiz.score;
-                    const improvement = postScore - preScore;
-                    const badgeText = improvement > 0 ? `+${improvement} improved` : 'In progress';
-
+                // Show last 3 weak spots
+                data.weakSpots.slice(-3).reverse().forEach(spot => {
                     html += `
-                        <div class="quiz-card">
-                            <div class="quiz-card-header">
-                                <span class="quiz-module-name">Module ${module.id}: ${module.name}</span>
-                                <span class="improvement-badge">${badgeText}</span>
+                        <div class="weak-spot">
+                            <div class="ws-top">
+                                <span class="ws-tag">Module ${spot.moduleId}</span>
+                                <span class="ws-action" onclick="goHome()">Revise →</span>
                             </div>
-                            <div class="quiz-scores">
-                                <div class="quiz-score">
-                                    <span class="quiz-score-label">Pre</span>
-                                    <span class="quiz-score-value">${preScore}/${module.preQuiz.total}</span>
-                                </div>
-                                <div class="quiz-score">
-                                    <span class="quiz-score-label">Post</span>
-                                    <span class="quiz-score-value">${postScore}/${module.postQuiz.total}</span>
-                                </div>
-                            </div>
+                            <div class="ws-q">"${spot.questionText}"</div>
                         </div>
                     `;
                 });
             }
 
-            // ── WEAK SPOTS SECTION ──
-            if (dashboardData.weakSpots.length > 0) {
-                html += `
-                    <div class="section-header">
-                        <div class="section-title">⚠️ Pay Attention Here</div>
-                        <div class="section-subtitle">Concepts you got wrong in quizzes</div>
-                    </div>
-                `;
-
-                dashboardData.weakSpots.forEach(spot => {
-                    html += `
-                        <div class="weak-spot-card">
-                            <div class="weak-spot-header">
-                                <span class="module-tag">M${spot.moduleId}</span>
-                                <div style="flex: 1;">
-                                    <div class="weak-spot-description">${spot.questionText}</div>
-                                    <a href="#" class="revise-btn" data-module="${spot.moduleId}">Revise →</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            // ── NEXT STEPS SECTION ──
-            const inProgressModule = dashboardData.moduleStats.find(m => m.status === 'in_progress');
-            const nextActions = [];
-
-            if (inProgressModule) {
-                nextActions.push({
-                    text: `Continue Module ${inProgressModule.id}: ${inProgressModule.name}`,
-                    primary: true
-                });
-            }
-
-            if (dashboardData.weakSpots.length > 0) {
-                nextActions.push({
-                    text: 'Revise Weak Spots',
-                    primary: false
-                });
-            }
-
-            // Add pre-quiz prompt for next available module
-            const nextUnstartedModule = dashboardData.moduleStats.find(m =>
-                m.status === 'available' && m.preQuiz.total === 0
-            );
-            if (nextUnstartedModule) {
-                nextActions.push({
-                    text: `Start Module ${nextUnstartedModule.id} Pre-Quiz`,
-                    primary: false
-                });
-            }
-
-            if (nextActions.length > 0) {
-                html += `
-                    <div class="section-header">
-                        <div class="section-title">Next Steps</div>
-                        <div class="section-subtitle">Keep your momentum going</div>
-                    </div>
-                    <div class="action-cards">
-                `;
-
-                nextActions.forEach((action, idx) => {
-                    const cardClass = action.primary ? 'action-card-primary' : 'action-card-outline';
-                    html += `
-                        <button class="action-card ${cardClass}" data-action="${idx}">
-                            ${action.text}
-                        </button>
-                    `;
-                });
-
-                html += `</div>`;
-            }
-
-            dashboardContent.innerHTML = html;
-
-            // Attach event listeners
-            document.querySelectorAll('.action-card').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    console.log('Action clicked:', this.textContent.trim());
-                });
-            });
-
-            document.querySelectorAll('.revise-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const moduleId = this.getAttribute('data-module');
-                    console.log('Revise clicked for module:', moduleId);
-                });
-            });
+            // Next Action Button
+            html += `
+                <div style="margin-top: 24px;">
+                    <button class="btn-start" onclick="goHome()">Continue Studying →</button>
+                </div>
+            `;
         }
 
-        // Navigation items interactivity
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+        content.innerHTML = html;
+    }
 
-        // Initialize dashboard once DOM is ready and data is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeDashboard);
-        } else {
-            initializeDashboard();
-        }
-    </script>
+    // Wait for the mock DB script to finish loading, then render
+    document.addEventListener('DOMContentLoaded', () => {
+        // slight delay to ensure window.ayikhoData is attached
+        setTimeout(renderDashboard, 100);
+    });
+</script>
+
 </body>
 </html>
