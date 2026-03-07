@@ -16,12 +16,13 @@
   }
   body { font-family:'Outfit', sans-serif; background:#05090F; display:flex; align-items:center; justify-content:center; height:100vh; overflow:hidden; }
   
-  .phone { width:375px; height:812px; background:var(--surf); border-radius:50px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.5); position:relative; }
+  .phone { width:375px; height:812px; background:var(--surf); border-radius:50px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.5); position:relative; border: 12px solid #05090F; }
   
   /* Header */
   .hdr { background:var(--ink); color:white; padding:48px 20px 20px; flex-shrink:0; }
-  .hdr-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .hdr-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
   .back-btn { background:rgba(255,255,255,0.1); border:none; color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; }
+  .mod-title { font-family:'Playfair Display', serif; font-size:22px; font-weight:800; color:var(--w); margin-bottom:8px; }
   .prog-text { font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--fa-l); }
   .prog-bar { height:6px; background:rgba(255,255,255,0.1); border-radius:100px; overflow:hidden; }
   .prog-fill { height:100%; background:linear-gradient(90deg, var(--p), var(--fa)); transition:width 0.3s; }
@@ -34,12 +35,13 @@
 
   /* Interaction Area */
   .interaction-area { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
+  .interaction-area::-webkit-scrollbar { display:none; }
   
-  /* Type: Journal Sorter */
-  .j-btn { background:var(--w); border:2px solid var(--bord); padding:16px; border-radius:12px; font-size:14px; font-weight:600; color:var(--ink); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:12px; }
+  /* Type: Buttons */
+  .j-btn { background:var(--w); border:2px solid var(--bord); padding:16px; border-radius:12px; font-size:14px; font-weight:600; color:var(--ink); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:12px; text-align:left; }
   .j-btn:hover { border-color:var(--fa); background:var(--fa-xs); }
   .j-btn.selected { border-color:var(--p); background:var(--pxs); box-shadow:0 0 0 2px rgba(124,58,237,0.2); }
-  .j-icon { width:32px; height:32px; background:var(--surf); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .j-icon { width:32px; height:32px; background:var(--surf); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
 
   /* Type: Equation Balancer */
   .eq-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -57,7 +59,7 @@
   .num-input { border:none; outline:none; font-family:'JetBrains Mono', monospace; font-size:24px; font-weight:600; color:var(--ink); width:100%; padding:12px 0; }
   
   /* Footer */
-  .foot { padding:16px 20px 24px; background:var(--w); border-top:1px solid var(--bord); }
+  .foot { padding:16px 20px 24px; background:var(--w); border-top:1px solid var(--bord); flex-shrink:0; }
   .btn-submit { width:100%; padding:16px; background:var(--ink); color:white; border:none; border-radius:12px; font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; }
   .btn-submit:disabled { opacity:0.5; cursor:not-allowed; }
 
@@ -85,8 +87,9 @@
   <div class="hdr">
     <div class="hdr-top">
       <button class="back-btn" onclick="window.history.back()">‹</button>
-      <div class="prog-text"><span id="q-curr">1</span> of <span id="q-tot">15</span></div>
+      <div class="prog-text"><span id="q-curr">1</span> of 15</div>
     </div>
+    <div class="mod-title" id="ui-mod-title">Loading Exam...</div>
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
 
@@ -96,8 +99,7 @@
     <div class="task-text" id="ui-task">What should you do?</div>
   </div>
 
-  <div class="interaction-area" id="ui-interaction">
-    </div>
+  <div class="interaction-area" id="ui-interaction"></div>
 
   <div class="foot">
     <button class="btn-submit" id="btn-submit" onclick="checkAnswer()" disabled>Confirm Action →</button>
@@ -106,7 +108,7 @@
   <div class="feedback" id="feedback">
     <div class="fb-icon" id="fb-icon">✅</div>
     <div class="fb-title" id="fb-title">Spot on!</div>
-    <div class="fb-text" id="fb-text">Explanation goes here.</div>
+    <div class="fb-text" id="fb-text">Explanation</div>
     <button class="fb-btn" id="fb-btn" onclick="nextQuestion()">Next Scenario</button>
   </div>
 
@@ -114,197 +116,181 @@
     <div style="font-size:64px; margin-bottom:10px;">🏆</div>
     <h1 style="font-family:'Playfair Display',serif; font-size:32px;">Exam Complete</h1>
     <div class="res-score" id="res-score">80%</div>
-    <p style="color:rgba(255,255,255,0.7); margin-bottom:30px; line-height:1.5;" id="res-text">Great work! You're thinking like a real accountant.</p>
+    <p style="color:rgba(255,255,255,0.7); margin-bottom:30px; line-height:1.5;" id="res-text"></p>
     <button class="btn-submit" style="background:var(--fa);" onclick="window.history.back()">Return to Dashboard</button>
   </div>
 </div>
 
 <script>
-// The 15 Simulation Scenarios
-const questions = [
-  {
-    topic: "Accounting Concepts",
-    scenario: "Zandile takes R500 from her spaza shop's till to buy groceries for her own home.",
-    task: "How should this be recorded based on the Entity Concept?",
-    type: "journal-sort",
-    options: [
-      { id: "a", icon: "📦", text: "As a Cost of Sales expense" },
-      { id: "b", icon: "👤", text: "As Drawings (Owner taking money)" },
-      { id: "c", icon: "🗑️", text: "Ignore it, she owns the shop" }
-    ],
-    correct: ["b"],
-    expCorrect: "Exactly! The Entity Concept states the business and owner are separate. Money taken for personal use is Drawings, not a business expense.",
-    expWrong: "Remember the Entity Concept! The business and the owner are totally separate. If she takes money for personal use, it must be recorded as Drawings."
+// ── EXAM DATA REPOSITORY ──
+// Each module has its own bank of 15 questions.
+const examData = {
+  1: {
+    title: "M1: Concepts & Principles",
+    questions: [
+      {
+        topic: "Entity Concept", scenario: "Zandile takes R500 from the till to pay her child's school fees.", task: "How must this be recorded?", type: "buttons",
+        options: [{id:"a", icon:"📈", text:"As a Business Expense"}, {id:"b", icon:"👤", text:"As Owner's Drawings"}, {id:"c", icon:"❌", text:"Do not record it"}],
+        correct: ["b"], expCorrect: "Correct! The business and owner are separate. Personal expenses are Drawings.", expWrong: "The Entity concept separates the owner from the business. It must be recorded as Drawings."
+      },
+      {
+        topic: "Going Concern", scenario: "You bought a R10,000 fridge. You hear a rumor the shop might close in 2 years.", task: "How do you value the fridge today?", type: "buttons",
+        options: [{id:"a", icon:"🏷️", text:"At R10,000 (Historical Cost)"}, {id:"b", icon:"🗑️", text:"At R0, since it might close"}],
+        correct: ["a"], expCorrect: "Yes! Unless closure is certain, you assume the business will continue (Going Concern).", expWrong: "Going Concern means we assume the business will operate indefinitely. You keep the asset at its normal value."
+      },
+      {
+        topic: "Prudence", scenario: "A customer owes you R2,000 but ran away to another province.", task: "What is your next move?", type: "buttons",
+        options: [{id:"a", icon:"⏳", text:"Keep it as an asset"}, {id:"b", icon:"📉", text:"Write it off as Bad Debts immediately"}],
+        correct: ["b"], expCorrect: "Exactly. Prudence says do not overstate assets. Acknowledge losses as soon as they are probable.", expWrong: "Prudence dictates that we must not overstate our assets. If you likely won't get paid, write it off immediately."
+      },
+      {
+        topic: "Materiality", scenario: "You buy a R15 punch tool for the office.", task: "Do you record this as an Asset or an Expense?", type: "buttons",
+        options: [{id:"a", icon:"🏦", text:"Asset (Equipment)"}, {id:"b", icon:"📝", text:"Expense (Stationery)"}],
+        correct: ["b"], expCorrect: "Correct. A R15 tool is too small to depreciate over 5 years. Materiality says expense it.", expWrong: "Materiality states that small, insignificant items should just be expensed immediately rather than tracked as assets."
+      },
+      {
+        topic: "Matching Principle", scenario: "You pay R5,000 for stock in January, but sell it in February.", task: "When do you record the Cost of Sales?", type: "buttons",
+        options: [{id:"a", icon:"📅", text:"January"}, {id:"b", icon:"📅", text:"February"}],
+        correct: ["b"], expCorrect: "Yes! Match the expense to the period the income is earned.", expWrong: "The Matching principle states that expenses must be matched to the revenue they generate in the same period."
+      },
+      {
+        topic: "Historical Cost", scenario: "Land bought for R100,000 is now worth R500,000.", task: "What value goes on the Balance Sheet?", type: "number",
+        correct: [100000], expCorrect: "Correct! We record at original purchase price.", expWrong: "Historical Cost concept dictates we record assets at their original purchase price, not current market value."
+      },
+      {
+        topic: "Entity Concept", scenario: "The owner pays the business electricity bill using his personal bank account.", task: "Is this a business transaction?", type: "buttons",
+        options: [{id:"a", icon:"✅", text:"Yes, recorded as Capital contribution"}, {id:"b", icon:"❌", text:"No, it's personal"}],
+        correct: ["a"], expCorrect: "Correct! The owner used personal funds for the business, increasing his Capital.", expWrong: "Because it paid a BUSINESS expense, it is recorded. Since personal funds were used, it counts as Capital contributed."
+      },
+      {
+        topic: "Prudence", scenario: "You expect to win a lawsuit and get R50,000 next month.", task: "Do you record this income now?", type: "buttons",
+        options: [{id:"a", icon:"✅", text:"Yes, as Accrued Income"}, {id:"b", icon:"❌", text:"No, wait until you actually win"}],
+        correct: ["b"], expCorrect: "Correct. Prudence says do not record anticipated profits until they are guaranteed.", expWrong: "Prudence concept: Never anticipate a profit. Only record it when it is completely certain."
+      },
+      {
+        topic: "Matching Principle", scenario: "You pay commissions to sales staff based on December's sales, but you pay them in January.", task: "Which month gets the expense?", type: "buttons",
+        options: [{id:"a", icon:"🎄", text:"December"}, {id:"b", icon:"🎆", text:"January"}],
+        correct: ["a"], expCorrect: "Correct! The expense helped generate December's sales, so it belongs in December.", expWrong: "The expense must be MATCHED to the month the sales occurred, which is December."
+      },
+      {
+        topic: "Going Concern", scenario: "If Going Concern did NOT apply, how would we value assets?", type: "buttons",
+        options: [{id:"a", icon:"🏷️", text:"At Historical Cost"}, {id:"b", icon:"🔥", text:"At Liquidation/Sale Value"}],
+        correct: ["b"], expCorrect: "Right. If the business is closing, assets are worth only what you can sell them for today.", expWrong: "If a business is closing, historical cost doesn't matter. Assets must be valued at what they can be sold for right now."
+      },
+      {
+        topic: "Double Entry", scenario: "Every transaction affects...", type: "buttons",
+        options: [{id:"a", icon:"1️⃣", text:"One account"}, {id:"b", icon:"2️⃣", text:"At least two accounts"}],
+        correct: ["b"], expCorrect: "Double entry means two sides to every story.", expWrong: "The foundational rule of accounting is Double Entry: every transaction affects at least two accounts."
+      },
+      {
+        topic: "Accounting Equation", scenario: "Assets = Liabilities + ?", type: "buttons",
+        options: [{id:"a", icon:"💵", text:"Income"}, {id:"b", icon:"👤", text:"Capital"}],
+        correct: ["b"], expCorrect: "Assets = Liabilities + Capital. Always.", expWrong: "The formula is Assets = Liabilities + Capital (Owner's Equity)."
+      },
+      {
+        topic: "Materiality", scenario: "A business with R10 million in sales loses a R50 receipt.", task: "Is this material?", type: "buttons",
+        options: [{id:"a", icon:"✅", text:"Yes, audit failure"}, {id:"b", icon:"❌", text:"No, it's immaterial"}],
+        correct: ["b"], expCorrect: "Correct. Relative to R10m, R50 does not change the financial picture.", expWrong: "Materiality depends on the size of the business. For a massive business, R50 is immaterial."
+      },
+      {
+        topic: "GAAP", scenario: "What does GAAP stand for?", type: "buttons",
+        options: [{id:"a", icon:"📚", text:"Generally Accepted Accounting Practice"}, {id:"b", icon:"🌍", text:"Global Accounting And Principles"}],
+        correct: ["a"], expCorrect: "Correct! The standard rules we all follow.", expWrong: "It stands for Generally Accepted Accounting Practice."
+      },
+      {
+        topic: "Concept Mix", scenario: "Recording a R2,000 sale today even though the customer will pay in 30 days.", task: "Which concept drives this?", type: "buttons",
+        options: [{id:"a", icon:"⏱️", text:"Accrual Concept"}, {id:"b", icon:"🛡️", text:"Prudence Concept"}],
+        correct: ["a"], expCorrect: "Correct! Accrual means we record transactions when they occur, not just when cash moves.", expWrong: "The Accrual concept requires us to record revenue when it is earned, regardless of when cash is received."
+      }
+    ]
   },
-  {
-    topic: "Accounting Equation",
-    scenario: "Sipho buys a new pressure washer for R5,000 cash.",
-    task: "Select the TWO effects this has on the Accounting Equation.",
-    type: "equation",
-    correct: ["+a", "-a"],
-    expCorrect: "Correct! Equipment goes up (+Asset) and Cash goes down (-Asset). Total assets stay exactly the same.",
-    expWrong: "Think about what happened: He gained Equipment (an Asset) but paid Cash (also an Asset). So Assets increase and decrease at the same time."
-  },
-  {
-    topic: "Accounting Equation",
-    scenario: "You buy R2,000 of trading stock on credit from City Wholesale.",
-    task: "Select the TWO effects this has on the Accounting Equation.",
-    type: "equation",
-    correct: ["+a", "+l"],
-    expCorrect: "Spot on. Stock comes in (+Asset) and you now owe money to City Wholesale (+Liability).",
-    expWrong: "Since you didn't pay cash, you owe them money. Stock is an Asset (+A), and owing suppliers is a Creditor/Liability (+L)."
-  },
-  {
-    topic: "Journals Sorter",
-    scenario: "A customer pays R1,500 via EFT to settle their outstanding account.",
-    task: "Which journal does this belong in?",
-    type: "journal-sort",
-    options: [
-      { id: "crj", icon: "📥", text: "Cash Receipts Journal (CRJ)" },
-      { id: "cpj", icon: "📤", text: "Cash Payments Journal (CPJ)" },
-      { id: "dj",  icon: "📝", text: "Debtors Journal (DJ)" }
-    ],
-    correct: ["crj"],
-    expCorrect: "Yes! Money physically entered your bank account, so it must go in the CRJ under the Debtors column.",
-    expWrong: "Even though it involves a debtor, actual cash/EFT was received. ANY money coming in must go to the Cash Receipts Journal (CRJ)."
-  },
-  {
-    topic: "Journals Sorter",
-    scenario: "You sell R800 worth of goods on credit to Mrs. Mkhize.",
-    task: "Which journal records this transaction?",
-    type: "journal-sort",
-    options: [
-      { id: "crj", icon: "📥", text: "Cash Receipts Journal (CRJ)" },
-      { id: "dj",  icon: "📝", text: "Debtors Journal (DJ)" },
-      { id: "gj",  icon: "📓", text: "General Journal (GJ)" }
-    ],
-    correct: ["dj"],
-    expCorrect: "Perfect. Credit sales are the exact reason the Debtors Journal exists.",
-    expWrong: "No cash changed hands, so it's not the CRJ. Because it's a sale on credit to a customer, it belongs in the Debtors Journal."
-  },
-  {
-    topic: "Value Added Tax (VAT)",
-    scenario: "You sell a product for R1,150 (Amount is INCLUSIVE of 15% VAT).",
-    task: "Calculate the exact VAT amount included in that price.",
-    type: "number",
-    correct: [150],
-    expCorrect: "Brilliant. Formula: Amount × (15/115). R1,150 × (15/115) = R150 VAT.",
-    expWrong: "Careful! If the amount INCLUDES VAT, you can't just multiply by 15%. You must use the fraction: Amount × 15 ÷ 115."
-  },
-  {
-    topic: "Value Added Tax (VAT)",
-    scenario: "You buy stock from a supplier for R1,000 (Amount EXCLUDES VAT).",
-    task: "Calculate the total amount you will pay the supplier (including 15% VAT).",
-    type: "number",
-    correct: [1150],
-    expCorrect: "Correct! R1,000 + 15% (R150) = R1,150 total.",
-    expWrong: "If the amount excludes VAT, just multiply by 1.15 (or calculate 15% and add it on). R1,000 + 15% = R1,150."
-  },
-  {
-    topic: "General Ledger",
-    scenario: "You paid R2,000 for rent via EFT.",
-    task: "What happens in the Rent Expense T-Account?",
-    type: "journal-sort",
-    options: [
-      { id: "dr", icon: "⬅️", text: "Debit side (Left)" },
-      { id: "cr", icon: "➡️", text: "Credit side (Right)" }
-    ],
-    correct: ["dr"],
-    expCorrect: "Yes! Remember 'DEAD CLIC'. Debits increase Expenses.",
-    expWrong: "Rent is an Expense. According to the DEAD CLIC rule, Expenses always increase on the Debit (left) side."
-  },
-  {
-    topic: "Trial Balance",
-    scenario: "Your business bank account is overdrawn by R1,500.",
-    task: "In the Trial Balance, which column does the Bank balance go in?",
-    type: "journal-sort",
-    options: [
-      { id: "dr", icon: "🔵", text: "Debit Column" },
-      { id: "cr", icon: "🟡", text: "Credit Column" }
-    ],
-    correct: ["cr"],
-    expCorrect: "Correct. An overdrawn bank account is a liability (you owe the bank), so it gets a Credit balance.",
-    expWrong: "Usually Bank is an asset (Debit). BUT, if it's overdrawn, you owe the bank money. It becomes a liability, which takes a Credit balance."
-  },
-  {
-    topic: "Year-End Adjustments",
-    scenario: "On 1 Nov, you paid R6,000 for 3 months' rent (Nov, Dec, Jan). Your financial year ends 31 Dec.",
-    task: "What is the Prepaid Rent amount at 31 Dec?",
-    type: "number",
-    correct: [2000],
-    expCorrect: "Spot on! R6,000 / 3 = R2,000 per month. By Dec 31, Nov and Dec are used. January is prepaid = R2,000.",
-    expWrong: "Let's break it down: R6,000 for 3 months = R2,000/month. At the end of December, one month (January) is paid in advance. So R2,000 is prepaid."
-  },
-  {
-    topic: "Year-End Adjustments",
-    scenario: "A delivery van costs R120,000. Residual value is R20,000. Useful life is 5 years.",
-    task: "Calculate the annual depreciation using the straight-line method.",
-    type: "number",
-    correct: [20000],
-    expCorrect: "Perfect. (Cost - Residual) / Life. (120,000 - 20,000) / 5 = R20,000 per year.",
-    expWrong: "Formula: (Cost - Residual Value) ÷ Useful Life. So (120,000 - 20,000) = 100,000. 100,000 ÷ 5 years = R20,000."
-  },
-  {
-    topic: "Financial Statements",
-    scenario: "You just calculated a Net Profit of R15,000 on your Income Statement.",
-    task: "Where does this figure go on the Balance Sheet?",
-    type: "journal-sort",
-    options: [
-      { id: "ca", icon: "🏦", text: "Added to Current Assets" },
-      { id: "oe", icon: "👤", text: "Added to Owner's Equity" },
-      { id: "cl", icon: "💳", text: "Deducted from Liabilities" }
-    ],
-    correct: ["oe"],
-    expCorrect: "Exactly. The profit belongs to the owner, so it increases Owner's Equity.",
-    expWrong: "Net Profit is the owner's reward! Therefore, it flows directly from the Income Statement into Owner's Equity on the Balance Sheet."
-  },
-  {
-    topic: "Bank Reconciliation",
-    scenario: "Your bank statement shows a R50 monthly service fee that you didn't know about.",
-    task: "What is your next action?",
-    type: "journal-sort",
-    options: [
-      { id: "cb", icon: "📓", text: "Record it in the Cash Payments Journal" },
-      { id: "br", icon: "📄", text: "Put it on the Bank Recon Statement" },
-      { id: "ig", icon: "🗑️", text: "Ignore it, it's a bank error" }
-    ],
-    correct: ["cb"],
-    expCorrect: "Correct! The bank already processed it, so you must update your own books (Cashbook/CPJ) to match.",
-    expWrong: "Because the transaction is ALREADY on the bank statement, you need to update YOUR records. It must be entered into the Cash Payments Journal."
-  },
-  {
-    topic: "Bank Reconciliation",
-    scenario: "You deposited R3,000 cash on 31 May, but it doesn't appear on the May bank statement.",
-    task: "What is your next action?",
-    type: "journal-sort",
-    options: [
-      { id: "cb", icon: "📓", text: "Add it to the Cash Receipts Journal" },
-      { id: "br", icon: "📄", text: "List it as an Outstanding Deposit on the Bank Recon Statement" }
-    ],
-    correct: ["br"],
-    expCorrect: "Yes! It's a timing difference. It's already in your cashbook, so you list it on the Recon Statement to explain the gap.",
-    expWrong: "You ALREADY recorded the deposit in your Cashbook. The bank just hasn't processed it yet. You put it on the Bank Recon Statement as an 'Outstanding Deposit'."
-  },
-  {
-    topic: "Accounting Concepts",
-    scenario: "A customer owes you R2,000, but they declared bankruptcy and vanished.",
-    task: "Under the Prudence concept, what must you do?",
-    type: "journal-sort",
-    options: [
-      { id: "a", icon: "⏳", text: "Keep it as an asset and hope they return" },
-      { id: "b", icon: "✍️", text: "Write it off immediately as Bad Debts" }
-    ],
-    correct: ["b"],
-    expCorrect: "Correct. Prudence means we never overstate our assets. If the money is gone, we recognize the loss immediately.",
-    expWrong: "The Prudence (Conservatism) concept says we must not overstate our assets. If it's highly likely they won't pay, we must write it off as a Bad Debt expense immediately."
+  2: {
+    title: "M2: Double Entry & Equation",
+    questions: [
+      {
+        topic: "Equation Math", scenario: "Assets are R50,000. Liabilities are R20,000.", task: "Calculate Capital.", type: "number",
+        correct: [30000], expCorrect: "Perfect. 50,000 = 20,000 + 30,000.", expWrong: "Assets = Liabilities + Capital. So, 50,000 - 20,000 = 30,000."
+      },
+      {
+        topic: "Equation Math", scenario: "Capital is R100,000. Liabilities are R40,000.", task: "Calculate Total Assets.", type: "number",
+        correct: [140000], expCorrect: "Spot on. Assets = 100,000 + 40,000.", expWrong: "Assets = Liabilities + Capital. Simply add them together: 140,000."
+      },
+      {
+        topic: "Equation Logic", scenario: "You buy a vehicle for R80,000 cash.", task: "Select the TWO effects on the equation.", type: "equation",
+        correct: ["+a", "-a"], expCorrect: "Yes. Vehicle (+A) increases, Cash (-A) decreases. Total stays same.", expWrong: "You gained an asset (Vehicle) but lost an asset (Cash). Capital and Liabilities aren't affected."
+      },
+      {
+        topic: "Equation Logic", scenario: "You buy Trading Stock on credit for R5,000.", task: "Select the TWO effects on the equation.", type: "equation",
+        correct: ["+a", "+l"], expCorrect: "Stock comes in (+A), and you owe the supplier (+L).", expWrong: "Stock is an Asset (+A). Since it's on credit, you owe money, which increases Liabilities (+L)."
+      },
+      {
+        topic: "Equation Logic", scenario: "The owner takes R1,000 cash for personal use.", task: "Select the TWO effects on the equation.", type: "equation",
+        correct: ["-a", "-c"], expCorrect: "Cash decreases (-A), and Drawings decrease the owner's Capital (-C).", expWrong: "Cash leaves the business (-A). Drawings reduce the owner's claim to the business (-C)."
+      },
+      {
+        topic: "Equation Logic", scenario: "You pay R2,000 to a creditor to settle your account.", task: "Select the TWO effects.", type: "equation",
+        correct: ["-a", "-l"], expCorrect: "Cash leaves (-A), and your debt decreases (-L).", expWrong: "You paid cash, so Assets decrease (-A). You paid off a debt, so Liabilities decrease (-L)."
+      },
+      {
+        topic: "Double Entry Rules", scenario: "According to DEAD CLIC, how do you increase an Expense?", type: "buttons",
+        options: [{id:"a", icon:"⬅️", text:"Debit it"}, {id:"b", icon:"➡️", text:"Credit it"}],
+        correct: ["a"], expCorrect: "Correct! Debits increase Expenses, Assets, and Drawings.", expWrong: "DEAD = Debits increase Expenses, Assets, Drawings."
+      },
+      {
+        topic: "Double Entry Rules", scenario: "How do you increase a Liability (like a Bank Loan)?", type: "buttons",
+        options: [{id:"a", icon:"⬅️", text:"Debit it"}, {id:"b", icon:"➡️", text:"Credit it"}],
+        correct: ["b"], expCorrect: "Yes! CLIC = Credits increase Liabilities, Income, Capital.", expWrong: "CLIC = Credits increase Liabilities, Income, Capital."
+      },
+      {
+        topic: "Journaling", scenario: "You receive R5,000 cash for services rendered.", task: "Which account is DEBITED?", type: "buttons",
+        options: [{id:"a", icon:"💵", text:"Bank"}, {id:"b", icon:"🛠️", text:"Service Income"}],
+        correct: ["a"], expCorrect: "Cash came in, increasing an Asset. Assets increase on the Debit side.", expWrong: "Money came IN to the bank. Bank is an Asset, and Assets increase on the Debit side."
+      },
+      {
+        topic: "Equation Logic", scenario: "You sell stock that cost R1,000 for R1,500 cash.", task: "What happens to Capital?", type: "buttons",
+        options: [{id:"a", icon:"📈", text:"Increases by R500 (Profit)"}, {id:"b", icon:"➖", text:"Stays the same"}],
+        correct: ["a"], expCorrect: "Exactly. The R500 profit belongs to the owner, increasing Capital.", expWrong: "Profit increases Owner's Equity (Capital). You made R500 profit, so Capital goes up by R500."
+      },
+      {
+        topic: "Double Entry Rules", scenario: "The business pays rent of R3,000.", task: "Which account is CREDITED?", type: "buttons",
+        options: [{id:"a", icon:"🏠", text:"Rent Expense"}, {id:"b", icon:"💵", text:"Bank"}],
+        correct: ["b"], expCorrect: "Cash went out. Bank (Asset) decreases on the Credit side.", expWrong: "Rent is the Debit. Cash LEFT the business, so Bank decreases. Assets decrease on the Credit side."
+      },
+      {
+        topic: "Equation Logic", scenario: "The owner contributes a delivery vehicle worth R50,000 to the business.", task: "Select the TWO effects.", type: "equation",
+        correct: ["+a", "+c"], expCorrect: "Business gains a Vehicle (+A) and the owner's investment increases (+C).", expWrong: "Vehicle is an Asset (+A). Since the owner provided it, it's an investment (+C)."
+      },
+      {
+        topic: "Equation Math", scenario: "Assets = 20k. You buy 5k stock on credit. New Assets total?", type: "number",
+        correct: [25000], expCorrect: "Yes. 20k + 5k stock = 25k.", expWrong: "Stock is an asset. 20k + 5k = 25k."
+      },
+      {
+        topic: "Double Entry Rules", scenario: "Income accounts always have...", type: "buttons",
+        options: [{id:"a", icon:"⬅️", text:"Debit Balances"}, {id:"b", icon:"➡️", text:"Credit Balances"}],
+        correct: ["b"], expCorrect: "CLIC: Credits increase Income.", expWrong: "Income accounts increase on the credit side, so they have credit balances."
+      },
+      {
+        topic: "Double Entry Rules", scenario: "Asset accounts always have...", type: "buttons",
+        options: [{id:"a", icon:"⬅️", text:"Debit Balances"}, {id:"b", icon:"➡️", text:"Credit Balances"}],
+        correct: ["a"], expCorrect: "DEAD: Debits increase Assets.", expWrong: "Assets increase on the debit side, so they have debit balances."
+      }
+    ]
   }
+};
+
+// If a module isn't built out above yet, fall back to a generic set
+const fallbackQuestions = [
+  { topic: "General", scenario: "This module's practice exam is being updated.", task: "Tap confirm to proceed.", type: "buttons", options: [{id:"a", icon:"✅", text:"Acknowledge"}], correct: ["a"], expCorrect: "Good.", expWrong: "" }
 ];
 
+let currentModuleId = 1;
+let currentQuestions = [];
 let currentQ = 0;
 let score = 0;
 let selectedAnswers = [];
 
 // DOM Elements
+const uiModTitle = document.getElementById('ui-mod-title');
 const uiTag = document.getElementById('ui-tag');
 const uiScenario = document.getElementById('ui-scenario');
 const uiTask = document.getElementById('ui-task');
@@ -317,17 +303,28 @@ const fbText = document.getElementById('fb-text');
 const fbBtn = document.getElementById('fb-btn');
 
 function init() {
+  const urlParams = new URLSearchParams(window.location.search);
+  currentModuleId = urlParams.get('module') || '1';
+  
+  if (examData[currentModuleId]) {
+    uiModTitle.textContent = examData[currentModuleId].title;
+    currentQuestions = examData[currentModuleId].questions;
+  } else {
+    uiModTitle.textContent = `Module ${currentModuleId} Practice`;
+    currentQuestions = fallbackQuestions; // Use fallback if not defined
+  }
+  
   renderQuestion();
 }
 
 function renderQuestion() {
-  const q = questions[currentQ];
+  const q = currentQuestions[currentQ];
   selectedAnswers = [];
   btnSubmit.disabled = true;
   feedback.classList.remove('show');
   
   document.getElementById('q-curr').textContent = currentQ + 1;
-  document.getElementById('prog-fill').style.width = ((currentQ) / questions.length * 100) + '%';
+  document.getElementById('prog-fill').style.width = ((currentQ) / currentQuestions.length * 100) + '%';
   
   uiTag.textContent = q.topic;
   uiScenario.textContent = q.scenario;
@@ -335,7 +332,7 @@ function renderQuestion() {
   
   uiInteraction.innerHTML = '';
   
-  if (q.type === 'journal-sort') {
+  if (q.type === 'buttons' || q.type === 'journal-sort') {
     q.options.forEach(opt => {
       const btn = document.createElement('div');
       btn.className = 'j-btn';
@@ -397,25 +394,21 @@ function renderQuestion() {
 }
 
 function checkAnswer() {
-  const q = questions[currentQ];
+  const q = currentQuestions[currentQ];
   let isCorrect = false;
   
-  if (q.type === 'journal-sort' || q.type === 'number') {
+  if (q.type === 'buttons' || q.type === 'journal-sort' || q.type === 'number') {
     isCorrect = selectedAnswers[0] === q.correct[0];
   } else if (q.type === 'equation') {
-    // order doesn't matter for equation
     isCorrect = selectedAnswers.length === 2 && 
                 q.correct.includes(selectedAnswers[0]) && 
                 q.correct.includes(selectedAnswers[1]);
   }
   
-  // Track to analytics if available
   if (window.parent && window.parent.ayikhoTracker) {
     try {
       window.parent.ayikhoTracker.track('practiceSimAnswer', {
-        questionNum: currentQ + 1,
-        topic: q.topic,
-        isCorrect: isCorrect
+        moduleId: currentModuleId, questionNum: currentQ + 1, topic: q.topic, isCorrect: isCorrect
       });
     } catch(e) {}
   }
@@ -440,7 +433,7 @@ function checkAnswer() {
 
 function nextQuestion() {
   currentQ++;
-  if (currentQ < questions.length) {
+  if (currentQ < currentQuestions.length) {
     renderQuestion();
   } else {
     showResults();
@@ -450,19 +443,18 @@ function nextQuestion() {
 function showResults() {
   document.getElementById('prog-fill').style.width = '100%';
   const res = document.getElementById('results');
-  const pct = Math.round((score / questions.length) * 100);
+  const pct = Math.round((score / currentQuestions.length) * 100);
   document.getElementById('res-score').textContent = pct + '%';
   
   const resText = document.getElementById('res-text');
   if (pct >= 80) resText.textContent = "Outstanding! You are fully prepared for this section in the N4 finals.";
   else if (pct >= 50) resText.textContent = "Good effort. Review your weak spots in the dashboard before the exam.";
-  else resText.textContent = "This is why we practice! Head back to the modules to revise the core rules.";
+  else resText.textContent = "This is why we practice! Head back to the module to revise the core rules.";
   
   res.classList.add('show');
   
-  // Track completion
   if (window.parent && window.parent.ayikhoTracker) {
-    try { window.parent.ayikhoTracker.track('practiceSimComplete', { score: pct }); } catch(e) {}
+    try { window.parent.ayikhoTracker.track('practiceSimComplete', { moduleId: currentModuleId, score: pct }); } catch(e) {}
   }
 }
 
