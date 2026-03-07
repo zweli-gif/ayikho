@@ -183,18 +183,59 @@
         const content = document.getElementById('dashboard-content');
         let html = '';
 
-        // -- EXAM REMINDER WIDGET (Always shows) --
-        html += `
-            <div class="reminder-card">
-                <div class="reminder-icon">⏰</div>
-                <div class="reminder-info">
-                    <div class="reminder-title">FA N4 Final Exam</div>
-                    <div class="reminder-countdown">${daysToExam} days remaining</div>
-                </div>
-                <button class="reminder-btn" onclick="alert('Opening past papers...')">Prep Now</button>
-            </div>
-        `;
+        // -- SMART PER-MODULE REMINDERS --
+        html += `<div class="section-title">Your Smart Plan</div>
+                 <div class="section-sub">What you need to focus on today</div>`;
 
+        let remindersAdded = 0;
+        // 1. Check for modules in progress
+        const inProgress = data.moduleStats.filter(m => m.status === 'in_progress');
+        inProgress.forEach(mod => {
+            html += `
+                <div class="reminder-card" style="background: linear-gradient(135deg, var(--fa) 0%, var(--fa-l) 100%); margin-bottom: 12px;">
+                    <div class="reminder-icon">▶️</div>
+                    <div class="reminder-info">
+                        <div class="reminder-title" style="color: white;">Resume Module ${mod.id}</div>
+                        <div class="reminder-countdown" style="color: rgba(255,255,255,0.8);">${mod.name}</div>
+                    </div>
+                    <button class="reminder-btn" style="background: var(--ink); color: white;" onclick="goHome()">Continue</button>
+                </div>
+            `;
+            remindersAdded++;
+        });
+
+        // 2. Check for weak spots (scored below 60% on post-quiz)
+        const weakModules = data.moduleStats.filter(m => m.status === 'completed' && m.postQuiz.total > 0 && (m.postQuiz.score / m.postQuiz.total) < 0.6);
+        weakModules.forEach(mod => {
+            if (remindersAdded >= 3) return; // Keep UI clean
+            html += `
+                <div class="reminder-card" style="background: linear-gradient(135deg, var(--rose) 0%, #FB7185 100%); margin-bottom: 12px; box-shadow: 0 8px 24px rgba(244, 63, 94, 0.2);">
+                    <div class="reminder-icon">⚠️</div>
+                    <div class="reminder-info">
+                        <div class="reminder-title" style="color: white;">Revise Module ${mod.id}</div>
+                        <div class="reminder-countdown" style="color: rgba(255,255,255,0.8);">Score was below 60%</div>
+                    </div>
+                    <button class="reminder-btn" style="background: #BE123C; color: white;" onclick="goHome()">Retake</button>
+                </div>
+            `;
+            remindersAdded++;
+        });
+
+        // 3. Exam countdown (if no urgent module reminders)
+        if (remindersAdded === 0) {
+            html += `
+                <div class="reminder-card">
+                    <div class="reminder-icon">⏰</div>
+                    <div class="reminder-info">
+                        <div class="reminder-title">FA N4 Final Exam</div>
+                        <div class="reminder-countdown">${daysToExam} days remaining</div>
+                    </div>
+                    <button class="reminder-btn" onclick="window.location.href='ayikho-practice-exam.html'">Simulate Exam</button>
+                </div>
+            `;
+        }
+
+        html += `<div style="margin-bottom: 24px;"></div>`;
         if (!hasProgress) {
             // -- DAY 0: EMPTY STATE --
             html += `
