@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho — Practice Exam Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root {
+    --p:#7C3AED; --pl:#9D5FFF; --pd:#4C1A99;
+    --fa:#0284C7; --fa-l:#38BDF8; --fa-d:#075985; --fa-xs:#F0F9FF;
+    --gold:#F59E0B; --green:#22C55E; --rose:#F43F5E;
+    --ink:#1A0A3A; --mut:#6B5A8A; --dim:#9580B8;
+    --bord:#DDD5F5; --surf:#F7F4FF; --w:#FFFFFF;
+  }
+  body { font-family:'Outfit', sans-serif; background:#05090F; display:flex; align-items:center; justify-content:center; height:100vh; overflow:hidden; }
+  
+  .phone { width:375px; height:812px; background:var(--surf); border-radius:50px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.5); position:relative; }
+  
+  /* Header */
+  .hdr { background:var(--ink); color:white; padding:48px 20px 20px; flex-shrink:0; }
+  .hdr-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .back-btn { background:rgba(255,255,255,0.1); border:none; color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; }
+  .prog-text { font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--fa-l); }
+  .prog-bar { height:6px; background:rgba(255,255,255,0.1); border-radius:100px; overflow:hidden; }
+  .prog-fill { height:100%; background:linear-gradient(90deg, var(--p), var(--fa)); transition:width 0.3s; }
+  
+  /* Scenario Area */
+  .scenario-card { background:var(--w); border-bottom:1px solid var(--bord); padding:24px 20px; flex-shrink:0; box-shadow:0 4px 12px rgba(0,0,0,0.02); }
+  .tag { display:inline-block; font-family:'JetBrains Mono', monospace; font-size:9px; background:var(--pxs); color:var(--p); padding:4px 8px; border-radius:4px; text-transform:uppercase; margin-bottom:12px; font-weight:600; }
+  .scenario-text { font-family:'Playfair Display', serif; font-size:20px; font-weight:700; color:var(--ink); line-height:1.3; margin-bottom:8px; }
+  .task-text { font-size:13px; color:var(--mut); }
+
+  /* Interaction Area */
+  .interaction-area { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
+  
+  /* Type: Journal Sorter */
+  .j-btn { background:var(--w); border:2px solid var(--bord); padding:16px; border-radius:12px; font-size:14px; font-weight:600; color:var(--ink); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:12px; }
+  .j-btn:hover { border-color:var(--fa); background:var(--fa-xs); }
+  .j-btn.selected { border-color:var(--p); background:var(--pxs); box-shadow:0 0 0 2px rgba(124,58,237,0.2); }
+  .j-icon { width:32px; height:32px; background:var(--surf); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+
+  /* Type: Equation Balancer */
+  .eq-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .eq-btn { background:var(--w); border:2px solid var(--bord); padding:14px 0; border-radius:12px; font-family:'JetBrains Mono', monospace; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .eq-btn.selected { background:var(--fa); color:white; border-color:var(--fa-d); }
+  .eq-btn[data-val="+a"], .eq-btn[data-val="-a"] { color:var(--fa); }
+  .eq-btn[data-val="+l"], .eq-btn[data-val="-l"] { color:var(--gold); }
+  .eq-btn[data-val="+c"], .eq-btn[data-val="-c"] { color:var(--green); }
+  .eq-btn.selected[data-val] { color:white; }
+
+  /* Type: Number Input */
+  .num-input-wrap { display:flex; align-items:center; background:var(--w); border:2px solid var(--bord); border-radius:12px; padding:4px 16px; transition:all 0.2s; }
+  .num-input-wrap:focus-within { border-color:var(--p); box-shadow:0 0 0 3px var(--pxs); }
+  .num-prefix { font-family:'JetBrains Mono', monospace; font-size:18px; color:var(--mut); font-weight:600; margin-right:8px; }
+  .num-input { border:none; outline:none; font-family:'JetBrains Mono', monospace; font-size:24px; font-weight:600; color:var(--ink); width:100%; padding:12px 0; }
+  
+  /* Footer */
+  .foot { padding:16px 20px 24px; background:var(--w); border-top:1px solid var(--bord); }
+  .btn-submit { width:100%; padding:16px; background:var(--ink); color:white; border:none; border-radius:12px; font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+  .btn-submit:disabled { opacity:0.5; cursor:not-allowed; }
+
+  /* Feedback Overlay */
+  .feedback { position:absolute; bottom:0; left:0; width:100%; background:var(--w); border-radius:24px 24px 0 0; padding:24px 20px 40px; box-shadow:0 -10px 40px rgba(0,0,0,0.15); transform:translateY(100%); transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index:100; }
+  .feedback.show { transform:translateY(0); }
+  .fb-icon { font-size:40px; margin-bottom:12px; }
+  .fb-title { font-family:'Playfair Display', serif; font-size:22px; font-weight:800; margin-bottom:8px; }
+  .fb-title.correct { color:var(--green); }
+  .fb-title.wrong { color:var(--rose); }
+  .fb-text { font-size:14px; color:var(--mut); line-height:1.5; margin-bottom:20px; }
+  .fb-btn { width:100%; padding:16px; border:none; border-radius:12px; font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; cursor:pointer; color:white; }
+  .fb-btn.correct { background:var(--green); }
+  .fb-btn.wrong { background:var(--rose); }
+
+  /* Results Screen */
+  .results { position:absolute; inset:0; background:var(--ink); color:white; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center; transform:translateX(100%); transition:transform 0.4s; z-index:200; }
+  .results.show { transform:translateX(0); }
+  .res-score { font-family:'Playfair Display', serif; font-size:72px; font-weight:900; color:var(--gold); line-height:1; margin:20px 0; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="hdr">
+    <div class="hdr-top">
+      <button class="back-btn" onclick="window.history.back()">‹</button>
+      <div class="prog-text"><span id="q-curr">1</span> of <span id="q-tot">15</span></div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="scenario-card">
+    <div class="tag" id="ui-tag">Topic</div>
+    <div class="scenario-text" id="ui-scenario">Loading scenario...</div>
+    <div class="task-text" id="ui-task">What should you do?</div>
+  </div>
+
+  <div class="interaction-area" id="ui-interaction">
+    </div>
+
+  <div class="foot">
+    <button class="btn-submit" id="btn-submit" onclick="checkAnswer()" disabled>Confirm Action →</button>
+  </div>
+
+  <div class="feedback" id="feedback">
+    <div class="fb-icon" id="fb-icon">✅</div>
+    <div class="fb-title" id="fb-title">Spot on!</div>
+    <div class="fb-text" id="fb-text">Explanation goes here.</div>
+    <button class="fb-btn" id="fb-btn" onclick="nextQuestion()">Next Scenario</button>
+  </div>
+
+  <div class="results" id="results">
+    <div style="font-size:64px; margin-bottom:10px;">🏆</div>
+    <h1 style="font-family:'Playfair Display',serif; font-size:32px;">Exam Complete</h1>
+    <div class="res-score" id="res-score">80%</div>
+    <p style="color:rgba(255,255,255,0.7); margin-bottom:30px; line-height:1.5;" id="res-text">Great work! You're thinking like a real accountant.</p>
+    <button class="btn-submit" style="background:var(--fa);" onclick="window.history.back()">Return to Dashboard</button>
+  </div>
+</div>
+
+<script>
+// The 15 Simulation Scenarios
+const questions = [
+  {
+    topic: "Accounting Concepts",
+    scenario: "Zandile takes R500 from her spaza shop's till to buy groceries for her own home.",
+    task: "How should this be recorded based on the Entity Concept?",
+    type: "journal-sort",
+    options: [
+      { id: "a", icon: "📦", text: "As a Cost of Sales expense" },
+      { id: "b", icon: "👤", text: "As Drawings (Owner taking money)" },
+      { id: "c", icon: "🗑️", text: "Ignore it, she owns the shop" }
+    ],
+    correct: ["b"],
+    expCorrect: "Exactly! The Entity Concept states the business and owner are separate. Money taken for personal use is Drawings, not a business expense.",
+    expWrong: "Remember the Entity Concept! The business and the owner are totally separate. If she takes money for personal use, it must be recorded as Drawings."
+  },
+  {
+    topic: "Accounting Equation",
+    scenario: "Sipho buys a new pressure washer for R5,000 cash.",
+    task: "Select the TWO effects this has on the Accounting Equation.",
+    type: "equation",
+    correct: ["+a", "-a"],
+    expCorrect: "Correct! Equipment goes up (+Asset) and Cash goes down (-Asset). Total assets stay exactly the same.",
+    expWrong: "Think about what happened: He gained Equipment (an Asset) but paid Cash (also an Asset). So Assets increase and decrease at the same time."
+  },
+  {
+    topic: "Accounting Equation",
+    scenario: "You buy R2,000 of trading stock on credit from City Wholesale.",
+    task: "Select the TWO effects this has on the Accounting Equation.",
+    type: "equation",
+    correct: ["+a", "+l"],
+    expCorrect: "Spot on. Stock comes in (+Asset) and you now owe money to City Wholesale (+Liability).",
+    expWrong: "Since you didn't pay cash, you owe them money. Stock is an Asset (+A), and owing suppliers is a Creditor/Liability (+L)."
+  },
+  {
+    topic: "Journals Sorter",
+    scenario: "A customer pays R1,500 via EFT to settle their outstanding account.",
+    task: "Which journal does this belong in?",
+    type: "journal-sort",
+    options: [
+      { id: "crj", icon: "📥", text: "Cash Receipts Journal (CRJ)" },
+      { id: "cpj", icon: "📤", text: "Cash Payments Journal (CPJ)" },
+      { id: "dj",  icon: "📝", text: "Debtors Journal (DJ)" }
+    ],
+    correct: ["crj"],
+    expCorrect: "Yes! Money physically entered your bank account, so it must go in the CRJ under the Debtors column.",
+    expWrong: "Even though it involves a debtor, actual cash/EFT was received. ANY money coming in must go to the Cash Receipts Journal (CRJ)."
+  },
+  {
+    topic: "Journals Sorter",
+    scenario: "You sell R800 worth of goods on credit to Mrs. Mkhize.",
+    task: "Which journal records this transaction?",
+    type: "journal-sort",
+    options: [
+      { id: "crj", icon: "📥", text: "Cash Receipts Journal (CRJ)" },
+      { id: "dj",  icon: "📝", text: "Debtors Journal (DJ)" },
+      { id: "gj",  icon: "📓", text: "General Journal (GJ)" }
+    ],
+    correct: ["dj"],
+    expCorrect: "Perfect. Credit sales are the exact reason the Debtors Journal exists.",
+    expWrong: "No cash changed hands, so it's not the CRJ. Because it's a sale on credit to a customer, it belongs in the Debtors Journal."
+  },
+  {
+    topic: "Value Added Tax (VAT)",
+    scenario: "You sell a product for R1,150 (Amount is INCLUSIVE of 15% VAT).",
+    task: "Calculate the exact VAT amount included in that price.",
+    type: "number",
+    correct: [150],
+    expCorrect: "Brilliant. Formula: Amount × (15/115). R1,150 × (15/115) = R150 VAT.",
+    expWrong: "Careful! If the amount INCLUDES VAT, you can't just multiply by 15%. You must use the fraction: Amount × 15 ÷ 115."
+  },
+  {
+    topic: "Value Added Tax (VAT)",
+    scenario: "You buy stock from a supplier for R1,000 (Amount EXCLUDES VAT).",
+    task: "Calculate the total amount you will pay the supplier (including 15% VAT).",
+    type: "number",
+    correct: [1150],
+    expCorrect: "Correct! R1,000 + 15% (R150) = R1,150 total.",
+    expWrong: "If the amount excludes VAT, just multiply by 1.15 (or calculate 15% and add it on). R1,000 + 15% = R1,150."
+  },
+  {
+    topic: "General Ledger",
+    scenario: "You paid R2,000 for rent via EFT.",
+    task: "What happens in the Rent Expense T-Account?",
+    type: "journal-sort",
+    options: [
+      { id: "dr", icon: "⬅️", text: "Debit side (Left)" },
+      { id: "cr", icon: "➡️", text: "Credit side (Right)" }
+    ],
+    correct: ["dr"],
+    expCorrect: "Yes! Remember 'DEAD CLIC'. Debits increase Expenses.",
+    expWrong: "Rent is an Expense. According to the DEAD CLIC rule, Expenses always increase on the Debit (left) side."
+  },
+  {
+    topic: "Trial Balance",
+    scenario: "Your business bank account is overdrawn by R1,500.",
+    task: "In the Trial Balance, which column does the Bank balance go in?",
+    type: "journal-sort",
+    options: [
+      { id: "dr", icon: "🔵", text: "Debit Column" },
+      { id: "cr", icon: "🟡", text: "Credit Column" }
+    ],
+    correct: ["cr"],
+    expCorrect: "Correct. An overdrawn bank account is a liability (you owe the bank), so it gets a Credit balance.",
+    expWrong: "Usually Bank is an asset (Debit). BUT, if it's overdrawn, you owe the bank money. It becomes a liability, which takes a Credit balance."
+  },
+  {
+    topic: "Year-End Adjustments",
+    scenario: "On 1 Nov, you paid R6,000 for 3 months' rent (Nov, Dec, Jan). Your financial year ends 31 Dec.",
+    task: "What is the Prepaid Rent amount at 31 Dec?",
+    type: "number",
+    correct: [2000],
+    expCorrect: "Spot on! R6,000 / 3 = R2,000 per month. By Dec 31, Nov and Dec are used. January is prepaid = R2,000.",
+    expWrong: "Let's break it down: R6,000 for 3 months = R2,000/month. At the end of December, one month (January) is paid in advance. So R2,000 is prepaid."
+  },
+  {
+    topic: "Year-End Adjustments",
+    scenario: "A delivery van costs R120,000. Residual value is R20,000. Useful life is 5 years.",
+    task: "Calculate the annual depreciation using the straight-line method.",
+    type: "number",
+    correct: [20000],
+    expCorrect: "Perfect. (Cost - Residual) / Life. (120,000 - 20,000) / 5 = R20,000 per year.",
+    expWrong: "Formula: (Cost - Residual Value) ÷ Useful Life. So (120,000 - 20,000) = 100,000. 100,000 ÷ 5 years = R20,000."
+  },
+  {
+    topic: "Financial Statements",
+    scenario: "You just calculated a Net Profit of R15,000 on your Income Statement.",
+    task: "Where does this figure go on the Balance Sheet?",
+    type: "journal-sort",
+    options: [
+      { id: "ca", icon: "🏦", text: "Added to Current Assets" },
+      { id: "oe", icon: "👤", text: "Added to Owner's Equity" },
+      { id: "cl", icon: "💳", text: "Deducted from Liabilities" }
+    ],
+    correct: ["oe"],
+    expCorrect: "Exactly. The profit belongs to the owner, so it increases Owner's Equity.",
+    expWrong: "Net Profit is the owner's reward! Therefore, it flows directly from the Income Statement into Owner's Equity on the Balance Sheet."
+  },
+  {
+    topic: "Bank Reconciliation",
+    scenario: "Your bank statement shows a R50 monthly service fee that you didn't know about.",
+    task: "What is your next action?",
+    type: "journal-sort",
+    options: [
+      { id: "cb", icon: "📓", text: "Record it in the Cash Payments Journal" },
+      { id: "br", icon: "📄", text: "Put it on the Bank Recon Statement" },
+      { id: "ig", icon: "🗑️", text: "Ignore it, it's a bank error" }
+    ],
+    correct: ["cb"],
+    expCorrect: "Correct! The bank already processed it, so you must update your own books (Cashbook/CPJ) to match.",
+    expWrong: "Because the transaction is ALREADY on the bank statement, you need to update YOUR records. It must be entered into the Cash Payments Journal."
+  },
+  {
+    topic: "Bank Reconciliation",
+    scenario: "You deposited R3,000 cash on 31 May, but it doesn't appear on the May bank statement.",
+    task: "What is your next action?",
+    type: "journal-sort",
+    options: [
+      { id: "cb", icon: "📓", text: "Add it to the Cash Receipts Journal" },
+      { id: "br", icon: "📄", text: "List it as an Outstanding Deposit on the Bank Recon Statement" }
+    ],
+    correct: ["br"],
+    expCorrect: "Yes! It's a timing difference. It's already in your cashbook, so you list it on the Recon Statement to explain the gap.",
+    expWrong: "You ALREADY recorded the deposit in your Cashbook. The bank just hasn't processed it yet. You put it on the Bank Recon Statement as an 'Outstanding Deposit'."
+  },
+  {
+    topic: "Accounting Concepts",
+    scenario: "A customer owes you R2,000, but they declared bankruptcy and vanished.",
+    task: "Under the Prudence concept, what must you do?",
+    type: "journal-sort",
+    options: [
+      { id: "a", icon: "⏳", text: "Keep it as an asset and hope they return" },
+      { id: "b", icon: "✍️", text: "Write it off immediately as Bad Debts" }
+    ],
+    correct: ["b"],
+    expCorrect: "Correct. Prudence means we never overstate our assets. If the money is gone, we recognize the loss immediately.",
+    expWrong: "The Prudence (Conservatism) concept says we must not overstate our assets. If it's highly likely they won't pay, we must write it off as a Bad Debt expense immediately."
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let selectedAnswers = [];
+
+// DOM Elements
+const uiTag = document.getElementById('ui-tag');
+const uiScenario = document.getElementById('ui-scenario');
+const uiTask = document.getElementById('ui-task');
+const uiInteraction = document.getElementById('ui-interaction');
+const btnSubmit = document.getElementById('btn-submit');
+const feedback = document.getElementById('feedback');
+const fbIcon = document.getElementById('fb-icon');
+const fbTitle = document.getElementById('fb-title');
+const fbText = document.getElementById('fb-text');
+const fbBtn = document.getElementById('fb-btn');
+
+function init() {
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  selectedAnswers = [];
+  btnSubmit.disabled = true;
+  feedback.classList.remove('show');
+  
+  document.getElementById('q-curr').textContent = currentQ + 1;
+  document.getElementById('prog-fill').style.width = ((currentQ) / questions.length * 100) + '%';
+  
+  uiTag.textContent = q.topic;
+  uiScenario.textContent = q.scenario;
+  uiTask.textContent = q.task;
+  
+  uiInteraction.innerHTML = '';
+  
+  if (q.type === 'journal-sort') {
+    q.options.forEach(opt => {
+      const btn = document.createElement('div');
+      btn.className = 'j-btn';
+      btn.innerHTML = `<div class="j-icon">${opt.icon}</div><div>${opt.text}</div>`;
+      btn.onclick = () => {
+        document.querySelectorAll('.j-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedAnswers = [opt.id];
+        btnSubmit.disabled = false;
+      };
+      uiInteraction.appendChild(btn);
+    });
+  } 
+  else if (q.type === 'equation') {
+    const grid = document.createElement('div');
+    grid.className = 'eq-grid';
+    const opts = [
+      {id:'+a', label:'+ Asset'}, {id:'-a', label:'- Asset'},
+      {id:'+l', label:'+ Liability'}, {id:'-l', label:'- Liability'},
+      {id:'+c', label:'+ Capital'}, {id:'-c', label:'- Capital'}
+    ];
+    opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'eq-btn';
+      btn.dataset.val = opt.id;
+      btn.textContent = opt.label;
+      btn.onclick = () => {
+        if (selectedAnswers.includes(opt.id)) {
+          selectedAnswers = selectedAnswers.filter(a => a !== opt.id);
+          btn.classList.remove('selected');
+        } else {
+          if (selectedAnswers.length < 2) {
+            selectedAnswers.push(opt.id);
+            btn.classList.add('selected');
+          }
+        }
+        btnSubmit.disabled = selectedAnswers.length !== 2;
+      };
+      grid.appendChild(btn);
+    });
+    uiInteraction.appendChild(grid);
+  }
+  else if (q.type === 'number') {
+    const wrap = document.createElement('div');
+    wrap.className = 'num-input-wrap';
+    wrap.innerHTML = `
+      <div class="num-prefix">R</div>
+      <input type="number" class="num-input" id="num-in" placeholder="0" inputmode="decimal">
+    `;
+    uiInteraction.appendChild(wrap);
+    
+    const inp = document.getElementById('num-in');
+    inp.oninput = () => {
+      selectedAnswers = [parseFloat(inp.value)];
+      btnSubmit.disabled = isNaN(selectedAnswers[0]);
+    };
+    setTimeout(() => inp.focus(), 300);
+  }
+}
+
+function checkAnswer() {
+  const q = questions[currentQ];
+  let isCorrect = false;
+  
+  if (q.type === 'journal-sort' || q.type === 'number') {
+    isCorrect = selectedAnswers[0] === q.correct[0];
+  } else if (q.type === 'equation') {
+    // order doesn't matter for equation
+    isCorrect = selectedAnswers.length === 2 && 
+                q.correct.includes(selectedAnswers[0]) && 
+                q.correct.includes(selectedAnswers[1]);
+  }
+  
+  // Track to analytics if available
+  if (window.parent && window.parent.ayikhoTracker) {
+    try {
+      window.parent.ayikhoTracker.track('practiceSimAnswer', {
+        questionNum: currentQ + 1,
+        topic: q.topic,
+        isCorrect: isCorrect
+      });
+    } catch(e) {}
+  }
+
+  if (isCorrect) {
+    score++;
+    fbIcon.textContent = '✅';
+    fbTitle.textContent = 'Spot on!';
+    fbTitle.className = 'fb-title correct';
+    fbText.textContent = q.expCorrect;
+    fbBtn.className = 'fb-btn correct';
+  } else {
+    fbIcon.textContent = '⚠️';
+    fbTitle.textContent = 'Not quite.';
+    fbTitle.className = 'fb-title wrong';
+    fbText.textContent = q.expWrong;
+    fbBtn.className = 'fb-btn wrong';
+  }
+  
+  feedback.classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ < questions.length) {
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('prog-fill').style.width = '100%';
+  const res = document.getElementById('results');
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('res-score').textContent = pct + '%';
+  
+  const resText = document.getElementById('res-text');
+  if (pct >= 80) resText.textContent = "Outstanding! You are fully prepared for this section in the N4 finals.";
+  else if (pct >= 50) resText.textContent = "Good effort. Review your weak spots in the dashboard before the exam.";
+  else resText.textContent = "This is why we practice! Head back to the modules to revise the core rules.";
+  
+  res.classList.add('show');
+  
+  // Track completion
+  if (window.parent && window.parent.ayikhoTracker) {
+    try { window.parent.ayikhoTracker.track('practiceSimComplete', { score: pct }); } catch(e) {}
+  }
+}
+
+// Start
+init();
+</script>
+</body>
+</html>
