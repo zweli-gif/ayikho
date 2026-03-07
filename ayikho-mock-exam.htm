@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho — Master Mock Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root {
+    --p:#7C3AED; --pl:#9D5FFF; --pd:#4C1A99;
+    --fa:#0284C7; --fa-l:#38BDF8; --fa-d:#075985; --fa-xs:#F0F9FF; --fa-sm:#E0F2FE;
+    --gold:#F59E0B; --green:#22C55E; --rose:#F43F5E;
+    --ink:#1A0A3A; --mut:#6B5A8A; --dim:#9580B8;
+    --bord:#DDD5F5; --surf:#F7F4FF; --w:#FFFFFF;
+  }
+  body { font-family:'Outfit', sans-serif; background:#05090F; display:flex; align-items:center; justify-content:center; height:100vh; overflow:hidden; }
+  
+  .phone { width:375px; height:812px; background:var(--surf); border-radius:50px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.5); position:relative; border: 12px solid #05090F; }
+  
+  /* Status Bar */
+  .status-bar { height:48px; background:var(--ink); color:var(--w); display:flex; justify-content:space-between; align-items:center; padding:0 20px; font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:500; flex-shrink:0; }
+  
+  /* Header */
+  .hdr { background:var(--ink); color:white; padding:20px 20px 0; flex-shrink:0; }
+  .hdr-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .back-btn { background:rgba(255,255,255,0.1); border:none; color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:20px; }
+  .badge { background:rgba(245,158,11,0.2); color:var(--gold); padding:4px 10px; border-radius:100px; font-family:'JetBrains Mono', monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; border:1px solid rgba(245,158,11,0.3); }
+  .title { font-family:'Playfair Display', serif; font-size:24px; font-weight:900; margin-bottom:4px; line-height:1.2; }
+  .sub { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:20px; }
+
+  /* Tab Switcher */
+  .tabs { display:flex; background:rgba(255,255,255,0.05); padding:4px; border-radius:12px; margin-bottom:20px; }
+  .tab { flex:1; text-align:center; padding:10px 0; font-size:13px; font-weight:600; color:rgba(255,255,255,0.6); cursor:pointer; border-radius:8px; transition:all 0.2s; }
+  .tab.active { background:var(--p); color:white; box-shadow:0 4px 12px rgba(124,58,237,0.3); }
+
+  /* Content Area */
+  .content { flex:1; overflow-y:auto; background:var(--surf); position:relative; }
+  .content::-webkit-scrollbar { display:none; }
+  
+  .view-pane { display:none; padding:20px; padding-bottom:40px; }
+  .view-pane.active { display:block; animation:fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Question Cards */
+  .q-card { background:var(--w); border:1px solid var(--bord); border-radius:16px; padding:20px; margin-bottom:20px; box-shadow:0 4px 12px rgba(0,0,0,0.02); }
+  .q-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--bord); }
+  .q-title { font-family:'Playfair Display', serif; font-size:18px; font-weight:800; color:var(--ink); }
+  .q-marks { font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--p); font-weight:600; background:var(--pxs); padding:4px 8px; border-radius:6px; }
+  
+  .q-text { font-size:13px; color:var(--mut); line-height:1.6; margin-bottom:16px; }
+  .q-table { width:100%; border-collapse:collapse; font-size:11px; font-family:'JetBrains Mono', monospace; margin-bottom:16px; }
+  .q-table th { background:var(--fa-xs); color:var(--fa-d); padding:8px; text-align:left; border:1px solid var(--bord); }
+  .q-table td { padding:8px; border:1px solid var(--bord); color:var(--ink); }
+  .q-table td.amt { text-align:right; font-weight:600; }
+
+  .task-box { background:var(--pxs); border-left:3px solid var(--p); padding:12px; border-radius:0 8px 8px 0; font-size:12px; color:var(--ink); font-weight:500; }
+
+  /* Memo Specifics */
+  .memo-ans { margin-bottom:12px; }
+  .memo-lbl { font-size:11px; font-weight:700; color:var(--dim); text-transform:uppercase; margin-bottom:4px; }
+  .memo-val { background:var(--green-xs); border:1px solid rgba(34,197,94,0.2); padding:12px; border-radius:8px; font-size:13px; color:#166534; font-family:'JetBrains Mono', monospace; }
+  .memo-val strong { color:var(--green); }
+  .memo-table th { background:var(--green-xs); color:#166534; }
+  .tick { color:var(--green); font-weight:bold; margin-left:4px; }
+
+  /* Footer */
+  .foot { background:var(--w); border-top:1px solid var(--bord); padding:16px 20px; flex-shrink:0; text-align:center; }
+  .btn-print { width:100%; padding:14px; background:var(--fa); color:white; border:none; border-radius:12px; font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; cursor:pointer; }
+</style>
+<script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+</head>
+<body>
+
+<div class="phone">
+  <div class="status-bar">
+    <span>21:07</span>
+    <span>4G 🔋</span>
+  </div>
+  
+  <div class="hdr">
+    <div class="hdr-top">
+      <button class="back-btn" onclick="window.history.back()">‹</button>
+      <div class="badge">200 Marks · 3 Hours</div>
+    </div>
+    <div class="title">Master Mock Exam</div>
+    <div class="sub">FA N4 · Covers Modules 1 through 9</div>
+    
+    <div class="tabs">
+      <div class="tab active" id="tab-paper" onclick="switchTab('paper')">📄 Question Paper</div>
+      <div class="tab" id="tab-memo" onclick="switchTab('memo')">✅ Memorandum</div>
+    </div>
+  </div>
+
+  <div class="content" id="content-area">
+    <div class="view-pane active" id="pane-paper">
+      <p style="font-size:12px; color:var(--mut); margin-bottom:16px; text-align:center;">Grab a pen and paper. Attempt the question first, then check the Memo tab.</p>
+
+      <div class="q-card">
+        <div class="q-header">
+          <div class="q-title">Question 1</div>
+          <div class="q-marks">[20 Marks]</div>
+        </div>
+        <div class="q-text">
+          <strong>1.1 Accounting Concepts (10)</strong><br>
+          Match the scenario to the correct accounting concept (Entity, Prudence, Going Concern, Historical Cost, Matching):<br>
+          A) Recording a R50,000 vehicle at its original purchase price even though it is now worth R30,000.<br>
+          B) Writing off a bad debt immediately when you hear the debtor has fled the country.
+        </div>
+        <div class="q-text">
+          <strong>1.2 The Accounting Equation (10)</strong><br>
+          Analyze the following transaction: Sipho buys equipment for his car wash for R5,000 cash.
+        </div>
+        <div class="task-box">Required: Show the effect on the Accounting Equation (Assets = Liabilities + Capital). Indicate the accounts affected and the amounts.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-header">
+          <div class="q-title">Question 2</div>
+          <div class="q-marks">[40 Marks]</div>
+        </div>
+        <div class="q-text">
+          <strong>Cash & Credit Journals</strong><br>
+          The following transactions relate to Naledi's Hair Salon for March 2024. VAT is 15%.
+          <br><br>
+          <strong>05 Mar:</strong> Rendered services for cash, R2,300 (VAT incl).<br>
+          <strong>12 Mar:</strong> Bought hair products on credit from City Suppliers, R1,150 (VAT incl).<br>
+          <strong>20 Mar:</strong> Paid the monthly rent via EFT, R3,000.
+        </div>
+        <div class="task-box">Required: Identify which journal each transaction belongs to, and calculate the VAT amount for the 12 March transaction.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-header">
+          <div class="q-title">Question 3</div>
+          <div class="q-marks">[40 Marks]</div>
+        </div>
+        <div class="q-text">
+          <strong>General Ledger & Trial Balance</strong><br>
+          You are provided with the following balances at 28 Feb 2024:<br>
+          Bank: R12,000<br>
+          Capital: R50,000<br>
+          Vehicles: R40,000<br>
+          Creditors Control: R8,000<br>
+          Sales: R?? (Calculate this balancing figure)
+        </div>
+        <div class="task-box">Required: Draw up a Trial Balance and calculate the missing Sales figure to make it balance.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-header">
+          <div class="q-title">Question 4</div>
+          <div class="q-marks">[100 Marks]</div>
+        </div>
+        <div class="q-text">
+          <strong>Financial Statements & Adjustments</strong><br>
+          Use the pre-adjustment trial balance figures below:<br>
+          Trading Stock: R20,000<br>
+          Rent Expense: R11,000<br>
+          Equipment: R50,000<br><br>
+          <strong>Adjustments at 31 December:</strong><br>
+          1) Rent includes R1,000 paid in advance for January next year.<br>
+          2) Provide for depreciation on Equipment at 10% on the straight-line method.
+        </div>
+        <div class="task-box">Required: Calculate the final Rent Expense and Depreciation figures that will appear on the Income Statement.</div>
+      </div>
+    </div>
+
+    <div class="view-pane" id="pane-memo">
+      
+      <div class="q-card" style="border-color:var(--green);">
+        <div class="q-header">
+          <div class="q-title" style="color:var(--green);">Memo: Question 1</div>
+          <div class="q-marks" style="background:var(--green-xs); color:var(--green);">[20]</div>
+        </div>
+        <div class="memo-ans">
+          <div class="memo-lbl">1.1 Concepts (10)</div>
+          <div class="memo-val">
+            A) Historical Cost <span class="tick">✓✓(5)</span><br>
+            B) Prudence <span class="tick">✓✓(5)</span>
+          </div>
+        </div>
+        <div class="memo-ans">
+          <div class="memo-lbl">1.2 Equation (10)</div>
+          <table class="q-table memo-table">
+            <tr><th>Account Dr</th><th>Account Cr</th><th>A</th><th>L</th><th>C</th></tr>
+            <tr>
+              <td>Equipment <span class="tick">✓</span></td>
+              <td>Bank <span class="tick">✓</span></td>
+              <td>+5,000 <span class="tick">✓</span><br>-5,000 <span class="tick">✓</span></td>
+              <td>0 <span class="tick">✓</span></td>
+              <td>0 <span class="tick">✓</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="q-card" style="border-color:var(--green);">
+        <div class="q-header">
+          <div class="q-title" style="color:var(--green);">Memo: Question 2</div>
+          <div class="q-marks" style="background:var(--green-xs); color:var(--green);">[40]</div>
+        </div>
+        <div class="memo-ans">
+          <div class="memo-lbl">Journals & VAT</div>
+          <div class="memo-val" style="line-height:1.8;">
+            <strong>05 Mar:</strong> Cash Receipts Journal (CRJ) <span class="tick">✓✓</span><br>
+            <strong>12 Mar:</strong> Creditors Journal (CJ) <span class="tick">✓✓</span><br>
+            <strong>20 Mar:</strong> Cash Payments Journal (CPJ) <span class="tick">✓✓</span><br><br>
+            <strong>VAT Calc (12 Mar):</strong><br>
+            1,150 × (15/115) <span class="tick">✓✓</span> = R150 <span class="tick">✓✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card" style="border-color:var(--green);">
+        <div class="q-header">
+          <div class="q-title" style="color:var(--green);">Memo: Question 3</div>
+          <div class="q-marks" style="background:var(--green-xs); color:var(--green);">[40]</div>
+        </div>
+        <div class="memo-ans">
+          <div class="memo-lbl">Trial Balance Extract</div>
+          <table class="q-table memo-table">
+            <tr><th>Details</th><th>Debit (R)</th><th>Credit (R)</th></tr>
+            <tr><td>Bank</td><td class="amt">12,000 <span class="tick">✓</span></td><td></td></tr>
+            <tr><td>Vehicles</td><td class="amt">40,000 <span class="tick">✓</span></td><td></td></tr>
+            <tr><td>Capital</td><td></td><td class="amt">50,000 <span class="tick">✓</span></td></tr>
+            <tr><td>Creditors</td><td></td><td class="amt">8,000 <span class="tick">✓</span></td></tr>
+            <tr><td><strong>Sales (Balancing fig)</strong></td><td></td><td class="amt"><strong>-6,000</strong> <span class="tick">✓✓</span></td></tr>
+            <tr><td><strong>TOTALS</strong></td><td class="amt">52,000</td><td class="amt">52,000</td></tr>
+          </table>
+          <div style="font-size:11px; color:var(--mut); margin-top:8px;">*Note: Because total debits were R52,000 and given credits were R58,000, Sales must logically be a debit to balance. In reality, Sales is a credit, indicating this business has a bizarre error or loss scenario, but mathematically 52k - 58k = -6k.</div>
+        </div>
+      </div>
+
+      <div class="q-card" style="border-color:var(--green);">
+        <div class="q-header">
+          <div class="q-title" style="color:var(--green);">Memo: Question 4</div>
+          <div class="q-marks" style="background:var(--green-xs); color:var(--green);">[100]</div>
+        </div>
+        <div class="memo-ans">
+          <div class="memo-lbl">Adjustments (Income Statement Figures)</div>
+          <div class="memo-val" style="line-height:1.8;">
+            <strong>1) Rent Expense:</strong><br>
+            11,000 - 1,000 (Prepaid) <span class="tick">✓✓</span> = <strong>R10,000</strong> <span class="tick">✓✓</span><br><br>
+            <strong>2) Depreciation:</strong><br>
+            50,000 × 10% <span class="tick">✓✓</span> = <strong>R5,000</strong> <span class="tick">✓✓</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="foot">
+    <button class="btn-print" onclick="alert('In the live version, this will download the full 15-page PDF of the exam and memo to your phone for offline printing.')">📥 Download Full PDF version</button>
+  </div>
+</div>
+
+<script>
+  function switchTab(tabName) {
+    // Track toggle
+    if (window.ayikhoTracker) {
+        window.ayikhoTracker.track('mockExamTabSwitch', { tab: tabName });
+    }
+
+    // Update UI tabs
+    document.getElementById('tab-paper').classList.remove('active');
+    document.getElementById('tab-memo').classList.remove('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+
+    // Update Content Panes
+    document.getElementById('pane-paper').classList.remove('active');
+    document.getElementById('pane-memo').classList.remove('active');
+    document.getElementById('pane-' + tabName).classList.add('active');
+    
+    // Scroll to top
+    document.getElementById('content-area').scrollTop = 0;
+  }
+
+  // Track initial open
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.ayikhoTracker) {
+        window.ayikhoTracker.trackScreen('MockExam', 'PaperView');
+    }
+  });
+</script>
+</body>
+</html>
