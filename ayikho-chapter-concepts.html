@@ -1589,37 +1589,56 @@
             const lvPen = document.getElementById('lvPen');
             const lvVoiceInd = document.getElementById('lvVoiceInd');
 
-            // ===== TEXT-TO-SPEECH ENGINE =====
-            const lvTTS = 'speechSynthesis' in window;
-            let lvUtterance = null;
-            let lvTTSKeepAlive = null; // Chrome bug workaround
+            // ===== HIGH-FIDELITY AUDIO ENGINE (ElevenLabs) =====
+        // Replaces the robotic browser TTS with pre-recorded SA-accent MP3s
+        const audioPath = 'audio/'; // Assuming your MP3s are in an "audio" folder
+        let currentAudio = null;
 
-            function lvSpeak(text, onEnd) {
-                if (!lvTTS) { if (onEnd) onEnd(); return; }
-                speechSynthesis.cancel();
-                clearInterval(lvTTSKeepAlive);
-                lvUtterance = new SpeechSynthesisUtterance(text);
-                lvUtterance.rate = 0.92;
-                lvUtterance.pitch = 1.0;
-                // Prefer a natural English voice
-                const voices = speechSynthesis.getVoices();
-                const preferred = voices.find(v => /Google UK English Male|Daniel|Rishi|Aaron/i.test(v.name))
-                    || voices.find(v => v.lang.startsWith('en') && v.localService)
-                    || voices.find(v => v.lang.startsWith('en'));
-                if (preferred) lvUtterance.voice = preferred;
-                lvUtterance.onstart = () => lvStartTalk();
-                lvUtterance.onend = () => { clearInterval(lvTTSKeepAlive); lvStopTalk(); if (onEnd) onEnd(); };
-                lvUtterance.onerror = () => { clearInterval(lvTTSKeepAlive); lvStopTalk(); if (onEnd) onEnd(); };
-                speechSynthesis.speak(lvUtterance);
-                // Chrome pauses speech after ~15s — keep-alive workaround
-                lvTTSKeepAlive = setInterval(() => { speechSynthesis.pause(); speechSynthesis.resume(); }, 10000);
+        function lvPlaySlideAudio(idx, onEnd) {
+            // Stop any currently playing audio
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
             }
+            // Format index to match your files: slide-01.mp3, slide-02.mp3
+            const slideNumber = (idx + 1).toString().padStart(2, '0');
+            const audioUrl = `${audioPath}slide-${slideNumber}.mp3`;
+            currentAudio = new Audio(audioUrl);
 
-            function lvSpeechCancel() {
-                if (lvTTS) { speechSynthesis.cancel(); clearInterval(lvTTSKeepAlive); }
+            // Animate waveform while playing
+            lvStartTalk();
+            currentAudio.onended = () => {
+                lvStopTalk();
+                if (onEnd) onEnd(); // Trigger the next slide/event
+            };
+            currentAudio.onerror = () => {
+                // Fallback: If the MP3 is missing, just use a timer based on word count
+                console.warn(`Could not load ${audioUrl}, falling back to timer.`);
+                const words = lvSlides[idx].speech.split(' ').length;
+                setTimeout(() => {
+                    lvStopTalk();
+                    if (onEnd) onEnd();
+                }, Math.max(2000, words * 180));
+            };
+            currentAudio.play().catch(e => {
+                // Autoplay policy prevented playback, fallback to timer
+                console.log("Audio play prevented:", e);
+                const words = lvSlides[idx].speech.split(' ').length;
+                setTimeout(() => {
+                    lvStopTalk();
+                    if (onEnd) onEnd();
+                }, Math.max(2000, words * 180));
+            });
+        }
+
+        function lvSpeechCancel() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
             }
+        }
 
-            function lvStartTalk() {
+                function lvStartTalk() {
                 lvVoiceInd.classList.remove('lv-paused');
             }
             function lvStopTalk() {
@@ -1644,12 +1663,7 @@
                 const s = lvSlides[idx];
                 lvSpeech.textContent = s.speech;
                 lvSpeech.classList.add('lv-vis');
-                // Waveform: TTS events handle start/stop; fallback to timer if no TTS
-                if (!lvTTS) {
-                    lvStartTalk();
-                    const words = s.speech.split(' ').length;
-                    setTimeout(lvStopTalk, Math.max(2000, words * 180));
-                }
+                
                 lvChapter.textContent = s.chapter;
                 const div = document.createElement('div');
                 div.innerHTML = s.board;
@@ -1685,13 +1699,7 @@
                         setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
                     }
                 }
-                if (lvTTS) {
-                    lvSpeak(s.speech, advanceNext);
-                } else {
-                    const words = s ? s.speech.split(' ').length : 10;
-                    lvTimer = setTimeout(advanceNext, Math.max(4000, words * 220));
-                }
-            }
+                lvPlaySlideAudio(lvCurrent, advanceNext);
 
             function lvTogglePlay() {
                 if (lvPlaying) {
