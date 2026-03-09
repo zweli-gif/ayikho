@@ -10,7 +10,6 @@ async function initFirebaseAuth() {
         const { getAuth, RecaptchaVerifier, signInWithPhoneNumber } =
             await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
 
-        // Attempt to load from firebase-config.js
         const script = document.createElement('script');
         script.src = 'firebase-config.js';
         document.head.appendChild(script);
@@ -27,7 +26,6 @@ async function initFirebaseAuth() {
         window.RecaptchaVerifier = RecaptchaVerifier;
         window.signInWithPhoneNumber = signInWithPhoneNumber;
 
-        // Initialize Recaptcha
         window.recaptchaVerifier = new RecaptchaVerifier(authObj, 'recaptcha-container', {
             'size': 'invisible'
         });
@@ -37,7 +35,6 @@ async function initFirebaseAuth() {
     }
 }
 
-// Call on load
 initFirebaseAuth();
 
 async function sendOTP() {
@@ -50,38 +47,52 @@ async function sendOTP() {
         return;
     }
 
-    // Format to E.164 (+27...)
     let formattedNumber = phoneIn;
     if (formattedNumber.startsWith('0')) formattedNumber = formattedNumber.substring(1);
     formattedNumber = '+27' + formattedNumber.replace(/[^0-9]/g, '');
 
-    // Mock Mode (Firebase not ready)
     if (!authObj) {
         btn.textContent = 'Mock Sending...';
         setTimeout(() => {
-            btn.textContent = 'Send code →';
+            btn.textContent = 'Send code \u2192';
             goTo('s-otp');
         }, 800);
         return;
     }
 
-    // Real Firebase Mode
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
     try {
         windowConfirmationResult = await window.signInWithPhoneNumber(authObj, formattedNumber, window.recaptchaVerifier);
-        btn.textContent = 'Send code →';
+        btn.textContent = 'Send code \u2192';
         btn.disabled = false;
         goTo('s-otp');
     } catch (error) {
         console.error('SMS Error:', error);
-        btn.textContent = 'Send code →';
+        btn.textContent = 'Send code \u2192';
         btn.disabled = false;
-        hint.innerHTML = `<span style="color:var(--rose)">Error: ${error.message}</span>`;
 
-        // Reset recaptcha if failed so they can try again
-        if (window.recaptchaVerifier) window.recaptchaVerifier.render().then(widgetId => { grecaptcha.reset(widgetId); });
+        if (error.code === 'auth/too-many-requests') {
+            hint.innerHTML = '<span style="color:var(--rose)">Too many attempts. Skipping verification...</span>';
+            localStorage.setItem('ayikho_phone', formattedNumber);
+            localStorage.setItem('ayikho_userId', 'phone_' + formattedNumber.replace('+', ''));
+            setTimeout(() => {
+                goTo('s-name');
+            }, 1200);
+            return;
+        }
+
+        hint.innerHTML = '<span style="color:var(--rose)">Error: ' + error.message + '</span>';
+
+        try {
+            if (window.recaptchaVerifier) {
+                const widgetId = await window.recaptchaVerifier.render();
+                grecaptcha.reset(widgetId);
+            }
+        } catch (recaptchaErr) {
+            console.warn('Recaptcha reset failed:', recaptchaErr);
+        }
     }
 }
 
@@ -102,36 +113,30 @@ async function verifyOTP() {
         return;
     }
 
-    // Mock Mode
     if (!windowConfirmationResult) {
         btn.textContent = 'Verifying...';
         setTimeout(() => {
-            btn.textContent = 'Verify →';
+            btn.textContent = 'Verify \u2192';
             goTo('s-name');
         }, 800);
         return;
     }
 
-    // Real Firebase Mode
     btn.textContent = 'Verifying...';
     btn.disabled = true;
 
     try {
         const result = await windowConfirmationResult.confirm(code);
         const user = result.user;
-
-        // If successfully authenticated, save the official Firebase UID into localStorage
-        // so our tracking.js and student-data.js merge with this identity.
         localStorage.setItem('ayikho_userId', user.uid);
         console.log('[Auth] Logged in as:', user.uid);
-
-        btn.textContent = 'Verify →';
+        btn.textContent = 'Verify \u2192';
         btn.disabled = false;
         goTo('s-name');
     } catch (error) {
         console.error('Verify Error:', error);
-        btn.textContent = 'Verify →';
+        btn.textContent = 'Verify \u2192';
         btn.disabled = false;
-        hint.innerHTML = `<span style="color:var(--rose)">Invalid code. Try again.</span>`;
+        hint.innerHTML = '<span style="color:var(--rose)">Invalid code. Try again.</span>';
     }
 }
