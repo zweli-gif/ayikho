@@ -1,142 +1,85 @@
-// ═══════════════════════════════════════════════
-// FIREBASE AUTHENTICATION LOGIC
-// ═══════════════════════════════════════════════
-let windowConfirmationResult = null;
-let authObj = null;
+/**
+ * auth.js - Ayikho Firebase Phone Authentication
+ */
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-async function initFirebaseAuth() {
-    try {
-        const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-        const { getAuth, RecaptchaVerifier, signInWithPhoneNumber } =
-            await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+let auth = null, recaptchaVerifier = null, confirmationResult = null;
 
-        const script = document.createElement('script');
-        script.src = 'firebase-config.js';
-        document.head.appendChild(script);
-
-        await new Promise(resolve => { script.onload = resolve; script.onerror = resolve; });
-
-        if (typeof FIREBASE_CONFIG === 'undefined' || FIREBASE_CONFIG.apiKey.includes('YOUR_')) {
-            console.warn('Firebase not configured. OTP will be mocked.');
-            return;
-        }
-
-        const app = initializeApp(FIREBASE_CONFIG);
-        authObj = getAuth(app);
-        window.RecaptchaVerifier = RecaptchaVerifier;
-        window.signInWithPhoneNumber = signInWithPhoneNumber;
-
-        window.recaptchaVerifier = new RecaptchaVerifier(authObj, 'recaptcha-container', {
-            'size': 'invisible'
-        });
-
-    } catch (e) {
-        console.error('Firebase Auth Init Failed:', e);
-    }
+function initAuth() {
+  if (auth) return;
+  if (!window.FIREBASE_CONFIG) { console.error("FIREBASE_CONFIG missing"); return; }
+  const app = getApps().length === 0 ? initializeApp(window.FIREBASE_CONFIG) : getApps()[0];
+  auth = getAuth(app);
+  auth.languageCode = "en";
 }
 
-initFirebaseAuth();
-
-async function sendOTP() {
-    const phoneIn = document.getElementById('phone-in').value.trim();
-    const btn = document.getElementById('send-otp-btn');
-    const hint = document.getElementById('phone-hint');
-
-    if (!phoneIn || phoneIn.length < 9) {
-        hint.innerHTML = '<span style="color:var(--rose)">Please enter a valid number.</span>';
-        return;
-    }
-
-    let formattedNumber = phoneIn;
-    if (formattedNumber.startsWith('0')) formattedNumber = formattedNumber.substring(1);
-    formattedNumber = '+27' + formattedNumber.replace(/[^0-9]/g, '');
-
-    if (!authObj) {
-        btn.textContent = 'Mock Sending...';
-        setTimeout(() => {
-            btn.textContent = 'Send code \u2192';
-            goTo('s-otp');
-        }, 800);
-        return;
-    }
-
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-
-    try {
-        windowConfirmationResult = await window.signInWithPhoneNumber(authObj, formattedNumber, window.recaptchaVerifier);
-        btn.textContent = 'Send code \u2192';
-        btn.disabled = false;
-        goTo('s-otp');
-    } catch (error) {
-        console.error('SMS Error:', error);
-        btn.textContent = 'Send code \u2192';
-        btn.disabled = false;
-
-        if (error.code === 'auth/too-many-requests') {
-            hint.innerHTML = '<span style="color:var(--rose)">Too many attempts. Skipping verification...</span>';
-            localStorage.setItem('ayikho_phone', formattedNumber);
-            localStorage.setItem('ayikho_userId', 'phone_' + formattedNumber.replace('+', ''));
-            setTimeout(() => {
-                goTo('s-name');
-            }, 1200);
-            return;
-        }
-
-        hint.innerHTML = '<span style="color:var(--rose)">Error: ' + error.message + '</span>';
-
-        try {
-            if (window.recaptchaVerifier) {
-                const widgetId = await window.recaptchaVerifier.render();
-                grecaptcha.reset(widgetId);
-            }
-        } catch (recaptchaErr) {
-            console.warn('Recaptcha reset failed:', recaptchaErr);
-        }
-    }
+function setupRecaptcha() {
+  if (recaptchaVerifier) return;
+  recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+    size: "invisible",
+    callback: () => {},
+    "expired-callback": () => { recaptchaVerifier = null; }
+  });
 }
 
-async function verifyOTP() {
-    const o1 = document.getElementById('o1').value;
-    const o2 = document.getElementById('o2').value;
-    const o3 = document.getElementById('o3').value;
-    const o4 = document.getElementById('o4').value;
-    const o5 = document.getElementById('o5').value;
-    const o6 = document.getElementById('o6').value;
-    const code = o1 + o2 + o3 + o4 + o5 + o6;
-
-    const btn = document.getElementById('verify-otp-btn');
-    const hint = document.getElementById('otp-hint');
-
-    if (code.length < 6) {
-        hint.innerHTML = '<span style="color:var(--rose)">Enter all 6 digits.</span>';
-        return;
-    }
-
-    if (!windowConfirmationResult) {
-        btn.textContent = 'Verifying...';
-        setTimeout(() => {
-            btn.textContent = 'Verify \u2192';
-            goTo('s-name');
-        }, 800);
-        return;
-    }
-
-    btn.textContent = 'Verifying...';
-    btn.disabled = true;
-
-    try {
-        const result = await windowConfirmationResult.confirm(code);
-        const user = result.user;
-        localStorage.setItem('ayikho_userId', user.uid);
-        console.log('[Auth] Logged in as:', user.uid);
-        btn.textContent = 'Verify \u2192';
-        btn.disabled = false;
-        goTo('s-name');
-    } catch (error) {
-        console.error('Verify Error:', error);
-        btn.textContent = 'Verify \u2192';
-        btn.disabled = false;
-        hint.innerHTML = '<span style="color:var(--rose)">Invalid code. Try again.</span>';
-    }
+function formatSANumber(raw) {
+  const d = raw.replace(/\D/g, "");
+  if (d.startsWith("27") && d.length === 11) return "+" + d;
+  if (d.startsWith("0") && d.length === 10) return "+27" + d.slice(1);
+  if (d.length === 9) return "+27" + d;
+  return null;
 }
+
+window.sendOTP = async function () {
+  const input = document.getElementById("phone-in");
+  const btn = document.getElementById("send-otp-btn");
+  const hint = document.getElementById("phone-hint");
+  const phone = formatSANumber(input.value);
+  if (!phone) { hint.textContent = "Enter a valid SA number e.g. 081 234 5678"; hint.style.color = "var(--rose)"; return; }
+  btn.disabled = true; btn.textContent = "Sending..."; hint.textContent = ""; hint.style.color = "";
+  try {
+    initAuth(); setupRecaptcha();
+    confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
+    const sub = document.querySelector("#s-otp .sub strong");
+    if (sub) sub.textContent = phone.replace("+27", "+27 ");
+    goTo("s-otp"); startResendCountdown();
+  } catch (err) {
+    const m = { "auth/invalid-phone-number": "That number doesn't look right. Try: 081 234 5678", "auth/too-many-requests": "Too many attempts. Wait a few minutes.", "auth/quota-exceeded": "SMS limit reached. Try again later.", "auth/network-request-failed": "No connection. Check your data." };
+    hint.textContent = m[err.code] || "Something went wrong. Please try again.";
+    hint.style.color = "var(--rose)"; btn.disabled = false; btn.textContent = "Send code"; recaptchaVerifier = null;
+  }
+};
+
+window.verifyOTP = async function () {
+  const btn = document.getElementById("verify-otp-btn");
+  const hint = document.getElementById("otp-hint");
+  const code = ["o1","o2","o3","o4","o5","o6"].map(id => (document.getElementById(id)?.value || "").trim()).join("");
+  if (code.length < 6) { hint.textContent = "Enter all 6 digits from your SMS."; hint.style.color = "var(--rose)"; return; }
+  btn.disabled = true; btn.textContent = "Verifying..."; hint.textContent = ""; hint.style.color = "";
+  try {
+    if (!confirmationResult) throw new Error("auth/session-expired");
+    await confirmationResult.confirm(code);
+    goTo("s-name");
+  } catch (err) {
+    const m = { "auth/invalid-verification-code": "Wrong code. Check the SMS and try again.", "auth/code-expired": "Code expired. Go back and request a new one.", "auth/session-expired": "Session expired. Go back and request a new code." };
+    hint.textContent = m[err.code] || m[err.message] || "Verification failed. Try again.";
+    hint.style.color = "var(--rose)"; btn.disabled = false; btn.textContent = "Verify";
+  }
+};
+
+function startResendCountdown() {
+  const hint = document.getElementById("otp-hint");
+  let s = 60;
+  const t = setInterval(() => {
+    s--;
+    if (hint) hint.innerHTML = s > 0 ? "Didn't get it? <strong>Resend in 0:" + String(s).padStart(2,"0") + "</strong>" : "Didn't get it? <strong style='cursor:pointer;color:var(--p)' onclick='resendOTP()'>Resend now</strong>";
+    if (s <= 0) clearInterval(t);
+  }, 1000);
+}
+
+window.resendOTP = async function () {
+  ["o1","o2","o3","o4","o5","o6"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+  document.getElementById("o1")?.focus();
+  goTo("s-phone");
+};
