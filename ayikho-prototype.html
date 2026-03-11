@@ -975,9 +975,10 @@ function showToast(msg) {
 //  STARTUP — CHECK ONBOARDING STATUS
 // ═══════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  // Check if onboarding was already completed
-  if (window.ayikhoData && window.ayikhoData.isOnboardingComplete()) {
-    // Returning student — skip onboarding and show home directly
+  // Always show home screen for prototype demo
+  // Onboarding is available via sidebar but doesn't block the experience
+  if (true) {
+    // Show home directly
     onboardingDone = true;
     document.getElementById('chapter-view').classList.remove('active');
     document.getElementById('home-view').classList.remove('hidden');

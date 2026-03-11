@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayikho - Module 8: Year-End Adjustments</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -774,6 +774,208 @@
         .ashki-name { font:700 11px/1 'Outfit'; color:var(--p); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
         .ashki-text { font:400 14px/1.5 'Outfit'; color:var(--ink); }
         @keyframes ashkiSlideIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ===== PEN-ON-BOARD VIDEO PLAYER ===== */
+        .landoh-video-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #FAFAFA;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        /* Title card */
+        .lv-title-card {
+            position: absolute;
+            inset: 0;
+            background: #1A1A2E;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+        .lv-title-card.lv-hidden { opacity: 0; pointer-events: none; }
+        .lv-title-card .lv-mod-num {
+            font-size: 12px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+            color: var(--fa); margin-bottom: 12px; opacity: 0; transform: translateY(10px);
+            animation: lvFadeUp 0.6s 0.3s ease forwards;
+        }
+        .lv-title-card h1 {
+            font-size: 22px; font-weight: 800; color: #fff; text-align: center;
+            line-height: 1.2; padding: 0 24px; opacity: 0; transform: translateY(10px);
+            animation: lvFadeUp 0.6s 0.6s ease forwards;
+        }
+        .lv-accent-line {
+            width: 50px; height: 3px; background: var(--fa); border-radius: 2px;
+            margin-top: 14px; opacity: 0; animation: lvFadeUp 0.6s 0.9s ease forwards;
+        }
+        .lv-title-card .lv-mini-icon {
+            margin-top: 20px; opacity: 0; animation: lvFadeUp 0.6s 1.2s ease forwards;
+            font-size: 36px;
+        }
+        .lv-start-btn {
+            margin-top: 28px; opacity: 0; animation: lvFadeUp 0.6s 1.5s ease forwards;
+            background: var(--fa); color: #fff; border: none; border-radius: 40px;
+            padding: 12px 32px; font-family: 'Outfit', sans-serif; font-size: 14px;
+            font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; letter-spacing: 0.5px;
+        }
+        .lv-start-btn:hover { background: #0369A1; transform: scale(1.05); }
+        .lv-start-btn::before { content: '\25B6'; font-size: 10px; }
+        @keyframes lvFadeUp { to { opacity: 1; transform: translateY(0); } }
+        /* Outro card */
+        .lv-outro {
+            position: absolute; inset: 0; background: #1A1A2E;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.8s ease;
+        }
+        .lv-outro.lv-vis { opacity: 1; pointer-events: all; }
+        .lv-outro .lv-emoji { font-size: 42px; margin-bottom: 14px; }
+        .lv-outro h2 { font-size: 18px; font-weight: 700; color: var(--fa); text-align: center; padding: 0 24px; line-height: 1.3; }
+        .lv-outro p { color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 10px; }
+        /* Main content - full whiteboard */
+        .lv-main {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            opacity: 0; transition: opacity 0.6s ease;
+        }
+        .lv-main.lv-vis { opacity: 1; }
+        /* Voiceover bar (replaces avatar area) */
+        .lv-voice-bar {
+            background: #1A1A2E; position: relative;
+            display: flex; align-items: center; padding: 10px 14px; gap: 10px;
+            min-height: 52px;
+        }
+        .lv-voice-indicator {
+            display: flex; align-items: center; gap: 4px; height: 20px;
+        }
+        .lv-voice-bar-line {
+            width: 3px; background: var(--fa); border-radius: 2px;
+            animation: lvWave 0.8s ease-in-out infinite;
+        }
+        .lv-voice-bar-line:nth-child(1) { height: 8px; animation-delay: 0s; }
+        .lv-voice-bar-line:nth-child(2) { height: 14px; animation-delay: 0.1s; }
+        .lv-voice-bar-line:nth-child(3) { height: 10px; animation-delay: 0.2s; }
+        .lv-voice-bar-line:nth-child(4) { height: 18px; animation-delay: 0.3s; }
+        .lv-voice-bar-line:nth-child(5) { height: 6px; animation-delay: 0.4s; }
+        .lv-voice-indicator.lv-paused .lv-voice-bar-line { animation: none; height: 4px; }
+        @keyframes lvWave {
+            0%,100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.8); }
+        }
+        .lv-voice-text {
+            flex: 1; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.85);
+            line-height: 1.35; opacity: 0; transition: opacity 0.4s ease;
+        }
+        .lv-voice-text.lv-vis { opacity: 1; }
+        .lv-chapter-ind {
+            font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.35);
+            letter-spacing: 1px; white-space: nowrap;
+        }
+        /* Full whiteboard area */
+        .lv-board {
+            flex: 1; background: #FFFFFF; position: relative;
+            padding: 14px 16px 48px; overflow-y: auto; overflow-x: hidden;
+        }
+        .lv-board::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background-image: linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px);
+            background-size: 100% 28px; background-position: 0 14px;
+        }
+        .lv-board::-webkit-scrollbar { width: 3px; }
+        .lv-board::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
+        .lv-board-title {
+            font-family: 'Caveat', cursive; font-size: 14px; font-weight: 700;
+            color: #94a3b8; margin-bottom: 10px; padding-bottom: 6px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        /* Pen cursor */
+        .lv-pen {
+            position: absolute; z-index: 40; pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
+            opacity: 0; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
+        }
+        .lv-pen.lv-vis { opacity: 1; }
+        /* Content items on whiteboard */
+        .lv-bi {
+            opacity: 0; transform: translateY(8px); transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+            margin-bottom: 10px; position: relative;
+        }
+        .lv-bi.lv-vis { opacity: 1; transform: translateY(0); }
+        .lv-bi.lv-writing { border-left: 2px solid var(--fa); padding-left: 10px; }
+        .lv-bi.lv-writing::before {
+            content: ''; position: absolute; left: -4px; top: 4px;
+            width: 6px; height: 6px; background: var(--fa); border-radius: 50%;
+        }
+        .lv-bi h3 {
+            font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700;
+            color: #1A1A2E; margin-bottom: 4px; line-height: 1.2;
+        }
+        .lv-bi p {
+            font-family: 'Caveat', cursive; font-size: 15px; color: #334155; line-height: 1.5;
+        }
+        .lv-bi .lv-key { color: var(--fa); font-weight: 700; }
+        .lv-bi .lv-formula {
+            background: #1A1A2E; color: #fff; padding: 6px 12px; border-radius: 8px;
+            font-family: 'Caveat', cursive; font-size: 16px; font-weight: 600;
+            margin-top: 5px; display: inline-block;
+        }
+        .lv-bi .lv-hl {
+            background: rgba(245,158,11,0.1); border-left: 3px solid var(--gold);
+            padding: 6px 10px; border-radius: 0 8px 8px 0; margin-top: 5px;
+        }
+        .lv-bi .lv-tip {
+            background: linear-gradient(135deg, rgba(2,132,199,0.08), rgba(2,132,199,0.03));
+            border: 1px solid rgba(2,132,199,0.15); border-radius: 10px; padding: 8px 12px;
+        }
+        .lv-bi .lv-tip-label {
+            font-size: 10px; font-weight: 800; color: var(--fa); letter-spacing: 1.5px;
+            text-transform: uppercase; margin-bottom: 3px; font-family: 'Outfit', sans-serif;
+        }
+        .lv-num-list { list-style: none; padding: 0; }
+        .lv-num-list li {
+            position: relative; padding-left: 26px; margin-bottom: 6px;
+            font-family: 'Caveat', cursive; font-size: 15px;
+            color: #334155; font-weight: 500; opacity: 0; transform: translateX(-8px); transition: all 0.4s ease;
+        }
+        .lv-num-list li.lv-pop { opacity: 1; transform: translateX(0); }
+        .lv-num-list li::before {
+            content: attr(data-num); position: absolute; left: 0; top: 0;
+            width: 20px; height: 20px; background: var(--fa); color: white;
+            font-size: 11px; font-weight: 700; display: flex; align-items: center;
+            justify-content: center; border-radius: 50%; font-family: 'Outfit', sans-serif;
+        }
+        /* Underline animation for writing effect */
+        .lv-bi .lv-underline {
+            display: inline-block; position: relative;
+        }
+        .lv-bi .lv-underline::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+            background: var(--fa); transition: width 0.6s ease;
+        }
+        .lv-bi.lv-vis .lv-underline::after { width: 100%; }
+        /* Progress bar */
+        .lv-prog { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(0,0,0,0.06); z-index: 50; }
+        .lv-prog-fill {
+            height: 100%; background: linear-gradient(90deg, var(--fa), #38bdf8);
+            width: 0%; transition: width 0.3s linear; border-radius: 0 2px 2px 0;
+            box-shadow: 0 0 8px rgba(2,132,199,0.3);
+        }
+        /* Controls */
+        .lv-ctrls {
+            position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 6px; z-index: 60;
+        }
+        .lv-btn {
+            background: rgba(26,26,46,0.85); border: 1px solid rgba(255,255,255,0.08);
+            color: white; width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 12px; transition: all 0.2s; backdrop-filter: blur(8px);
+        }
+        .lv-btn:hover { background: var(--fa); transform: scale(1.1); }
     </style>
     <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
     <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
@@ -836,50 +1038,70 @@
                 </div>
             </div>
 
-            <!-- Screen 2: Video Player -->
+            <!-- Screen 2: Landoh Video Player -->
             <div class="screen" id="screen-2">
-                <div class="screen-header">
-                    <div class="header-title">Video Lesson</div>
-                    <div class="header-subtitle">Module 8: Year-End Adjustments</div>
-                </div>
-                <div class="screen-content">
-                    <div class="video-player">
-                        <video id="moduleVideo" playsinline webkit-playsinline preload="metadata" style="width:100%; border-radius:12px; background:#000; max-height:220px; object-fit:contain;">
-                            <source src="assets/videos/module-8.mp4" type="video/mp4">
-                        </video>
-                        <div class="video-placeholder" onclick="playVid()" style="position:absolute;cursor:pointer">▶</div>
+                <div class="landoh-video-wrap" id="landohVideo">
+                    <!-- Real video element -->
+                    <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
+                      style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
+                      <source src="assets/videos/module-8.mp4" type="video/mp4">
+                    </video>
+                    <!-- Title Card -->
+                    <div class="lv-title-card" id="lvTitle">
+                        <div class="lv-mod-num">Module 8</div>
+                        <h1>Year-End<br>Adjustments</h1>
+                        <div class="lv-accent-line"></div>
+                        <div class="lv-mini-icon">✏️</div>
+                        <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
                     </div>
-                    <div class="video-controls">
-                        <div class="progress-bar" id="vidFill" onclick="seekVid(event)">
-                            <div class="progress-bar-fill" id="videoProg" style="width: 0%"></div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--mut);">
-                            <span id="vid-time">0:00 / 3:45</span>
-                            <span id="vidDuration">3:45</span>
-                        </div>
-                        <div class="markers">
-                            <button class="marker-btn active" onclick="jumpToMarker(0, this)">0:00 Why adjust?</button>
-                            <button class="marker-btn" onclick="jumpToMarker(75, this)">1:15 Depreciation</button>
-                            <button class="marker-btn" onclick="jumpToMarker(140, this)">2:20 Prepaid</button>
-                            <button class="marker-btn" onclick="jumpToMarker(190, this)">3:10 Recap</button>
-                        </div>
+                    <!-- Outro Card -->
+                    <div class="lv-outro" id="lvOutro">
+                        <div class="lv-emoji">🎯</div>
+                        <h2>Now try the interactive exercise!</h2>
+                        <p>Tap to continue</p>
                     </div>
-
-                    <div style="margin-top: 20px;">
-                        <h3>Quick Notes 📝</h3>
-                        <div class="card">
-                            <div class="card-body">
-                                <p><strong>0:00 - Why adjust at year-end?</strong> Your trial balance doesn't tell the whole story.</p>
-                                <p><strong>1:15 - Depreciation & wear and tear:</strong> Assets lose value. Record this systematically.</p>
-                                <p><strong>2:20 - Prepaid and accrued items:</strong> Timing differences between when you pay and when you owe.</p>
-                                <p><strong>3:10 - Recap + exam tip:</strong> Check your journal entries. SARS (South African Revenue Service) takes this seriously.</p>
+                    <!-- Main Content — Pen on Board -->
+                    <div class="lv-main" id="lvMain">
+                        <!-- Voice-over bar (compact, replaces avatar) -->
+                        <div class="lv-voice-bar">
+                            <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
+                                <div class="lv-voice-bar-line"></div>
+                                <div class="lv-voice-bar-line"></div>
+                                <div class="lv-voice-bar-line"></div>
+                                <div class="lv-voice-bar-line"></div>
+                                <div class="lv-voice-bar-line"></div>
                             </div>
+                            <div class="lv-voice-text" id="lvSpeech"></div>
+                            <div class="lv-chapter-ind" id="lvChapter">0:00</div>
+                        </div>
+                        <!-- Full whiteboard -->
+                        <div class="lv-board" id="lvBoard">
+                            <div class="lv-board-title">✏️ Board</div>
+                            <div id="lvBoardContent"></div>
+                            <!-- Animated pen SVG -->
+                            <svg class="lv-pen" id="lvPen" width="28" height="28" viewBox="0 0 100 100">
+                                <g transform="rotate(-45, 50, 50)">
+                                    <!-- Pen body -->
+                                    <rect x="42" y="10" width="16" height="60" rx="2" fill="#1A1A2E"/>
+                                    <!-- Grip section -->
+                                    <rect x="42" y="45" width="16" height="15" rx="1" fill="#334155"/>
+                                    <!-- Pen tip -->
+                                    <polygon points="42,70 58,70 50,90" fill="#94a3b8"/>
+                                    <polygon points="46,82 54,82 50,90" fill="#1A1A2E"/>
+                                    <!-- Clip -->
+                                    <rect x="58" y="12" width="4" height="30" rx="2" fill="#64748b"/>
+                                    <!-- Cap ring -->
+                                    <rect x="40" y="8" width="20" height="4" rx="2" fill="#0284C7"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="lv-prog"><div class="lv-prog-fill" id="lvProg"></div></div>
+                        <div class="lv-ctrls">
+                            <div class="lv-btn" id="lvPrev" title="Previous">◀</div>
+                            <div class="lv-btn" id="lvPlay" title="Play/Pause">▶</div>
+                            <div class="lv-btn" id="lvNext" title="Next">▶</div>
                         </div>
                     </div>
-                </div>
-                <div class="screen-footer">
-                    <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
-                    <button class="btn btn-primary" onclick="nextScreen()">Next</button>
                 </div>
             </div>
 
@@ -1682,6 +1904,186 @@ Debit: Electricity Expense       R400
             if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(8, 'post', questionNum, isCorrect, 0);
             notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: questionNum, isCorrect: isCorrect, questionText: `Question ${questionNum}`, topic: 'Year-End Adjustments' });
         }
+
+        // ===== LANDOH VIDEO PLAYER (Module 8) =====
+        (function() {
+            const lvSlides = [
+                { speech: "Before you close the books at year-end, there's critical work to do. Your trial balance is just a test of balances — it doesn't tell the whole story about what really happened in your business.", chapter: "0:00 — INTRO", board: '<div class="lv-bi"><h3>MODULE 8</h3><p style="font-size:14px;font-weight:700;color:#1A1A2E;">Year-End Adjustments Why? To make sure the books reflect REALITY</p></div>', point: false },
+                { speech: "The biggest adjustment you'll make is depreciation. Your assets lose value over time. A delivery van that cost R120,000 isn't worth R120,000 after 5 years of use. You need to record that loss.", chapter: "0:00 — DEPRECIATION", board: '<div class="lv-bi"><h3>DEPRECIATION</h3><div class="lv-formula">Loss in value over time</div><p style="margin-top:6px;font-size:13px">Straight-Line Method: (Cost - Residual Value) ÷ Useful Life</p></div>', point: true },
+                { speech: "For Sipho's car wash, if the equipment cost R30,000, has a residual value of R6,000, and lasts 6 years: that's R30,000 minus R6,000 divided by 6 = R4,000 per year.", chapter: "1:15 — EXAMPLE", board: '<div class="lv-bi"><h3><span class="lv-key">Sipho\'s Equipment</span></h3><p>Cost: R30,000</p><p>Residual: R6,000</p><p>Life: 6 years</p><div class="lv-formula" style="margin-top:8px">Depreciation: R4,000/year</div></div>', point: true },
+                { speech: "But there are other adjustments too. Prepaid expenses — rent you paid in advance that covers next year. Accrued expenses — electricity you used but haven't been billed for yet.", chapter: "2:30 — OTHER ADJUSTMENTS", board: '<div class="lv-bi"><h3>Other Adjustments</h3><ol class="lv-num-list"><li data-num="1">Prepaid Expenses (paid ahead)</li><li data-num="2">Accrued Expenses (used but not billed)</li><li data-num="3">Accrued Income (earned but not received)</li><li data-num="4">Bad Debts (customers who won\'t pay)</li></ol></div>', point: false, stagger: true },
+                { speech: "And provision for bad debts — some customers will never pay, and you need to account for that loss. Record the doubtful amounts as an expense against income.", chapter: "2:30 — BAD DEBTS", board: '<div class="lv-bi"><h3><span class="lv-key">Bad Debts</span></h3><p>Write off debtor</p><p style="margin-top:5px"><strong>Provision:</strong> Estimate future losses</p><div class="lv-hl"><p style="font-size:10px">Usually a percentage of total debtors</p></div></div>', point: false },
+                { speech: "Exam tip: depreciation is almost always in the exam. Know the straight-line formula cold. They also love asking you to calculate prepaid and accrued amounts — read the dates carefully! That's where students mess up.", chapter: "3:30 — RECAP", board: '<div class="lv-bi"><div class="lv-tip"><div class="lv-tip-label">🎯 Exam Tip</div><p style="font-size:12px;font-weight:600;color:#1A1A2E">Know the depreciation formula!</p><p style="font-size:11px;color:var(--fa);font-weight:700;margin-top:3px">(Cost - Residual) ÷ Life = Annual depreciation<br>Watch dates for prepaid/accrued!</p></div></div>', point: false }
+            ];
+
+            let lvCurrent = -1, lvPlaying = false, lvTimer = null;
+            const lvSpeech = document.getElementById('lvSpeech');
+            const lvBoardContent = document.getElementById('lvBoardContent');
+            const lvProg = document.getElementById('lvProg');
+            const lvChapter = document.getElementById('lvChapter');
+            const lvTitle = document.getElementById('lvTitle');
+            const lvOutro = document.getElementById('lvOutro');
+            const lvMain = document.getElementById('lvMain');
+            const lvPlayBtn = document.getElementById('lvPlay');
+            const lvPen = document.getElementById('lvPen');
+            const lvVoiceInd = document.getElementById('lvVoiceInd');
+
+            const audioPath = 'assets/audio/';
+            let currentAudio = null;
+
+            function lvPlaySlideAudio(idx, onEnd) {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+                const slideNumber = (idx + 1).toString().padStart(2, '0');
+                const audioUrl = `${audioPath}module-8-slide-${slideNumber}.mp3`;
+                currentAudio = new Audio(audioUrl);
+
+                lvStartTalk();
+                currentAudio.onended = () => {
+                    lvStopTalk();
+                    if (onEnd) onEnd();
+                };
+                currentAudio.onerror = () => {
+                    console.warn(`Could not load ${audioUrl}, falling back to timer.`);
+                    const words = lvSlides[idx].speech.split(' ').length;
+                    setTimeout(() => {
+                        lvStopTalk();
+                        if (onEnd) onEnd();
+                    }, Math.max(2000, words * 180));
+                };
+                currentAudio.play().catch(e => {
+                    console.log("Audio play prevented:", e);
+                    const words = lvSlides[idx].speech.split(' ').length;
+                    setTimeout(() => {
+                        lvStopTalk();
+                        if (onEnd) onEnd();
+                    }, Math.max(2000, words * 180));
+                });
+            }
+
+            function lvSpeechCancel() {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+            }
+
+            function lvStartTalk() {
+                lvVoiceInd.classList.remove('lv-paused');
+            }
+            function lvStopTalk() {
+                lvVoiceInd.classList.add('lv-paused');
+            }
+
+            function lvMovePen(target) {
+                if (!target) return;
+                const board = document.getElementById('lvBoard');
+                const boardRect = board.getBoundingClientRect();
+                const targetRect = target.getBoundingClientRect();
+                const x = targetRect.left - boardRect.left + targetRect.width - 10;
+                const y = targetRect.top - boardRect.top + targetRect.height / 2 - 14;
+                lvPen.style.left = Math.min(x, boardRect.width - 30) + 'px';
+                lvPen.style.top = Math.max(0, y) + 'px';
+                lvPen.classList.add('lv-vis');
+            }
+
+            function lvShowSlide(idx) {
+                if (idx < 0 || idx >= lvSlides.length) return;
+                lvCurrent = idx;
+                const s = lvSlides[idx];
+                lvSpeech.textContent = s.speech;
+                lvSpeech.classList.add('lv-vis');
+
+                lvChapter.textContent = s.chapter;
+                const div = document.createElement('div');
+                div.innerHTML = s.board;
+                const newItem = div.firstElementChild;
+                lvBoardContent.appendChild(newItem);
+                requestAnimationFrame(() => {
+                    const items = lvBoardContent.querySelectorAll('.lv-bi');
+                    const last = items[items.length - 1];
+                    last.classList.add('lv-vis');
+                    last.classList.add('lv-writing');
+                    setTimeout(() => last.classList.remove('lv-writing'), 1200);
+                    setTimeout(() => lvMovePen(last), 100);
+                    setTimeout(() => lvPen.classList.remove('lv-vis'), 1500);
+                    document.getElementById('lvBoard').scrollTo({ top: 99999, behavior: 'smooth' });
+                });
+                if (s.stagger) {
+                    setTimeout(() => {
+                        document.querySelectorAll('ol.lv-num-list li').forEach((li, i) => { setTimeout(() => li.classList.add('lv-pop'), i * 300); });
+                    }, 400);
+                }
+                lvProg.style.width = ((idx + 1) / lvSlides.length * 100) + '%';
+            }
+
+            function lvAutoAdv() {
+                const s = lvSlides[lvCurrent];
+                function advanceNext() {
+                    if (!lvPlaying) return;
+                    if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
+                    else {
+                        lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
+                        lvSpeech.classList.remove('lv-vis');
+                        setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
+                    }
+                }
+                lvPlaySlideAudio(lvCurrent, advanceNext);
+            }
+
+            function lvTogglePlay() {
+                if (lvPlaying) {
+                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
+                } else {
+                    lvPlaying = true; lvPlayBtn.textContent = '⏸';
+                    if (lvCurrent === -1) {
+                        lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
+                        setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
+                    } else if (lvCurrent >= lvSlides.length - 1) {
+                        lvRestart();
+                    } else { lvAutoAdv(); }
+                }
+            }
+
+            function lvRestart() {
+                lvSpeechCancel();
+                lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProg.style.width = '0%';
+                lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
+                lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
+                lvPen.classList.remove('lv-vis');
+                lvStopTalk(); lvPlaying = false; lvPlayBtn.textContent = '▶';
+            }
+
+            lvPlayBtn.addEventListener('click', lvTogglePlay);
+            document.getElementById('lvStartBtn').addEventListener('click', () => {
+                lvPlaying = true; lvPlayBtn.textContent = '\u23F8';
+                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
+                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
+            });
+            document.getElementById('lvNext').addEventListener('click', () => {
+                lvSpeechCancel(); clearTimeout(lvTimer);
+                if (lvCurrent === -1) {
+                    lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
+                    setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
+                } else if (lvCurrent < lvSlides.length - 1) {
+                    lvShowSlide(lvCurrent + 1);
+                    if (lvPlaying) lvAutoAdv();
+                }
+                else { nextScreen(); }
+            });
+            document.getElementById('lvPrev').addEventListener('click', () => {
+                lvSpeechCancel(); clearTimeout(lvTimer);
+                if (lvCurrent > 0) {
+                    const items = lvBoardContent.querySelectorAll('.lv-bi');
+                    if (items.length > 0) items[items.length - 1].remove();
+                    lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
+                    if (lvPlaying) lvAutoAdv();
+                }
+            });
+            lvOutro.addEventListener('click', () => { nextScreen(); });
+        })();
     </script>
 </body>
 </html>
