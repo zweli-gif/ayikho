@@ -805,6 +805,58 @@
         }
 
         const MODULE_ID = 10;
+
+        // Real video player
+        var moduleVideo = null;
+
+        function initializeVideo() {
+            moduleVideo = document.getElementById('moduleVideo');
+            if (moduleVideo) {
+                moduleVideo.addEventListener('timeupdate', function() {
+                    if (!moduleVideo.duration) return;
+                    var minutes = Math.floor(moduleVideo.currentTime / 60);
+                    var seconds = Math.floor(moduleVideo.currentTime % 60);
+                    var dmins = Math.floor(moduleVideo.duration / 60);
+                    var dsecs = Math.floor(moduleVideo.duration % 60);
+                    var vidTime = document.getElementById('videoTime');
+                    if (vidTime) vidTime.textContent = minutes + ':' + (seconds<10?'0':'') + seconds + ' / ' + dmins + ':' + (dsecs<10?'0':'') + dsecs;
+                });
+
+                moduleVideo.addEventListener('ended', function() {
+                    setTimeout(function() { nextScreen ? nextScreen() : goToScreen && goToScreen(currentScreen + 1); }, 1500);
+                });
+
+                // Graceful fallback
+                moduleVideo.addEventListener('error', function() {
+                    var wrapper = moduleVideo.parentElement;
+                    if (wrapper) {
+                        var notice = document.createElement('div');
+                        notice.style.cssText = 'text-align:center; padding:32px 16px; color:var(--mut); font:500 14px/1.5 Outfit;';
+                        notice.innerHTML = '🎬 Video coming soon!<br><small>Lesson content is available below</small>';
+                        wrapper.replaceChild(notice, moduleVideo);
+                    }
+                });
+            }
+        }
+
+        function playVid() {
+            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
+            if (!moduleVideo) return;
+            if (moduleVideo.paused) {
+                moduleVideo.play().catch(function(e) { console.log('Video not available yet'); });
+            } else {
+                moduleVideo.pause();
+            }
+        }
+
+        function jumpToMarker(seconds) {
+            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
+            if (moduleVideo) {
+                moduleVideo.currentTime = seconds;
+                moduleVideo.play();
+            }
+        }
+
         // Screen Data
         const screens = [
             {
@@ -843,7 +895,10 @@
                 type: 'video',
                 content: `
                     <div class="video-player">
-                        <svg fill="currentColor" viewBox="0 0 20 20">
+                        <video id="moduleVideo" playsinline webkit-playsinline preload="metadata" style="width:100%; border-radius:12px; background:#000; max-height:220px; object-fit:contain;">
+                            <source src="assets/videos/module-10.mp4" type="video/mp4">
+                        </video>
+                        <svg fill="currentColor" viewBox="0 0 20 20" onclick="playVid()" style="position:absolute;cursor:pointer;width:60px;height:60px;opacity:0.6">
                             <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
                         </svg>
                         <div class="video-time" id="videoTime">0:00 / 4:00</div>
@@ -852,19 +907,19 @@
                     <div style="margin-bottom: 20px;">
                         <p style="font-size: 13px; color: var(--mut); margin-bottom: 16px;"><strong>Video Chapters:</strong></p>
                         <div class="video-markers">
-                            <div class="marker">
+                            <div class="marker" onclick="jumpToMarker(0)">
                                 <div class="marker-time">0:00</div>
                                 <div class="marker-text">Why bank recon matters (30 sec)</div>
                             </div>
-                            <div class="marker">
+                            <div class="marker" onclick="jumpToMarker(45)">
                                 <div class="marker-time">0:45</div>
                                 <div class="marker-text">Outstanding deposits and unpresented cheques (1:15)</div>
                             </div>
-                            <div class="marker">
+                            <div class="marker" onclick="jumpToMarker(135)">
                                 <div class="marker-time">2:15</div>
                                 <div class="marker-text">Bank charges and direct debits (1:00)</div>
                             </div>
-                            <div class="marker">
+                            <div class="marker" onclick="jumpToMarker(200)">
                                 <div class="marker-time">3:20</div>
                                 <div class="marker-text">Worked example walkthrough (0:40)</div>
                             </div>
@@ -1383,6 +1438,10 @@
             updateProgress();
             renderNavigation();
             document.getElementById('currentScreen').textContent = `${currentScreen + 1}/11`;
+            // Initialize video if on video screen
+            if (screens[currentScreen].type === 'video') {
+                setTimeout(initializeVideo, 50);
+            }
         }
 
         function nextScreen() {

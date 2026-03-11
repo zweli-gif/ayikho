@@ -844,21 +844,24 @@
                 </div>
                 <div class="screen-content">
                     <div class="video-player">
-                        <div class="video-placeholder">▶</div>
+                        <video id="moduleVideo" playsinline webkit-playsinline preload="metadata" style="width:100%; border-radius:12px; background:#000; max-height:220px; object-fit:contain;">
+                            <source src="assets/videos/module-8.mp4" type="video/mp4">
+                        </video>
+                        <div class="video-placeholder" onclick="playVid()" style="position:absolute;cursor:pointer">▶</div>
                     </div>
                     <div class="video-controls">
-                        <div class="progress-bar" onclick="seekVideo(event)">
+                        <div class="progress-bar" id="vidFill" onclick="seekVid(event)">
                             <div class="progress-bar-fill" id="videoProg" style="width: 0%"></div>
                         </div>
                         <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--mut);">
-                            <span id="currentTime">0:00</span>
-                            <span>3:45</span>
+                            <span id="vid-time">0:00 / 3:45</span>
+                            <span id="vidDuration">3:45</span>
                         </div>
                         <div class="markers">
                             <button class="marker-btn active" onclick="jumpToMarker(0, this)">0:00 Why adjust?</button>
-                            <button class="marker-btn" onclick="jumpToMarker(1, this)">1:15 Depreciation</button>
-                            <button class="marker-btn" onclick="jumpToMarker(2, this)">2:20 Prepaid</button>
-                            <button class="marker-btn" onclick="jumpToMarker(3, this)">3:10 Recap</button>
+                            <button class="marker-btn" onclick="jumpToMarker(75, this)">1:15 Depreciation</button>
+                            <button class="marker-btn" onclick="jumpToMarker(140, this)">2:20 Prepaid</button>
+                            <button class="marker-btn" onclick="jumpToMarker(190, this)">3:10 Recap</button>
                         </div>
                     </div>
 
@@ -1363,10 +1366,73 @@ Debit: Electricity Expense       R400
         let videoTime = 0;
         let quizAnswers = {};
 
+        // Real video player
+        var moduleVideo = null;
+
+        function initializeVideo() {
+            moduleVideo = document.getElementById('moduleVideo');
+            var vidFill = document.getElementById('vidFill');
+            var vidTime = document.getElementById('vid-time');
+            if (moduleVideo) {
+                moduleVideo.addEventListener('timeupdate', function() {
+                    if (!moduleVideo.duration) return;
+                    var pct = (moduleVideo.currentTime / moduleVideo.duration) * 100;
+                    if (vidFill) vidFill.style.width = pct + '%';
+                    var cm = Math.floor(moduleVideo.currentTime / 60);
+                    var cs = Math.floor(moduleVideo.currentTime % 60);
+                    var dm = Math.floor(moduleVideo.duration / 60);
+                    var ds = Math.floor(moduleVideo.duration % 60);
+                    if (vidTime) vidTime.textContent = cm + ':' + (cs<10?'0':'') + cs + ' / ' + dm + ':' + (ds<10?'0':'') + ds;
+                });
+                moduleVideo.addEventListener('ended', function() {
+                    setTimeout(function() { nextScreen ? nextScreen() : goToScreen && goToScreen(currentScreen + 1); }, 1500);
+                });
+                moduleVideo.addEventListener('error', function() {
+                    var wrapper = moduleVideo.parentElement;
+                    if (wrapper) {
+                        var notice = document.createElement('div');
+                        notice.style.cssText = 'text-align:center; padding:32px 16px; color:var(--mut); font:500 14px/1.5 Outfit;';
+                        notice.innerHTML = '🎬 Video coming soon!<br><small>Lesson content is available below</small>';
+                        wrapper.replaceChild(notice, moduleVideo);
+                    }
+                });
+            }
+        }
+
+        function playVid() {
+            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
+            if (!moduleVideo) return;
+            if (moduleVideo.paused) {
+                moduleVideo.play().catch(function(e) { console.log('Video not available yet'); });
+            } else {
+                moduleVideo.pause();
+            }
+        }
+
+        function seekVid(e) {
+            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
+            if (!moduleVideo || !moduleVideo.duration) return;
+            var bar = e.currentTarget;
+            var rect = bar.getBoundingClientRect();
+            var pct = (e.clientX - rect.left) / rect.width;
+            moduleVideo.currentTime = pct * moduleVideo.duration;
+        }
+
+        function jumpToMarker(seconds, btn) {
+            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
+            if (moduleVideo) {
+                moduleVideo.currentTime = seconds;
+                moduleVideo.play();
+            }
+            document.querySelectorAll('.marker-btn').forEach(m => m.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             updateProgress();
             setupKeyboardNavigation();
+            initializeVideo();
         });
 
         // Screen Navigation
@@ -1408,6 +1474,10 @@ Debit: Electricity Expense       R400
             // Scroll to top
             setTimeout(() => {
                 nextElement.scrollTop = 0;
+                // Reinitialize video on video screen
+                if (currentScreen === 2) {
+                    initializeVideo();
+                }
             }, 50);
         }
 

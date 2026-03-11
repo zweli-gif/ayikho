@@ -996,7 +996,10 @@
                 <div class="content">
                     <div class="content-inner">
                         <div class="video-player" id="videoPlayer">
-                            <div class="play-button" id="playBtn">▶</div>
+                            <video id="moduleVideo" playsinline webkit-playsinline preload="metadata" style="width:100%; border-radius:12px; background:#000; max-height:220px; object-fit:contain;">
+                                <source src="assets/videos/module-9.mp4" type="video/mp4">
+                            </video>
+                            <div class="play-button" id="playBtn" onclick="playVid()">▶</div>
                             <div class="video-time" id="videoTime">0:00 / 3:45</div>
                         </div>
                         <div class="video-markers">
@@ -1580,6 +1583,55 @@
         let videoPlaying = false;
         const videoDuration = 225; // 3:45 in seconds
 
+        // Real video player
+        var moduleVideo = null;
+
+        function initializeVideo() {
+            moduleVideo = document.getElementById('moduleVideo');
+            if (moduleVideo) {
+                moduleVideo.addEventListener('timeupdate', function() {
+                    if (!moduleVideo.duration) return;
+                    var minutes = Math.floor(moduleVideo.currentTime / 60);
+                    var seconds = Math.floor(moduleVideo.currentTime % 60);
+                    var dmins = Math.floor(moduleVideo.duration / 60);
+                    var dsecs = Math.floor(moduleVideo.duration % 60);
+                    document.getElementById('videoTime').textContent = minutes + ':' + (seconds<10?'0':'') + seconds + ' / ' + dmins + ':' + (dsecs<10?'0':'') + dsecs;
+                });
+
+                moduleVideo.addEventListener('ended', function() {
+                    setTimeout(function() { nextScreen(); }, 1500);
+                });
+
+                moduleVideo.addEventListener('error', function() {
+                    var wrapper = moduleVideo.parentElement;
+                    if (wrapper) {
+                        var notice = document.createElement('div');
+                        notice.style.cssText = 'text-align:center; padding:32px 16px; color:var(--mut); font:500 14px/1.5 Outfit;';
+                        notice.innerHTML = '🎬 Video coming soon!<br><small>Lesson content is available below</small>';
+                        wrapper.replaceChild(notice, moduleVideo);
+                    }
+                });
+            }
+        }
+
+        function playVid() {
+            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
+            if (!moduleVideo) return;
+            if (moduleVideo.paused) {
+                moduleVideo.play().catch(function(e) { console.log('Video not available yet'); });
+            } else {
+                moduleVideo.pause();
+            }
+        }
+
+        function jumpToMarker(seconds) {
+            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
+            if (moduleVideo) {
+                moduleVideo.currentTime = seconds;
+                moduleVideo.play();
+            }
+        }
+
         // Initialize sidebar navigation
         function initSidebar() {
             const sidebar = document.getElementById('sidebarNav');
@@ -1629,6 +1681,10 @@
             if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(9, currentScreen);
             updateScreen();
             scrollScreenIntoView();
+            // Initialize video if on video screen
+            if (currentScreen === 1) {
+                setTimeout(initializeVideo, 50);
+            }
         }
 
         function nextScreen() {
@@ -1652,38 +1708,10 @@
             content.scrollLeft = 0;
         }
 
-        // Video player functionality
-        document.getElementById('playBtn').addEventListener('click', function() {
-            const player = document.getElementById('videoPlayer');
-            player.classList.add('playing');
-            simulateVideoPlayback();
+        // Video player functionality - initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeVideo();
         });
-
-        function simulateVideoPlayback() {
-            videoPlaying = true;
-            const interval = setInterval(() => {
-                if (videoPlaying && videoTime < videoDuration) {
-                    videoTime++;
-                    updateVideoTime();
-                } else if (videoTime >= videoDuration) {
-                    videoPlaying = false;
-                    clearInterval(interval);
-                }
-            }, 100);
-        }
-
-        function updateVideoTime() {
-            const minutes = Math.floor(videoTime / 60);
-            const seconds = videoTime % 60;
-            const paddedSeconds = seconds.toString().padStart(2, '0');
-            document.getElementById('videoTime').textContent = `${minutes}:${paddedSeconds} / 3:45`;
-        }
-
-        function jumpToMarker(seconds) {
-            videoTime = seconds;
-            updateVideoTime();
-            simulateVideoPlayback();
-        }
 
         // Interactive Statement Builder
         const accountsPool = document.getElementById('accountsPool');

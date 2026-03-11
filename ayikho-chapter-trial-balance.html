@@ -1084,7 +1084,11 @@
                         </div>
                         <div class="content">
                             <div class="video-container">
-                                <div class="video-placeholder">
+                                <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
+                                  style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; display:none;">
+                                  <source src="assets/videos/module-4.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-placeholder" id="videoPlaceholder" onclick="playModuleVideo()">
                                     <div class="play-button">▶</div>
                                     <div class="video-title">Synthesia</div>
                                 </div>
@@ -1757,6 +1761,29 @@
                 goToScreen(currentScreen);
             });
         });
+
+        // ── REAL VIDEO PLAYER (Module 4) ──
+        function playModuleVideo() {
+            var moduleVideo = document.getElementById('moduleVideo');
+            var videoPlaceholder = document.getElementById('videoPlaceholder');
+            if (!moduleVideo) return;
+            if (videoPlaceholder) videoPlaceholder.style.display = 'none';
+            moduleVideo.style.display = 'block';
+            moduleVideo.play().catch(function(e) {
+                console.log('Video not available yet');
+                if (videoPlaceholder) videoPlaceholder.style.display = 'flex';
+                moduleVideo.style.display = 'none';
+            });
+        }
+
+        var moduleVideo = document.getElementById('moduleVideo');
+        if (moduleVideo) {
+            moduleVideo.addEventListener('error', function() {
+                var videoPlaceholder = document.getElementById('videoPlaceholder');
+                if (videoPlaceholder) videoPlaceholder.style.display = 'flex';
+                moduleVideo.style.display = 'none';
+            });
+        }
 
         // Initialize
         initScreen();

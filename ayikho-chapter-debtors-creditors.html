@@ -859,11 +859,13 @@
                     <div class="breadcrumb">1 of 10</div>
                 </div>
                 <div class="screen-content">
-                    <div class="video-placeholder" onclick="alert('🎬 Synthesia Video Placeholder\n\nWhat are Debtors & Creditors?\n→ The Debtors Journal\n→ The Creditors Journal\n→ Recap + Exam Tips')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <div class="video-placeholder">
+                        <video id="moduleVideo" playsinline webkit-playsinline preload="metadata" style="width:100%; border-radius:12px; background:#000; max-height:220px; object-fit:contain;">
+                            <source src="assets/videos/module-6.mp4" type="video/mp4">
+                        </video>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" onclick="playVid()" style="position:absolute;cursor:pointer">
                             <polygon points="5 3 19 12 5 21 5 3"></polygon>
                         </svg>
-                        <div>Click to play video (3:45)</div>
                         <div class="video-timestamp">Synthesia • Financial Accounting</div>
                     </div>
                     <div class="markers-list">
@@ -1384,6 +1386,40 @@
         const MODULE_ID = 6;
         let currentScreen = 0;
         const totalScreens = 11;
+
+        // Real video player
+        var moduleVideo = document.getElementById('moduleVideo');
+        var playButton = null;
+
+        function playVid() {
+            if (!moduleVideo) return;
+            if (moduleVideo.paused) {
+                moduleVideo.play().catch(function(e) { console.log('Video not available yet'); });
+            } else {
+                moduleVideo.pause();
+            }
+        }
+
+        if (moduleVideo) {
+            moduleVideo.addEventListener('timeupdate', function() {
+                if (!moduleVideo.duration) return;
+            });
+
+            moduleVideo.addEventListener('ended', function() {
+                setTimeout(function() { nextScreen ? nextScreen() : goToScreen && goToScreen(currentScreen + 1); }, 1500);
+            });
+
+            // Graceful fallback
+            moduleVideo.addEventListener('error', function() {
+                var wrapper = moduleVideo.parentElement;
+                if (wrapper) {
+                    var notice = document.createElement('div');
+                    notice.style.cssText = 'text-align:center; padding:32px 16px; color:var(--mut); font:500 14px/1.5 Outfit;';
+                    notice.innerHTML = '🎬 Video coming soon!<br><small>Lesson content is available below</small>';
+                    wrapper.replaceChild(notice, moduleVideo);
+                }
+            });
+        }
 
         function updateProgress() {
             const progressPercent = ((currentScreen + 1) / totalScreens) * 100;

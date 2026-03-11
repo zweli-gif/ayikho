@@ -980,6 +980,11 @@
                         <!-- Screen 1: Landoh Video Player -->
                         <div class="screen" data-screen="1">
                             <div class="landoh-video-wrap" id="landohVideo">
+                                <!-- Real video element -->
+                                <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
+                                  style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
+                                  <source src="assets/videos/module-1.mp4" type="video/mp4">
+                                </video>
                                 <!-- Title Card -->
                                 <div class="lv-title-card" id="lvTitle">
                                     <div class="lv-mod-num">Module 1</div>
@@ -1791,6 +1796,25 @@
                 }
             });
             lvOutro.addEventListener('click', () => { nextScreen(); });
+        })();
+
+        // ── REAL VIDEO PLAYER (Module 1) ──
+        (function() {
+            var moduleVideo = document.getElementById('moduleVideo');
+            if (!moduleVideo) return;
+
+            // Show video when lvStartBtn is clicked
+            var originalStartBtn = document.getElementById('lvStartBtn');
+            originalStartBtn.addEventListener('click', function() {
+                setTimeout(() => {
+                    moduleVideo.style.display = 'block';
+                    moduleVideo.play().catch(() => {
+                        // Video not available yet
+                        moduleVideo.parentElement.innerHTML += '<div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--mut); text-align:center; font:500 14px/1.5 Outfit; background:#000; border-radius:12px;">🎬 Video coming soon!<br><small>Lesson content is available below</small></div>';
+                        moduleVideo.style.display = 'none';
+                    });
+                }, 600);
+            });
         })();
 
         function completeCourse() {

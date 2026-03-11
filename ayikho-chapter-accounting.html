@@ -456,6 +456,10 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
   <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:20%;background:var(--fa-l)"></div></div>
   <div class="vid-container">
     <div class="vid-player-wrap">
+      <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
+        style="width:100%; border-radius:12px; background:#000; max-height:220px; object-fit:contain; display:none;">
+        <source src="assets/videos/module-2.mp4" type="video/mp4">
+      </video>
       <div class="vid-thumb">
         <div class="vid-thumb-bg"></div>
         <div class="vid-play-btn" onclick="playVid()"><div class="vid-play-icon">▶</div></div>
@@ -1173,32 +1177,64 @@ function updateSidebar(id) {
   document.querySelectorAll('.si').forEach(el => el.classList.toggle('active', el.dataset.id === id));
 }
 
-// ── VIDEO PLAYER (demo) ──
-let vidPlaying = false, vidProgress = 0, vidInterval;
+// ── REAL VIDEO PLAYER (Module 2) ──
+var moduleVideo = document.getElementById('moduleVideo');
+var vidFill = document.getElementById('vid-fill');
+var vidTime = document.getElementById('vid-time');
+var vidThumb = document.querySelector('.vid-thumb');
+
 function playVid() {
-  vidPlaying = !vidPlaying;
-  if (vidPlaying) {
-    vidInterval = setInterval(() => {
-      vidProgress = Math.min(100, vidProgress + 0.45);
-      document.getElementById('vid-fill').style.width = vidProgress + '%';
-      const total = 222, elapsed = Math.floor(total * vidProgress / 100);
-      const m = Math.floor(elapsed/60), s = elapsed%60;
-      document.getElementById('vid-time').textContent = `${m}:${s.toString().padStart(2,'0')} / 3:42`;
-      // highlight chapter
-      const chapters = document.querySelectorAll('.vc-chapter');
-      const breaks = [0, 32, 55, 81]; // percentages
-      let active = 0;
-      breaks.forEach((b,i) => { if (vidProgress >= b) active = i; });
-      chapters.forEach((c,i) => c.classList.toggle('active', i === active));
-      if (vidProgress >= 100) { clearInterval(vidInterval); vidPlaying = false; }
-    }, 80);
-  } else clearInterval(vidInterval);
+  if (!moduleVideo) return;
+  if (moduleVideo.paused) {
+    if (vidThumb) vidThumb.style.display = 'none';
+    moduleVideo.style.display = 'block';
+    moduleVideo.play().catch(function(e) {
+      console.log('Video not available yet');
+      if (vidThumb) vidThumb.style.display = 'block';
+      moduleVideo.style.display = 'none';
+    });
+  } else {
+    moduleVideo.pause();
+  }
 }
+
+if (moduleVideo) {
+  moduleVideo.addEventListener('timeupdate', function() {
+    if (!moduleVideo.duration) return;
+    var pct = (moduleVideo.currentTime / moduleVideo.duration) * 100;
+    if (vidFill) vidFill.style.width = pct + '%';
+    var cm = Math.floor(moduleVideo.currentTime / 60);
+    var cs = Math.floor(moduleVideo.currentTime % 60);
+    var dm = Math.floor(moduleVideo.duration / 60);
+    var ds = Math.floor(moduleVideo.duration % 60);
+    if (vidTime) vidTime.textContent = cm + ':' + (cs<10?'0':'') + cs + ' / ' + dm + ':' + (ds<10?'0':'') + ds;
+    // Highlight chapter markers
+    var chapters = document.querySelectorAll('.vc-chapter');
+    var breaks = [0, 32, 55, 81]; // percentages
+    var active = 0;
+    breaks.forEach(function(b,i) { if (pct >= b) active = i; });
+    chapters.forEach(function(c,i) { c.classList.toggle('active', i === active); });
+  });
+
+  moduleVideo.addEventListener('ended', function() {
+    setTimeout(function() { goTo && goTo(getNextScreen()); }, 1500);
+  });
+
+  moduleVideo.addEventListener('error', function() {
+    var wrapper = moduleVideo.parentElement;
+    if (wrapper && vidThumb) {
+      vidThumb.style.display = 'block';
+      moduleVideo.style.display = 'none';
+    }
+  });
+}
+
 function seekVid(e) {
-  const bar = e.currentTarget;
-  const rect = bar.getBoundingClientRect();
-  vidProgress = Math.max(0, Math.min(100, (e.clientX - rect.left) / rect.width * 100));
-  document.getElementById('vid-fill').style.width = vidProgress + '%';
+  if (!moduleVideo) return;
+  var bar = e.currentTarget;
+  var rect = bar.getBoundingClientRect();
+  var pct = Math.max(0, Math.min(100, (e.clientX - rect.left) / rect.width * 100));
+  moduleVideo.currentTime = (pct / 100) * moduleVideo.duration;
 }
 
 // ── FORMULA CALCULATOR ──
