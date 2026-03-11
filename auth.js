@@ -9,10 +9,11 @@ let auth = null, recaptchaVerifier = null, confirmationResult = null;
 
 // ── SUPPORTED COUNTRIES ───────────────────────────────
 const COUNTRIES = [
-  { code: "+27",  name: "South Africa", flag: "🇿🇦", digits: 9  },
-  { code: "+233", name: "Ghana",        flag: "🇬🇭", digits: 9  },
+  { code: "+27",  name: "South Africa", flag: "🇿🇦", placeholder: "81 234 5678" },
+  { code: "+233", name: "Ghana",        flag: "🇬🇭", placeholder: "24 123 4567" },
 ];
 
+// ── INIT ──────────────────────────────────────────────
 function initAuth() {
   if (auth) return;
   if (!window.FIREBASE_CONFIG) { console.error("FIREBASE_CONFIG missing"); return; }
@@ -30,15 +31,39 @@ function setupRecaptcha() {
   });
 }
 
-// ── PHONE FORMATTER (SA + Ghana) ──────────────────────
+// ── COUNTRY PICKER ────────────────────────────────────
+// Needs to be on window because the HTML calls onchange="updateCountry()"
+window.updateCountry = function () {
+  const select  = document.getElementById("country-select");
+  if (!select) return;
+
+  const country = COUNTRIES.find(c => c.code === select.value);
+  if (!country) return;
+
+  // Update the prefix badge
+  const pfx = document.getElementById("ph-pfx");
+  if (pfx) pfx.textContent = `${country.flag} ${country.code}`;
+
+  // Update input placeholder and clear any typed value
+  const input = document.getElementById("phone-in");
+  if (input) {
+    input.placeholder = country.placeholder;
+    input.value = "";
+  }
+
+  // Clear any existing error
+  const hint = document.getElementById("phone-hint");
+  if (hint) {
+    hint.innerHTML = "We send a 6-digit code to verify. <strong>No spam ever.</strong>";
+    hint.style.color = "";
+  }
+};
+
+// ── PHONE FORMATTER ───────────────────────────────────
 function formatNumber(raw) {
   const countryCode = document.getElementById("country-select")?.value || "+27";
-  const country = COUNTRIES.find(c => c.code === countryCode);
-  if (!country) return null;
-
   const d = raw.replace(/\D/g, ""); // strip non-digits
 
-  // SA: handle local formats (081... or 81...)
   if (countryCode === "+27") {
     if (d.startsWith("27") && d.length === 11) return "+" + d;
     if (d.startsWith("0")  && d.length === 10) return "+27" + d.slice(1);
@@ -46,7 +71,6 @@ function formatNumber(raw) {
     return null;
   }
 
-  // Ghana: handle local formats (024... or 24...)
   if (countryCode === "+233") {
     if (d.startsWith("233") && d.length === 12) return "+" + d;
     if (d.startsWith("0")   && d.length === 10) return "+233" + d.slice(1);
@@ -62,11 +86,12 @@ window.sendOTP = async function () {
   const input   = document.getElementById("phone-in");
   const btn     = document.getElementById("send-otp-btn");
   const hint    = document.getElementById("phone-hint");
-  const country = COUNTRIES.find(c => c.code === (document.getElementById("country-select")?.value || "+27"));
+  const code    = document.getElementById("country-select")?.value || "+27";
+  const country = COUNTRIES.find(c => c.code === code);
   const phone   = formatNumber(input.value);
 
   if (!phone) {
-    hint.textContent = `Enter a valid ${country.name} number e.g. ${country.code === "+27" ? "081 234 5678" : "024 123 4567"}`;
+    hint.textContent = `Enter a valid ${country.name} number e.g. 0${country.placeholder}`;
     hint.style.color = "var(--rose)";
     return;
   }
@@ -79,7 +104,7 @@ window.sendOTP = async function () {
     setupRecaptcha();
     confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
 
-    // Update OTP screen to show the actual number sent to
+    // Show the number on the OTP screen
     const otpTarget = document.getElementById("otp-sent-to");
     if (otpTarget) otpTarget.textContent = phone;
 
@@ -87,16 +112,16 @@ window.sendOTP = async function () {
     startResendCountdown();
   } catch (err) {
     const m = {
-      "auth/invalid-phone-number":    "That number doesn't look right.",
-      "auth/too-many-requests":       "Too many attempts. Wait a few minutes.",
-      "auth/quota-exceeded":          "SMS limit reached. Try again later.",
-      "auth/network-request-failed":  "No connection. Check your data.",
+      "auth/invalid-phone-number":   "That number doesn't look right.",
+      "auth/too-many-requests":      "Too many attempts. Wait a few minutes.",
+      "auth/quota-exceeded":         "SMS limit reached. Try again later.",
+      "auth/network-request-failed": "No connection. Check your data.",
     };
-    hint.textContent   = m[err.code] || "Something went wrong. Please try again.";
-    hint.style.color   = "var(--rose)";
-    btn.disabled       = false;
-    btn.textContent    = "Send code";
-    recaptchaVerifier  = null;
+    hint.textContent  = m[err.code] || "Something went wrong. Please try again.";
+    hint.style.color  = "var(--rose)";
+    btn.disabled      = false;
+    btn.textContent   = "Send code";
+    recaptchaVerifier = null;
     console.error("sendOTP error:", err.code, err.message);
   }
 };
@@ -148,7 +173,7 @@ function startResendCountdown() {
   }, 1000);
 }
 
-window.resendOTP = async function () {
+window.resendOTP = function () {
   ["o1","o2","o3","o4","o5","o6"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
