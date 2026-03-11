@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayikho · Sign In</title>
+  <meta name="theme-color" content="#09070F">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    :root{
+      --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;
+      --ink:#1A0A3A;--mut:#6B5A8A;--bord:#DDD5F5;
+      --w:#FFFFFF;--bg:#09070F;
+      --green:#22C55E;--rose:#F43F5E;--gold:#F59E0B;
+    }
+    html,body{height:100%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden}
+
+    /* PHONE SHELL */
+    .shell{display:flex;flex-direction:column;align-items:center;gap:16px}
+    .shell-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.15)}
+    .phone{width:375px;height:812px;background:var(--bg);border-radius:50px;overflow:hidden;position:relative;box-shadow:0 0 0 2px #1E1535,0 0 0 4px #130E26,0 50px 100px rgba(0,0,0,.75),0 0 160px rgba(124,58,237,.1)}
+
+    /* STATUS BAR */
+    .sb{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;padding:14px 28px 0;font-size:12px;font-weight:600;color:rgba(255,255,255,.5)}
+
+    /* BACKGROUND ORBS */
+    .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;pointer-events:none}
+    .orb1{width:280px;height:280px;background:var(--p);top:-60px;right:-40px}
+    .orb2{width:200px;height:200px;background:#0284C7;bottom:120px;left:-60px}
+
+    /* CONTENT */
+    .cnt{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:60px 28px 40px}
+    .logo{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--w);line-height:1;margin-top:40px}
+    .logo span{background:linear-gradient(135deg,var(--p),var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .sub{color:rgba(255,255,255,.4);font-size:14px;margin-top:8px;font-weight:400}
+
+    /* FORM */
+    .form{margin-top:36px;display:flex;flex-direction:column;gap:16px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field-lbl{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+    .fi{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--w);font-size:16px;font-family:inherit;outline:none;transition:border-color .2s,background .2s}
+    .fi::placeholder{color:rgba(255,255,255,.25)}
+    .fi:focus{border-color:var(--pl);background:rgba(124,58,237,.08)}
+
+    /* BUTTONS */
+    .btn-p{width:100%;padding:16px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--p),var(--pd));color:var(--w);font-size:17px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s;margin-top:8px}
+    .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,.4)}
+    .btn-p:active{transform:scale(.98)}
+    .btn-p:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+    .btn-ghost{width:100%;padding:14px;border-radius:16px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.6);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:border-color .2s,color .2s}
+    .btn-ghost:hover{border-color:var(--pl);color:var(--w)}
+
+    /* TOGGLE */
+    .toggle{text-align:center;margin-top:16px;font-size:14px;color:rgba(255,255,255,.35)}
+    .toggle a{color:var(--pl);font-weight:600;cursor:pointer;text-decoration:none}
+    .toggle a:hover{text-decoration:underline}
+
+    /* ERROR */
+    .err{color:var(--rose);font-size:13px;font-weight:500;min-height:18px;transition:opacity .2s}
+
+    /* DIVIDER */
+    .divider{display:flex;align-items:center;gap:12px;margin:4px 0}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+    .divider span{font-size:12px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em}
+
+    /* ASHKI */
+    .ashki-wrap{text-align:center;margin-top:auto;padding-top:20px}
+    .ashki-wrap img{width:64px;height:auto;opacity:.7;transition:opacity .3s}
+    .ashki-wrap img:hover{opacity:1}
+    .ashki-tag{font-size:11px;color:rgba(255,255,255,.2);margin-top:4px}
+
+    /* LOADING SPINNER */
+    .spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:var(--w);border-radius:50%;animation:spin .6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .fade-up{animation:fadeUp .5s ease both}
+    .fade-up-d1{animation-delay:.1s}
+    .fade-up-d2{animation-delay:.2s}
+    .fade-up-d3{animation-delay:.3s}
+    .fade-up-d4{animation-delay:.4s}
+
+    /* HIDDEN */
+    .hidden{display:none!important}
+  </style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="shell-lbl">Ayikho · Sign In · Prototype</div>
+  <div class="phone">
+    <div class="sb"><span>21:07</span><span>4G</span></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <!-- ═══ SIGN IN VIEW ═══ -->
+    <div class="cnt" id="view-signin">
+      <div class="logo fade-up"><span>Ayikho.</span></div>
+      <div class="sub fade-up fade-up-d1">Sign in to continue learning</div>
+
+      <div class="form">
+        <div class="field fade-up fade-up-d2">
+          <div class="field-lbl">Username or Email</div>
+          <input class="fi" type="text" placeholder="e.g. zandile@email.com" id="si-user" autocomplete="username">
+        </div>
+        <div class="field fade-up fade-up-d2">
+          <div class="field-lbl">Password</div>
+          <input class="fi" type="password" placeholder="Enter your password" id="si-pass" autocomplete="current-password">
+        </div>
+        <div class="err" id="si-err"></div>
+        <button class="btn-p fade-up fade-up-d3" id="si-btn" onclick="handleSignIn()">Sign In →</button>
+
+        <div class="divider fade-up fade-up-d3"><span>or</span></div>
+        <button class="btn-ghost fade-up fade-up-d4" onclick="skipToPrototype()">Continue as Guest</button>
+      </div>
+
+      <div class="toggle fade-up fade-up-d4">
+        Don't have an account? <a onclick="showView('signup')">Sign Up</a>
+      </div>
+
+      <div class="ashki-wrap fade-up fade-up-d4">
+        <img src="assets/ashki/ashki_master.png" alt="Ashki">
+        <div class="ashki-tag">Ashki says: "Let's go!"</div>
+      </div>
+    </div>
+
+    <!-- ═══ SIGN UP VIEW ═══ -->
+    <div class="cnt hidden" id="view-signup">
+      <div class="logo fade-up"><span>Ayikho.</span></div>
+      <div class="sub fade-up fade-up-d1">Create your free account</div>
+
+      <div class="form">
+        <div class="field fade-up fade-up-d2">
+          <div class="field-lbl">Full Name</div>
+          <input class="fi" type="text" placeholder="e.g. Zandile Mkhize" id="su-name" autocomplete="name">
+        </div>
+        <div class="field fade-up fade-up-d2">
+          <div class="field-lbl">Email</div>
+          <input class="fi" type="email" placeholder="your@email.com" id="su-email" autocomplete="email">
+        </div>
+        <div class="field fade-up fade-up-d2">
+          <div class="field-lbl">Password</div>
+          <input class="fi" type="password" placeholder="Min 8 characters" id="su-pass" autocomplete="new-password">
+        </div>
+        <div class="err" id="su-err"></div>
+        <button class="btn-p fade-up fade-up-d3" id="su-btn" onclick="handleSignUp()">Create Account →</button>
+      </div>
+
+      <div class="toggle fade-up fade-up-d4">
+        Already have an account? <a onclick="showView('signin')">Sign In</a>
+      </div>
+
+      <div class="ashki-wrap fade-up fade-up-d4">
+        <img src="assets/ashki/ashki_master.png" alt="Ashki">
+        <div class="ashki-tag">Join 2,400+ TVET students</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════
+//  VIEW SWITCHING
+// ═══════════════════════════════
+function showView(view) {
+  document.getElementById('view-signin').classList.toggle('hidden', view !== 'signin');
+  document.getElementById('view-signup').classList.toggle('hidden', view !== 'signup');
+  // Clear errors
+  document.getElementById('si-err').textContent = '';
+  document.getElementById('su-err').textContent = '';
+}
+
+// ═══════════════════════════════
+//  SIGN IN (Firebase email/password)
+// ═══════════════════════════════
+async function handleSignIn() {
+  const user = document.getElementById('si-user').value.trim();
+  const pass = document.getElementById('si-pass').value;
+  const errEl = document.getElementById('si-err');
+  const btn = document.getElementById('si-btn');
+
+  errEl.textContent = '';
+
+  if (!user) { errEl.textContent = 'Please enter your username or email.'; return; }
+  if (!pass) { errEl.textContent = 'Please enter your password.'; return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+
+  try {
+    // Try Firebase auth if available
+    if (window.ayikhoAuth && window.ayikhoAuth.signIn) {
+      await window.ayikhoAuth.signIn(user, pass);
+    }
+    // Success — go to prototype
+    window.location.href = 'ayikho-prototype.html';
+  } catch (e) {
+    // For prototype demo: accept any credentials
+    console.log('Auth not configured, proceeding in demo mode:', e.message || e);
+    window.location.href = 'ayikho-prototype.html';
+  }
+}
+
+// ═══════════════════════════════
+//  SIGN UP (Firebase create user)
+// ═══════════════════════════════
+async function handleSignUp() {
+  const name = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const pass = document.getElementById('su-pass').value;
+  const errEl = document.getElementById('su-err');
+  const btn = document.getElementById('su-btn');
+
+  errEl.textContent = '';
+
+  if (!name) { errEl.textContent = 'Please enter your name.'; return; }
+  if (!email) { errEl.textContent = 'Please enter your email.'; return; }
+  if (!pass || pass.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+
+  try {
+    if (window.ayikhoAuth && window.ayikhoAuth.createUser) {
+      await window.ayikhoAuth.createUser(email, pass, name);
+    }
+    window.location.href = 'ayikho-prototype.html';
+  } catch (e) {
+    console.log('Auth not configured, proceeding in demo mode:', e.message || e);
+    window.location.href = 'ayikho-prototype.html';
+  }
+}
+
+// ═══════════════════════════════
+//  GUEST MODE
+// ═══════════════════════════════
+function skipToPrototype() {
+  window.location.href = 'ayikho-prototype.html';
+}
+
+// ═══════════════════════════════
+//  ENTER KEY SUPPORT
+// ═══════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (!document.getElementById('view-signin').classList.contains('hidden')) {
+      handleSignIn();
+    } else {
+      handleSignUp();
+    }
+  }
+});
+</script>
+
+</body>
+</html>
