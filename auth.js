@@ -42,7 +42,9 @@ function initAuth() {
 }
 
 function setupRecaptcha() {
+  if (!auth) return;
   if (recaptchaVerifier) return;
+
   recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
     size: "invisible",
     callback: () => {},
@@ -120,8 +122,17 @@ window.sendOTP = async function () {
 
   try {
     initAuth();
-    setupRecaptcha();
-    confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
+
+if (!auth) {
+  hint.textContent = "Authentication service unavailable. Please refresh the page.";
+  hint.style.color = "var(--rose)";
+  btn.disabled = false;
+  btn.textContent = "Send code";
+  return;
+}
+
+setupRecaptcha();
+confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
 
     // Show the number on the OTP screen
     const otpTarget = document.getElementById("otp-sent-to");
