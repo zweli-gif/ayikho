@@ -27,12 +27,18 @@ const FIREBASE_CONFIG = {
 function initAuth() {
   if (auth) return;
 
-  const app = getApps().length === 0
-    ? initializeApp(FIREBASE_CONFIG)
-    : getApps()[0];
+  try {
+    const app = getApps().length === 0
+      ? initializeApp(FIREBASE_CONFIG)
+      : getApps()[0];
 
-  auth = getAuth(app);
-  auth.languageCode = "en";
+    auth = getAuth(app);
+    auth.languageCode = "en";
+
+  } catch (err) {
+    console.error("Firebase init failed:", err);
+    auth = null;
+  }
 }
 
 function setupRecaptcha() {
