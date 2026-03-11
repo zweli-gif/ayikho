@@ -90,7 +90,7 @@
 <body>
 
 <div class="shell">
-  <div class="shell-lbl">Ayikho · Sign In · Prototype</div>
+  <div class="shell-lbl">Ayikho · Sign In</div>
   <div class="phone">
     <div class="sb"><span>21:07</span><span>4G</span></div>
     <div class="orb orb1"></div>
@@ -197,11 +197,11 @@ async function handleSignIn() {
       await window.ayikhoAuth.signIn(user, pass);
     }
     // Success — go to prototype
-    window.location.href = 'ayikho-prototype.html';
+    window.location.href = 'app.html';
   } catch (e) {
     // For prototype demo: accept any credentials
     console.log('Auth not configured, proceeding in demo mode:', e.message || e);
-    window.location.href = 'ayikho-prototype.html';
+    window.location.href = 'app.html';
   }
 }
 
@@ -228,10 +228,10 @@ async function handleSignUp() {
     if (window.ayikhoAuth && window.ayikhoAuth.createUser) {
       await window.ayikhoAuth.createUser(email, pass, name);
     }
-    window.location.href = 'ayikho-prototype.html';
+    window.location.href = 'app.html';
   } catch (e) {
     console.log('Auth not configured, proceeding in demo mode:', e.message || e);
-    window.location.href = 'ayikho-prototype.html';
+    window.location.href = 'app.html';
   }
 }
 
@@ -239,7 +239,7 @@ async function handleSignUp() {
 //  GUEST MODE
 // ═══════════════════════════════
 function skipToPrototype() {
-  window.location.href = 'ayikho-prototype.html';
+  window.location.href = 'app.html';
 }
 
 // ═══════════════════════════════
