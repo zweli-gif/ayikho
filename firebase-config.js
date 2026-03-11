@@ -4,7 +4,7 @@
 // Replace these values with your Firebase project config
 // Get them from: Firebase Console → Project Settings → Web app
 
-const FIREBASE_CONFIG = {
+window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyD89f-i_3zvhICBMw2E7nQRjjLGyyLGDkU",
   authDomain: "ayikho-tvet.firebaseapp.com",
   projectId: "ayikho-tvet",
