@@ -1323,5 +1323,18 @@ function answerQ(qNum, chosen, result) {
   document.getElementById('ws-score').textContent = `${scores.correct}/3`;
 }
 </script>
+  <script>
+function goTo(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+</script>
 </body>
 </html>
+
+
