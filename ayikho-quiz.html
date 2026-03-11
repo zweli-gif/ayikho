@@ -808,8 +808,22 @@
       quizAnswers = [];
 
       // Load quiz data from quiz-bank.js if available
-      if (typeof window.quizBank !== 'undefined' && window.quizBank[moduleId]) {
-        currentQuizData = window.quizBank[moduleId].slice(0, 15);
+      if (typeof window.AYIKHO_QUIZ_BANK !== 'undefined' && window.AYIKHO_QUIZ_BANK[moduleId]) {
+        const bankModule = window.AYIKHO_QUIZ_BANK[moduleId];
+        // Map bank format {q, options, correct} → quiz format {question, options, correctIndex, explanation}
+        const allQuestions = bankModule.questions.map((item, idx) => ({
+          id: idx + 1,
+          question: item.q,
+          options: item.options,
+          correctIndex: item.correct,
+          explanation: item.explanation || ''
+        }));
+        // Shuffle and pick 15
+        for (let i = allQuestions.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
+        }
+        currentQuizData = allQuestions.slice(0, 15);
       } else {
         // Fallback: generate demo questions
         currentQuizData = generateDemoQuestions(moduleId);

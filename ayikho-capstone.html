@@ -1958,7 +1958,7 @@
     function selectAnswer(qIndex, value, type) {
       examState.answers[qIndex] = value;
 
-      if (type === 'mcq' || type === 'truefalse' || type === 'fillin' || type === 'calculation' || type === 'bank_recon') {
+      if (['mcq', 'truefalse', 'fillin', 'calculation', 'bank_recon', 'matching', 'ordering', 'journal', 'trial_balance', 'financial_statement'].includes(type)) {
         // Immediately check correctness
         const section = examState.currentSection;
         const question = window.AYIKHO_CAPSTONE_BANK[section].questions[qIndex];
@@ -1978,6 +1978,7 @@
     }
 
     function isAnswerCorrect(question, answer, type) {
+      if (answer === undefined || answer === null) return false;
       switch(type) {
         case 'mcq':
           return answer === question.correct;
@@ -1987,14 +1988,78 @@
           if (question.validate) {
             return question.validate(answer);
           }
-          return answer.trim() === String(question.correct).trim();
-        case 'calculation':
+          return String(answer).trim() === String(question.correct).trim();
+        case 'calculation': {
           const numAnswer = parseFloat(answer);
           const tolerance = question.tolerance || 0;
           return Math.abs(numAnswer - question.correct) <= tolerance;
-        case 'bank_recon':
+        }
+        case 'bank_recon': {
           const numAns = parseFloat(answer);
           return Math.abs(numAns - question.expectedBalance) <= 1;
+        }
+        case 'matching': {
+          // answer = { leftIdx: rightIdx, ... }
+          if (!answer || typeof answer !== 'object') return false;
+          const pairs = question.pairs;
+          let allCorrect = true;
+          for (let i = 0; i < pairs.length; i++) {
+            if (answer[i] === undefined || answer[i] !== i) {
+              // Pairs are in correct order in data: left[i] matches right[i]
+              // But UI shuffles the right side, so check by matching text
+              // Actually the right side is displayed in original order,
+              // so correct mapping is left[i] → right[i] (index i → i)
+              allCorrect = false;
+              break;
+            }
+          }
+          return allCorrect;
+        }
+        case 'ordering': {
+          // answer = array of indices representing current order
+          if (!Array.isArray(answer)) return false;
+          const correctOrder = question.correctOrder;
+          if (answer.length !== correctOrder.length) return false;
+          return answer.every((val, idx) => val === correctOrder[idx]);
+        }
+        case 'journal': {
+          // answer = array of { account, debit, credit } entries
+          if (!Array.isArray(answer)) return false;
+          const expected = question.expectedEntries;
+          const tol = question.tolerance || 1;
+          if (answer.length !== expected.length) return false;
+          // Check each expected entry exists in answer
+          return expected.every(exp => {
+            return answer.some(a =>
+              a.account === exp.account &&
+              Math.abs((parseFloat(a.debit) || 0) - exp.debit) <= tol &&
+              Math.abs((parseFloat(a.credit) || 0) - exp.credit) <= tol
+            );
+          });
+        }
+        case 'trial_balance': {
+          // answer = { accountName: { debit: val, credit: val }, ... }
+          if (!answer || typeof answer !== 'object') return false;
+          const accounts = question.accounts;
+          return accounts.filter(a => !a.prefilled).every(acc => {
+            const ans = answer[acc.name];
+            if (!ans) return false;
+            const dTol = 1;
+            return Math.abs((parseFloat(ans.debit) || 0) - acc.expectedDebit) <= dTol &&
+                   Math.abs((parseFloat(ans.credit) || 0) - acc.expectedCredit) <= dTol;
+          });
+        }
+        case 'financial_statement': {
+          // answer = { zoneName: [itemId, ...], ... }
+          if (!answer || typeof answer !== 'object') return false;
+          const expected = question.expectedZones;
+          for (const zone in expected) {
+            const expectedItems = expected[zone];
+            const answerItems = answer[zone] || [];
+            if (!expectedItems.every(id => answerItems.includes(id))) return false;
+          }
+          return true;
+        }
       }
       return false;
     }
