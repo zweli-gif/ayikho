@@ -3,7 +3,7 @@
  * Supports: South Africa (+27) and Ghana (+233)
  */
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 let auth = null, recaptchaVerifier = null, confirmationResult = null;
 
@@ -40,7 +40,28 @@ function initAuth() {
     auth = null;
   }
 }
+window.signInWithGoogle = async function () {
 
+  initAuth();
+
+  const provider = new GoogleAuthProvider();
+
+  try {
+
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    console.log("Google user:", user.email);
+
+    goTo("s-name");
+
+  } catch (err) {
+
+    console.error("Google login failed:", err);
+
+  }
+
+};
 function setupRecaptcha() {
   if (!auth) return;
   if (recaptchaVerifier) return;
