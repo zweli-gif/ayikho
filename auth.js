@@ -1,11 +1,14 @@
 /**
- * auth.js - Ayikho Firebase Phone Authentication
+ * auth.js - Ayikho Firebase Email/Password Authentication (using Phone)
  * Supports: South Africa (+27) and Ghana (+233)
  */
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-let auth = null, recaptchaVerifier = null, confirmationResult = null;
+let auth = null;
+let regPhone = "";
+let regPass = "";
+let loginPhone = "";
 
 // ── SUPPORTED COUNTRIES ───────────────────────────────
 const COUNTRIES = [
@@ -26,209 +29,215 @@ const FIREBASE_CONFIG = {
 
 function initAuth() {
   if (auth) return;
-
   try {
-    const app = getApps().length === 0
-      ? initializeApp(FIREBASE_CONFIG)
-      : getApps()[0];
-
+    const app = getApps().length === 0 ? initializeApp(FIREBASE_CONFIG) : getApps()[0];
     auth = getAuth(app);
     auth.languageCode = "en";
-
   } catch (err) {
     console.error("Firebase init failed:", err);
     auth = null;
   }
 }
+
 window.signInWithGoogle = async function () {
-
   initAuth();
-
   const provider = new GoogleAuthProvider();
-
   try {
-
     const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    console.log("Google user:", user.email);
-
+    console.log("Google user:", result.user.email);
     goTo("s-name");
-
   } catch (err) {
-
     console.error("Google login failed:", err);
-
   }
-
 };
-function setupRecaptcha() {
-  if (!auth) return;
-  if (recaptchaVerifier) return;
 
-  recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-    size: "invisible",
-    callback: () => {},
-    "expired-callback": () => { recaptchaVerifier = null; }
-  });
-}
-
-// ── COUNTRY PICKER ────────────────────────────────────
-// Needs to be on window because the HTML calls onchange="updateCountry()"
+// ── UI HELPERS ────────────────────────────────────
 window.updateCountry = function () {
-  const select  = document.getElementById("country-select");
+  const select = document.getElementById("country-select");
   if (!select) return;
-
   const country = COUNTRIES.find(c => c.code === select.value);
   if (!country) return;
-
-  // Update the prefix badge
-  const pfx = document.getElementById("ph-pfx");
-  if (pfx) pfx.textContent = `${country.flag} ${country.code}`;
-
-  // Update input placeholder and clear any typed value
+  document.getElementById("ph-pfx").textContent = `${country.flag} ${country.code}`;
   const input = document.getElementById("phone-in");
-  if (input) {
-    input.placeholder = country.placeholder;
-    input.value = "";
-  }
-
-  // Clear any existing error
-  const hint = document.getElementById("phone-hint");
-  if (hint) {
-    hint.innerHTML = "We send a 6-digit code to verify. <strong>No spam ever.</strong>";
-    hint.style.color = "";
-  }
+  input.placeholder = country.placeholder;
+  input.value = "";
+  document.getElementById("phone-hint").innerHTML = "We need a valid phone number.";
+  document.getElementById("phone-hint").style.color = "";
 };
 
-// ── PHONE FORMATTER ───────────────────────────────────
-function formatNumber(raw) {
-  const countryCode = document.getElementById("country-select")?.value || "+27";
-  const d = raw.replace(/\D/g, ""); // strip non-digits
+window.updateLoginCountry = function () {
+  const select = document.getElementById("login-country-select");
+  if (!select) return;
+  const country = COUNTRIES.find(c => c.code === select.value);
+  if (!country) return;
+  document.getElementById("login-ph-pfx").textContent = `${country.flag} ${country.code}`;
+  const input = document.getElementById("login-phone-in");
+  input.placeholder = country.placeholder;
+  input.value = "";
+};
 
+function formatNumber(raw, isLogin = false) {
+  const countryCode = document.getElementById(isLogin ? "login-country-select" : "country-select")?.value || "+27";
+  const d = raw.replace(/\D/g, "");
   if (countryCode === "+27") {
     if (d.startsWith("27") && d.length === 11) return "+" + d;
-    if (d.startsWith("0")  && d.length === 10) return "+27" + d.slice(1);
-    if (d.length === 9)                         return "+27" + d;
-    return null;
-  }
-
-  if (countryCode === "+233") {
+    if (d.startsWith("0") && d.length === 10) return "+27" + d.slice(1);
+    if (d.length === 9) return "+27" + d;
+  } else if (countryCode === "+233") {
     if (d.startsWith("233") && d.length === 12) return "+" + d;
-    if (d.startsWith("0")   && d.length === 10) return "+233" + d.slice(1);
-    if (d.length === 9)                          return "+233" + d;
-    return null;
+    if (d.startsWith("0") && d.length === 10) return "+233" + d.slice(1);
+    if (d.length === 9) return "+233" + d;
   }
-
   return null;
 }
 
-// ── SEND OTP ──────────────────────────────────────────
-window.sendOTP = async function () {
-  const input   = document.getElementById("phone-in");
-  const btn     = document.getElementById("send-otp-btn");
-  const hint    = document.getElementById("phone-hint");
-  const code    = document.getElementById("country-select")?.value || "+27";
-  const country = COUNTRIES.find(c => c.code === code);
-  const phone   = formatNumber(input.value);
+// Transform phone to pseudo-email
+function toEmail(phone) {
+  return phone.replace("+", "") + "@ayikho.app";
+}
 
+// ── REGISTRATION FLOW ──────────────────────────────────────────
+window.checkPhoneFlow1 = function () {
+  const input = document.getElementById("phone-in");
+  const hint = document.getElementById("phone-hint");
+  const phone = formatNumber(input.value);
   if (!phone) {
-    hint.textContent = `Enter a valid ${country.name} number e.g. 0${country.placeholder}`;
+    hint.textContent = "Enter a valid cell number.";
     hint.style.color = "var(--rose)";
     return;
   }
+  regPhone = phone;
+  document.getElementById("phone-confirm-in").value = "";
+  document.getElementById("phoneMatchError").style.display = "none";
+  goTo("s-phone-confirm");
+};
 
-  btn.disabled = true; btn.textContent = "Sending...";
-  hint.textContent = ""; hint.style.color = "";
+window.checkPhoneFlow2 = function () {
+  const confirmInput = document.getElementById("phone-confirm-in").value;
+  const phone2 = formatNumber(confirmInput);
+  if (!phone2 || phone2 !== regPhone) {
+    document.getElementById("phoneMatchError").style.display = "block";
+    return;
+  }
+  document.getElementById("phoneMatchError").style.display = "none";
+  document.getElementById("pass-in").value = "";
+  document.getElementById("pass-hint").textContent = "Must be at least 8 characters with 1 number.";
+  document.getElementById("pass-hint").style.color = "";
+  goTo("s-password");
+};
+
+window.checkPassStrength = function () {
+  const val = document.getElementById("pass-in").value;
+  const hint = document.getElementById("pass-hint");
+  const hasNum = /\d/.test(val);
+  if (val.length >= 8 && hasNum) {
+    hint.innerHTML = "Good password. You're ready to go.";
+    hint.style.color = "var(--green)";
+    return true;
+  } else {
+    hint.innerHTML = "Must be at least 8 characters with 1 number.";
+    hint.style.color = "var(--rose)";
+    return false;
+  }
+};
+
+window.checkPassFlow1 = function () {
+  if (window.checkPassStrength()) {
+    regPass = document.getElementById("pass-in").value;
+    document.getElementById("pass-confirm-in").value = "";
+    document.getElementById("passMatchError").style.display = "none";
+    goTo("s-password-confirm");
+  }
+};
+
+window.registerUser = async function () {
+  const confirmPass = document.getElementById("pass-confirm-in").value;
+  if (confirmPass !== regPass) {
+    document.getElementById("passMatchError").style.display = "block";
+    return;
+  }
+  document.getElementById("passMatchError").style.display = "none";
+  const btn = document.getElementById("register-btn");
+  btn.disabled = true;
+  btn.textContent = "Creating account...";
 
   try {
     initAuth();
-
-if (!auth) {
-  hint.textContent = "Authentication service unavailable. Please refresh the page.";
-  hint.style.color = "var(--rose)";
-  btn.disabled = false;
-  btn.textContent = "Send code";
-  return;
-}
-
-setupRecaptcha();
-confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
-
-    // Show the number on the OTP screen
-    const otpTarget = document.getElementById("otp-sent-to");
-    if (otpTarget) otpTarget.textContent = phone;
-
-    goTo("s-otp");
-    startResendCountdown();
-  } catch (err) {
-    const m = {
-      "auth/invalid-phone-number":   "That number doesn't look right.",
-      "auth/too-many-requests":      "Too many attempts. Wait a few minutes.",
-      "auth/quota-exceeded":         "SMS limit reached. Try again later.",
-      "auth/network-request-failed": "No connection. Check your data.",
-    };
-    hint.textContent  = m[err.code] || "Something went wrong. Please try again.";
-    hint.style.color  = "var(--rose)";
-    btn.disabled      = false;
-    btn.textContent   = "Send code";
-    recaptchaVerifier = null;
-    console.error("sendOTP error:", err.code, err.message);
-  }
-};
-
-// ── VERIFY OTP ────────────────────────────────────────
-window.verifyOTP = async function () {
-  const btn  = document.getElementById("verify-otp-btn");
-  const hint = document.getElementById("otp-hint");
-  const code = ["o1","o2","o3","o4","o5","o6"]
-    .map(id => (document.getElementById(id)?.value || "").trim())
-    .join("");
-
-  if (code.length < 6) {
-    hint.textContent = "Enter all 6 digits from your SMS.";
-    hint.style.color = "var(--rose)";
-    return;
-  }
-
-  btn.disabled = true; btn.textContent = "Verifying...";
-  hint.textContent = ""; hint.style.color = "";
-
-  try {
-    if (!confirmationResult) throw new Error("auth/session-expired");
-    await confirmationResult.confirm(code);
+    if (!auth) throw new Error("Auth service unavailable");
+    const email = toEmail(regPhone);
+    const uc = await createUserWithEmailAndPassword(auth, email, regPass);
+    console.log("User registered:", uc.user.email);
+    // On success, jump to name
+    // save the phone in window so student-data can access it later if needed
+    window.__tempPhone = regPhone;
     goTo("s-name");
   } catch (err) {
-    const m = {
-      "auth/invalid-verification-code": "Wrong code. Check the SMS and try again.",
-      "auth/code-expired":              "Code expired. Go back and request a new one.",
-      "auth/session-expired":           "Session expired. Go back and request a new code.",
-    };
-    hint.textContent = m[err.code] || m[err.message] || "Verification failed. Try again.";
-    hint.style.color = "var(--rose)";
-    btn.disabled     = false;
-    btn.textContent  = "Verify";
+    console.error("Register err:", err);
+    if (err.code === "auth/email-already-in-use") {
+      document.getElementById("passMatchError").textContent = "Account already exists. Try logging in instead.";
+    } else {
+      document.getElementById("passMatchError").textContent = "Error: " + err.message;
+    }
+    document.getElementById("passMatchError").style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Register →";
   }
 };
 
-// ── RESEND ────────────────────────────────────────────
-function startResendCountdown() {
-  const hint = document.getElementById("otp-hint");
-  let s = 60;
-  const t = setInterval(() => {
-    s--;
-    if (hint) hint.innerHTML = s > 0
-      ? `Didn't get it? <strong>Resend in 0:${String(s).padStart(2,"0")}</strong>`
-      : `Didn't get it? <strong style='cursor:pointer;color:var(--p)' onclick='resendOTP()'>Resend now</strong>`;
-    if (s <= 0) clearInterval(t);
-  }, 1000);
-}
-
-window.resendOTP = function () {
-  ["o1","o2","o3","o4","o5","o6"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = "";
-  });
-  document.getElementById("o1")?.focus();
+// ── LOGIN FLOW ──────────────────────────────────────────
+window.switchToLogin = function () {
+  goTo("s-login-phone");
+};
+window.switchToRegister = function () {
   goTo("s-phone");
+};
+
+window.checkLoginPhoneStr = function () {
+  const input = document.getElementById("login-phone-in");
+  const phone = formatNumber(input.value, true);
+  if (!phone) {
+    input.style.borderColor = "var(--rose)";
+    return;
+  }
+  input.style.borderColor = "";
+  loginPhone = phone;
+  document.getElementById("login-disp-phone").textContent = loginPhone;
+  document.getElementById("login-pass-in").value = "";
+  document.getElementById("login-hint").textContent = "";
+  goTo("s-login-password");
+};
+
+window.loginUser = async function () {
+  const pass = document.getElementById("login-pass-in").value;
+  const hint = document.getElementById("login-hint");
+  if (!pass) return;
+
+  const btn = document.getElementById("login-btn");
+  btn.disabled = true;
+  btn.textContent = "Logging in...";
+  hint.textContent = "";
+
+  try {
+    initAuth();
+    if (!auth) throw new Error("Auth service unavailable");
+    const email = toEmail(loginPhone);
+    await signInWithEmailAndPassword(auth, email, pass);
+    console.log("User logged in:", email);
+    
+    // Store phone globally so student-data etc knows
+    window.__tempPhone = loginPhone;
+
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage('onboardingComplete', '*');
+      try { if (window.parent.onboardingComplete) window.parent.onboardingComplete(); } catch (e) {}
+    } else {
+      window.location.href = 'ayikho-chapter-home.html';
+    }
+  } catch (err) {
+    console.error("Login err:", err);
+    hint.textContent = "Incorrect password or account not found.";
+    btn.disabled = false;
+    btn.textContent = "Log in →";
+  }
 };

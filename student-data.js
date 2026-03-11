@@ -28,6 +28,7 @@ class AyikhoStudentData {
       userId: localStorage.getItem('ayikho_userId') || this._generateId(),
       profile: {
         name: '',
+        province: '',
         college: '',
         phone: '',
         currentMark: 0,
@@ -37,11 +38,11 @@ class AyikhoStudentData {
       onboardingComplete: false,
       // Per-module progress
       modules: {
-        1:  this._defaultModule(), 2:  this._defaultModule(),
-        3:  this._defaultModule(), 4:  this._defaultModule(),
-        5:  this._defaultModule(), 6:  this._defaultModule(),
-        7:  this._defaultModule(), 8:  this._defaultModule(),
-        9:  this._defaultModule(), 10: this._defaultModule()
+        1: this._defaultModule(), 2: this._defaultModule(),
+        3: this._defaultModule(), 4: this._defaultModule(),
+        5: this._defaultModule(), 6: this._defaultModule(),
+        7: this._defaultModule(), 8: this._defaultModule(),
+        9: this._defaultModule(), 10: this._defaultModule()
       },
       // Global stats
       stats: {

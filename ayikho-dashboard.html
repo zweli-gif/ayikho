@@ -1,170 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayikho — Your Progress Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         :root {
-            --p: #7C3AED; --pl: #9D5FFF; --pd: #4C1A99;
-            --pxs: #F5F0FF; --psm: #EDE8FF;
-            --fa: #0284C7; --fa-l: #38BDF8; --fa-d: #075985;
-            --fa-xs: #F0F9FF; --fa-sm: #E0F2FE;
-            --gold: #F59E0B; --green: #22C55E; --rose: #F43F5E;
-            --ink: #1A0A3A; --mut: #6B5A8A; --dim: #9580B8;
-            --bord: #DDD5F5; --surf: #F7F4FF; --w: #FFFFFF;
+            --p: #7C3AED;
+            --pl: #9D5FFF;
+            --pd: #4C1A99;
+            --pxs: #F5F0FF;
+            --psm: #EDE8FF;
+            --fa: #0284C7;
+            --fa-l: #38BDF8;
+            --fa-d: #075985;
+            --fa-xs: #F0F9FF;
+            --fa-sm: #E0F2FE;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --rose: #F43F5E;
+            --ink: #1A0A3A;
+            --mut: #6B5A8A;
+            --dim: #9580B8;
+            --bord: #DDD5F5;
+            --surf: #F7F4FF;
+            --w: #FFFFFF;
         }
 
-        body { font-family: 'Outfit', sans-serif; background: #05090F; color: var(--ink); overflow: hidden; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #05090F;
+            color: var(--ink);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
-        .phone-frame { width: 375px; height: 812px; background: var(--w); border-radius: 50px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--w);
+            border-radius: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
         /* STATUS BAR */
-        .status-bar { height: 48px; background: var(--fa); color: var(--w); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
-        
-        .progress-strip { height: 3px; background: var(--bord); }
-        .progress-fill { height: 100%; background: var(--fa); width: 100%; }
+        .status-bar {
+            height: 48px;
+            background: var(--fa);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .progress-strip {
+            height: 3px;
+            background: var(--bord);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--fa);
+            width: 100%;
+        }
 
         /* HEADER */
-        .dark-header { background: var(--ink); color: var(--w); padding: 28px 20px 24px; border-radius: 0 0 24px 24px; position: relative; overflow: hidden; }
-        .dark-header::before { content:''; position:absolute; top:-50px; right:-50px; width:150px; height:150px; border-radius:50%; background:radial-gradient(circle, rgba(2,132,199,0.2), transparent 70%); }
-        .dark-header h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; line-height: 1.2; margin-bottom: 4px; position: relative; z-index: 1; }
-        .dark-header p { font-size: 13px; color: rgba(255,255,255,0.6); position: relative; z-index: 1; }
+        .dark-header {
+            background: var(--ink);
+            color: var(--w);
+            padding: 28px 20px 24px;
+            border-radius: 0 0 24px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(2, 132, 199, 0.2), transparent 70%);
+        }
+
+        .dark-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dark-header p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            position: relative;
+            z-index: 1;
+        }
 
         /* TOP STATS ROW */
-        .stats-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; position: relative; z-index: 1; }
-        .stat-box { flex: 1; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; text-align: center; }
-        .stat-value { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; display: block; margin-bottom: 2px; line-height: 1; }
-        .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 2px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
         /* SCROLLABLE BODY */
-        .screen-body { flex: 1; padding: 20px; overflow-y: auto; background: var(--w); }
-        .screen-body::-webkit-scrollbar { display: none; }
+        .screen-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--w);
+        }
+
+        .screen-body::-webkit-scrollbar {
+            display: none;
+        }
 
         /* EXAM REMINDER WIDGET */
-        .reminder-card { background: linear-gradient(135deg, var(--gold) 0%, #FBBF24 100%); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2); }
-        .reminder-icon { background: rgba(255,255,255,0.3); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-        .reminder-info { flex: 1; }
-        .reminder-title { font-weight: 700; font-size: 14px; color: #78350F; margin-bottom: 2px; }
-        .reminder-countdown { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: #92400E; text-transform: uppercase; }
-        .reminder-btn { background: #78350F; color: var(--w); border: none; border-radius: 8px; padding: 8px 12px; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; transition: transform 0.2s; }
-        .reminder-btn:active { transform: scale(0.95); }
+        .reminder-card {
+            background: linear-gradient(135deg, var(--gold) 0%, #FBBF24 100%);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+        }
+
+        .reminder-icon {
+            background: rgba(255, 255, 255, 0.3);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .reminder-info {
+            flex: 1;
+        }
+
+        .reminder-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #78350F;
+            margin-bottom: 2px;
+        }
+
+        .reminder-countdown {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: #92400E;
+            text-transform: uppercase;
+        }
+
+        .reminder-btn {
+            background: #78350F;
+            color: var(--w);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .reminder-btn:active {
+            transform: scale(0.95);
+        }
 
         /* SECTIONS */
-        .section-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
-        .section-sub { font-size: 12px; color: var(--mut); margin-bottom: 12px; }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .section-sub {
+            font-size: 12px;
+            color: var(--mut);
+            margin-bottom: 12px;
+        }
 
         /* ZERO STATE (Day 0) */
-        .zero-state { text-align: center; padding: 30px 20px; background: var(--surf); border: 2px dashed var(--bord); border-radius: 16px; margin-bottom: 24px; }
-        .zero-icon { font-size: 48px; margin-bottom: 12px; }
-        .zero-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 8px; }
-        .zero-desc { font-size: 13px; color: var(--mut); line-height: 1.5; margin-bottom: 20px; }
-        .btn-start { background: var(--p); color: var(--w); border: none; width: 100%; padding: 14px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-        .btn-start:hover { background: var(--pd); }
+        .zero-state {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--surf);
+            border: 2px dashed var(--bord);
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .zero-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .zero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .zero-desc {
+            font-size: 13px;
+            color: var(--mut);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-start {
+            background: var(--p);
+            color: var(--w);
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-start:hover {
+            background: var(--pd);
+        }
 
         /* MODULE PROGRESS BARS */
-        .progress-container { background: var(--w); border: 1px solid var(--bord); border-radius: 16px; padding: 16px; margin-bottom: 24px; }
-        .mod-row { margin-bottom: 14px; }
-        .mod-row:last-child { margin-bottom: 0; }
-        .mod-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; }
-        .mod-name { font-weight: 600; color: var(--ink); }
-        .mod-time { font-family: 'JetBrains Mono', monospace; color: var(--mut); font-size: 10px; }
-        .mod-track { height: 6px; background: var(--fa-xs); border-radius: 100px; overflow: hidden; display: flex; }
-        .mod-fill { height: 100%; border-radius: 100px; }
-        .fill-done { background: var(--green); }
-        .fill-active { background: var(--fa); }
+        .progress-container {
+            background: var(--w);
+            border: 1px solid var(--bord);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .mod-row {
+            margin-bottom: 14px;
+        }
+
+        .mod-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .mod-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .mod-name {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .mod-time {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--mut);
+            font-size: 10px;
+        }
+
+        .mod-track {
+            height: 6px;
+            background: var(--fa-xs);
+            border-radius: 100px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .mod-fill {
+            height: 100%;
+            border-radius: 100px;
+        }
+
+        .fill-done {
+            background: var(--green);
+        }
+
+        .fill-active {
+            background: var(--fa);
+        }
 
         /* WEAK SPOTS */
-        .weak-spot { background: #FFF1F2; border-left: 4px solid var(--rose); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
-        .ws-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        .ws-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: var(--rose); text-transform: uppercase; }
-        .ws-action { font-size: 11px; font-weight: 700; color: var(--rose); cursor: pointer; }
-        .ws-q { font-size: 13px; color: var(--ink); line-height: 1.4; font-weight: 500; }
+        .weak-spot {
+            background: #FFF1F2;
+            border-left: 4px solid var(--rose);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+        }
+
+        .ws-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .ws-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--rose);
+            text-transform: uppercase;
+        }
+
+        .ws-action {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--rose);
+            cursor: pointer;
+        }
+
+        .ws-q {
+            font-size: 13px;
+            color: var(--ink);
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        /* WHATSAPP TOGGLE */
+        .wa-setting {
+            background: var(--w);
+            border: 1px solid var(--bord);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .wa-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            padding-right: 16px;
+        }
+
+        .wa-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wa-desc {
+            font-size: 11px;
+            color: var(--mut);
+            line-height: 1.4;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked+.slider {
+            background-color: #25D366;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
 
         /* BOTTOM NAV */
-        .bottom-nav { height: 64px; background: var(--w); border-top: 1px solid var(--bord); display: flex; justify-content: space-around; align-items: center; flex-shrink: 0; padding-bottom: 8px; }
-        .bn-item { display: flex; flex-direction: column; align-items: center; gap: 4px; opacity: 0.4; cursor: pointer; }
-        .bn-item.active { opacity: 1; }
-        .bn-icon { font-size: 20px; }
-        .bn-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink); }
-        .bn-item.active .bn-label { color: var(--fa); }
+        .bottom-nav {
+            height: 64px;
+            background: var(--w);
+            border-top: 1px solid var(--bord);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-shrink: 0;
+            padding-bottom: 8px;
+        }
+
+        .bn-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.4;
+            cursor: pointer;
+        }
+
+        .bn-item.active {
+            opacity: 1;
+        }
+
+        .bn-icon {
+            font-size: 20px;
+        }
+
+        .bn-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--ink);
+        }
+
+        .bn-item.active .bn-label {
+            color: var(--fa);
+        }
     </style>
 </head>
+
 <body>
 
-<div class="phone-frame">
-    <div class="status-bar">
-        <span>21:07</span>
-        <span>Ayikho Dashboard</span>
-    </div>
-    <div class="progress-strip"><div class="progress-fill"></div></div>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span>21:07</span>
+            <span>Ayikho Dashboard</span>
+        </div>
+        <div class="progress-strip">
+            <div class="progress-fill"></div>
+        </div>
 
-    <div class="dark-header">
-        <h1 id="user-greeting">Your Progress</h1>
-        <p>Financial Accounting N4</p>
-        <div class="stats-row" id="stats-row">
+        <div class="dark-header">
+            <h1 id="user-greeting">Your Progress</h1>
+            <p>Financial Accounting N4</p>
+            <div class="stats-row" id="stats-row">
             </div>
+        </div>
+
+        <div class="screen-body" id="dashboard-content">
+        </div>
+
+        <div class="bottom-nav">
+            <div class="bn-item" onclick="goHome()">
+                <div class="bn-icon">📚</div>
+                <div class="bn-label">Learn</div>
+            </div>
+            <div class="bn-item active">
+                <div class="bn-icon">📊</div>
+                <div class="bn-label">Progress</div>
+            </div>
+            <div class="bn-item">
+                <div class="bn-icon">🏆</div>
+                <div class="bn-label">Badges</div>
+            </div>
+            <div class="bn-item">
+                <div class="bn-icon">👤</div>
+                <div class="bn-label">Profile</div>
+            </div>
+        </div>
     </div>
 
-    <div class="screen-body" id="dashboard-content">
-        </div>
-
-    <div class="bottom-nav">
-        <div class="bn-item" onclick="goHome()">
-            <div class="bn-icon">📚</div>
-            <div class="bn-label">Learn</div>
-        </div>
-        <div class="bn-item active">
-            <div class="bn-icon">📊</div>
-            <div class="bn-label">Progress</div>
-        </div>
-        <div class="bn-item">
-            <div class="bn-icon">🏆</div>
-            <div class="bn-label">Badges</div>
-        </div>
-        <div class="bn-item">
-            <div class="bn-icon">👤</div>
-            <div class="bn-label">Profile</div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Navigation back to home inside the prototype shell
-    function goHome() {
-        if (window.parent && window.parent !== window) {
-            window.parent.postMessage({ type: 'goHome' }, '*');
-        } else {
-            window.location.href = 'ayikho-chapter-home.html';
-        }
-    }
-
-    // Exam Date Generator (Mocks a date ~45 days from today for realism)
-    function getDaysToExam() {
-        const today = new Date();
-        const examDate = new Date(today);
-        examDate.setDate(today.getDate() + 42); // 6 weeks away
-        
-        const diffTime = Math.abs(examDate - today);
-        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    }
-
-    function renderDashboard() {
-        // 1. Fetch data from persistence layer
-        let data = { totalXP: 0, streakDays: 0, avgScore: 0, completedCount: 0, moduleStats: [], weakSpots: [] };
-        if (window.ayikhoData) {
-            data = window.ayikhoData.getDashboardData();
+    <script>
+        // Navigation back to home inside the prototype shell
+        function goHome() {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'goHome' }, '*');
+            } else {
+                window.location.href = 'ayikho-chapter-home.html';
+            }
         }
 
-        const hasProgress = data.completedCount > 0 || data.totalTimeMs > 0;
-        const daysToExam = getDaysToExam();
+        // Exam Date Generator (Mocks a date ~45 days from today for realism)
+        function getDaysToExam() {
+            const today = new Date();
+            const examDate = new Date(today);
+            examDate.setDate(today.getDate() + 42); // 6 weeks away
 
-        // 2. Render Top Stats
-        const statsRow = document.getElementById('stats-row');
-        statsRow.innerHTML = `
+            const diffTime = Math.abs(examDate - today);
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function renderDashboard() {
+            // 1. Fetch data from persistence layer
+            let data = { totalXP: 0, streakDays: 0, avgScore: 0, completedCount: 0, moduleStats: [], weakSpots: [] };
+            if (window.ayikhoData) {
+                data = window.ayikhoData.getDashboardData();
+            }
+
+            const hasProgress = data.completedCount > 0 || data.totalTimeMs > 0;
+            const daysToExam = getDaysToExam();
+
+            // 2. Render Top Stats
+            const statsRow = document.getElementById('stats-row');
+            statsRow.innerHTML = `
             <div class="stat-box">
                 <span class="stat-value" style="color:var(--fa-l)">${data.totalXP}</span>
                 <span class="stat-label" style="color:var(--fa-xs)">XP Earned</span>
@@ -179,19 +602,30 @@
             </div>
         `;
 
-        // 3. Render Main Content
-        const content = document.getElementById('dashboard-content');
-        let html = '';
+            // 3. Render Main Content
+            const content = document.getElementById('dashboard-content');
+            let html = '';
 
-        // -- SMART PER-MODULE REMINDERS --
-        html += `<div class="section-title">Your Smart Plan</div>
+            // -- PRO UPGRADE BANNER --
+            html += `
+                <div style="background:linear-gradient(135deg, var(--ink), #2D3748); border-radius:16px; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; box-shadow:0 10px 25px rgba(0,0,0,0.15); cursor:pointer;" onclick="window.location.href='ayikho-pro.html'">
+                    <div>
+                       <div style="color:var(--gold); font-weight:800; font-family:'Playfair Display',serif; font-size:18px; margin-bottom:4px;">Ayikho Pro</div>
+                       <div style="color:rgba(255,255,255,0.7); font-size:11px;">Unlock 100% of your potential.</div>
+                    </div>
+                    <div style="background:var(--gold); color:#78350F; font-size:11px; font-weight:800; padding:6px 12px; border-radius:100px;">UPGRADE</div>
+                </div>
+            `;
+
+            // -- SMART PER-MODULE REMINDERS --
+            html += `<div class="section-title">Your Smart Plan</div>
                  <div class="section-sub">What you need to focus on today</div>`;
 
-        let remindersAdded = 0;
-        // 1. Check for modules in progress
-        const inProgress = data.moduleStats.filter(m => m.status === 'in_progress');
-        inProgress.forEach(mod => {
-            html += `
+            let remindersAdded = 0;
+            // 1. Check for modules in progress
+            const inProgress = data.moduleStats.filter(m => m.status === 'in_progress');
+            inProgress.forEach(mod => {
+                html += `
                 <div class="reminder-card" style="background: linear-gradient(135deg, var(--fa) 0%, var(--fa-l) 100%); margin-bottom: 12px;">
                     <div class="reminder-icon">▶️</div>
                     <div class="reminder-info">
@@ -201,14 +635,14 @@
                     <button class="reminder-btn" style="background: var(--ink); color: white;" onclick="goHome()">Continue</button>
                 </div>
             `;
-            remindersAdded++;
-        });
+                remindersAdded++;
+            });
 
-        // 2. Check for weak spots (scored below 60% on post-quiz)
-        const weakModules = data.moduleStats.filter(m => m.status === 'completed' && m.postQuiz.total > 0 && (m.postQuiz.score / m.postQuiz.total) < 0.6);
-        weakModules.forEach(mod => {
-            if (remindersAdded >= 3) return; // Keep UI clean
-            html += `
+            // 2. Check for weak spots (scored below 60% on post-quiz)
+            const weakModules = data.moduleStats.filter(m => m.status === 'completed' && m.postQuiz.total > 0 && (m.postQuiz.score / m.postQuiz.total) < 0.6);
+            weakModules.forEach(mod => {
+                if (remindersAdded >= 3) return; // Keep UI clean
+                html += `
                 <div class="reminder-card" style="background: linear-gradient(135deg, var(--rose) 0%, #FB7185 100%); margin-bottom: 12px; box-shadow: 0 8px 24px rgba(244, 63, 94, 0.2);">
                     <div class="reminder-icon">⚠️</div>
                     <div class="reminder-info">
@@ -218,12 +652,12 @@
                     <button class="reminder-btn" style="background: #BE123C; color: white;" onclick="goHome()">Retake</button>
                 </div>
             `;
-            remindersAdded++;
-        });
+                remindersAdded++;
+            });
 
-        // 3. Exam countdown (if no urgent module reminders)
-        if (remindersAdded === 0) {
-            html += `
+            // 3. Exam countdown (if no urgent module reminders)
+            if (remindersAdded === 0) {
+                html += `
                 <div class="reminder-card">
                     <div class="reminder-icon">⏰</div>
                     <div class="reminder-info">
@@ -233,12 +667,12 @@
                     <button class="reminder-btn" onclick="window.location.href='ayikho-practice-exam.html'">Simulate Exam</button>
                 </div>
             `;
-        }
+            }
 
-        html += `<div style="margin-bottom: 24px;"></div>`;
-        if (!hasProgress) {
-            // -- DAY 0: EMPTY STATE --
-            html += `
+            html += `<div style="margin-bottom: 24px;"></div>`;
+            if (!hasProgress) {
+                // -- DAY 0: EMPTY STATE --
+                html += `
                 <div class="zero-state">
                     <div class="zero-icon">🌱</div>
                     <div class="zero-title">Your journey starts here</div>
@@ -246,30 +680,30 @@
                     <button class="btn-start" onclick="goHome()">Start Module 1 →</button>
                 </div>
             `;
-        } else {
-            // -- ACTIVE USER: SHOW STATS --
-            
-            // Time & Module Progress
-            html += `
+            } else {
+                // -- ACTIVE USER: SHOW STATS --
+
+                // Time & Module Progress
+                html += `
                 <div class="section-title">Study Time</div>
                 <div class="section-sub">Where you've spent your effort</div>
                 <div class="progress-container">
             `;
 
-            // Sort modules by time spent, show top 4
-            const sortedModules = [...data.moduleStats]
-                .filter(m => m.timeMs > 0 || m.status === 'completed')
-                .sort((a, b) => b.timeMs - a.timeMs)
-                .slice(0, 4);
+                // Sort modules by time spent, show top 4
+                const sortedModules = [...data.moduleStats]
+                    .filter(m => m.timeMs > 0 || m.status === 'completed')
+                    .sort((a, b) => b.timeMs - a.timeMs)
+                    .slice(0, 4);
 
-            const maxTime = Math.max(...sortedModules.map(m => m.timeMs), 60000); // Prevent div by 0
+                const maxTime = Math.max(...sortedModules.map(m => m.timeMs), 60000); // Prevent div by 0
 
-            sortedModules.forEach(mod => {
-                const pct = Math.max(5, (mod.timeMs / maxTime) * 100);
-                const colorClass = mod.status === 'completed' ? 'fill-done' : 'fill-active';
-                const timeText = mod.timeMin > 0 ? `${mod.timeMin} min` : '< 1 min';
-                
-                html += `
+                sortedModules.forEach(mod => {
+                    const pct = Math.max(5, (mod.timeMs / maxTime) * 100);
+                    const colorClass = mod.status === 'completed' ? 'fill-done' : 'fill-active';
+                    const timeText = mod.timeMin > 0 ? `${mod.timeMin} min` : '< 1 min';
+
+                    html += `
                     <div class="mod-row">
                         <div class="mod-top">
                             <span class="mod-name">M${mod.id}: ${mod.name.split(' ')[0]}</span>
@@ -280,20 +714,20 @@
                         </div>
                     </div>
                 `;
-            });
+                });
 
-            html += `</div>`;
+                html += `</div>`;
 
-            // Weak Spots (If they got quiz questions wrong)
-            if (data.weakSpots && data.weakSpots.length > 0) {
-                html += `
+                // Weak Spots (If they got quiz questions wrong)
+                if (data.weakSpots && data.weakSpots.length > 0) {
+                    html += `
                     <div class="section-title">⚠️ Weak Spots to Revise</div>
                     <div class="section-sub">Concepts you missed in recent quizzes</div>
                 `;
 
-                // Show last 3 weak spots
-                data.weakSpots.slice(-3).reverse().forEach(spot => {
-                    html += `
+                    // Show last 3 weak spots
+                    data.weakSpots.slice(-3).reverse().forEach(spot => {
+                        html += `
                         <div class="weak-spot">
                             <div class="ws-top">
                                 <span class="ws-tag">Module ${spot.moduleId}</span>
@@ -302,26 +736,74 @@
                             <div class="ws-q">"${spot.questionText}"</div>
                         </div>
                     `;
-                });
-            }
+                    });
+                }
 
-            // Next Action Button
-            html += `
+                // Next Action Button
+                html += `
                 <div style="margin-top: 24px;">
                     <button class="btn-start" onclick="goHome()">Continue Studying →</button>
                 </div>
             `;
+            }
+
+            // WhatsApp Notification Setting
+            html += `
+            <div class="section-title" style="margin-top: 28px;">Settings</div>
+            <div class="section-sub">Manage your account preferences</div>
+            <div class="wa-setting">
+                <div class="wa-info">
+                    <div class="wa-title"><span style="color:#25D366; font-size:16px;">💬</span> WhatsApp Reminders</div>
+                    <div class="wa-desc">Get nudges and study plans sent straight to your phone.</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="wa-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <button class="btn-start" style="margin-top: 12px; background:var(--ink);" onclick="saveSettings()">Save Settings</button>
+            <div style="margin-bottom: 30px;"></div>
+        `;
+
+            content.innerHTML = html;
         }
 
-        content.innerHTML = html;
-    }
+        function saveSettings() {
+            const isEnabled = document.getElementById('wa-toggle').checked;
+            if (isEnabled) {
+                let phoneStr = "[phone number]";
+                if (window.ayikhoData) {
+                    phoneStr = window.ayikhoData.getProfile().phone || phoneStr;
+                } else {
+                    try {
+                        const stored = JSON.parse(localStorage.getItem('ayikho_student'));
+                        if (stored && stored.profile && stored.profile.phone) {
+                            phoneStr = stored.profile.phone;
+                        }
+                    } catch (e) { }
+                }
+                console.log(`WhatsApp webhook triggered for user ${phoneStr} - Next session scheduled for tomorrow.`);
+            }
 
-    // Wait for the mock DB script to finish loading, then render
-    document.addEventListener('DOMContentLoaded', () => {
-        // slight delay to ensure window.ayikhoData is attached
-        setTimeout(renderDashboard, 100);
-    });
-</script>
+            const btn = document.querySelector('button[onclick="saveSettings()"]');
+            if (btn) {
+                const oldText = btn.textContent;
+                btn.textContent = "Saved!";
+                btn.style.background = "var(--green)";
+                setTimeout(() => {
+                    btn.textContent = oldText;
+                    btn.style.background = "var(--ink)";
+                }, 2000);
+            }
+        }
+
+        // Wait for the mock DB script to finish loading, then render
+        document.addEventListener('DOMContentLoaded', () => {
+            // slight delay to ensure window.ayikhoData is attached
+            setTimeout(renderDashboard, 100);
+        });
+    </script>
 
 </body>
+
 </html>

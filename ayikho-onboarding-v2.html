@@ -1781,16 +1781,17 @@
     .si.active::before {
       background: var(--pl)
     }
-    btn-google{
-      width:100%;
-      padding:14px;
-      border-radius:10px;
-      border:none;
-      background:#ffffff;
-      color:#333;
-      font-weight:600;
-      box-shadow:0 2px 6px rgba(0,0,0,0.15);
-      cursor:pointer;
+
+    btn-google {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: #ffffff;
+      color: #333;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
     }
   </style>
 </head>
@@ -1832,68 +1833,177 @@
    S02: PHONE
 ══════════════════════════════ -->
         <div class="screen" id="s-phone">
-  <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-  <div class="gp">
-    <div class="gp-fill" style="width:6%"></div>
-  </div>
-  <div class="shd">
-    <div class="step-tag">Step 1 of 13</div>
-    <div class="h1">What's your<br>cell number?</div>
-    <div class="sub">Your number is your account. Study reminders arrive via SMS.</div>
-  </div>
-  <div class="scr">
-    <div style="padding:20px 24px 0">
-      <div class="field">
-        <div class="field-lbl">Country</div>
-        <select class="fi" id="country-select" onchange="updateCountry()" style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
-          <option value="+27"  data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦  South Africa  (+27)</option>
-          <option value="+233" data-flag="🇬🇭" data-placeholder="24 555 0147">🇬🇭  Ghana  (+233)</option>
-        </select>
-        <div class="field-lbl">Cell number</div>
-        <div class="ph-row">
-          <div class="ph-pfx" id="ph-pfx">🇿🇦 +27</div>
-          <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-in" maxlength="12">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:6%"></div>
+          </div>
+          <div class="shd">
+            <div class="step-tag">Step 1 of 13</div>
+            <div class="h1">What's your<br>cell number?</div>
+            <div class="sub">We use this to keep your progress safe.</div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Country</div>
+                <select class="fi" id="country-select" onchange="window.updateCountry()"
+                  style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+                  <option value="+27" data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦 South Africa (+27)</option>
+                  <option value="+233" data-flag="🇬🇭" data-placeholder="24 123 4567">🇬🇭 Ghana (+233)</option>
+                </select>
+                <div class="field-lbl">Cell number</div>
+                <div class="ph-row">
+                  <div class="ph-pfx" id="ph-pfx">🇿🇦 +27</div>
+                  <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-in" maxlength="12">
+                </div>
+              </div>
+              <div class="hint" id="phone-hint">We need a valid phone number.</div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" onclick="window.checkPhoneFlow1()">Continue →</button>
+            <div style="text-align:center; margin-top:16px; font-size:14px; color:var(--mut);">
+              Already have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
+                onclick="window.switchToLogin()">Log in</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="hint" id="phone-hint">We send a 6-digit code to verify. <strong>No spam ever.</strong></div>
-    </div>
-  </div>
-  <div class="foot">
-    <button class="btn btn-p" id="send-otp-btn" onclick="sendOTP()">Send code →</button>
-  </div>
-  <!-- Firebase Recaptcha Container -->
-  <div id="recaptcha-container" style="display:none;"></div>
-</div>
 
-        <!-- ══════════════════════════════
-   S03: OTP
-══════════════════════════════ -->
-        <div class="screen" id="s-otp">
-  <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-  <div class="gp">
-    <div class="gp-fill" style="width:12%"></div>
-  </div>
-  <div class="shd">
-    <div class="step-tag">Step 2 of 13</div>
-    <div class="h1">Enter your<br>6-digit code</div>
-    <!-- ↓ id added so sendOTP() can write the real number in here -->
-    <div class="sub">Sent to <strong style="color:var(--p)" id="otp-sent-to">your number</strong> via SMS</div>
-  </div>
-  <div class="scr">
-    <div style="padding:4px 24px 0">
-      <div class="otp-row">
-        <input class="otp-b" type="number" maxlength="1" id="o1" inputmode="numeric" oninput="otp(this,'o2')">
-        <input class="otp-b" type="number" maxlength="1" id="o2" inputmode="numeric" oninput="otp(this,'o3')">
-        <input class="otp-b" type="number" maxlength="1" id="o3" inputmode="numeric" oninput="otp(this,'o4')">
-        <input class="otp-b" type="number" maxlength="1" id="o4" inputmode="numeric" oninput="otp(this,'o5')">
-        <input class="otp-b" type="number" maxlength="1" id="o5" inputmode="numeric" oninput="otp(this,'o6')">
-        <input class="otp-b" type="number" maxlength="1" id="o6" inputmode="numeric" oninput="otp(this,null)">
-      </div>
-      <div class="hint" id="otp-hint">Didn't get it? <strong>Resend in 0:55</strong></div>
-    </div>
-  </div>
-  <div class="foot"><button class="btn btn-p" id="verify-otp-btn" onclick="verifyOTP()">Verify →</button></div>
-</div>
+        <div class="screen" id="s-phone-confirm">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:8%"></div>
+          </div>
+          <div class="shd">
+            <div class="step-tag">Step 1 of 13</div>
+            <div class="h1">Confirm your<br>number</div>
+            <div class="sub">Just to be sure we've got it right.</div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Try entering it again</div>
+                <input class="fi" type="tel" placeholder="Cell number" id="phone-confirm-in" maxlength="12">
+                <div class="field-error" id="phoneMatchError"
+                  style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
+                  Phone numbers don't match — please check.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" onclick="window.checkPhoneFlow2()">Continue →</button>
+            <button class="btn btn-ghost" onclick="goTo('s-phone')">Back</button>
+          </div>
+        </div>
+
+        <div class="screen" id="s-password">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:10%"></div>
+          </div>
+          <div class="shd">
+            <div class="step-tag">Step 2 of 13</div>
+            <div class="h1">Create a<br>password</div>
+            <div class="sub">This keeps your account secure.</div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Password</div>
+                <input class="fi" type="password" placeholder="Min 8 chars, 1 number" id="pass-in"
+                  oninput="window.checkPassStrength()">
+                <div class="hint" id="pass-hint" style="text-align:left">Must be at least 8 characters with 1 number.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" onclick="window.checkPassFlow1()">Continue →</button>
+          </div>
+        </div>
+
+        <div class="screen" id="s-password-confirm">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:12%"></div>
+          </div>
+          <div class="shd">
+            <div class="step-tag">Step 2 of 13</div>
+            <div class="h1">Confirm your<br>password</div>
+            <div class="sub">Almost done. Type it one more time.</div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Re-enter password</div>
+                <input class="fi" type="password" placeholder="Password again" id="pass-confirm-in">
+                <div class="field-error" id="passMatchError"
+                  style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
+                  Passwords don't match.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" id="register-btn" onclick="window.registerUser()">Register →</button>
+            <button class="btn btn-ghost" onclick="goTo('s-password')">Back</button>
+          </div>
+        </div>
+
+        <!-- LOGIN FLOW -->
+        <div class="screen" id="s-login-phone">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="shd">
+            <div class="h1">Welcome back</div>
+            <div class="sub">Log in to pick up where you left off.</div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Country</div>
+                <select class="fi" id="login-country-select" onchange="window.updateLoginCountry()"
+                  style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+                  <option value="+27" data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦 South Africa (+27)</option>
+                  <option value="+233" data-flag="🇬🇭" data-placeholder="24 123 4567">🇬🇭 Ghana (+233)</option>
+                </select>
+                <div class="field-lbl">Cell number</div>
+                <div class="ph-row">
+                  <div class="ph-pfx" id="login-ph-pfx">🇿🇦 +27</div>
+                  <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="login-phone-in" maxlength="12">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" onclick="window.checkLoginPhoneStr()">Next →</button>
+            <div style="text-align:center; margin-top:16px; font-size:14px; color:var(--mut);">
+              Don't have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
+                onclick="window.switchToRegister()">Sign up</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen" id="s-login-password">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="shd">
+            <div class="h1">Enter password</div>
+            <div class="sub">For <strong id="login-disp-phone">your number</strong></div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Password</div>
+                <input class="fi" type="password" placeholder="Password" id="login-pass-in">
+                <div class="hint" id="login-hint" style="text-align:left; color:var(--rose)"></div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" id="login-btn" onclick="window.loginUser()">Log in →</button>
+            <button class="btn btn-ghost" onclick="goTo('s-login-phone')">Back</button>
+          </div>
+        </div>
         <!-- ══════════════════════════════
    S04: NAME + AGE
 ══════════════════════════════ -->
@@ -1942,19 +2052,46 @@
           <div class="scr">
             <div style="padding:18px 24px 0">
               <div class="field">
-                <div class="field-lbl">College / TVET name</div><input class="fi" type="text"
-                  placeholder="e.g. Ekurhuleni West TVET College">
-              </div>
-              <div class="field">
-                <div class="field-lbl">Current semester</div>
-                <select class="fi" style="cursor:pointer">
-                  <option>Semester 1 (Jan – June)</option>
-                  <option selected>Semester 2 (Jul – Nov)</option>
+                <div class="field-lbl">Province</div>
+                <select class="fi" id="provinceSelect" onchange="window.filterColleges()"
+                  style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+                  <option value="" disabled selected>Select your province</option>
+                  <option value="Eastern Cape">Eastern Cape</option>
+                  <option value="Free State">Free State</option>
+                  <option value="Gauteng">Gauteng</option>
+                  <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                  <option value="Limpopo">Limpopo</option>
+                  <option value="Mpumalanga">Mpumalanga</option>
+                  <option value="Northern Cape">Northern Cape</option>
+                  <option value="North West">North West</option>
+                  <option value="Western Cape">Western Cape</option>
                 </select>
               </div>
+              <div class="field" id="collegeFieldWrap"
+                style="display:none; margin-top:14px; animation: slideDown 0.3s ease;">
+                <div class="field-lbl">College</div>
+                <select class="fi" id="collegeSelect" onchange="window.enableCollegeBtn()"
+                  style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+                  <option value="" disabled selected>Select your college</option>
+                </select>
+              </div>
+              <style>
+                @keyframes slideDown {
+                  from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                  }
+
+                  to {
+                    opacity: 1;
+                    transform: translateY(0);
+                  }
+                }
+              </style>
             </div>
           </div>
-          <div class="foot"><button class="btn btn-p" onclick="goTo('s-programme')">Continue →</button></div>
+          <div class="foot"><button class="btn btn-p" id="college-btn" disabled
+              onclick="window.saveCollegeAndContinue()">Continue →</button></div>
         </div>
 
         <!-- ══════════════════════════════
@@ -2824,6 +2961,56 @@
       },
     };
 
+    const TVET_COLLEGES = {
+      'Eastern Cape': ['Buffalo City TVET College', 'Eastcape Midlands TVET College', 'Ikhala TVET College', 'Ingwe TVET College', 'King Hintsa TVET College', 'King Sabata Dalindyebo TVET College', 'Lovedale TVET College', 'Port Elizabeth TVET College'],
+      'Free State': ['Flavius Mareka TVET College', 'Goldfields TVET College', 'Maluti TVET College', 'Motheo TVET College'],
+      'Gauteng': ['Central Johannesburg TVET College', 'Ekurhuleni East TVET College', 'Ekurhuleni West TVET College', 'Sedibeng TVET College', 'South West Gauteng TVET College', 'Tshwane North TVET College', 'Tshwane South TVET College', 'Western College for TVET'],
+      'KwaZulu-Natal': ['Coastal KZN TVET College', 'Elangeni TVET College', 'Esayidi TVET College', 'Majuba TVET College', 'Mnambithi TVET College', 'Mthashana TVET College', 'Nongoma TVET College', 'Thekwini TVET College', 'Umfolozi TVET College', 'Umgungundlovu TVET College'],
+      'Limpopo': ['Capricorn TVET College', 'Lephalale TVET College', 'Letaba TVET College', 'Mopani South East TVET College', 'Sekhukhune TVET College', 'Vhembe TVET College', 'Waterberg TVET College'],
+      'Mpumalanga': ['Ehlanzeni TVET College', 'Gert Sibande TVET College', 'Nkangala TVET College'],
+      'Northern Cape': ['Northern Cape Rural TVET College', 'Northern Cape Urban TVET College'],
+      'North West': ['Orbit TVET College', 'Taletso TVET College', 'Vuselela TVET College'],
+      'Western Cape': ['Boland TVET College', 'College of Cape Town', 'False Bay TVET College', 'Northlink TVET College', 'South Cape TVET College', 'West Coast TVET College']
+    };
+
+    window.filterColleges = function () {
+      const p = document.getElementById('provinceSelect').value;
+      const cSel = document.getElementById('collegeSelect');
+      const wrap = document.getElementById('collegeFieldWrap');
+      const btn = document.getElementById('college-btn');
+
+      cSel.innerHTML = '<option value="" disabled selected>Select your college</option>';
+      btn.disabled = true;
+
+      if (p && TVET_COLLEGES[p]) {
+        TVET_COLLEGES[p].forEach(coll => {
+          const opt = document.createElement('option');
+          opt.value = opt.textContent = coll;
+          cSel.appendChild(opt);
+        });
+        wrap.style.display = 'block';
+      } else {
+        wrap.style.display = 'none';
+      }
+    };
+
+    window.enableCollegeBtn = function () {
+      if (document.getElementById('collegeSelect').value) {
+        document.getElementById('college-btn').disabled = false;
+      }
+    };
+
+    window.saveCollegeAndContinue = function () {
+      const p = document.getElementById('provinceSelect').value;
+      const c = document.getElementById('collegeSelect').value;
+      if (p && c) {
+        // We will store this in student-data profile when submitting or just globally for now
+        window.__tempProvince = p;
+        window.__tempCollege = c;
+        goTo('s-programme');
+      }
+    };
+
     // ═══════════════════════════════════════════════
     // STATE
     // ═══════════════════════════════════════════════
@@ -2833,11 +3020,12 @@
     let marksSubjIdx = 0;
 
     const SCREEN_ORDER = [
-      's-welcome', 's-phone', 's-otp', 's-name', 's-college',
+      's-welcome', 's-phone', 's-phone-confirm', 's-password', 's-password-confirm', 's-name', 's-college',
       's-programme', 's-subjects',
       's-goal', 's-studytime',
       's-q1', 's-q2', 's-q3', 's-q4',
-      's-profile', 's-examdates', 's-download', 's-done'
+      's-profile', 's-examdates', 's-download', 's-done',
+      's-login-phone', 's-login-password'
     ];
 
     // ═══════════════════════════════════════════════
@@ -2873,8 +3061,8 @@
     // ═══════════════════════════════════════════════
     const SIDEBAR_ITEMS = [
       { id: 's-welcome', label: 'Welcome' },
-      { id: 's-phone', label: 'Phone number' },
-      { id: 's-otp', label: 'OTP verify' },
+      { id: 's-phone', label: 'Registration Phone' },
+      { id: 's-password', label: 'Registration Password' },
       { id: 's-name', label: 'Name + Age' },
       { id: 's-college', label: 'College' },
       { id: 's-programme', label: 'Programme picker' },
@@ -2889,6 +3077,8 @@
       { id: 's-examdates', label: 'Exam dates' },
       { id: 's-download', label: 'Download' },
       { id: 's-done', label: 'All done!' },
+      { id: 's-login-phone', label: 'Login Phone' },
+      { id: 's-login-password', label: 'Login Password' },
     ];
     (function buildSidebar() {
       const sb = document.getElementById('sidebar');
@@ -3367,21 +3557,22 @@
 
     // Default demo state
     selectProg('business');
-</script>
+  </script>
 
-<script>
-window.FIREBASE_CONFIG = {
-  apiKey: "AIzaSyD89f-i_3zvhICBMw2E7nQRjjLGyyLGDkU",
-  authDomain: "ayikho-tvet.firebaseapp.com",
-  projectId: "ayikho-tvet",
-  storageBucket: "ayikho-tvet.firebasestorage.app",
-  messagingSenderId: "1079346801243",
-  appId: "1:1079346801243:web:a209ebcdfc5cf94b342d7e",
-  measurementId: "G-6CT6LLSZ12"
-};
-</script>
+  <script>
+    window.FIREBASE_CONFIG = {
+      apiKey: "AIzaSyD89f-i_3zvhICBMw2E7nQRjjLGyyLGDkU",
+      authDomain: "ayikho-tvet.firebaseapp.com",
+      projectId: "ayikho-tvet",
+      storageBucket: "ayikho-tvet.firebasestorage.app",
+      messagingSenderId: "1079346801243",
+      appId: "1:1079346801243:web:a209ebcdfc5cf94b342d7e",
+      measurementId: "G-6CT6LLSZ12"
+    };
+  </script>
 
-<script type="module" src="auth.js"></script>
+  <script type="module" src="auth.js"></script>
 
 </body>
+
 </html>
