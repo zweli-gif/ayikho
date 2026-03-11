@@ -1819,63 +1819,68 @@
    S02: PHONE
 ══════════════════════════════ -->
         <div class="screen" id="s-phone">
-          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="gp">
-            <div class="gp-fill" style="width:6%"></div>
-          </div>
-          <div class="shd">
-            <div class="step-tag">Step 1 of 13</div>
-            <div class="h1">What's your<br>cell number?</div>
-            <div class="sub">Your number is your account. Study reminders arrive via SMS.</div>
-          </div>
-          <div class="scr">
-            <div style="padding:20px 24px 0">
-              <div class="field">
-                <div class="field-lbl">Cell number</div>
-                <div class="ph-row">
-                  <div class="ph-pfx">🇿🇦 +27</div>
-                  <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-in" maxlength="12">
-                </div>
-              </div>
-              <div class="hint" id="phone-hint">We send a 6-digit code to verify. <strong>No spam ever.</strong></div>
-            </div>
-          </div>
-          <div class="foot">
-            <button class="btn btn-p" id="send-otp-btn" onclick="sendOTP()">Send code →</button>
-          </div>
-          <!-- Firebase Recaptcha Container -->
-          <div id="recaptcha-container" style="display:none;"></div>
+  <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp">
+    <div class="gp-fill" style="width:6%"></div>
+  </div>
+  <div class="shd">
+    <div class="step-tag">Step 1 of 13</div>
+    <div class="h1">What's your<br>cell number?</div>
+    <div class="sub">Your number is your account. Study reminders arrive via SMS.</div>
+  </div>
+  <div class="scr">
+    <div style="padding:20px 24px 0">
+      <div class="field">
+        <div class="field-lbl">Country</div>
+        <select class="fi" id="country-select" onchange="updateCountry()" style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+          <option value="+27"  data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦  South Africa  (+27)</option>
+          <option value="+233" data-flag="🇬🇭" data-placeholder="24 555 0147">🇬🇭  Ghana  (+233)</option>
+        </select>
+        <div class="field-lbl">Cell number</div>
+        <div class="ph-row">
+          <div class="ph-pfx" id="ph-pfx">🇿🇦 +27</div>
+          <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-in" maxlength="12">
         </div>
+      </div>
+      <div class="hint" id="phone-hint">We send a 6-digit code to verify. <strong>No spam ever.</strong></div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-p" id="send-otp-btn" onclick="sendOTP()">Send code →</button>
+  </div>
+  <!-- Firebase Recaptcha Container -->
+  <div id="recaptcha-container" style="display:none;"></div>
+</div>
 
         <!-- ══════════════════════════════
    S03: OTP
 ══════════════════════════════ -->
         <div class="screen" id="s-otp">
-          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="gp">
-            <div class="gp-fill" style="width:12%"></div>
-          </div>
-          <div class="shd">
-            <div class="step-tag">Step 2 of 13</div>
-            <div class="h1">Enter your<br>6-digit code</div>
-            <div class="sub">Sent to <strong style="color:var(--p)">+27 81 234 5678</strong> via SMS</div>
-          </div>
-          <div class="scr">
-            <div style="padding:4px 24px 0">
-              <div class="otp-row">
-                <input class="otp-b" type="number" maxlength="1" id="o1" inputmode="numeric" oninput="otp(this,'o2')">
-                <input class="otp-b" type="number" maxlength="1" id="o2" inputmode="numeric" oninput="otp(this,'o3')">
-                <input class="otp-b" type="number" maxlength="1" id="o3" inputmode="numeric" oninput="otp(this,'o4')">
-                <input class="otp-b" type="number" maxlength="1" id="o4" inputmode="numeric" oninput="otp(this,'o5')">
-                <input class="otp-b" type="number" maxlength="1" id="o5" inputmode="numeric" oninput="otp(this,'o6')">
-                <input class="otp-b" type="number" maxlength="1" id="o6" inputmode="numeric" oninput="otp(this,null)">
-              </div>
-              <div class="hint" id="otp-hint">Didn't get it? <strong>Resend in 0:55</strong></div>
-            </div>
-          </div>
-          <div class="foot"><button class="btn btn-p" id="verify-otp-btn" onclick="verifyOTP()">Verify →</button></div>
-        </div>
-
+  <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp">
+    <div class="gp-fill" style="width:12%"></div>
+  </div>
+  <div class="shd">
+    <div class="step-tag">Step 2 of 13</div>
+    <div class="h1">Enter your<br>6-digit code</div>
+    <!-- ↓ id added so sendOTP() can write the real number in here -->
+    <div class="sub">Sent to <strong style="color:var(--p)" id="otp-sent-to">your number</strong> via SMS</div>
+  </div>
+  <div class="scr">
+    <div style="padding:4px 24px 0">
+      <div class="otp-row">
+        <input class="otp-b" type="number" maxlength="1" id="o1" inputmode="numeric" oninput="otp(this,'o2')">
+        <input class="otp-b" type="number" maxlength="1" id="o2" inputmode="numeric" oninput="otp(this,'o3')">
+        <input class="otp-b" type="number" maxlength="1" id="o3" inputmode="numeric" oninput="otp(this,'o4')">
+        <input class="otp-b" type="number" maxlength="1" id="o4" inputmode="numeric" oninput="otp(this,'o5')">
+        <input class="otp-b" type="number" maxlength="1" id="o5" inputmode="numeric" oninput="otp(this,'o6')">
+        <input class="otp-b" type="number" maxlength="1" id="o6" inputmode="numeric" oninput="otp(this,null)">
+      </div>
+      <div class="hint" id="otp-hint">Didn't get it? <strong>Resend in 0:55</strong></div>
+    </div>
+  </div>
+  <div class="foot"><button class="btn btn-p" id="verify-otp-btn" onclick="verifyOTP()">Verify →</button></div>
+</div>
         <!-- ══════════════════════════════
    S04: NAME + AGE
 ══════════════════════════════ -->
