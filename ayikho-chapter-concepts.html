@@ -1636,7 +1636,7 @@
 
             // ===== HIGH-FIDELITY AUDIO ENGINE (ElevenLabs) =====
         // Replaces the robotic browser TTS with pre-recorded SA-accent MP3s
-        const audioPath = 'audio/'; // Assuming your MP3s are in an "audio" folder
+        const audioPath = 'assets/audio/'; // MP3s in assets/audio folder
         let currentAudio = null;
 
         function lvPlaySlideAudio(idx, onEnd) {
@@ -1645,9 +1645,9 @@
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
             }
-            // Format index to match your files: slide-01.mp3, slide-02.mp3
+            // Format index to match files: module-1-slide-01.mp3
             const slideNumber = (idx + 1).toString().padStart(2, '0');
-            const audioUrl = `${audioPath}slide-${slideNumber}.mp3`;
+            const audioUrl = `${audioPath}module-1-slide-${slideNumber}.mp3`;
             currentAudio = new Audio(audioUrl);
 
             // Animate waveform while playing
