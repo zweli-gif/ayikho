@@ -14,10 +14,23 @@ const COUNTRIES = [
 ];
 
 // ── INIT ──────────────────────────────────────────────
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyD89f-i_3zvhICBMw2E7nQRjjLGyyLGDkU",
+  authDomain: "ayikho-tvet.firebaseapp.com",
+  projectId: "ayikho-tvet",
+  storageBucket: "ayikho-tvet.firebasestorage.app",
+  messagingSenderId: "1079346801243",
+  appId: "1:1079346801243:web:a209ebcdfc5cf94b342d7e",
+  measurementId: "G-6CT6LLSZ12"
+};
+
 function initAuth() {
   if (auth) return;
-  if (!window.FIREBASE_CONFIG) { console.error("FIREBASE_CONFIG missing"); return; }
-  const app = getApps().length === 0 ? initializeApp(window.FIREBASE_CONFIG) : getApps()[0];
+
+  const app = getApps().length === 0
+    ? initializeApp(FIREBASE_CONFIG)
+    : getApps()[0];
+
   auth = getAuth(app);
   auth.languageCode = "en";
 }
