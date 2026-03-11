@@ -1,7 +1,8 @@
-const CACHE_NAME = 'ayikho-study-cache-v1';
+const CACHE_NAME = 'ayikho-study-cache-v2';
 const PRECACHE_URLS = [
     '/',
     '/index.html',
+    '/ayikho-prototype.html',
     '/ayikho-onboarding-v2.html',
     '/ayikho-chapter-home.html',
     '/auth.js',
@@ -17,7 +18,13 @@ const PRECACHE_URLS = [
     '/ayikho-chapter-vat.html',
     '/ayikho-chapter-adjustments.html',
     '/ayikho-chapter-financial-statements.html',
-    '/ayikho-chapter-bank-recon.html'
+    '/ayikho-chapter-bank-recon.html',
+    '/ayikho-quiz.html',
+    '/ayikho-capstone.html',
+    '/ayikho-papers.html',
+    '/ayikho-memos.html',
+    '/quiz-bank.js',
+    '/video-lessons.js'
 ];
 
 self.addEventListener('install', event => {
@@ -49,10 +56,12 @@ self.addEventListener('fetch', event => {
     if (url.includes('securetoken.googleapis.com')) return;
     if (url.includes('firestore.googleapis.com')) return;
 
-    event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            const fetchPromise = fetch(event.request).then(networkResponse => {
-                // Cache the dynamically fetched response (if valid)
+    // Network-first for HTML pages (always get latest), cache-first for assets
+    const isHTML = url.endsWith('.html') || url.endsWith('/');
+    if (isHTML) {
+        // Network-first: try network, fall back to cache
+        event.respondWith(
+            fetch(event.request).then(networkResponse => {
                 if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
                     const responseToCache = networkResponse.clone();
                     caches.open(CACHE_NAME).then(cache => {
@@ -60,11 +69,25 @@ self.addEventListener('fetch', event => {
                     });
                 }
                 return networkResponse;
-            }).catch((err) => {
-                console.log("Fetch failed, utilizing cache", err);
-            });
-            // Return cached immediately if present, else wait for network
-            return cachedResponse || fetchPromise;
-        })
-    );
+            }).catch(() => {
+                return caches.match(event.request);
+            })
+        );
+    } else {
+        // Stale-while-revalidate for JS, CSS, images, audio
+        event.respondWith(
+            caches.match(event.request).then(cachedResponse => {
+                const fetchPromise = fetch(event.request).then(networkResponse => {
+                    if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                        const responseToCache = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, responseToCache);
+                        });
+                    }
+                    return networkResponse;
+                }).catch(() => {});
+                return cachedResponse || fetchPromise;
+            })
+        );
+    }
 });
