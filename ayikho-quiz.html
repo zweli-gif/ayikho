@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayikho · Quiz Mode</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --p: #7C3AED;
+      --pl: #9D5FFF;
+      --pd: #4C1A99;
+      --pxs: #F5F0FF;
+      --psm: #EDE8FF;
+      --fa: #0284C7;
+      --fa-l: #38BDF8;
+      --fa-d: #075985;
+      --fa-xs: #F0F9FF;
+      --fa-sm: #E0F2FE;
+      --gold: #F59E0B;
+      --green: #22C55E;
+      --green-xs: #F0FDF4;
+      --rose: #F43F5E;
+      --ink: #1A0A3A;
+      --mut: #6B5A8A;
+      --dim: #9580B8;
+      --bord: #DDD5F5;
+      --surf: #F7F4FF;
+      --w: #FFFFFF;
+    }
+
+    html, body {
+      height: 100%;
+      background: #05090F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden;
+    }
+
+    .shell {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: var(--w);
+      border-radius: 50px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 0 2px #0D1117, 0 0 0 4px #060A10, 0 50px 120px rgba(0, 0, 0, .85), 0 0 200px rgba(2, 132, 199, .08);
+    }
+
+    /* ── STATUS BAR ── */
+    .sb {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+      background: var(--ink);
+      color: white;
+    }
+
+    .sb-t {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .sb-i {
+      font-size: 11px;
+      opacity: .8;
+    }
+
+    .sb-light {
+      background: var(--w);
+      color: var(--ink);
+    }
+
+    /* ── SCREEN CONTAINER ── */
+    .screens-container {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--w);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(100%);
+      transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .screen.prev {
+      opacity: 0;
+      transform: translateX(-24%);
+    }
+
+    .screen.next {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+
+    /* ── SCREEN 0: TOPIC SELECTOR ── */
+    .q-header {
+      background: var(--ink);
+      color: white;
+      padding: 48px 24px 24px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .q-header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(2, 132, 199, .15), transparent 70%);
+    }
+
+    .q-header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, .1), transparent 70%);
+    }
+
+    .q-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .q-subtitle {
+      font-size: 14px;
+      color: rgba(255, 255, 255, .6);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── ASHKI BUBBLE ── */
+    .ashki-bubble {
+      background: var(--surf);
+      border-left: 3px solid var(--fa);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 16px;
+      margin: 16px 22px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      flex-shrink: 0;
+    }
+
+    .ashki-avatar {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--fa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      overflow: hidden;
+    }
+
+    .ashki-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ashki-text {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* ── MODULES GRID ── */
+    .modules-grid {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 18px 22px;
+    }
+
+    .modules-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .module-card {
+      background: var(--w);
+      border: 2px solid var(--bord);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all .25s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .module-card:hover {
+      border-color: var(--fa);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, .1);
+    }
+
+    .module-card:active {
+      transform: scale(.98);
+    }
+
+    .mc-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--fa-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--fa);
+      flex-shrink: 0;
+    }
+
+    .mc-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mc-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mc-score {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--mut);
+    }
+
+    .mc-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-xs);
+      padding: 4px 10px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+
+    /* ── SCREEN 1: QUIZ IN PROGRESS ── */
+    .quiz-progress-bar {
+      height: 4px;
+      background: var(--fa-sm);
+      flex-shrink: 0;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: var(--fa);
+      transition: width .3s ease;
+    }
+
+    .quiz-header {
+      background: var(--ink);
+      color: white;
+      padding: 18px 24px 16px;
+      flex-shrink: 0;
+    }
+
+    .qh-progress-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--fa-l);
+      margin-bottom: 8px;
+    }
+
+    .qh-question {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: white;
+      line-height: 1.3;
+    }
+
+    .quiz-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quiz-body::-webkit-scrollbar {
+      display: none;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      background: var(--surf);
+      border: 2px solid var(--bord);
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all .25s;
+      font-size: 14px;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .quiz-option:hover:not(.disabled) {
+      border-color: var(--fa);
+      background: var(--fa-xs);
+      transform: translateY(-2px);
+    }
+
+    .quiz-option:active:not(.disabled) {
+      transform: scale(.98);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--green);
+      background: var(--green-xs);
+      color: var(--green);
+      cursor: default;
+    }
+
+    .quiz-option.incorrect {
+      border-color: var(--rose);
+      background: rgba(244, 63, 94, .08);
+      color: var(--rose);
+      cursor: default;
+    }
+
+    .quiz-option.disabled {
+      cursor: default;
+      opacity: .6;
+    }
+
+    .explanation-block {
+      background: linear-gradient(135deg, var(--fa-xs), var(--fa-sm));
+      border-left: 3px solid var(--fa);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 16px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all .3s ease;
+    }
+
+    .explanation-block.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── ASHKI AT BOTTOM ── */
+    .ashki-feedback {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surf);
+      border-left: 3px solid var(--fa);
+      border-radius: 0 12px 12px 0;
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      width: calc(100% - 48px);
+      max-width: 330px;
+      z-index: 100;
+      animation: slideUp .3s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .ashki-feedback-avatar {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--fa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      overflow: hidden;
+    }
+
+    .ashki-feedback-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ashki-feedback-text {
+      font-size: 12px;
+      color: var(--ink);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    /* ── SCREEN 2: RESULTS ── */
+    .results-header {
+      background: var(--ink);
+      color: white;
+      padding: 48px 24px 24px;
+      flex-shrink: 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .results-header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(2, 132, 199, .15), transparent 70%);
+    }
+
+    .results-header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, .1), transparent 70%);
+    }
+
+    .results-score {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .results-label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .results-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px 22px 100px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .results-body::-webkit-scrollbar {
+      display: none;
+    }
+
+    .results-ashki {
+      background: var(--surf);
+      border-left: 3px solid var(--fa);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .results-item {
+      background: var(--surf);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .results-item-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      width: 24px;
+      text-align: center;
+    }
+
+    .results-item-text {
+      flex: 1;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .results-item.correct .results-item-text {
+      color: var(--green);
+    }
+
+    .results-item.incorrect .results-item-text {
+      color: var(--rose);
+    }
+
+    .results-footer {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 375px;
+      padding: 16px 22px 28px;
+      background: linear-gradient(to bottom, transparent, var(--w));
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--fa);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--fa-l);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(2, 132, 199, .35);
+    }
+
+    .btn-secondary {
+      background: var(--surf);
+      color: var(--mut);
+      font-size: 13px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bord);
+      color: var(--ink);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <div class="phone">
+      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+
+      <div class="screens-container">
+        <!-- SCREEN 0: TOPIC SELECTOR -->
+        <div class="screen active" id="screen-0">
+          <div class="q-header">
+            <div class="q-title">Quiz Mode</div>
+            <div class="q-subtitle">Pick a topic and test yourself</div>
+          </div>
+
+          <div class="ashki-bubble">
+            <div class="ashki-avatar">
+              <img src="assets/ashki/ashki_master.png" alt="Ashki">
+            </div>
+            <div class="ashki-text">Choose a module to quiz yourself on! I'll keep score</div>
+          </div>
+
+          <div class="modules-grid" id="modules-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- SCREEN 1: QUIZ IN PROGRESS -->
+        <div class="screen" id="screen-1">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+
+          <div class="quiz-header">
+            <div class="qh-progress-text" id="progress-text">Question 1/15</div>
+            <div class="qh-question" id="question-text">Loading...</div>
+          </div>
+
+          <div class="quiz-body">
+            <div class="quiz-options" id="quiz-options">
+              <!-- Populated by JS -->
+            </div>
+            <div class="explanation-block" id="explanation-block"></div>
+          </div>
+        </div>
+
+        <!-- SCREEN 2: RESULTS -->
+        <div class="screen" id="screen-2">
+          <div class="quiz-progress-bar" style="background: var(--green-xs);">
+            <div class="quiz-progress-fill" style="background: var(--green); width: 100%;"></div>
+          </div>
+
+          <div class="results-header">
+            <div class="results-score" id="final-score">8/15</div>
+            <div class="results-label">Quiz Complete!</div>
+          </div>
+
+          <div class="results-body">
+            <div class="results-ashki">
+              <div class="ashki-avatar">
+                <img src="assets/ashki/ashki_master.png" alt="Ashki">
+              </div>
+              <div class="ashki-text" id="results-message">Great effort! Keep practicing!</div>
+            </div>
+
+            <div class="results-list" id="results-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ashki-feedback" id="ashki-feedback" style="display: none;">
+        <div class="ashki-feedback-avatar">
+          <img src="assets/ashki/ashki_master.png" alt="Ashki">
+        </div>
+        <div class="ashki-feedback-text" id="feedback-text">Good job!</div>
+      </div>
+
+      <div class="results-footer" id="results-footer" style="display: none;">
+        <button class="btn btn-primary" onclick="tryAgain()">Try Again</button>
+        <button class="btn btn-secondary" onclick="goHome()">Back to Modules</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="quiz-bank.js" onerror="console.warn('quiz-bank.js not loaded')"></script>
+  <script src="student-data.js" onerror="console.warn('student-data.js not loaded')"></script>
+
+  <script>
+    // ═════════════════════════════════════════════════════════
+    // QUIZ MODE APP — Complete Implementation
+    // ═════════════════════════════════════════════════════════
+
+    const MODULES = [
+      'Accounting Concepts & Principles',
+      'Double Entry & Accounting Equation',
+      'Journals & Ledgers',
+      'Trial Balance',
+      'Cash Receipts & Payments Journals',
+      'Debtors & Creditors Journals',
+      'Value Added Tax (VAT)',
+      'Year-End Adjustments',
+      'Financial Statements',
+      'Bank Reconciliation'
+    ];
+
+    const CORRECT_RESPONSES = [
+      'Yebo! You nailed it!',
+      'Sharp sharp! That\'s correct!',
+      '100%! You\'re on fire!',
+      'Eish, you\'re too clever!',
+      'Perfect! You really know your stuff!'
+    ];
+
+    const INCORRECT_RESPONSES = [
+      'Not quite — but that\'s how we learn!',
+      'Close! Don\'t stress, let\'s look at this together',
+      'Hmm, not that one. But you\'ll get the next one!',
+      'No worries — this is a tricky one.',
+      'Almost! Give the explanation a read'
+    ];
+
+    let currentScreen = 0;
+    let currentModule = null;
+    let currentQuestion = 0;
+    let quizAnswers = [];
+    let currentQuizData = [];
+
+    // ═════════════════════════════════════════════════════════
+    // INITIALIZATION
+    // ═════════════════════════════════════════════════════════
+
+    function init() {
+      renderModuleSelector();
+    }
+
+    function renderModuleSelector() {
+      const grid = document.getElementById('modules-grid');
+      grid.innerHTML = '';
+
+      MODULES.forEach((name, idx) => {
+        const moduleId = idx + 1;
+        const bestScore = window.ayikhoData ?
+          window.ayikhoData.getQuizResults(moduleId, 'post').score : 0;
+        const bestTotal = window.ayikhoData ?
+          window.ayikhoData.getQuizResults(moduleId, 'post').total : 0;
+
+        const card = document.createElement('div');
+        card.className = 'module-card';
+        card.innerHTML = `
+          <div class="mc-num">${moduleId}</div>
+          <div class="mc-info">
+            <div class="mc-name">${name}</div>
+            <div class="mc-score">
+              ${bestTotal > 0 ? `Best: ${bestScore}/${bestTotal}` : 'Not attempted yet'}
+            </div>
+          </div>
+          ${bestTotal > 0 ? `<div class="mc-badge">${Math.round(bestScore/bestTotal*100)}%</div>` : ''}
+        `;
+        card.onclick = () => startQuiz(moduleId);
+        grid.appendChild(card);
+      });
+    }
+
+    // ═════════════════════════════════════════════════════════
+    // QUIZ FLOW
+    // ═════════════════════════════════════════════════════════
+
+    function startQuiz(moduleId) {
+      currentModule = moduleId;
+      currentQuestion = 0;
+      quizAnswers = [];
+
+      // Load quiz data from quiz-bank.js if available
+      if (typeof window.quizBank !== 'undefined' && window.quizBank[moduleId]) {
+        currentQuizData = window.quizBank[moduleId].slice(0, 15);
+      } else {
+        // Fallback: generate demo questions
+        currentQuizData = generateDemoQuestions(moduleId);
+      }
+
+      if (window.ayikhoData) {
+        window.ayikhoData.startModule(moduleId);
+      }
+
+      showQuestion();
+      goToScreen(1);
+    }
+
+    function generateDemoQuestions(moduleId) {
+      // Fallback quiz data if quiz-bank.js is not loaded
+      return Array.from({ length: 15 }, (_, i) => ({
+        id: i + 1,
+        question: `Module ${moduleId} - Question ${i + 1}: What is the correct accounting principle?`,
+        options: [
+          'Option A: This is correct',
+          'Option B: This is incorrect',
+          'Option C: This is also incorrect',
+          'Option D: This is not right either'
+        ],
+        correctIndex: 0,
+        explanation: `The correct answer is Option A. This demonstrates key accounting principle for Module ${moduleId}.`
+      }));
+    }
+
+    function showQuestion() {
+      const q = currentQuizData[currentQuestion];
+      const progressPercent = ((currentQuestion + 1) / currentQuizData.length) * 100;
+
+      document.getElementById('progress-fill').style.width = progressPercent + '%';
+      document.getElementById('progress-text').textContent =
+        `Question ${currentQuestion + 1}/${currentQuizData.length}`;
+      document.getElementById('question-text').textContent = q.question;
+
+      const optionsContainer = document.getElementById('quiz-options');
+      optionsContainer.innerHTML = '';
+      document.getElementById('explanation-block').classList.remove('show');
+      document.getElementById('explanation-block').innerHTML = '';
+
+      // Shuffle options while tracking correct index
+      const optionsWithIndex = q.options.map((text, idx) => ({
+        text,
+        isCorrect: idx === q.correctIndex
+      }));
+
+      // Fisher-Yates shuffle
+      for (let i = optionsWithIndex.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
+      }
+
+      optionsWithIndex.forEach((option, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = option.text;
+        btn.onclick = () => answerQuestion(idx, option.isCorrect);
+        optionsContainer.appendChild(btn);
+      });
+
+      // Hide feedback and results footer
+      document.getElementById('ashki-feedback').style.display = 'none';
+    }
+
+    function answerQuestion(selectedIdx, isCorrect) {
+      const q = currentQuizData[currentQuestion];
+      const options = document.querySelectorAll('.quiz-option');
+
+      // Disable all options
+      options.forEach(opt => opt.classList.add('disabled'));
+
+      // Find correct option and mark it
+      const correctIdx = Array.from(options).findIndex((opt, idx) => {
+        return opt.textContent ===
+          q.options.find((_, oi) => oi === q.correctIndex);
+      });
+
+      if (isCorrect) {
+        options[selectedIdx].classList.add('correct');
+        showFeedback(true);
+      } else {
+        options[selectedIdx].classList.add('incorrect');
+        if (correctIdx !== -1) {
+          options[correctIdx].classList.add('correct');
+        }
+        showFeedback(false);
+      }
+
+      // Store answer
+      quizAnswers.push({
+        question: q.question,
+        isCorrect
+      });
+
+      if (window.ayikhoData) {
+        window.ayikhoData.recordQuizAnswer(
+          currentModule,
+          'post',
+          currentQuestion + 1,
+          isCorrect,
+          q.question,
+          MODULES[currentModule - 1]
+        );
+      }
+
+      // Show explanation
+      setTimeout(() => {
+        const explanation = document.getElementById('explanation-block');
+        explanation.innerHTML = q.explanation;
+        explanation.classList.add('show');
+
+        // Auto-advance after 2 seconds
+        setTimeout(() => {
+          currentQuestion++;
+          if (currentQuestion < currentQuizData.length) {
+            showQuestion();
+          } else {
+            finishQuiz();
+          }
+        }, 2000);
+      }, 600);
+    }
+
+    function showFeedback(isCorrect) {
+      const feedback = document.getElementById('ashki-feedback');
+      const responses = isCorrect ? CORRECT_RESPONSES : INCORRECT_RESPONSES;
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+
+      document.getElementById('feedback-text').textContent = randomResponse;
+      feedback.style.display = 'flex';
+
+      setTimeout(() => {
+        feedback.style.display = 'none';
+      }, 2000);
+    }
+
+    function finishQuiz() {
+      if (window.ayikhoData) {
+        window.ayikhoData.completeQuiz(currentModule, 'post');
+      }
+
+      const correct = quizAnswers.filter(a => a.isCorrect).length;
+      const total = quizAnswers.length;
+      const percentage = Math.round((correct / total) * 100);
+
+      // Display results
+      document.getElementById('final-score').textContent = `${correct}/${total}`;
+
+      // Ashki message based on score
+      let message = '';
+      if (percentage >= 80) {
+        message = 'Outstanding! You really know your stuff! 🌟';
+      } else if (percentage >= 60) {
+        message = 'Great effort! You\'re getting the hang of this! 👍';
+      } else if (percentage >= 40) {
+        message = 'Good try! Review the concepts and try again. 💪';
+      } else {
+        message = 'Keep practising! Every attempt helps you learn better. 📚';
+      }
+      document.getElementById('results-message').textContent = message;
+
+      // Results list
+      const resultsList = document.getElementById('results-list');
+      resultsList.innerHTML = '';
+      quizAnswers.forEach((answer, idx) => {
+        const item = document.createElement('div');
+        item.className = `results-item ${answer.isCorrect ? 'correct' : 'incorrect'}`;
+        item.innerHTML = `
+          <div class="results-item-icon">${answer.isCorrect ? '✓' : '✗'}</div>
+          <div class="results-item-text">Q${idx + 1}: ${answer.isCorrect ? 'Correct' : 'Incorrect'}</div>
+        `;
+        resultsList.appendChild(item);
+      });
+
+      document.getElementById('results-footer').style.display = 'flex';
+      goToScreen(2);
+    }
+
+    function tryAgain() {
+      startQuiz(currentModule);
+    }
+
+    // ═════════════════════════════════════════════════════════
+    // NAVIGATION & SCREEN MANAGEMENT
+    // ═════════════════════════════════════════════════════════
+
+    function goToScreen(screenNum) {
+      const screens = document.querySelectorAll('.screen');
+      screens.forEach((screen, idx) => {
+        screen.classList.remove('active', 'prev', 'next');
+        if (idx === screenNum) {
+          screen.classList.add('active');
+        } else if (idx < screenNum) {
+          screen.classList.add('prev');
+        } else {
+          screen.classList.add('next');
+        }
+      });
+      currentScreen = screenNum;
+    }
+
+    function goHome() {
+      // Post message to parent frame to go home
+      notifyParent();
+      goToScreen(0);
+      renderModuleSelector();
+    }
+
+    function notifyParent() {
+      try {
+        if (window.parent !== window) {
+          window.parent.postMessage({ action: 'goHome' }, '*');
+        }
+      } catch (e) {
+        console.log('Parent frame not available');
+      }
+    }
+
+    // ═════════════════════════════════════════════════════════
+    // STARTUP
+    // ═════════════════════════════════════════════════════════
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

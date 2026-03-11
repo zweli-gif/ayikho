@@ -173,6 +173,11 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
   <div class="si" data-module="8" onclick="openModule(8)">M8 · Year-End Adjustments</div>
   <div class="si" data-module="9" onclick="openModule(9)">M9 · Financial Statements</div>
   <div class="si" data-module="10" onclick="openModule(10)">M10 · Bank Reconciliation</div>
+  <div class="si-section">Resources</div>
+  <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
+  <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
+  <div class="si" onclick="openMemosMode()">📋 Memos</div>
+  <div class="si" onclick="openCapstoneMode()">🏆 Capstone</div>
 </div>
 
 <!-- ═══════════ PHONE ═══════════ -->
@@ -362,6 +367,138 @@ window.addEventListener('message', function(e) {
   }
   if (e.data && e.data.type === 'goHome') {
     goHome();
+  }
+  if (e.data && e.data.type === 'openQuiz') {
+    const loading = document.getElementById('loading');
+    document.getElementById('loading-name').textContent = 'Quiz Mode';
+    loading.classList.add('show');
+    setTimeout(() => {
+      const frame = document.getElementById('chapter-frame');
+      frame.src = 'ayikho-quiz.html';
+      frame.onload = () => {
+        loading.classList.remove('show');
+        document.getElementById('home-view').classList.add('hidden');
+        document.getElementById('chapter-view').classList.add('active');
+        document.getElementById('back-btn').classList.add('show');
+        currentModule = 'quiz';
+        updateSidebar();
+        try {
+          const iDoc = frame.contentDocument || frame.contentWindow.document;
+          const style = iDoc.createElement('style');
+          style.textContent = `
+            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            .shell{display:block!important;gap:0!important;height:100%!important}
+            .sidebar{display:none!important}
+            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+            .shell-meta{display:none!important}
+            .shell > div{height:100%!important}
+            .app-container,.container{height:100%!important}
+            body > div:first-child{height:100%!important}
+            .phone-col{display:block!important;height:100%!important}
+          `;
+          iDoc.head.appendChild(style);
+        } catch(e) {}
+      };
+    }, 300);
+  }
+  if (e.data && e.data.type === 'openPapers') {
+    const loading = document.getElementById('loading');
+    document.getElementById('loading-name').textContent = 'Past Papers';
+    loading.classList.add('show');
+    setTimeout(() => {
+      const frame = document.getElementById('chapter-frame');
+      frame.src = 'ayikho-papers.html';
+      frame.onload = () => {
+        loading.classList.remove('show');
+        document.getElementById('home-view').classList.add('hidden');
+        document.getElementById('chapter-view').classList.add('active');
+        document.getElementById('back-btn').classList.add('show');
+        currentModule = 'papers';
+        updateSidebar();
+        try {
+          const iDoc = frame.contentDocument || frame.contentWindow.document;
+          const style = iDoc.createElement('style');
+          style.textContent = `
+            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            .shell{display:block!important;gap:0!important;height:100%!important}
+            .sidebar{display:none!important}
+            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+            .shell-meta{display:none!important}
+            .shell > div{height:100%!important}
+            .app-container,.container{height:100%!important}
+            body > div:first-child{height:100%!important}
+            .phone-col{display:block!important;height:100%!important}
+          `;
+          iDoc.head.appendChild(style);
+        } catch(e) {}
+      };
+    }, 300);
+  }
+  if (e.data && e.data.type === 'openMemos') {
+    const loading = document.getElementById('loading');
+    document.getElementById('loading-name').textContent = 'Memos';
+    loading.classList.add('show');
+    setTimeout(() => {
+      const frame = document.getElementById('chapter-frame');
+      frame.src = 'ayikho-memos.html';
+      frame.onload = () => {
+        loading.classList.remove('show');
+        document.getElementById('home-view').classList.add('hidden');
+        document.getElementById('chapter-view').classList.add('active');
+        document.getElementById('back-btn').classList.add('show');
+        currentModule = 'memos';
+        updateSidebar();
+        try {
+          const iDoc = frame.contentDocument || frame.contentWindow.document;
+          const style = iDoc.createElement('style');
+          style.textContent = `
+            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            .shell{display:block!important;gap:0!important;height:100%!important}
+            .sidebar{display:none!important}
+            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+            .shell-meta{display:none!important}
+            .shell > div{height:100%!important}
+            .app-container,.container{height:100%!important}
+            body > div:first-child{height:100%!important}
+            .phone-col{display:block!important;height:100%!important}
+          `;
+          iDoc.head.appendChild(style);
+        } catch(e) {}
+      };
+    }, 300);
+  }
+  if (e.data && e.data.type === 'openCapstone') {
+    const loading = document.getElementById('loading');
+    document.getElementById('loading-name').textContent = 'Capstone Exam';
+    loading.classList.add('show');
+    setTimeout(() => {
+      const frame = document.getElementById('chapter-frame');
+      frame.src = 'ayikho-capstone.html';
+      frame.onload = () => {
+        loading.classList.remove('show');
+        document.getElementById('home-view').classList.add('hidden');
+        document.getElementById('chapter-view').classList.add('active');
+        document.getElementById('back-btn').classList.add('show');
+        currentModule = 'capstone';
+        updateSidebar();
+        try {
+          const iDoc = frame.contentDocument || frame.contentWindow.document;
+          const style = iDoc.createElement('style');
+          style.textContent = `
+            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            .shell{display:block!important;gap:0!important;height:100%!important}
+            .sidebar{display:none!important}
+            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+            .shell-meta{display:none!important}
+            .shell > div{height:100%!important}
+            .app-container,.container{height:100%!important}
+            body > div:first-child{height:100%!important}
+            .phone-col{display:block!important;height:100%!important}
+          `;
+          iDoc.head.appendChild(style);
+        } catch(e) {}
+      };
+    }, 300);
   }
 });
 
@@ -602,6 +739,158 @@ function openDashboard() {
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
           .shell-meta{display:none!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+        iDoc.head.appendChild(style);
+      } catch(e) {}
+    };
+  }, 300);
+}
+
+// ═══════════════════════════════════
+//  OPEN QUIZ MODE
+// ═══════════════════════════════════
+function openQuizMode() {
+  const loading = document.getElementById('loading');
+  document.getElementById('loading-name').textContent = 'Quiz Mode';
+  loading.classList.add('show');
+
+  setTimeout(() => {
+    const frame = document.getElementById('chapter-frame');
+    frame.src = 'ayikho-quiz.html';
+    frame.onload = () => {
+      loading.classList.remove('show');
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('chapter-view').classList.add('active');
+      document.getElementById('back-btn').classList.add('show');
+      currentModule = 'quiz';
+      updateSidebar();
+      try {
+        const iDoc = frame.contentDocument || frame.contentWindow.document;
+        const style = iDoc.createElement('style');
+        style.textContent = `
+          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+        iDoc.head.appendChild(style);
+      } catch(e) {}
+    };
+  }, 300);
+}
+
+// ═══════════════════════════════════
+//  OPEN PAPERS MODE
+// ═══════════════════════════════════
+function openPapersMode() {
+  const loading = document.getElementById('loading');
+  document.getElementById('loading-name').textContent = 'Past Papers';
+  loading.classList.add('show');
+
+  setTimeout(() => {
+    const frame = document.getElementById('chapter-frame');
+    frame.src = 'ayikho-papers.html';
+    frame.onload = () => {
+      loading.classList.remove('show');
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('chapter-view').classList.add('active');
+      document.getElementById('back-btn').classList.add('show');
+      currentModule = 'papers';
+      updateSidebar();
+      try {
+        const iDoc = frame.contentDocument || frame.contentWindow.document;
+        const style = iDoc.createElement('style');
+        style.textContent = `
+          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+        iDoc.head.appendChild(style);
+      } catch(e) {}
+    };
+  }, 300);
+}
+
+// ═══════════════════════════════════
+//  OPEN MEMOS MODE
+// ═══════════════════════════════════
+function openMemosMode() {
+  const loading = document.getElementById('loading');
+  document.getElementById('loading-name').textContent = 'Memos';
+  loading.classList.add('show');
+
+  setTimeout(() => {
+    const frame = document.getElementById('chapter-frame');
+    frame.src = 'ayikho-memos.html';
+    frame.onload = () => {
+      loading.classList.remove('show');
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('chapter-view').classList.add('active');
+      document.getElementById('back-btn').classList.add('show');
+      currentModule = 'memos';
+      updateSidebar();
+      try {
+        const iDoc = frame.contentDocument || frame.contentWindow.document;
+        const style = iDoc.createElement('style');
+        style.textContent = `
+          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+        iDoc.head.appendChild(style);
+      } catch(e) {}
+    };
+  }, 300);
+}
+
+// ═══════════════════════════════════
+//  OPEN CAPSTONE MODE
+// ═══════════════════════════════════
+function openCapstoneMode() {
+  const loading = document.getElementById('loading');
+  document.getElementById('loading-name').textContent = 'Capstone Exam';
+  loading.classList.add('show');
+
+  setTimeout(() => {
+    const frame = document.getElementById('chapter-frame');
+    frame.src = 'ayikho-capstone.html';
+    frame.onload = () => {
+      loading.classList.remove('show');
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('chapter-view').classList.add('active');
+      document.getElementById('back-btn').classList.add('show');
+      currentModule = 'capstone';
+      updateSidebar();
+      try {
+        const iDoc = frame.contentDocument || frame.contentWindow.document;
+        const style = iDoc.createElement('style');
+        style.textContent = `
+          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
         iDoc.head.appendChild(style);

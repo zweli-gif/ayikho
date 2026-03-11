@@ -980,6 +980,14 @@
             color: rgba(255, 255, 255, 0.5);
             font-family: 'JetBrains Mono', monospace;
         }
+
+        /* Ashki companion */
+        .ashki-bubble { display:flex; align-items:flex-end; gap:10px; padding:16px; margin:12px 16px; animation:ashkiSlideIn 0.4s cubic-bezier(0.4,0,0.2,1); }
+        .ashki-avatar { width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid var(--pl); box-shadow:0 2px 8px rgba(124,58,237,0.15); }
+        .ashki-speech { background:var(--pxs); border:1px solid var(--psm); border-radius:16px 16px 16px 4px; padding:12px 16px; max-width:calc(100% - 70px); }
+        .ashki-name { font:700 11px/1 'Outfit'; color:var(--p); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+        .ashki-text { font:400 14px/1.5 'Outfit'; color:var(--ink); }
+        @keyframes ashkiSlideIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
     </style>
     <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
     <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
@@ -1112,6 +1120,14 @@
                             <div class="lesson-subtitle">The concept explained</div>
                         </div>
                         <div class="lesson-body">
+                            <div class="ashki-bubble">
+                                <img class="ashki-avatar" src="assets/ashki/ashki_master.png" alt="Ashki">
+                                <div class="ashki-speech">
+                                    <div class="ashki-name">Ashki</div>
+                                    <div class="ashki-text">Let's check if everything balances! ⚖️</div>
+                                </div>
+                            </div>
+
                             <div class="lesson-text">
                                 A <strong>trial balance</strong> is literally what it sounds like — a balance check. It's a list of <strong>all the accounts in your ledger</strong> with their balances, arranged into two columns: Debit and Credit.
                             </div>
@@ -1284,6 +1300,14 @@
                             <div class="lesson-subtitle">Let's test your knowledge</div>
                         </div>
                         <div class="lesson-body">
+                            <div class="ashki-bubble" id="ashkiQuizBubble" style="display:none">
+                                <img class="ashki-avatar" src="assets/ashki/ashki_master.png" alt="Ashki">
+                                <div class="ashki-speech">
+                                    <div class="ashki-name">Ashki</div>
+                                    <div class="ashki-text">Let's see what you know!</div>
+                                </div>
+                            </div>
+
                             <div class="quiz-number">Question 1 of 3</div>
                             <div class="quiz-question">A trial balance shows total debits of R45,000 and total credits of R44,200. What does this mean?</div>
 
@@ -1651,6 +1675,19 @@
             const qNum = parseInt(questionId.replace(/\D/g, '')) || 1;
             if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(4, 'post', qNum, isCorrect, 0);
             notifyParent('quizAnswer', { moduleId: MODULE_ID, quizType: 'post', questionNum: qNum, isCorrect: isCorrect, questionText: `Question ${qNum}`, topic: 'Trial Balance' });
+
+            // Ashki reactions
+            var ashkiBubble = document.getElementById('ashkiQuizBubble');
+            if (ashkiBubble) {
+              if (isCorrect) {
+                var reactions = ["Yebo! You nailed it! 🎉","Sharp sharp! That's correct! ✨","100%! You're on fire! 🔥","Eish, you're too clever! 💪","Perfect! You really know your stuff!"];
+                ashkiBubble.querySelector('.ashki-text').textContent = reactions[Math.floor(Math.random()*reactions.length)];
+              } else {
+                var reactions = ["Not quite — but that's how we learn!","Close! Don't stress, let's look at this together 🤔","Hmm, not that one. But you'll get the next one!","No worries — this is a tricky one.","Almost! Give the explanation a read 💪"];
+                ashkiBubble.querySelector('.ashki-text').textContent = reactions[Math.floor(Math.random()*reactions.length)];
+              }
+              ashkiBubble.style.display = 'flex';
+            }
 
             if (isCorrect) {
                 explanation.classList.add('show');

@@ -507,6 +507,14 @@
         transform: scale(0.8);
       }
     }
+
+    /* Ashki companion */
+    .ashki-bubble { display:flex; align-items:flex-end; gap:10px; padding:16px; margin:12px 16px; animation:ashkiSlideIn 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .ashki-avatar { width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid var(--pl); box-shadow:0 2px 8px rgba(124,58,237,0.15); }
+    .ashki-speech { background:var(--pxs); border:1px solid var(--psm); border-radius:16px 16px 16px 4px; padding:12px 16px; max-width:calc(100% - 70px); }
+    .ashki-name { font:700 11px/1 'Outfit'; color:var(--p); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+    .ashki-text { font:400 14px/1.5 'Outfit'; color:var(--ink); }
+    @keyframes ashkiSlideIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
   </style>
 </head>
 
@@ -552,6 +560,14 @@
           <div class="hh-stat">
             <div class="hh-stat-n">85%</div>
             <div class="hh-stat-l">Avg. score</div>
+          </div>
+        </div>
+
+        <div class="ashki-bubble" id="ashkiHomeGreeting">
+          <img class="ashki-avatar" src="assets/ashki/ashki_master.png" alt="Ashki">
+          <div class="ashki-speech">
+            <div class="ashki-name">Ashki</div>
+            <div class="ashki-text" id="ashkiHomeMsg">Keep going, you're doing great!</div>
           </div>
         </div>
       </div>
@@ -842,6 +858,26 @@
           </div>
         </div>
 
+        <div style="display:flex; gap:10px; padding:16px; margin-top:8px;">
+          <button style="flex:1; padding:14px; border-radius:14px; border:1.5px solid var(--fa); background:var(--fa-xs); color:var(--fa-d); font:600 14px/1 'Outfit'; cursor:pointer;" onclick="parent.postMessage({type:'openQuiz'},'*')">📝 Quiz Mode</button>
+        </div>
+        <div style="display:flex; gap:10px; padding:0 16px;">
+          <button style="flex:1; padding:14px; border-radius:14px; border:1.5px solid var(--fa); background:var(--fa-xs); color:var(--fa-d); font:600 14px/1 'Outfit'; cursor:pointer;" onclick="parent.postMessage({type:'openPapers'},'*')">📄 Past Papers</button>
+          <button style="flex:1; padding:14px; border-radius:14px; border:1.5px solid var(--fa); background:var(--fa-xs); color:var(--fa-d); font:600 14px/1 'Outfit'; cursor:pointer;" onclick="parent.postMessage({type:'openMemos'},'*')">📋 Memos</button>
+        </div>
+
+        <div style="padding:0 16px; margin-top:16px;">
+          <div id="capstoneCard" style="display:flex; align-items:center; gap:14px; padding:16px; border:2px solid var(--gold); background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border-radius:16px; cursor:pointer; opacity:0.5; pointer-events:none;" onclick="parent.postMessage({type:'openCapstone'},'*')">
+            <div style="width:44px; height:44px; border-radius:50%; background:#FEF3C7; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">🏆</div>
+            <div style="flex:1;">
+              <div style="font:700 11px/1 'Outfit'; color:var(--gold); text-transform:uppercase; letter-spacing:0.5px;">Capstone</div>
+              <div style="font:600 15px/1.3 'Outfit'; color:var(--ink); margin-top:2px;">Final Exam Simulation</div>
+              <div style="font:400 12px/1 'Outfit'; color:var(--mut); margin-top:4px;" id="capstoneStatus">Complete all 10 modules to unlock</div>
+            </div>
+            <div style="background:var(--gold); color:var(--w); padding:4px 10px; border-radius:20px; font:600 12px/1 'Outfit';">+500 XP</div>
+          </div>
+        </div>
+
         <div style="height:16px"></div>
       </div>
 
@@ -990,8 +1026,38 @@
       }
     });
 
+    function getAshkiGreeting() {
+      var hour = new Date().getHours();
+      if (hour < 12) return "Morning! Fresh mind = best study time ☀️";
+      if (hour < 17) return "Afternoon grind! Let's get through another module 💪";
+      if (hour >= 20) return "Late night study session? Respect! 🌙";
+      return "Welcome back! Ready to pick up where we left off?";
+    }
+
+    function checkCapstoneUnlock() {
+      var card = document.getElementById('capstoneCard');
+      if (!card) return;
+      // Check if all 10 modules completed using module-card elements with 'completed' class
+      var completedCount = document.querySelectorAll('.module-card.completed').length;
+      if (completedCount >= 10) {
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+        document.getElementById('capstoneStatus').textContent = '⏱ 60 min · All chapters';
+      } else {
+        card.style.opacity = '0.5';
+        card.style.pointerEvents = 'none';
+        document.getElementById('capstoneStatus').textContent = 'Complete all 10 modules to unlock (' + completedCount + '/10)';
+      }
+    }
+
     // Animate progress rings on load
     document.addEventListener('DOMContentLoaded', () => {
+      // Set Ashki greeting based on time of day
+      document.getElementById('ashkiHomeMsg').textContent = getAshkiGreeting();
+
+      // Check capstone unlock status
+      checkCapstoneUnlock();
+
       // Small entrance animation for cards
       const cards = document.querySelectorAll('.module-card');
       cards.forEach((card, i) => {

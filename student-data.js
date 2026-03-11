@@ -57,6 +57,20 @@ class AyikhoStudentData {
         moduleId: null,
         screenIndex: 0,
         timestamp: null
+      },
+      // Practice quizzes
+      practiceQuizzes: {
+        totalAttempts: 0,
+        bestScores: {},
+        history: []
+      },
+      // Capstone exam
+      capstoneExam: {
+        attempts: 0,
+        bestScore: 0,
+        bestPercentage: 0,
+        history: [],
+        weakAreas: []
       }
     };
   }
@@ -403,6 +417,55 @@ class AyikhoStudentData {
     localStorage.removeItem(this.STORAGE_KEY);
     this.data = this._defaultData();
     this._save();
+  }
+
+  // ══════════════════════════════════
+  //  PUBLIC API — PRACTICE QUIZZES
+  // ══════════════════════════════════
+
+  recordPracticeQuiz(moduleId, score, total) {
+    var d = this.data;
+    if (!d.practiceQuizzes) d.practiceQuizzes = { totalAttempts: 0, bestScores: {}, history: [] };
+    d.practiceQuizzes.totalAttempts++;
+    if (!d.practiceQuizzes.bestScores[moduleId] || score > d.practiceQuizzes.bestScores[moduleId]) {
+      d.practiceQuizzes.bestScores[moduleId] = score;
+    }
+    d.practiceQuizzes.history.push({ moduleId: moduleId, score: score, total: total, date: new Date().toISOString() });
+    this._save();
+  }
+
+  getPracticeStats() {
+    var d = this.data;
+    return d.practiceQuizzes || { totalAttempts: 0, bestScores: {}, history: [] };
+  }
+
+  // ══════════════════════════════════
+  //  PUBLIC API — CAPSTONE EXAM
+  // ══════════════════════════════════
+
+  recordCapstoneAttempt(result) {
+    var d = this.data;
+    if (!d.capstoneExam) d.capstoneExam = { attempts: 0, bestScore: 0, bestPercentage: 0, history: [], weakAreas: [] };
+    d.capstoneExam.attempts++;
+    if (result.percentage > d.capstoneExam.bestPercentage) {
+      d.capstoneExam.bestScore = result.score;
+      d.capstoneExam.bestPercentage = result.percentage;
+    }
+    d.capstoneExam.history.push({
+      date: new Date().toISOString(),
+      score: result.score,
+      total: result.total,
+      percentage: result.percentage,
+      sectionScores: result.sectionScores,
+      timeUsedMs: result.timeUsedMs
+    });
+    if (result.weakAreas) d.capstoneExam.weakAreas = result.weakAreas;
+    this._save();
+  }
+
+  getCapstoneStats() {
+    var d = this.data;
+    return d.capstoneExam || { attempts: 0, bestScore: 0, bestPercentage: 0, history: [], weakAreas: [] };
   }
 
   _generateId() {

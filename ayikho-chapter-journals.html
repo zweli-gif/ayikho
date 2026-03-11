@@ -352,6 +352,8 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .win-next-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
 .win-next-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px}
 .win-next-meta{font-size:12px;color:var(--mut)}
+/* Ashki companion */
+.ashki-bubble{display:flex;align-items:flex-end;gap:10px;padding:16px;margin:12px 16px;animation:ashkiSlideIn 0.4s cubic-bezier(0.4,0,0.2,1)}.ashki-avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--pl);box-shadow:0 2px 8px rgba(124,58,237,0.15)}.ashki-speech{background:var(--pxs);border:1px solid var(--psm);border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:calc(100% - 70px)}.ashki-name{font:700 11px/1 'Outfit';color:var(--p);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}.ashki-text{font:400 14px/1.5 'Outfit';color:var(--ink)}@keyframes ashkiSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -622,6 +624,14 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
   </div>
   <div class="scr">
     <div class="lesson-body">
+      <div class="ashki-bubble">
+        <img class="ashki-avatar" src="assets/ashki/ashki_master.png" alt="Ashki">
+        <div class="ashki-speech">
+          <div class="ashki-name">Ashki</div>
+          <div class="ashki-text">Time to learn where we record transactions! 📒</div>
+        </div>
+      </div>
+
       <div class="pq-callout" id="pq-callout-1">
         <span class="pq-callout-tag">⚠️ Pre-quiz reminder</span>
         <div class="pq-callout-text">The General Journal records non-routine transactions — focus on understanding this concept.</div>
@@ -973,6 +983,13 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
       <div class="quiz-cnt">1 / 3</div>
     </div>
     <div class="quiz-q-text">Naledi buys hair products for R1,200 on credit from a supplier. Which journal entry is correct?</div>
+  </div>
+  <div class="ashki-bubble" id="ashkiQuizBubble" style="display:none">
+    <img class="ashki-avatar" src="assets/ashki/ashki_master.png" alt="Ashki">
+    <div class="ashki-speech">
+      <div class="ashki-name">Ashki</div>
+      <div class="ashki-text">Let's see what you know!</div>
+    </div>
   </div>
   <div class="quiz-opts" id="q1-opts">
     <div class="q-opt" onclick="answerQ(1,'a','wrong')">
@@ -1482,6 +1499,19 @@ function answerQ(qNum, chosen, result) {
   if (chosenEl) { chosenEl.classList.remove('dimmed'); chosenEl.classList.add(result); }
 
   if (result === 'correct') scores.correct++;
+
+  // Ashki reactions
+  var ashkiBubble = document.getElementById('ashkiQuizBubble');
+  if (ashkiBubble) {
+    if (result === 'correct') {
+      var reactions = ["Yebo! You nailed it! 🎉","Sharp sharp! That's correct! ✨","100%! You're on fire! 🔥","Eish, you're too clever! 💪","Perfect! You really know your stuff!"];
+      ashkiBubble.querySelector('.ashki-text').textContent = reactions[Math.floor(Math.random()*reactions.length)];
+    } else {
+      var reactions = ["Not quite — but that's how we learn!","Close! Don't stress, let's look at this together 🤔","Hmm, not that one. But you'll get the next one!","No worries — this is a tricky one.","Almost! Give the explanation a read 💪"];
+      ashkiBubble.querySelector('.ashki-text').textContent = reactions[Math.floor(Math.random()*reactions.length)];
+    }
+    ashkiBubble.style.display = 'flex';
+  }
 
   // Track quiz answer
   if (window.ayikhoTracker) window.ayikhoTracker.trackQuiz(3, 'post', qNum, result === 'correct', 0);
