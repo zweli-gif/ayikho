@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ayikho · FA N4 · Financial Accounting N4</title>
+<title>Ayikho · TVET N4 Study App</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="firebase-config.js" onerror="console.log('Firebase config not loaded — offline mode')"></script>
 <script src="tracking.js" onerror="console.log('Tracking not loaded — offline mode')"></script>
@@ -374,7 +374,6 @@ window.addEventListener('message', function(e) {
     loading.classList.add('show');
     setTimeout(() => {
       const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-quiz.html';
       frame.onload = () => {
         loading.classList.remove('show');
         document.getElementById('home-view').classList.add('hidden');
@@ -399,6 +398,7 @@ window.addEventListener('message', function(e) {
           iDoc.head.appendChild(style);
         } catch(e) {}
       };
+      frame.src = 'ayikho-quiz.html';
     }, 300);
   }
   if (e.data && e.data.type === 'openPapers') {
@@ -407,7 +407,6 @@ window.addEventListener('message', function(e) {
     loading.classList.add('show');
     setTimeout(() => {
       const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-papers.html';
       frame.onload = () => {
         loading.classList.remove('show');
         document.getElementById('home-view').classList.add('hidden');
@@ -432,6 +431,7 @@ window.addEventListener('message', function(e) {
           iDoc.head.appendChild(style);
         } catch(e) {}
       };
+      frame.src = 'ayikho-papers.html';
     }, 300);
   }
   if (e.data && e.data.type === 'openMemos') {
@@ -440,7 +440,6 @@ window.addEventListener('message', function(e) {
     loading.classList.add('show');
     setTimeout(() => {
       const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-memos.html';
       frame.onload = () => {
         loading.classList.remove('show');
         document.getElementById('home-view').classList.add('hidden');
@@ -465,6 +464,7 @@ window.addEventListener('message', function(e) {
           iDoc.head.appendChild(style);
         } catch(e) {}
       };
+      frame.src = 'ayikho-memos.html';
     }, 300);
   }
   if (e.data && e.data.type === 'openCapstone') {
@@ -473,7 +473,6 @@ window.addEventListener('message', function(e) {
     loading.classList.add('show');
     setTimeout(() => {
       const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-capstone.html';
       frame.onload = () => {
         loading.classList.remove('show');
         document.getElementById('home-view').classList.add('hidden');
@@ -498,6 +497,7 @@ window.addEventListener('message', function(e) {
           iDoc.head.appendChild(style);
         } catch(e) {}
       };
+      frame.src = 'ayikho-capstone.html';
     }, 300);
   }
 });
@@ -635,7 +635,6 @@ function openModule(num) {
 
     // Load iframe
     const frame = document.getElementById('chapter-frame');
-    frame.src = mod.file;
 
     frame.onload = () => {
       // Hide loading, show chapter
@@ -683,6 +682,7 @@ function openModule(num) {
         iDoc.head.appendChild(style);
       } catch(e) { /* cross-origin, ignore */ }
     };
+    frame.src = mod.file;
   }, 300);
 }
 
@@ -720,7 +720,6 @@ function openDashboard() {
 
   setTimeout(() => {
     const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-dashboard.html';
     frame.onload = () => {
       loading.classList.remove('show');
       document.getElementById('home-view').classList.add('hidden');
@@ -744,6 +743,7 @@ function openDashboard() {
         iDoc.head.appendChild(style);
       } catch(e) {}
     };
+    frame.src = 'ayikho-dashboard.html';
   }, 300);
 }
 
@@ -757,7 +757,6 @@ function openQuizMode() {
 
   setTimeout(() => {
     const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-quiz.html';
     frame.onload = () => {
       loading.classList.remove('show');
       document.getElementById('home-view').classList.add('hidden');
@@ -782,6 +781,7 @@ function openQuizMode() {
         iDoc.head.appendChild(style);
       } catch(e) {}
     };
+    frame.src = 'ayikho-quiz.html';
   }, 300);
 }
 
@@ -795,7 +795,6 @@ function openPapersMode() {
 
   setTimeout(() => {
     const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-papers.html';
     frame.onload = () => {
       loading.classList.remove('show');
       document.getElementById('home-view').classList.add('hidden');
@@ -820,6 +819,7 @@ function openPapersMode() {
         iDoc.head.appendChild(style);
       } catch(e) {}
     };
+    frame.src = 'ayikho-papers.html';
   }, 300);
 }
 
@@ -833,7 +833,6 @@ function openMemosMode() {
 
   setTimeout(() => {
     const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-memos.html';
     frame.onload = () => {
       loading.classList.remove('show');
       document.getElementById('home-view').classList.add('hidden');
@@ -858,6 +857,7 @@ function openMemosMode() {
         iDoc.head.appendChild(style);
       } catch(e) {}
     };
+    frame.src = 'ayikho-memos.html';
   }, 300);
 }
 
@@ -871,7 +871,6 @@ function openCapstoneMode() {
 
   setTimeout(() => {
     const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-capstone.html';
     frame.onload = () => {
       loading.classList.remove('show');
       document.getElementById('home-view').classList.add('hidden');
@@ -896,6 +895,7 @@ function openCapstoneMode() {
         iDoc.head.appendChild(style);
       } catch(e) {}
     };
+    frame.src = 'ayikho-capstone.html';
   }, 300);
 }
 
@@ -1008,7 +1008,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load onboarding into the chapter iframe
     const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-onboarding-v2.html';
 
     frame.onload = () => {
       // Guard: only activate for onboarding, not for about:blank
@@ -1032,6 +1031,7 @@ document.addEventListener('DOMContentLoaded', () => {
         iDoc.head.appendChild(style);
       } catch(e) { /* cross-origin, ignore */ }
     };
+    frame.src = 'ayikho-onboarding-v2.html';
   }
 
   // Don't show back button during onboarding

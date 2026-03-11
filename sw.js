@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ayikho-study-cache-v5';
+const CACHE_NAME = 'ayikho-study-cache-v6';
 const PRECACHE_URLS = [
     '/',
     '/index.html',
@@ -25,6 +25,7 @@ const PRECACHE_URLS = [
     '/ayikho-papers.html',
     '/ayikho-memos.html',
     '/quiz-bank.js',
+    '/capstone-bank.js',
     '/video-lessons.js'
 ];
 
