@@ -1781,6 +1781,17 @@
     .si.active::before {
       background: var(--pl)
     }
+    btn-google{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      background:#ffffff;
+      color:#333;
+      font-weight:600;
+      box-shadow:0 2px 6px rgba(0,0,0,0.15);
+      cursor:pointer;
+    }
   </style>
 </head>
 
@@ -1810,6 +1821,8 @@
             <div class="wmean">"there is none like it" — isiZulu</div>
             <div class="wtag"><strong>No more failing alone.</strong> Your TVET study partner — plain English, SA
               examples, always in your pocket.</div>
+            <button class="btn btn-google" onclick="signInWithGoogle()"> Continue with Google </button>
+            <div style="margin:16px 0;text-align:center;color:#999;"> or continue with phone </div>
             <button class="wbtn" onclick="goTo('s-phone')">Get Started →</button>
             <div class="hint" style="color:rgba(255,255,255,.3)">Free for all TVET students · Works offline</div>
           </div>
