@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ayikho-study-cache-v13';
+const CACHE_NAME = 'ayikho-study-cache-v14';
 const PRECACHE_URLS = [
     '/',
     '/index.html',
@@ -40,7 +40,25 @@ const PRECACHE_URLS = [
     '/mc-chapter-reading-comprehension.html',
     '/mc-chapter-language-editing.html',
     '/mc-quiz-bank.js',
-    '/mc-video-lessons.js'
+    '/mc-video-lessons.js',
+    // Computer Practice N4
+    '/cp-chapter-intro-computers.html',
+    '/cp-chapter-word-processing.html',
+    '/cp-chapter-spreadsheets.html',
+    '/cp-chapter-presentations.html',
+    '/cp-chapter-email.html',
+    '/cp-chapter-data-management.html',
+    '/cp-chapter-internet.html',
+    '/cp-chapter-security.html',
+    // Entrepreneurship & Business Management N4
+    '/ebm-chapter-intro-entrepreneurship.html',
+    '/ebm-chapter-creativity.html',
+    '/ebm-chapter-market-feasibility.html',
+    '/ebm-chapter-financial-feasibility.html',
+    '/ebm-chapter-business-plan.html',
+    '/ebm-chapter-starting-business.html',
+    '/ebm-chapter-managing-business.html',
+    '/ebm-chapter-ethics.html'
 ];
 
 self.addEventListener('install', event => {

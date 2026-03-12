@@ -14,6 +14,8 @@
   --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
   --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
   --mc:#0D9488;--mc-l:#14B8A6;--mc-d:#0F6E48;--mc-xs:#F0FDFA;--mc-sm:#CCFBF1;
+  --cp:#0EA5E9;--cp-l:#38BDF8;--cp-d:#0284C7;--cp-xs:#F0F9FF;--cp-sm:#E0F2FE;
+  --ebm:#16A34A;--ebm-l:#22C55E;--ebm-d:#15803D;--ebm-xs:#F0FDF4;--ebm-sm:#DCFCE7;
   --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
   --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
   --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
@@ -165,12 +167,20 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .subject-pill:hover{background:rgba(255,255,255,.12)}
 .subject-pill.active{background:var(--fa);color:white}
 .subject-pill.active.mc-subject{background:var(--mc);color:white}
+.subject-pill.active.cp-subject{background:var(--cp);color:white}
+.subject-pill.active.ebm-subject{background:var(--ebm);color:white}
 
 /* Hero banner */
 .hero-banner{margin:8px 16px 0;padding:24px 20px 20px;background:linear-gradient(145deg,#2D1B69 0%,#1A0F3C 50%,#0C1E35 100%);border-radius:24px;position:relative;overflow:hidden;border:1px solid rgba(124,58,237,.2);transition:border-color .3s ease}
 .hero-banner.mc-theme{border-color:rgba(13,148,136,.2)}
 .hero-banner.mc-theme::before{background:radial-gradient(circle,rgba(13,148,136,.15),transparent 70%)}
 .hero-banner.mc-theme::after{background:radial-gradient(circle,rgba(13,148,136,.15),transparent 70%)}
+.hero-banner.cp-theme{border-color:rgba(14,165,233,.2)}
+.hero-banner.cp-theme::before{background:radial-gradient(circle,rgba(14,165,233,.15),transparent 70%)}
+.hero-banner.cp-theme::after{background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%)}
+.hero-banner.ebm-theme{border-color:rgba(22,163,74,.2)}
+.hero-banner.ebm-theme::before{background:radial-gradient(circle,rgba(234,179,8,.15),transparent 70%)}
+.hero-banner.ebm-theme::after{background:radial-gradient(circle,rgba(22,163,74,.15),transparent 70%)}
 .hero-banner::before{content:'';position:absolute;top:-40px;right:-20px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15),transparent 70%)}
 .hero-banner::after{content:'';position:absolute;bottom:-30px;left:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%)}
 
@@ -208,6 +218,10 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .today-card::after{content:'';position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(2,132,199,.12),transparent 70%);transition:background .3s ease}
 .today-card.mc-theme{border-color:rgba(13,148,136,.2);background:linear-gradient(135deg,#0F2A27,#1A2B26)}
 .today-card.mc-theme::after{background:radial-gradient(circle,rgba(13,148,136,.12),transparent 70%)}
+.today-card.cp-theme{border-color:rgba(14,165,233,.2);background:linear-gradient(135deg,#0C1929,#0F1F35)}
+.today-card.cp-theme::after{background:radial-gradient(circle,rgba(14,165,233,.12),transparent 70%)}
+.today-card.ebm-theme{border-color:rgba(22,163,74,.2);background:linear-gradient(135deg,#0C1F12,#152A18)}
+.today-card.ebm-theme::after{background:radial-gradient(circle,rgba(22,163,74,.12),transparent 70%)}
 
 .today-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
 .today-module{font:700 10px/1 'JetBrains Mono',monospace;color:#0284C7;letter-spacing:.1em;text-transform:uppercase}
@@ -234,6 +248,8 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .mg-card.completed{border-color:rgba(34,197,94,.15)}
 .mg-card.current{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
 .mg-card.mc-theme.current{border-color:rgba(13,148,136,.3);background:rgba(13,148,136,.05)}
+.mg-card.cp-theme.current{border-color:rgba(14,165,233,.3);background:rgba(14,165,233,.05)}
+.mg-card.ebm-theme.current{border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.05)}
 .mg-card.locked{opacity:.4}
 
 .mg-num{font:800 28px/1 'JetBrains Mono',monospace;margin-bottom:8px}
@@ -294,6 +310,24 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
   <div class="si mc-chapter" data-module="6" data-subject="mc" onclick="openModule(6)">M6 · Visual Communication</div>
   <div class="si mc-chapter" data-module="7" data-subject="mc" onclick="openModule(7)">M7 · Reading & Comprehension</div>
   <div class="si mc-chapter" data-module="8" data-subject="mc" onclick="openModule(8)">M8 · Language & Editing</div>
+  <div class="si-section">CP Chapters</div>
+  <div class="si cp-chapter" data-module="1" data-subject="cp" onclick="openModule(1)" style="display:none">M1 · Intro to Computers</div>
+  <div class="si cp-chapter" data-module="2" data-subject="cp" onclick="openModule(2)" style="display:none">M2 · Word Processing</div>
+  <div class="si cp-chapter" data-module="3" data-subject="cp" onclick="openModule(3)" style="display:none">M3 · Spreadsheets</div>
+  <div class="si cp-chapter" data-module="4" data-subject="cp" onclick="openModule(4)" style="display:none">M4 · Presentations</div>
+  <div class="si cp-chapter" data-module="5" data-subject="cp" onclick="openModule(5)" style="display:none">M5 · Email & Communication</div>
+  <div class="si cp-chapter" data-module="6" data-subject="cp" onclick="openModule(6)" style="display:none">M6 · Data Management</div>
+  <div class="si cp-chapter" data-module="7" data-subject="cp" onclick="openModule(7)" style="display:none">M7 · Internet & Research</div>
+  <div class="si cp-chapter" data-module="8" data-subject="cp" onclick="openModule(8)" style="display:none">M8 · Computer Security</div>
+  <div class="si-section">EBM Chapters</div>
+  <div class="si ebm-chapter" data-module="1" data-subject="ebm" onclick="openModule(1)" style="display:none">M1 · Intro to Entrepreneurship</div>
+  <div class="si ebm-chapter" data-module="2" data-subject="ebm" onclick="openModule(2)" style="display:none">M2 · Creativity & Ideas</div>
+  <div class="si ebm-chapter" data-module="3" data-subject="ebm" onclick="openModule(3)" style="display:none">M3 · Market Feasibility</div>
+  <div class="si ebm-chapter" data-module="4" data-subject="ebm" onclick="openModule(4)" style="display:none">M4 · Financial Feasibility</div>
+  <div class="si ebm-chapter" data-module="5" data-subject="ebm" onclick="openModule(5)" style="display:none">M5 · Business Plan</div>
+  <div class="si ebm-chapter" data-module="6" data-subject="ebm" onclick="openModule(6)" style="display:none">M6 · Starting a Business</div>
+  <div class="si ebm-chapter" data-module="7" data-subject="ebm" onclick="openModule(7)" style="display:none">M7 · Managing a Business</div>
+  <div class="si ebm-chapter" data-module="8" data-subject="ebm" onclick="openModule(8)" style="display:none">M8 · Ethics & CSR</div>
   <div class="si-section">Resources</div>
   <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
   <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
@@ -327,6 +361,8 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
     <div class="subject-pills" id="subject-pills">
       <button class="subject-pill active" data-subject="fa" onclick="switchSubject('fa')">💰 Financial Accounting</button>
       <button class="subject-pill mc-subject" data-subject="mc" onclick="switchSubject('mc')">🗣️ Management Communication</button>
+      <button class="subject-pill cp-subject" data-subject="cp" onclick="switchSubject('cp')">🖥️ Computer Practice</button>
+      <button class="subject-pill ebm-subject" data-subject="ebm" onclick="switchSubject('ebm')">🚀 Entrepreneurship</button>
     </div>
 
     <!-- Hero Banner -->
@@ -454,6 +490,40 @@ const MC_MODULES = {
   7: { file:'mc-chapter-reading-comprehension.html', name:'Reading & Comprehension' },
   8: { file:'mc-chapter-language-editing.html', name:'Language & Editing' }
 };
+
+const CP_MODULES = {
+  1: { file:'cp-chapter-intro-computers.html',  name:'Introduction to Computers' },
+  2: { file:'cp-chapter-word-processing.html',   name:'Word Processing (MS Word)' },
+  3: { file:'cp-chapter-spreadsheets.html',      name:'Spreadsheets (MS Excel)' },
+  4: { file:'cp-chapter-presentations.html',     name:'Presentations (MS PowerPoint)' },
+  5: { file:'cp-chapter-email.html',             name:'Email & Digital Communication' },
+  6: { file:'cp-chapter-data-management.html',   name:'Data Management' },
+  7: { file:'cp-chapter-internet.html',          name:'Internet & Research' },
+  8: { file:'cp-chapter-security.html',          name:'Computer Security & POPIA' }
+};
+
+const EBM_MODULES = {
+  1: { file:'ebm-chapter-intro-entrepreneurship.html', name:'Introduction to Entrepreneurship' },
+  2: { file:'ebm-chapter-creativity.html',              name:'Creativity & Idea Generation' },
+  3: { file:'ebm-chapter-market-feasibility.html',      name:'Market Feasibility Study' },
+  4: { file:'ebm-chapter-financial-feasibility.html',   name:'Financial Feasibility Study' },
+  5: { file:'ebm-chapter-business-plan.html',           name:'Writing a Business Plan' },
+  6: { file:'ebm-chapter-starting-business.html',       name:'Starting a Business' },
+  7: { file:'ebm-chapter-managing-business.html',       name:'Managing a Business' },
+  8: { file:'ebm-chapter-ethics.html',                  name:'Business Ethics & Social Responsibility' }
+};
+
+const ALL_SUBJECTS = {
+  fa:  { modules: null, name: 'Financial Accounting N4', count: 10, theme: 'fa' },
+  mc:  { modules: null, name: 'Management Communication N4', count: 8, theme: 'mc' },
+  cp:  { modules: null, name: 'Computer Practice N4', count: 8, theme: 'cp' },
+  ebm: { modules: null, name: 'Entrepreneurship & Business Management N4', count: 8, theme: 'ebm' }
+};
+// Deferred assignment (const objects are already defined above)
+ALL_SUBJECTS.fa.modules = FA_MODULES;
+ALL_SUBJECTS.mc.modules = MC_MODULES;
+ALL_SUBJECTS.cp.modules = CP_MODULES;
+ALL_SUBJECTS.ebm.modules = EBM_MODULES;
 
 // For backwards compatibility, MODULES points to current subject
 let MODULES = FA_MODULES;
@@ -640,8 +710,8 @@ function generateModuleGrid(data) {
 
   grid.innerHTML = '';
 
-  const maxModules = currentSubject === 'mc' ? 8 : 10;
-  const modules = currentSubject === 'mc' ? MC_MODULES : FA_MODULES;
+  const maxModules = ALL_SUBJECTS[currentSubject].count;
+  const modules = ALL_SUBJECTS[currentSubject].modules;
 
   for (let i = 1; i <= maxModules; i++) {
     const mod = modules[i];
@@ -661,7 +731,7 @@ function generateModuleGrid(data) {
 
     const card = document.createElement('div');
     card.className = `mg-card ${statusClass}`;
-    if (currentSubject === 'mc') card.classList.add('mc-theme');
+    if (currentSubject !== 'fa') card.classList.add(currentSubject + '-theme');
     card.onclick = () => openModule(i);
 
     let numDisplay = String(i).padStart(2, '0');
@@ -728,7 +798,7 @@ function updateHomeStats() {
   if (xpBadge) xpBadge.textContent = `⚡ ${data.totalXP} XP`;
 
   // Update progress bar based on current subject
-  const maxModules = currentSubject === 'mc' ? 8 : 10;
+  const maxModules = ALL_SUBJECTS[currentSubject].count;
   const progLabel = document.querySelector('.hero-prog-label strong');
   if (progLabel) progLabel.textContent = `${data.completedCount} of ${maxModules} done`;
 
@@ -813,7 +883,7 @@ window.onboardingComplete = function() {
 //  OPEN MODULE
 // ═══════════════════════════════════
 function openModule(num) {
-  const modules = currentSubject === 'mc' ? MC_MODULES : FA_MODULES;
+  const modules = ALL_SUBJECTS[currentSubject].modules;
   const mod = modules[num];
   if (!mod) return;
 
@@ -1113,61 +1183,50 @@ function openCapstoneMode() {
 // ═══════════════════════════════════
 function switchSubject(subj) {
   if (currentModule !== null) return; // Don't switch while in a module
+  if (!ALL_SUBJECTS[subj]) return;
 
   currentSubject = subj;
-  MODULES = subj === 'mc' ? MC_MODULES : FA_MODULES;
+  MODULES = ALL_SUBJECTS[subj].modules;
 
   // Update active pill
   document.querySelectorAll('.subject-pill').forEach(pill => {
     pill.classList.remove('active');
-    if (pill.dataset.subject === subj) {
-      pill.classList.add('active');
-    }
+    if (pill.dataset.subject === subj) pill.classList.add('active');
   });
 
   // Update hero banner theme
   const heroBanner = document.getElementById('hero-banner');
   if (heroBanner) {
-    if (subj === 'mc') {
-      heroBanner.classList.add('mc-theme');
-    } else {
-      heroBanner.classList.remove('mc-theme');
-    }
+    heroBanner.classList.remove('mc-theme','cp-theme','ebm-theme');
+    if (subj !== 'fa') heroBanner.classList.add(subj + '-theme');
   }
 
   // Update today card theme
   const todayCard = document.querySelector('.today-card');
   if (todayCard) {
-    if (subj === 'mc') {
-      todayCard.classList.add('mc-theme');
-    } else {
-      todayCard.classList.remove('mc-theme');
-    }
+    todayCard.classList.remove('mc-theme','cp-theme','ebm-theme');
+    if (subj !== 'fa') todayCard.classList.add(subj + '-theme');
   }
 
-  // Update progress label and fill
+  // Update today card content
+  const subjConfig = ALL_SUBJECTS[subj];
+  const todayModule = document.querySelector('.today-module');
+  if (todayModule) todayModule.textContent = `MODULE 1 OF ${subjConfig.count}`;
+  const todayTitle = document.querySelector('.today-title');
+  if (todayTitle && MODULES[1]) todayTitle.textContent = MODULES[1].name;
+
+  // Update progress label
   const progLabel = document.querySelector('.hero-prog-label strong');
-  if (progLabel) {
-    const maxModules = subj === 'mc' ? 8 : 10;
-    const currentMod = subj === 'mc' ? 1 : 3; // Default current module
-    progLabel.textContent = `2 of ${maxModules} done`;
-  }
-
+  if (progLabel) progLabel.textContent = `0 of ${subjConfig.count} done`;
   const progFill = document.querySelector('.hero-prog-fill');
-  if (progFill) {
-    progFill.style.width = '20%';
-  }
+  if (progFill) progFill.style.width = '0%';
 
-  // Update module grid with correct modules
+  // Update module grid
   generateModuleGrid(null);
 
   // Update shell-meta text
   const shellMeta = document.getElementById('shell-meta');
-  if (shellMeta) {
-    shellMeta.textContent = subj === 'mc'
-      ? 'Ayikho · Management Communication N4 · TVET Study App'
-      : 'Ayikho · Financial Accounting N4 · TVET Study App';
-  }
+  if (shellMeta) shellMeta.textContent = `Ayikho · ${subjConfig.name} · TVET Study App`;
 
   // Update sidebar visibility
   updateSidebarSubjectVisibility();
@@ -1178,16 +1237,12 @@ function switchSubject(subj) {
 //  SIDEBAR
 // ═══════════════════════════════════
 function updateSidebarSubjectVisibility() {
-  const faChapters = document.querySelectorAll('.fa-chapter');
-  const mcChapters = document.querySelectorAll('.mc-chapter');
-
-  if (currentSubject === 'fa') {
-    faChapters.forEach(ch => ch.style.display = '');
-    mcChapters.forEach(ch => ch.style.display = 'none');
-  } else {
-    faChapters.forEach(ch => ch.style.display = 'none');
-    mcChapters.forEach(ch => ch.style.display = '');
-  }
+  const subjectClasses = ['fa-chapter','mc-chapter','cp-chapter','ebm-chapter'];
+  subjectClasses.forEach(cls => {
+    const chapters = document.querySelectorAll('.' + cls);
+    const isActive = cls.startsWith(currentSubject + '-');
+    chapters.forEach(ch => ch.style.display = isActive ? '' : 'none');
+  });
 }
 
 function updateSidebar() {
@@ -1248,7 +1303,7 @@ document.addEventListener('keydown', e => {
   // Number keys 1-9: jump to module (from current subject)
   const num = parseInt(e.key);
   if (num >= 1 && num <= 9) {
-    const maxModules = currentSubject === 'mc' ? 8 : 10;
+    const maxModules = ALL_SUBJECTS[currentSubject].count;
     if (num <= maxModules) {
       openModule(num);
     }

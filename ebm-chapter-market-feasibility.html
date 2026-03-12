@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho - Module 3: Market Feasibility Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --p: #16A34A;
+            --pl: #22C55E;
+            --pd: #15803D;
+            --pxs: #F0FDF4;
+            --psm: #DCFCE7;
+            --fa: #EAB308;
+            --fa-l: #FACC15;
+            --fa-d: #CA8A04;
+            --fa-xs: #FEFCE8;
+            --fa-sm: #FEF9C3;
+            --gold: #F59E0B;
+            --green: #22C55E;
+            --green-xs: #F0FDF4;
+            --rose: #F43F5E;
+            --ink: #0A1A0E;
+            --mut: #4B5C52;
+            --dim: #8FA898;
+            --bord: #BBF7D0;
+            --surf: #F0FDF4;
+            --w: #FFFFFF;
+            --bg-dark: #050F08;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--ink);
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            border: 12px solid var(--bg-dark);
+            border-radius: 50px;
+            overflow: hidden;
+            background: #05090F;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: var(--ink);
+            color: var(--w);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .status-left {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .status-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .progress-strip {
+            height: 3px;
+            background: var(--bord);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--fa);
+            width: 37.5%;
+            transition: width 0.3s ease;
+        }
+
+        .screen-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .screen.prev {
+            transform: translateX(-100px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--p) 0%, var(--pl) 100%);
+            color: var(--w);
+            padding: 24px 20px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 812px;
+            background: var(--ink);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 1000;
+            border-radius: 0 50px 50px 0;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 60px;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dim);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--fa);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .nav-dot:hover {
+            background: var(--fa-l);
+        }
+
+        .body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--w);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ink);
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0 12px 0;
+            color: var(--ink);
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--mut);
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .callout {
+            background: var(--fa-xs);
+            border-left: 4px solid var(--fa);
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .callout.exam {
+            background: var(--pxs);
+            border-left-color: var(--p);
+        }
+
+        .callout.real-life {
+            background: var(--green-xs);
+            border-left-color: var(--green);
+        }
+
+        .callout h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .callout p {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        .card {
+            background: var(--surf);
+            border: 1px solid var(--bord);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            background: var(--p);
+            color: var(--w);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--pl);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--fa);
+            color: var(--ink);
+        }
+
+        .btn-secondary:hover {
+            background: var(--fa-l);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--bord);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--p);
+            box-shadow: 0 0 0 3px var(--pxs);
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%);
+            border-left: 4px solid var(--fa);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: var(--fa-d);
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .example-step {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+        }
+
+        .example-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .step-label {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 13px;
+        }
+
+        .quiz-question {
+            margin-bottom: 24px;
+        }
+
+        .quiz-question h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--ink);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            padding: 12px 16px;
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--p);
+            background: var(--psm);
+        }
+
+        .quiz-option.correct {
+            background: var(--green-xs);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(244, 63, 94, 0.1);
+            border-color: var(--rose);
+            color: var(--rose);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--bord);
+        }
+
+        .nav-buttons button {
+            flex: 1;
+        }
+
+        .nav-buttons button:first-child {
+            background: var(--surf);
+            border: 2px solid var(--bord);
+            color: var(--ink);
+        }
+
+        .nav-buttons button:first-child:hover {
+            background: var(--psm);
+        }
+
+        .body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .body::-webkit-scrollbar-track {
+            background: var(--surf);
+        }
+
+        .body::-webkit-scrollbar-thumb {
+            background: var(--bord);
+            border-radius: 3px;
+        }
+
+        .body::-webkit-scrollbar-thumb:hover {
+            background: var(--dim);
+        }
+
+        @media (max-width: 425px) {
+            .phone-frame {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
+        <div class="sidebar-nav" id="sidebarNav"></div>
+        <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
+            <div id="currentScreen">1/8</div>
+        </div>
+    </div>
+
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="status-left">
+                <span>09:24</span>
+            </div>
+            <div style="flex: 1; text-align: center; font-size: 12px;">Ayikho</div>
+            <div class="status-right">
+                <span>4G</span>
+                <span>🔋</span>
+            </div>
+        </div>
+
+        <div class="progress-strip">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="screen-container" id="screenContainer"></div>
+    </div>
+
+    <script>
+        function notifyParent(type, data) {
+            try {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type, ...data }, '*');
+                }
+            } catch(e) {}
+        }
+
+        const MODULE_ID = 3;
+        let currentScreen = 0;
+        let quizAnswers = {};
+
+        const screens = [
+            {
+                id: 'intro',
+                title: 'Market Feasibility Study',
+                subtitle: 'Module 3 of 8 · Entrepreneurship N4',
+                type: 'lesson',
+                content: `
+                    <h2>Is Your Idea Worth Pursuing?</h2>
+
+                    <div class="callout exam">
+                        <h4>TL;DR</h4>
+                        <p>Market feasibility studies answer: "Will people actually buy this?" Research your target market, analyze competitors, and assess demand before launching.</p>
+                    </div>
+
+                    <h3>What is Market Research?</h3>
+                    <p>Market research is the process of gathering information about customers, competitors, and the market. It answers crucial questions:</p>
+                    <p>• Who will buy my product?</p>
+                    <p>• How much will they pay?</p>
+                    <p>• Who is competing with me?</p>
+                    <p>• Is there enough demand?</p>
+
+                    <h3>Key Market Research Methods</h3>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">Surveys</h3>
+                        <p style="margin: 0;">Ask customers directly. "Would you buy this? How much would you pay?" Cheap and quick. Ask 50 people with questions.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">Focus Groups</h3>
+                        <p style="margin: 0;">Interview 8-10 people deeply about their needs and opinions. Expensive but rich insights.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">Competitor Analysis</h3>
+                        <p style="margin: 0;">Study who else is selling similar products. What's their price? What are they doing well or poorly?</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">Demographics</h3>
+                        <p style="margin: 0;">Understand your customer: age, income, location, job. "My product targets women aged 18-35 in urban SA."</p>
+                    </div>
+
+                    <h3>SWOT Analysis</h3>
+                    <p>SWOT evaluates your business idea:</p>
+                    <p><strong>Strengths:</strong> What's your advantage? "I'm the only solar charging station in this township."</p>
+                    <p><strong>Weaknesses:</strong> What's hard? "No formal training, limited capital."</p>
+                    <p><strong>Opportunities:</strong> What can help? "Load shedding is increasing. More customers will need charging."</p>
+                    <p><strong>Threats:</strong> What could hurt? "A competitor with more capital. Government regulation."</p>
+
+                    <h3>Real Example: Bongiwe's Food Stall</h3>
+                    <div class="example-box">
+                        <div class="example-title">Market Research Before Launching</div>
+                        <div class="example-step">
+                            <div class="step-label"><strong>Idea:</strong> Open a food stall near Motheo TVET College selling affordable lunches.</div>
+                        </div>
+                        <div class="example-step">
+                            <div class="step-label"><strong>Market Research:</strong> Bongiwe surveyed 50 students. 45 said they'd buy lunch for R25-35. Top foods: pap, chicken, rice.</div>
+                        </div>
+                        <div class="example-step">
+                            <div class="step-label"><strong>Competitors:</strong> Two other stalls nearby. They sell for R40-50, unreliable opening times.</div>
+                        </div>
+                        <div class="example-step">
+                            <div class="step-label"><strong>Decision:</strong> Launch at R30 with consistent hours. Day 1 sold R800 worth. Monthly revenue: R16,000.</div>
+                        </div>
+                    </div>
+
+                    <div class="callout real-life">
+                        <h4>Target Market</h4>
+                        <p>Your target market is the specific group most likely to buy. Bongiwe's target: TVET students aged 18-25, with R20-40 daily food budget, in Bloemfontein area.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'swot',
+                title: 'SWOT & Market Share',
+                subtitle: 'Module 3 of 8 · Entrepreneurship N4',
+                type: 'lesson',
+                content: `
+                    <h2>Analyzing Your Market Position</h2>
+
+                    <h3>Market Share</h3>
+                    <p>Market share is the percentage of total market sales your business captures.</p>
+                    <p><strong>Example:</strong> In Motheo's food market, there are 1,500 students. Each spends R20/day = R30,000/day market. If Bongiwe sells R800/day, she has 2.7% market share.</p>
+
+                    <h3>Building a SWOT Table</h3>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0; margin-bottom: 12px;">Example: Mobile Phone Repair Shop</h3>
+                        <p style="margin: 0;"><strong>Strengths:</strong> Technical skills, low rent, fast service<br><strong>Weaknesses:</strong> Limited capital, no formal business training<br><strong>Opportunities:</strong> Smartphones breaking daily, no other repair shop nearby<br><strong>Threats:</strong> Manufacturers' official repair centers, online shopping discourages phone purchases</p>
+                    </div>
+
+                    <h3>What Makes a Market Feasible?</h3>
+                    <p><strong>1. Demand exists:</strong> People want the product. Your survey showed interest.</p>
+                    <p><strong>2. Sufficient size:</strong> Market is big enough to sustain your business.</p>
+                    <p><strong>3. Accessible:</strong> You can reach customers affordably.</p>
+                    <p><strong>4. Competitive advantage:</strong> You have something competitors don't.</p>
+                    <p><strong>5. Profitability:</strong> You can make money at sustainable prices.</p>
+
+                    <div class="callout exam">
+                        <h4>Key Concept: Market Gap</h4>
+                        <p>A market gap is an unmet customer need. Example: "Students want healthy lunches but all vendors sell fried food." The gap = healthy food market. That's your opportunity.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz1',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 1 of 5',
+                type: 'quiz',
+                content: `
+                    <h2>Question 1 of 5</h2>
+
+                    <div class="quiz-question">
+                        <h4>What is the primary purpose of market research?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) To gather information about customers, competitors, and demand before launching</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) To guarantee that your business will be successful</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) To avoid doing any actual work</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) To copy what larger companies do</div>
+                        </div>
+                    </div>
+
+                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
+                        <p id="feedback-text-q1"></p>
+                    </div>
+
+                    <div class="nav-buttons" id="nav-q1" style="display: none;">
+                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz2',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 2 of 5',
+                type: 'quiz',
+                content: `
+                    <h2>Question 2 of 5</h2>
+
+                    <div class="quiz-question">
+                        <h4>What does "target market" mean?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) The specific group of customers most likely to buy your product</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Everyone in the world</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Your competitors only</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Government officials</div>
+                        </div>
+                    </div>
+
+                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
+                        <p id="feedback-text-q2"></p>
+                    </div>
+
+                    <div class="nav-buttons" id="nav-q2" style="display: none;">
+                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz3',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 3 of 5',
+                type: 'quiz',
+                content: `
+                    <h2>Question 3 of 5</h2>
+
+                    <div class="quiz-question">
+                        <h4>Which of these is part of a SWOT analysis?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">A) Only positive factors matter</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">B) Strengths, Weaknesses, Opportunities, and Threats</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Size, Weight, Opacity, and Tone</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Only internal factors</div>
+                        </div>
+                    </div>
+
+                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
+                        <p id="feedback-text-q3"></p>
+                    </div>
+
+                    <div class="nav-buttons" id="nav-q3" style="display: none;">
+                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz4',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 4 of 5',
+                type: 'quiz',
+                content: `
+                    <h2>Question 4 of 5</h2>
+
+                    <div class="quiz-question">
+                        <h4>What is a market survey most useful for?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) Asking potential customers if they would buy and what price they'd pay</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) Forcing people to buy your product</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) Replacing the need to do any actual business planning</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Determining your personal dreams</div>
+                        </div>
+                    </div>
+
+                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
+                        <p id="feedback-text-q4"></p>
+                    </div>
+
+                    <div class="nav-buttons" id="nav-q4" style="display: none;">
+                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz5',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 5 of 5',
+                type: 'quiz',
+                content: `
+                    <h2>Question 5 of 5</h2>
+
+                    <div class="quiz-question">
+                        <h4>What is market share?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">A) The percentage of total market sales your business captures</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">B) How many friends you have who will buy from you</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) The price you charge for your product</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) The location of your business</div>
+                        </div>
+                    </div>
+
+                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
+                        <p id="feedback-text-q5"></p>
+                    </div>
+
+                    <div class="nav-buttons" id="nav-q5" style="display: none;">
+                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                `
+            }
+        ];
+
+        function renderScreen(index) {
+            const screen = screens[index];
+            let html = `
+                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
+                    <div class="header">
+                        <h1>${screen.title}</h1>
+                        <p>${screen.subtitle}</p>
+                    </div>
+                    <div class="body">
+                        ${screen.content}
+                    </div>
+                </div>
+            `;
+            return html;
+        }
+
+        function initScreens() {
+            const container = document.getElementById('screenContainer');
+            screens.forEach((screen, index) => {
+                const screenEl = document.createElement('div');
+                screenEl.innerHTML = renderScreen(index);
+                container.appendChild(screenEl.firstElementChild);
+            });
+
+            const sidebarNav = document.getElementById('sidebarNav');
+            screens.forEach((screen, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot' + (index === 0 ? ' active' : '');
+                dot.onclick = () => goToScreen(index);
+                sidebarNav.appendChild(dot);
+            });
+
+            updateCurrentScreen();
+        }
+
+        function goToScreen(index) {
+            if (index < 0 || index >= screens.length) return;
+
+            const allScreens = document.querySelectorAll('.screen');
+            allScreens.forEach((s, i) => {
+                s.classList.remove('active', 'prev');
+                if (i === index) s.classList.add('active');
+                else if (i < index) s.classList.add('prev');
+            });
+
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+
+            currentScreen = index;
+            updateCurrentScreen();
+            updateProgress();
+            notifyParent('screen-change', { screen: currentScreen, module: MODULE_ID });
+        }
+
+        function nextQuestion() {
+            if (currentScreen < screens.length - 1) {
+                goToScreen(currentScreen + 1);
+            }
+        }
+
+        function checkAnswer(element, isCorrect, questionId) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                const feedback = document.getElementById(`feedback-${questionId}`);
+                const feedbackText = document.getElementById(`feedback-text-${questionId}`);
+                feedbackText.innerHTML = '✓ Correct! You understood the concept.';
+                feedback.style.background = 'var(--green-xs)';
+                feedback.style.border = '2px solid var(--green)';
+                feedback.style.color = 'var(--green)';
+                feedback.style.display = 'block';
+            } else {
+                element.classList.add('incorrect');
+                const feedback = document.getElementById(`feedback-${questionId}`);
+                const feedbackText = document.getElementById(`feedback-text-${questionId}`);
+                feedbackText.innerHTML = '✗ Not quite. Try to think about the definition from the lesson above.';
+                feedback.style.background = 'rgba(244, 63, 94, 0.1)';
+                feedback.style.border = '2px solid var(--rose)';
+                feedback.style.color = 'var(--rose)';
+                feedback.style.display = 'block';
+            }
+
+            document.getElementById(`nav-${questionId}`).style.display = 'flex';
+            notifyParent('quiz-answer', { question: questionId, correct: isCorrect, module: MODULE_ID });
+        }
+
+        function updateProgress() {
+            const progress = ((currentScreen + 1) / screens.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function updateCurrentScreen() {
+            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/${screens.length}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', initScreens);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextQuestion();
+            if (e.key === 'ArrowLeft' && currentScreen > 0) goToScreen(currentScreen - 1);
+        });
+    </script>
+</body>
+</html>
