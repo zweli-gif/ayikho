@@ -3,171 +3,1444 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ayikho Ecosystem | Admin Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Ayikho Admin Dashboard | Zweli</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    :root {
-      --primary: #2563eb;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-    }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --purple: #7C3AED;
+      --gold: #F59E0B;
+      --green: #22C55E;
+      --blue: #0284C7;
+      --rose: #F43F5E;
+      --ink: #1A0A3A;
+      --bg: #05090F;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.1);
+      --text-primary: rgba(255, 255, 255, 0.95);
+      --text-secondary: rgba(255, 255, 255, 0.6);
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-primary);
       padding: 20px;
+      min-height: 100vh;
     }
-    .header {
-      margin-bottom: 30px;
-    }
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+    /* ═══════════════════════════════════════════ */
+    /* HEADER */
+    /* ═══════════════════════════════════════════ */
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
       gap: 20px;
+    }
+
+    .admin-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .last-refreshed {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.3s var(--spring);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-refresh {
+      background: var(--purple);
+      color: white;
+    }
+
+    .btn-refresh:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      background: var(--card-bg);
+      border-radius: 14px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: all 0.3s var(--spring);
+    }
+
+    .toggle.active {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: all 0.3s var(--spring);
+    }
+
+    .toggle.active::after {
+      left: 23px;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* STATS GRID */
+    /* ═══════════════════════════════════════════ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
       margin-bottom: 40px;
     }
-    .metric-card {
+
+    .stat-card {
       background: var(--card-bg);
-      padding: 20px;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s var(--spring);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--purple);
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .stat-subtext {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* SECTION CONTAINERS */
+    /* ═══════════════════════════════════════════ */
+    .dashboard-section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 30px;
+      background: var(--purple);
+      border-radius: 2px;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* STUDENT TABLE */
+    /* ═══════════════════════════════════════════ */
+    .table-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .table-controls {
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .search-box::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .sort-select {
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--border);
+      background: rgba(124, 58, 237, 0.1);
+    }
+
+    th {
+      padding: 14px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--gold);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    td {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    tbody tr {
+      transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(124, 58, 237, 0.1);
+    }
+
+    .student-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background: rgba(34, 197, 94, 0.2);
+      color: var(--green);
+    }
+
+    .status-inactive {
+      background: rgba(244, 63, 94, 0.2);
+      color: var(--rose);
+    }
+
+    .expandable-row {
+      cursor: pointer;
+    }
+
+    .expanded-content {
+      background: rgba(124, 58, 237, 0.05);
+      padding: 20px;
+      display: none;
+    }
+
+    .expanded-content.active {
+      display: block;
+    }
+
+    .module-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .module-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
       text-align: center;
+      font-size: 0.8rem;
     }
-    .metric-value {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: var(--primary);
-      margin: 10px 0;
+
+    .module-name {
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 4px;
     }
+
+    .module-status {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* MODULE HEATMAP */
+    /* ═══════════════════════════════════════════ */
+    .heatmap-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      overflow-x: auto;
+    }
+
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: 150px repeat(10, 1fr);
+      gap: 2px;
+      min-width: 100%;
+    }
+
+    .heatmap-cell {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: help;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .heatmap-cell:hover {
+      transform: scale(1.1);
+      z-index: 10;
+    }
+
+    .heatmap-label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .heatmap-completed {
+      background: rgba(34, 197, 94, 0.6);
+      color: white;
+    }
+
+    .heatmap-inprogress {
+      background: rgba(2, 132, 199, 0.6);
+      color: white;
+    }
+
+    .heatmap-available {
+      background: rgba(245, 158, 11, 0.3);
+      color: var(--gold);
+    }
+
+    .heatmap-locked {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+    }
+
+    .heatmap-cell.has-weak {
+      border-color: var(--rose);
+      border-width: 2px;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* CHARTS */
+    /* ═══════════════════════════════════════════ */
     .charts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
+
     .chart-container {
       background: var(--card-bg);
-      padding: 20px;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .chart-title {
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* DROP-OFF ANALYSIS */
+    /* ═══════════════════════════════════════════ */
+    .dropoff-list {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .dropoff-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.9rem;
+    }
+
+    .dropoff-item:last-child {
+      border-bottom: none;
+    }
+
+    .dropoff-location {
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .dropoff-count {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--rose);
+      font-weight: 700;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* WEAK SPOTS */
+    /* ═══════════════════════════════════════════ */
+    .weak-spots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .weak-spot-card {
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+
+    .weak-spot-topic {
+      font-weight: 600;
+      color: var(--rose);
+      margin-bottom: 4px;
+    }
+
+    .weak-spot-question {
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .weak-spot-count {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* LOADING & EMPTY STATES */
+    /* ═══════════════════════════════════════════ */
+    .loading-spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--border);
+      border-top-color: var(--purple);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state h3 {
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* RESPONSIVE */
+    /* ═══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .admin-header h1 {
+        font-size: 2rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .table-wrapper {
+        font-size: 0.8rem;
+      }
+
+      th, td {
+        padding: 10px;
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .heatmap-grid {
+        grid-template-columns: 80px repeat(10, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+
+      .admin-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        font-size: 0.75rem;
+      }
+
+      th, td {
+        padding: 8px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>🚀 Ayikho Admin Command Center</h1>
-    <p>Live metrics for the N4 Financial Accounting Beta</p>
-  </div>
-
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <h3>Total Students</h3>
-      <div class="metric-value" id="totalUsers">--</div>
-    </div>
-    <div class="metric-card">
-      <h3>Total Tracking Events</h3>
-      <div class="metric-value" id="totalEvents">--</div>
-    </div>
-    <div class="metric-card">
-      <h3>Avg. Quiz Score</h3>
-      <div class="metric-value" id="avgScore">--%</div>
+  <!-- HEADER -->
+  <div class="admin-header">
+    <h1>Ayikho Admin Dashboard</h1>
+    <div class="header-right">
+      <div class="last-refreshed" id="lastRefreshed">Loading...</div>
+      <div class="toggle-container">
+        <span>Auto-refresh</span>
+        <div class="toggle" id="autoRefreshToggle"></div>
+      </div>
+      <button class="btn btn-refresh" id="refreshBtn">
+        <span>↻</span> Refresh Now
+      </button>
     </div>
   </div>
 
-  <div class="charts-grid">
-    <div class="chart-container">
-      <canvas id="eventsChart"></canvas>
+  <!-- TOP STATS -->
+  <div class="stats-grid" id="statsContainer">
+    <div class="stat-card">
+      <div class="stat-label">Total Students</div>
+      <div class="stat-value" id="totalStudents">--</div>
+      <div class="stat-subtext">Registered</div>
     </div>
-    <div class="chart-container">
-      <canvas id="quizChart"></canvas>
+    <div class="stat-card">
+      <div class="stat-label">Active Today</div>
+      <div class="stat-value" id="activeToday">--</div>
+      <div class="stat-subtext">Last 24 hours</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Onboarding Complete</div>
+      <div class="stat-value" id="onboardingComplete">--</div>
+      <div class="stat-subtext">Ready to learn</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Quiz Score</div>
+      <div class="stat-value" id="avgQuizScore">--</div>
+      <div class="stat-subtext">Across modules</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Study Time</div>
+      <div class="stat-value" id="totalStudyTime">--</div>
+      <div class="stat-subtext">Combined</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Capstone Attempts</div>
+      <div class="stat-value" id="capstoneAttempts">--</div>
+      <div class="stat-subtext">Total</div>
     </div>
   </div>
 
-  <script src="firebase-config.js" onerror="console.error('Missing config!')"></script>
+  <!-- STUDENT TABLE -->
+  <div class="dashboard-section">
+    <h2 class="section-title">Student Overview</h2>
+    <div class="table-wrapper">
+      <div class="table-controls">
+        <input type="text" class="search-box" id="studentSearch" placeholder="Search by name, phone, or college...">
+        <select class="sort-select" id="sortSelect">
+          <option value="name">Sort: Name (A-Z)</option>
+          <option value="active">Sort: Last Active</option>
+          <option value="xp">Sort: XP (High to Low)</option>
+          <option value="progress">Sort: Progress (High to Low)</option>
+        </select>
+      </div>
+      <table id="studentTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>College</th>
+            <th>Modules</th>
+            <th>Avg Mark</th>
+            <th>XP</th>
+            <th>Streak</th>
+            <th>Last Active</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody">
+          <tr><td colspan="9" style="text-align: center; padding: 40px;"><div class="loading-spinner"></div> Loading students...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
+  <!-- MODULE HEATMAP -->
+  <div class="dashboard-section">
+    <h2 class="section-title">Module Completion Heatmap</h2>
+    <div class="heatmap-container">
+      <div class="heatmap-grid" id="heatmapGrid">
+        <div class="heatmap-label">Student</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M1</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M2</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M3</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M4</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M5</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M6</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M7</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M8</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M9</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M10</div>
+      </div>
+      <div style="text-align: center; margin-top: 12px; font-size: 0.8rem; color: var(--text-secondary);">
+        <span style="margin: 0 12px;"><span style="display: inline-block; width: 12px; height: 12px; background: rgba(34, 197, 94, 0.6); border-radius: 2px;"></span> Completed</span>
+        <span style="margin: 0 12px;"><span style="display: inline-block; width: 12px; height: 12px; background: rgba(2, 132, 199, 0.6); border-radius: 2px;"></span> In Progress</span>
+        <span style="margin: 0 12px;"><span style="display: inline-block; width: 12px; height: 12px; background: rgba(245, 158, 11, 0.3); border-radius: 2px;"></span> Available</span>
+        <span style="margin: 0 12px;"><span style="display: inline-block; width: 12px; height: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2px;"></span> Locked</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 1 -->
+  <div class="dashboard-section">
+    <h2 class="section-title">Quiz Performance Analysis</h2>
+    <div class="charts-grid">
+      <div class="chart-container">
+        <div class="chart-title">Pre vs Post Quiz Scores by Module</div>
+        <canvas id="quizComparisonChart" height="50"></canvas>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">Module Completion Rate</div>
+        <canvas id="completionRateChart" height="50"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2 -->
+  <div class="dashboard-section">
+    <h2 class="section-title">Study Patterns</h2>
+    <div class="charts-grid">
+      <div class="chart-container">
+        <div class="chart-title">Average Time Spent per Module</div>
+        <canvas id="timeSpentChart" height="50"></canvas>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">XP Distribution</div>
+        <canvas id="xpDistributionChart" height="50"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- DROP-OFF ANALYSIS -->
+  <div class="dashboard-section">
+    <h2 class="section-title">Drop-off Analysis</h2>
+    <div class="charts-grid">
+      <div class="dropoff-list" id="dropoffList">
+        <div class="empty-state">
+          <div class="loading-spinner"></div>
+          <h3>Loading drop-off data...</h3>
+        </div>
+      </div>
+      <div class="dropoff-list" id="weakSpotsList">
+        <div class="empty-state">
+          <div class="loading-spinner"></div>
+          <h3>Loading weak spots...</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Config Script -->
+  <script src="firebase-config.js"></script>
+
+  <!-- Main Dashboard Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // Initialize Firebase using the global variable from firebase-config.js
+    // Global state
+    let allStudents = [];
+    let allEvents = [];
+    let filteredStudents = [];
+    let autoRefreshInterval = null;
+
+    // Initialize Firebase
     const app = initializeApp(window.FIREBASE_CONFIG);
     const db = getFirestore(app);
 
-    async function loadDashboardData() {
+    // ═══════════════════════════════════════════════════════════════════
+    // DATA LOADING
+    // ═══════════════════════════════════════════════════════════════════
+
+    async function loadAllData() {
       try {
-        // Fetch Users
-        const usersSnap = await getDocs(collection(db, "users"));
-        document.getElementById('totalUsers').innerText = usersSnap.size;
+        updateLastRefreshed();
 
-        // Fetch Events
+        // Load Progress collection (primary data source)
+        const progressSnap = await getDocs(collection(db, "progress"));
+        allStudents = [];
+        progressSnap.forEach(doc => {
+          allStudents.push({ ...doc.data(), docId: doc.id });
+        });
+
+        // Load Events collection
         const eventsSnap = await getDocs(collection(db, "events"));
-        const events = [];
-        eventsSnap.forEach(doc => events.push(doc.data()));
-        
-        document.getElementById('totalEvents').innerText = events.length;
-
-        // Process Data for Charts
-        let correctAnswers = 0;
-        let totalAnswers = 0;
-        const eventCounts = {};
-
-        events.forEach(ev => {
-          // Count Event Types for the Bar Chart
-          eventCounts[ev.type] = (eventCounts[ev.type] || 0) + 1;
-
-          // Calculate Average Quiz Score
-          if (ev.type === 'quizAnswer') {
-            totalAnswers++;
-            if (ev.isCorrect) correctAnswers++;
-          }
+        allEvents = [];
+        eventsSnap.forEach(doc => {
+          allEvents.push(doc.data());
         });
 
-        // Update Average Score UI
-        if (totalAnswers > 0) {
-          const score = Math.round((correctAnswers / totalAnswers) * 100);
-          document.getElementById('avgScore').innerText = score + '%';
-        } else {
-          document.getElementById('avgScore').innerText = 'N/A';
-        }
-
-        // Render Events Breakdown Chart
-        new Chart(document.getElementById('eventsChart'), {
-          type: 'bar',
-          data: {
-            labels: Object.keys(eventCounts),
-            datasets: [{
-              label: 'User Actions',
-              data: Object.values(eventCounts),
-              backgroundColor: '#3b82f6',
-              borderRadius: 6
-            }]
-          },
-          options: { responsive: true, plugins: { title: { display: true, text: 'Event Breakdown' } } }
-        });
-
-        // Render Quiz Accuracy Chart
-        new Chart(document.getElementById('quizChart'), {
-          type: 'doughnut',
-          data: {
-            labels: ['Correct', 'Incorrect'],
-            datasets: [{
-              data: [correctAnswers, totalAnswers - correctAnswers],
-              backgroundColor: ['#10b981', '#ef4444']
-            }]
-          },
-          options: { responsive: true, plugins: { title: { display: true, text: 'Overall Quiz Accuracy' } } }
-        });
+        // Update UI
+        filteredStudents = [...allStudents];
+        updateStats();
+        renderStudentTable(allStudents);
+        renderHeatmap(allStudents);
+        renderCharts(allStudents);
+        renderDropoffAnalysis();
+        renderWeakSpots();
 
       } catch (error) {
         console.error("Error loading dashboard data:", error);
-        alert("Failed to load data. Make sure Firestore test mode is on and you have data!");
+        document.getElementById('studentTableBody').innerHTML =
+          '<tr><td colspan="9" style="text-align: center; padding: 40px; color: var(--rose);">Error loading data. Check console.</td></tr>';
       }
     }
 
-    // Run on load
-    loadDashboardData();
+    function updateLastRefreshed() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-ZA', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      document.getElementById('lastRefreshed').textContent = `Last updated: ${timeStr}`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // STATS CALCULATION
+    // ═══════════════════════════════════════════════════════════════════
+
+    function updateStats() {
+      // Total students
+      document.getElementById('totalStudents').textContent = allStudents.length;
+
+      // Active today
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const activeToday = allStudents.filter(s => {
+        if (!s.stats?.lastActiveDate) return false;
+        const lastActive = new Date(s.stats.lastActiveDate);
+        lastActive.setHours(0, 0, 0, 0);
+        return lastActive.getTime() === today.getTime();
+      }).length;
+      document.getElementById('activeToday').textContent = activeToday;
+
+      // Onboarding complete
+      const onboardingCount = allStudents.filter(s => s.onboardingComplete).length;
+      document.getElementById('onboardingComplete').textContent = onboardingCount;
+
+      // Average quiz score
+      let totalScore = 0;
+      let scoreCount = 0;
+      allStudents.forEach(student => {
+        if (student.modules) {
+          Object.values(student.modules).forEach(mod => {
+            if (mod.postQuiz?.score && mod.postQuiz?.total) {
+              totalScore += (mod.postQuiz.score / mod.postQuiz.total) * 100;
+              scoreCount++;
+            }
+          });
+        }
+      });
+      const avgScore = scoreCount > 0 ? Math.round(totalScore / scoreCount) : 0;
+      document.getElementById('avgQuizScore').textContent = avgScore + '%';
+
+      // Total study time
+      let totalMs = 0;
+      allStudents.forEach(s => {
+        if (s.stats?.totalTimeMs) totalMs += s.stats.totalTimeMs;
+      });
+      const hours = Math.round(totalMs / (1000 * 60 * 60));
+      document.getElementById('totalStudyTime').textContent = hours + 'h';
+
+      // Capstone attempts
+      let capstoneAttempts = 0;
+      allStudents.forEach(s => {
+        if (s.capstoneExam?.attempts) capstoneAttempts += s.capstoneExam.attempts;
+      });
+      document.getElementById('capstoneAttempts').textContent = capstoneAttempts;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // STUDENT TABLE
+    // ═══════════════════════════════════════════════════════════════════
+
+    function renderStudentTable(students) {
+      const tbody = document.getElementById('studentTableBody');
+
+      if (students.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state" style="padding: 40px;"><h3>No students yet</h3><p>Students will appear here once they start using Ayikho.</p></td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = students.map((student, idx) => {
+        const name = student.profile?.name || 'Anonymous';
+        const phone = maskPhone(student.profile?.phone);
+        const college = student.profile?.college || '—';
+
+        // Calculate modules completed
+        let completed = 0;
+        if (student.modules) {
+          Object.values(student.modules).forEach(m => {
+            if (m.status === 'completed') completed++;
+          });
+        }
+
+        // Calculate average mark
+        let totalScore = 0;
+        let scoreCount = 0;
+        if (student.modules) {
+          Object.values(student.modules).forEach(m => {
+            if (m.postQuiz?.score && m.postQuiz?.total) {
+              totalScore += (m.postQuiz.score / m.postQuiz.total) * 100;
+              scoreCount++;
+            }
+          });
+        }
+        const avgMark = scoreCount > 0 ? Math.round(totalScore / scoreCount) : 0;
+
+        const xp = student.stats?.totalXP || 0;
+        const streak = student.stats?.streakDays || 0;
+        const lastActive = formatLastActive(student.stats?.lastActiveDate);
+        const isActive = isStudentActive(student.stats?.lastActiveDate);
+        const statusClass = isActive ? 'status-active' : 'status-inactive';
+        const statusText = isActive ? 'Active' : 'Inactive';
+
+        return `
+          <tr class="expandable-row" onclick="toggleExpanded(event, ${idx})">
+            <td><span class="student-name">${escapeHtml(name)}</span></td>
+            <td>${phone}</td>
+            <td>${escapeHtml(college)}</td>
+            <td><strong>${completed}</strong>/10</td>
+            <td>${avgMark}%</td>
+            <td>${xp}</td>
+            <td>${streak}d</td>
+            <td>${lastActive}</td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+          </tr>
+          <tr class="expanded-content" id="expanded-${idx}">
+            <td colspan="9">
+              <div style="padding: 20px; background: rgba(124, 58, 237, 0.05); border-radius: 8px;">
+                <h4 style="color: var(--gold); margin-bottom: 12px;">Module Breakdown for ${escapeHtml(name)}</h4>
+                <div class="module-breakdown" id="modules-${idx}">
+                  <div style="text-align: center; color: var(--text-secondary);">Loading...</div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Render module breakdowns
+      students.forEach((student, idx) => {
+        const container = document.getElementById(`modules-${idx}`);
+        if (!container) return;
+
+        const modules = [];
+        if (student.modules) {
+          for (let i = 1; i <= 10; i++) {
+            const mod = student.modules[i.toString()];
+            if (mod) {
+              const status = mod.status || 'locked';
+              const postScore = mod.postQuiz?.score || 0;
+              const postTotal = mod.postQuiz?.total || 0;
+              const postPct = postTotal > 0 ? Math.round((postScore / postTotal) * 100) : 0;
+
+              modules.push(`
+                <div class="module-card">
+                  <div class="module-name">Module ${i}</div>
+                  <div class="module-status">Status: ${status}</div>
+                  ${postTotal > 0 ? `<div style="color: var(--green); font-weight: 600; margin-top: 4px;">${postScore}/${postTotal} (${postPct}%)</div>` : '<div style="color: var(--text-secondary); font-size: 0.7rem;">No quiz</div>'}
+                </div>
+              `);
+            }
+          }
+        }
+
+        if (modules.length === 0) {
+          container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 20px;">No modules started</div>';
+        } else {
+          container.innerHTML = modules.join('');
+        }
+      });
+    }
+
+    function toggleExpanded(event, idx) {
+      event.preventDefault();
+      const expanded = document.getElementById(`expanded-${idx}`);
+      if (expanded) {
+        expanded.classList.toggle('active');
+      }
+    }
+
+    function maskPhone(phone) {
+      if (!phone) return '—';
+      const clean = phone.replace(/\D/g, '');
+      if (clean.length < 4) return phone;
+      return phone.substring(0, 3) + '•••••' + phone.substring(phone.length - 4);
+    }
+
+    function formatLastActive(dateStr) {
+      if (!dateStr) return '—';
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diff = now - date;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+      if (days === 0 && hours === 0) return 'Now';
+      if (days === 0) return `${hours}h ago`;
+      if (days === 1) return 'Yesterday';
+      if (days < 7) return `${days}d ago`;
+      return date.toLocaleDateString('en-ZA', { month: 'short', day: 'numeric' });
+    }
+
+    function isStudentActive(dateStr) {
+      if (!dateStr) return false;
+      const date = new Date(dateStr);
+      const now = new Date();
+      const days = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+      return days <= 7;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // HEATMAP
+    // ═══════════════════════════════════════════════════════════════════
+
+    function renderHeatmap(students) {
+      const container = document.getElementById('heatmapGrid');
+      if (students.length === 0) return;
+
+      // Show only first 15 students to avoid clutter
+      const studentsToShow = students.slice(0, 15);
+
+      let html = `
+        <div class="heatmap-label">Student</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M1</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M2</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M3</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M4</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M5</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M6</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M7</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M8</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M9</div>
+        <div class="heatmap-label" style="text-align: center; padding: 8px 0;">M10</div>
+      `;
+
+      studentsToShow.forEach(student => {
+        const name = (student.profile?.name || 'Anonymous').substring(0, 12);
+        html += `<div class="heatmap-label">${escapeHtml(name)}</div>`;
+
+        for (let i = 1; i <= 10; i++) {
+          const mod = student.modules?.[i.toString()];
+          const status = mod?.status || 'locked';
+          let cellClass = 'heatmap-cell heatmap-locked';
+          let cellText = '◯';
+
+          if (status === 'completed') {
+            cellClass = 'heatmap-cell heatmap-completed';
+            cellText = '✓';
+          } else if (status === 'inprogress') {
+            cellClass = 'heatmap-cell heatmap-inprogress';
+            cellText = '→';
+          } else if (status === 'available') {
+            cellClass = 'heatmap-cell heatmap-available';
+            cellText = '◉';
+          }
+
+          const hasWeak = mod?.weakSpots && mod.weakSpots.length > 0 ? ' has-weak' : '';
+          const title = status === 'locked' ? 'Locked' : `Module ${i} - ${status}`;
+
+          html += `<div class="${cellClass}${hasWeak}" title="${title}">${cellText}</div>`;
+        }
+      });
+
+      if (students.length > 15) {
+        html += `
+          <div class="heatmap-label" style="grid-column: 1/-1; text-align: center; padding: 12px; color: var(--text-secondary); font-size: 0.75rem;">
+            Showing first 15 of ${students.length} students
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // CHARTS
+    // ═══════════════════════════════════════════════════════════════════
+
+    function renderCharts(students) {
+      renderQuizComparisonChart(students);
+      renderCompletionRateChart(students);
+      renderTimeSpentChart(students);
+      renderXpDistributionChart(students);
+    }
+
+    function renderQuizComparisonChart(students) {
+      const moduleLabels = [];
+      const preScores = [];
+      const postScores = [];
+
+      for (let i = 1; i <= 10; i++) {
+        let preSum = 0, preCnt = 0, postSum = 0, postCnt = 0;
+
+        students.forEach(s => {
+          const mod = s.modules?.[i.toString()];
+          if (mod) {
+            if (mod.preQuiz?.score && mod.preQuiz?.total) {
+              preSum += (mod.preQuiz.score / mod.preQuiz.total) * 100;
+              preCnt++;
+            }
+            if (mod.postQuiz?.score && mod.postQuiz?.total) {
+              postSum += (mod.postQuiz.score / mod.postQuiz.total) * 100;
+              postCnt++;
+            }
+          }
+        });
+
+        moduleLabels.push(`M${i}`);
+        preScores.push(preCnt > 0 ? Math.round(preSum / preCnt) : 0);
+        postScores.push(postCnt > 0 ? Math.round(postSum / postCnt) : 0);
+      }
+
+      const ctx = document.getElementById('quizComparisonChart').getContext('2d');
+      if (window.quizChart) window.quizChart.destroy();
+      window.quizChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: moduleLabels,
+          datasets: [
+            {
+              label: 'Pre-Quiz Avg',
+              data: preScores,
+              backgroundColor: 'rgba(245, 158, 11, 0.6)',
+              borderRadius: 4
+            },
+            {
+              label: 'Post-Quiz Avg',
+              data: postScores,
+              backgroundColor: 'rgba(34, 197, 94, 0.6)',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          indexAxis: 'x',
+          plugins: {
+            legend: { display: true, labels: { color: 'rgba(255, 255, 255, 0.8)' } },
+            filler: true
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { color: 'rgba(255, 255, 255, 0.6)' },
+              grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            },
+            x: { ticks: { color: 'rgba(255, 255, 255, 0.6)' }, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    function renderCompletionRateChart(students) {
+      const stats = { completed: 0, inprogress: 0, available: 0, locked: 0 };
+
+      students.forEach(s => {
+        if (s.modules) {
+          Object.values(s.modules).forEach(m => {
+            const status = m.status || 'locked';
+            if (status === 'completed') stats.completed++;
+            else if (status === 'inprogress') stats.inprogress++;
+            else if (status === 'available') stats.available++;
+            else stats.locked++;
+          });
+        }
+      });
+
+      const ctx = document.getElementById('completionRateChart').getContext('2d');
+      if (window.completionChart) window.completionChart.destroy();
+      window.completionChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Completed', 'In Progress', 'Available', 'Locked'],
+          datasets: [{
+            data: [stats.completed, stats.inprogress, stats.available, stats.locked],
+            backgroundColor: ['rgba(34, 197, 94, 0.6)', 'rgba(2, 132, 199, 0.6)', 'rgba(245, 158, 11, 0.3)', 'rgba(255, 255, 255, 0.1)'],
+            borderColor: ['rgba(34, 197, 94, 1)', 'rgba(2, 132, 199, 1)', 'rgba(245, 158, 11, 0.6)', 'rgba(255, 255, 255, 0.2)'],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255, 255, 255, 0.8)' } } }
+        }
+      });
+    }
+
+    function renderTimeSpentChart(students) {
+      const moduleTime = {};
+      const moduleCounts = {};
+
+      for (let i = 1; i <= 10; i++) {
+        moduleTime[i] = 0;
+        moduleCounts[i] = 0;
+      }
+
+      students.forEach(s => {
+        if (s.modules) {
+          Object.entries(s.modules).forEach(([modId, mod]) => {
+            const idx = parseInt(modId);
+            if (mod.timeSpentMs) {
+              moduleTime[idx] += mod.timeSpentMs;
+              moduleCounts[idx]++;
+            }
+          });
+        }
+      });
+
+      const labels = [];
+      const avgTimes = [];
+
+      for (let i = 1; i <= 10; i++) {
+        labels.push(`M${i}`);
+        const avgMs = moduleCounts[i] > 0 ? moduleTime[i] / moduleCounts[i] : 0;
+        avgTimes.push(Math.round(avgMs / (1000 * 60))); // Convert to minutes
+      }
+
+      const ctx = document.getElementById('timeSpentChart').getContext('2d');
+      if (window.timeChart) window.timeChart.destroy();
+      window.timeChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Avg Time (minutes)',
+            data: avgTimes,
+            borderColor: 'rgba(124, 58, 237, 0.8)',
+            backgroundColor: 'rgba(124, 58, 237, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: 'rgba(245, 158, 11, 0.8)',
+            pointBorderColor: 'white',
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: { legend: { display: true, labels: { color: 'rgba(255, 255, 255, 0.8)' } } },
+          scales: {
+            y: { ticks: { color: 'rgba(255, 255, 255, 0.6)' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+            x: { ticks: { color: 'rgba(255, 255, 255, 0.6)' }, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    function renderXpDistributionChart(students) {
+      const xpValues = students.map(s => s.stats?.totalXP || 0).sort((a, b) => b - a).slice(0, 20);
+      const labels = students.slice(0, 20).map((s, i) => (s.profile?.name || 'Anonymous').substring(0, 10));
+
+      const ctx = document.getElementById('xpDistributionChart').getContext('2d');
+      if (window.xpChart) window.xpChart.destroy();
+      window.xpChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Total XP',
+            data: xpValues,
+            backgroundColor: 'rgba(245, 158, 11, 0.6)',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: { legend: { display: true, labels: { color: 'rgba(255, 255, 255, 0.8)' } } },
+          scales: {
+            x: { ticks: { color: 'rgba(255, 255, 255, 0.6)' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+            y: { ticks: { color: 'rgba(255, 255, 255, 0.6)' }, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // DROP-OFF ANALYSIS
+    // ═══════════════════════════════════════════════════════════════════
+
+    function renderDropoffAnalysis() {
+      const dropoffMap = {};
+
+      allEvents.forEach(event => {
+        if (event.type === 'dropOff') {
+          const location = event.moduleId ? `Module ${event.moduleId}` : (event.screenId || 'Unknown');
+          dropoffMap[location] = (dropoffMap[location] || 0) + 1;
+        }
+      });
+
+      const container = document.getElementById('dropoffList');
+
+      if (Object.keys(dropoffMap).length === 0) {
+        container.innerHTML = '<div class="empty-state"><h3>No drop-offs recorded yet</h3><p>Drop-off events will appear as students progress through modules.</p></div>';
+        return;
+      }
+
+      const sorted = Object.entries(dropoffMap).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+      container.innerHTML = sorted.map(([location, count]) => `
+        <div class="dropoff-item">
+          <div class="dropoff-location">${escapeHtml(location)}</div>
+          <div class="dropoff-count">${count} drops</div>
+        </div>
+      `).join('');
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // WEAK SPOTS
+    // ═══════════════════════════════════════════════════════════════════
+
+    function renderWeakSpots() {
+      const weakSpotMap = {};
+
+      allStudents.forEach(student => {
+        if (student.modules) {
+          Object.values(student.modules).forEach(mod => {
+            if (mod.weakSpots) {
+              mod.weakSpots.forEach(spot => {
+                const key = `${spot.topic || 'Unknown'}|${spot.questionText || 'Unknown'}`;
+                weakSpotMap[key] = (weakSpotMap[key] || 0) + 1;
+              });
+            }
+          });
+        }
+      });
+
+      const container = document.getElementById('weakSpotsList');
+
+      if (Object.keys(weakSpotMap).length === 0) {
+        container.innerHTML = '<div class="empty-state"><h3>No weak spots identified yet</h3><p>As students complete quizzes, their weak areas will appear here.</p></div>';
+        return;
+      }
+
+      const sorted = Object.entries(weakSpotMap).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+      const html = sorted.map(([key, count]) => {
+        const [topic, question] = key.split('|');
+        return `
+          <div class="weak-spot-card">
+            <div class="weak-spot-topic">${escapeHtml(topic)}</div>
+            <div class="weak-spot-question">"${escapeHtml(question)}"</div>
+            <div class="weak-spot-count">${count} students struggled</div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `<div class="weak-spots-grid">${html}</div>`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // EVENT HANDLERS
+    // ═══════════════════════════════════════════════════════════════════
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Search
+    document.getElementById('studentSearch').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      filteredStudents = allStudents.filter(s => {
+        const name = (s.profile?.name || '').toLowerCase();
+        const phone = (s.profile?.phone || '').toLowerCase();
+        const college = (s.profile?.college || '').toLowerCase();
+        return name.includes(query) || phone.includes(query) || college.includes(query);
+      });
+      renderStudentTable(filteredStudents);
+    });
+
+    // Sort
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+      const sort = e.target.value;
+      let sorted = [...filteredStudents];
+
+      if (sort === 'name') {
+        sorted.sort((a, b) => (a.profile?.name || '').localeCompare(b.profile?.name || ''));
+      } else if (sort === 'active') {
+        sorted.sort((a, b) => new Date(b.stats?.lastActiveDate || 0) - new Date(a.stats?.lastActiveDate || 0));
+      } else if (sort === 'xp') {
+        sorted.sort((a, b) => (b.stats?.totalXP || 0) - (a.stats?.totalXP || 0));
+      } else if (sort === 'progress') {
+        sorted.sort((a, b) => {
+          const aComplete = Object.values(a.modules || {}).filter(m => m.status === 'completed').length;
+          const bComplete = Object.values(b.modules || {}).filter(m => m.status === 'completed').length;
+          return bComplete - aComplete;
+        });
+      }
+
+      renderStudentTable(sorted);
+    });
+
+    // Refresh
+    document.getElementById('refreshBtn').addEventListener('click', loadAllData);
+
+    // Auto-refresh toggle
+    document.getElementById('autoRefreshToggle').addEventListener('click', (e) => {
+      const toggle = e.target;
+      toggle.classList.toggle('active');
+
+      if (toggle.classList.contains('active')) {
+        // Enable auto-refresh every 60 seconds
+        autoRefreshInterval = setInterval(loadAllData, 60000);
+      } else {
+        // Disable auto-refresh
+        if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+      }
+    });
+
+    // Load on page load
+    loadAllData();
   </script>
+
 </body>
 </html>
