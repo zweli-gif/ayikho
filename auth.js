@@ -58,11 +58,13 @@ window.updateCountry = function () {
   const country = COUNTRIES.find(c => c.code === select.value);
   if (!country) return;
   document.getElementById("ph-pfx").textContent = `${country.flag} ${country.code}`;
+  const pfx2 = document.getElementById("ph-pfx2");
+  if (pfx2) pfx2.textContent = `${country.flag} ${country.code}`;
   const input = document.getElementById("phone-in");
   input.placeholder = country.placeholder;
   input.value = "";
-  document.getElementById("phone-hint").innerHTML = "We need a valid phone number.";
-  document.getElementById("phone-hint").style.color = "";
+  const confirmInput = document.getElementById("phone-confirm-in");
+  if (confirmInput) { confirmInput.placeholder = country.placeholder; confirmInput.value = ""; }
 };
 
 window.updateLoginCountry = function () {
@@ -182,6 +184,77 @@ window.registerUser = async function () {
   } finally {
     btn.disabled = false;
     btn.textContent = "Register →";
+  }
+};
+
+// ── SINGLE-PAGE REGISTRATION ────────────────────────────
+window.registerFromSinglePage = async function () {
+  // 1. Validate phone
+  const phoneRaw = document.getElementById("phone-in").value;
+  const phone1 = formatNumber(phoneRaw);
+  if (!phone1) {
+    document.getElementById("phoneMatchError").textContent = "Enter a valid cell number.";
+    document.getElementById("phoneMatchError").style.display = "block";
+    document.getElementById("phone-in").focus();
+    return;
+  }
+
+  // 2. Validate phone confirm
+  const phone2Raw = document.getElementById("phone-confirm-in").value;
+  const phone2 = formatNumber(phone2Raw);
+  if (!phone2 || phone2 !== phone1) {
+    document.getElementById("phoneMatchError").textContent = "Phone numbers don't match — please check.";
+    document.getElementById("phoneMatchError").style.display = "block";
+    document.getElementById("phone-confirm-in").focus();
+    return;
+  }
+  document.getElementById("phoneMatchError").style.display = "none";
+
+  // 3. Validate password
+  const pass = document.getElementById("pass-in").value;
+  const hasNum = /\d/.test(pass);
+  if (pass.length < 8 || !hasNum) {
+    const hint = document.getElementById("pass-hint");
+    hint.textContent = "Must be at least 8 characters with 1 number.";
+    hint.style.color = "var(--rose)";
+    document.getElementById("pass-in").focus();
+    return;
+  }
+
+  // 4. Validate password confirm
+  const passConfirm = document.getElementById("pass-confirm-in").value;
+  if (passConfirm !== pass) {
+    document.getElementById("passMatchError").textContent = "Passwords don't match.";
+    document.getElementById("passMatchError").style.display = "block";
+    document.getElementById("pass-confirm-in").focus();
+    return;
+  }
+  document.getElementById("passMatchError").style.display = "none";
+
+  // 5. Register with Firebase
+  const btn = document.getElementById("register-btn");
+  btn.disabled = true;
+  btn.textContent = "Creating account...";
+
+  try {
+    initAuth();
+    if (!auth) throw new Error("Auth service unavailable");
+    const email = toEmail(phone1);
+    const uc = await createUserWithEmailAndPassword(auth, email, pass);
+    console.log("User registered:", uc.user.email);
+    window.__tempPhone = phone1;
+    goTo("s-name");
+  } catch (err) {
+    console.error("Register err:", err);
+    if (err.code === "auth/email-already-in-use") {
+      document.getElementById("passMatchError").textContent = "Account already exists. Try logging in instead.";
+    } else {
+      document.getElementById("passMatchError").textContent = "Error: " + err.message;
+    }
+    document.getElementById("passMatchError").style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Create Account →";
   }
 };
 

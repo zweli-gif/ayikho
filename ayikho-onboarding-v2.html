@@ -1950,7 +1950,7 @@
             <div class="wword">Ayikho.</div>
             <div class="wmean">"there is none like it" — isiZulu</div>
             <div class="wtag"><strong>No more failing alone.</strong><br>Your TVET study partner — plain English, SA examples, always in your pocket.</div>
-            <button class="wbtn" onclick="goTo('s-phone')">Create Account →</button>
+            <button class="wbtn" onclick="goTo('s-signup')">Create Account →</button>
             <div style="text-align:center; margin-top:14px; font-size:14px; color:rgba(255,255,255,.5);">
               Already have an account? <span style="color:var(--gold); font-weight:700; cursor:pointer;" onclick="window.switchToLogin()">Log in</span>
             </div>
@@ -1959,20 +1959,21 @@
         </div>
 
         <!-- ══════════════════════════════
-   S02: PHONE
+   S02: SIGN UP (single page)
 ══════════════════════════════ -->
-        <div class="screen" id="s-phone">
+        <div class="screen" id="s-signup">
           <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
           <div class="gp">
-            <div class="gp-fill" style="width:6%"></div>
+            <div class="gp-fill" style="width:8%"></div>
           </div>
           <div class="shd">
-            <div class="step-tag">Step 1 of 13</div>
-            <div class="h1">What's your<br>cell number?</div>
-            <div class="sub">We use this to keep your progress safe.</div>
+            <div class="step-tag">Step 1 of 10</div>
+            <div class="h1">Create your<br>account</div>
+            <div class="sub">Your cell number + a password. That's it.</div>
           </div>
-          <div class="scr">
-            <div style="padding:20px 24px 0">
+          <div class="scr" style="overflow-y:auto">
+            <div style="padding:16px 24px 0">
+              <!-- PHONE SECTION -->
               <div class="field">
                 <div class="field-lbl">Country</div>
                 <select class="fi" id="country-select" onchange="window.updateCountry()"
@@ -1980,92 +1981,38 @@
                   <option value="+27" data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦 South Africa (+27)</option>
                   <option value="+233" data-flag="🇬🇭" data-placeholder="24 123 4567">🇬🇭 Ghana (+233)</option>
                 </select>
+              </div>
+              <div class="field">
                 <div class="field-lbl">Cell number</div>
                 <div class="ph-row">
                   <div class="ph-pfx" id="ph-pfx">🇿🇦 +27</div>
                   <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-in" maxlength="12">
                 </div>
               </div>
-              <div class="hint" id="phone-hint">We need a valid phone number.</div>
-            </div>
-          </div>
-          <div class="foot">
-            <button class="btn btn-p" onclick="window.checkPhoneFlow1()">Continue →</button>
-            <div style="text-align:center; margin-top:16px; font-size:14px; color:var(--mut);">
-              Already have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
-                onclick="window.switchToLogin()">Log in</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="screen" id="s-phone-confirm">
-          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="gp">
-            <div class="gp-fill" style="width:8%"></div>
-          </div>
-          <div class="shd">
-            <div class="step-tag">Step 1 of 13</div>
-            <div class="h1">Confirm your<br>number</div>
-            <div class="sub">Just to be sure we've got it right.</div>
-          </div>
-          <div class="scr">
-            <div style="padding:20px 24px 0">
-              <div class="field">
-                <div class="field-lbl">Try entering it again</div>
-                <input class="fi" type="tel" placeholder="Cell number" id="phone-confirm-in" maxlength="12">
+              <div class="field" style="margin-top:6px">
+                <div class="field-lbl">Confirm cell number</div>
+                <div class="ph-row">
+                  <div class="ph-pfx" id="ph-pfx2">🇿🇦 +27</div>
+                  <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-confirm-in" maxlength="12">
+                </div>
                 <div class="field-error" id="phoneMatchError"
                   style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
                   Phone numbers don't match — please check.
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="foot">
-            <button class="btn btn-p" onclick="window.checkPhoneFlow2()">Continue →</button>
-            <button class="btn btn-ghost" onclick="goTo('s-phone')">Back</button>
-          </div>
-        </div>
 
-        <div class="screen" id="s-password">
-          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="gp">
-            <div class="gp-fill" style="width:10%"></div>
-          </div>
-          <div class="shd">
-            <div class="step-tag">Step 2 of 13</div>
-            <div class="h1">Create a<br>password</div>
-            <div class="sub">This keeps your account secure.</div>
-          </div>
-          <div class="scr">
-            <div style="padding:20px 24px 0">
+              <!-- DIVIDER -->
+              <div style="height:1px;background:var(--bord);margin:20px 0;opacity:.5"></div>
+
+              <!-- PASSWORD SECTION -->
               <div class="field">
-                <div class="field-lbl">Password</div>
+                <div class="field-lbl">Create password</div>
                 <input class="fi" type="password" placeholder="Min 8 chars, 1 number" id="pass-in"
                   oninput="window.checkPassStrength()">
-                <div class="hint" id="pass-hint" style="text-align:left">Must be at least 8 characters with 1 number.
-                </div>
+                <div class="hint" id="pass-hint" style="text-align:left;margin-top:4px">Min 8 characters with 1 number.</div>
               </div>
-            </div>
-          </div>
-          <div class="foot">
-            <button class="btn btn-p" onclick="window.checkPassFlow1()">Continue →</button>
-          </div>
-        </div>
-
-        <div class="screen" id="s-password-confirm">
-          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="gp">
-            <div class="gp-fill" style="width:12%"></div>
-          </div>
-          <div class="shd">
-            <div class="step-tag">Step 2 of 13</div>
-            <div class="h1">Confirm your<br>password</div>
-            <div class="sub">Almost done. Type it one more time.</div>
-          </div>
-          <div class="scr">
-            <div style="padding:20px 24px 0">
-              <div class="field">
-                <div class="field-lbl">Re-enter password</div>
+              <div class="field" style="margin-top:6px">
+                <div class="field-lbl">Confirm password</div>
                 <input class="fi" type="password" placeholder="Password again" id="pass-confirm-in">
                 <div class="field-error" id="passMatchError"
                   style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
@@ -2075,8 +2022,11 @@
             </div>
           </div>
           <div class="foot">
-            <button class="btn btn-p" id="register-btn" onclick="window.registerUser()">Register →</button>
-            <button class="btn btn-ghost" onclick="goTo('s-password')">Back</button>
+            <button class="btn btn-p" id="register-btn" onclick="window.registerFromSinglePage()">Create Account →</button>
+            <div style="text-align:center; margin-top:14px; font-size:14px; color:var(--mut);">
+              Already have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
+                onclick="window.switchToLogin()">Log in</span>
+            </div>
           </div>
         </div>
 
@@ -2142,7 +2092,7 @@
             <div class="gp-fill" style="width:18%"></div>
           </div>
           <div class="shd">
-            <div class="step-tag">Step 3 of 13</div>
+            <div class="step-tag">Step 2 of 10</div>
             <div class="verified"><span>✅</span><span>Number verified — you're in!</span></div>
             <div class="h1">Tell us about yourself</div>
             <div class="sub" style="margin-top:4px">So Ayikho can personalise everything.</div>
@@ -2174,7 +2124,7 @@
             <div class="gp-fill" style="width:24%"></div>
           </div>
           <div class="shd">
-            <div class="step-tag">Step 4 of 13</div>
+            <div class="step-tag">Step 3 of 10</div>
             <div class="h1">Which college<br>are you at?</div>
             <div class="sub" style="margin-top:4px">Helps us find the right exam papers for your campus.</div>
           </div>
@@ -2232,7 +2182,7 @@
             <div class="gp-fill" style="width:30%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag">Step 5 of 13</div>
+            <div class="step-tag">Step 4 of 10</div>
             <div class="h1">What are you<br>studying?</div>
             <div class="sub" style="margin-top:4px">Pick your N4 programme — we'll pull the right subjects and modules.
             </div>
@@ -2253,7 +2203,7 @@
             <div class="gp-fill" style="width:36%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag">Step 6 of 13</div>
+            <div class="step-tag">Step 5 of 10</div>
             <div id="subj-prog-badge" class="prog-badge"><span class="prog-badge-emoji"></span><span
                 class="prog-badge-name"></span></div>
             <div class="h1">Which subjects<br>this semester?</div>
@@ -2302,7 +2252,7 @@
             <div class="gp-fill" style="width:54%"></div>
           </div>
           <div class="shd">
-            <div class="step-tag" id="goal-step">Step 7 of 13</div>
+            <div class="step-tag" id="goal-step">Step 6 of 10</div>
             <div class="h1">Your target<br>for finals?</div>
             <div class="sub" style="margin-top:4px">Ayikho works backwards from your goal to build your daily plan.
             </div>
@@ -2382,7 +2332,7 @@
             <div class="gp-fill" style="width:68%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="time-step">Step 8 of 13</div>
+            <div class="step-tag" id="time-step">Step 7 of 10</div>
             <div class="h1">When do you<br>study best?</div>
             <div class="sub" style="margin-top:4px">Reminders and sessions will match your real life.</div>
           </div>
@@ -2667,7 +2617,7 @@
             <div class="gp-fill" style="width:92%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="exam-step">Step 12 of 13</div>
+            <div class="step-tag" id="exam-step">Step 9 of 10</div>
             <div class="h1">When are your<br>exams?</div>
             <div class="sub" style="margin-top:4px">Ayikho counts down and adjusts your daily target so you're ready in
               time.</div>
@@ -2687,7 +2637,7 @@
             <div class="gp-fill" style="width:96%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="dl-step">Step 13 of 13</div>
+            <div class="step-tag" id="dl-step">Step 10 of 10</div>
             <div class="h1">Download for<br>offline studying</div>
             <div class="sub" style="margin-top:4px">No WiFi later? Download your subjects now. Works on any data — even
               2G.</div>
@@ -3149,7 +3099,7 @@
     let marksSubjIdx = 0;
 
     const SCREEN_ORDER = [
-      's-welcome', 's-phone', 's-phone-confirm', 's-password', 's-password-confirm', 's-name', 's-college',
+      's-welcome', 's-signup', 's-name', 's-college',
       's-programme', 's-subjects',
       's-goal', 's-studytime',
       's-q1', 's-q2', 's-q3', 's-q4',
@@ -3190,8 +3140,7 @@
     // ═══════════════════════════════════════════════
     const SIDEBAR_ITEMS = [
       { id: 's-welcome', label: 'Welcome' },
-      { id: 's-phone', label: 'Registration Phone' },
-      { id: 's-password', label: 'Registration Password' },
+      { id: 's-signup', label: 'Create Account' },
       { id: 's-name', label: 'Name + Age' },
       { id: 's-college', label: 'College' },
       { id: 's-programme', label: 'Programme picker' },
@@ -3330,7 +3279,7 @@
       document.getElementById('marks-emoji').textContent = subj.emoji;
       document.getElementById('marks-name').textContent = subj.name;
       document.getElementById('marks-meta').textContent =
-        `${subj.short} · ${subj.modules.length} modules · Subject ${current} of ${total} · Step 7 of 13`;
+        `${subj.short} · ${subj.modules.length} modules · Subject ${current} of ${total} · Step 6 of 10`;
 
       // progress dots
       const dots = document.getElementById('marks-dots');
