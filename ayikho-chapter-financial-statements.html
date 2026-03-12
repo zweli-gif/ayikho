@@ -1138,6 +1138,7 @@
             cursor: pointer; font-size: 12px; transition: all 0.2s; backdrop-filter: blur(8px);
         }
         .lv-btn:hover { background: var(--fa); transform: scale(1.1); }
+        @keyframes ashki-pop { from { opacity:0; transform:translateX(-50%) scale(.7) translateY(20px); } to { opacity:1; transform:translateX(-50%) scale(1) translateY(0); } }
     </style>
     <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
     <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
@@ -1838,6 +1839,34 @@
         let videoPlaying = false;
         const videoDuration = 225; // 3:45 in seconds
 
+        const CORRECT_REACTIONS = [
+          "Yebo! You nailed it! 🎉",
+          "Sharp sharp! That's correct! ✨",
+          "100%! You're on fire! 🔥",
+          "Eish, you're too clever! 💪",
+          "Perfect! You really know your stuff!"
+        ];
+        const WRONG_REACTIONS = [
+          "Not quite — but that's how we learn!",
+          "Close! Don't stress, check the explanation 🤔",
+          "Hmm, not that one. You'll get the next one!",
+          "No worries — this is a tricky one.",
+          "Almost! Read the explanation and you'll get it 💪"
+        ];
+        function showAshkiReaction(isCorrect) {
+          const el = document.getElementById('ashki-reaction');
+          const txt = document.getElementById('ashki-reaction-text');
+          if (!el || !txt) return;
+          const arr = isCorrect ? CORRECT_REACTIONS : WRONG_REACTIONS;
+          txt.textContent = arr[Math.floor(Math.random() * arr.length)];
+          el.style.display = 'block';
+          el.style.animation = 'none';
+          el.offsetHeight; // reflow
+          el.style.animation = 'ashki-pop .4s cubic-bezier(.34,1.56,.64,1)';
+          clearTimeout(window._ashkiTimer);
+          window._ashkiTimer = setTimeout(() => { el.style.display = 'none'; }, 3000);
+        }
+
         // Real video player
         var moduleVideo = null;
 
@@ -2065,19 +2094,7 @@
             options.forEach(opt => opt.classList.remove('selected'));
 
             element.classList.add(isCorrect ? 'correct' : 'incorrect');
-
-            // Ashki reactions
-            var ashkiBubble = document.getElementById('ashkiQuizBubble');
-            if (ashkiBubble) {
-              if (isCorrect) {
-                var reactions = ["Yebo! You nailed it! 🎉","Sharp sharp! That's correct! ✨","100%! You're on fire! 🔥","Eish, you're too clever! 💪","Perfect! You really know your stuff!"];
-                ashkiBubble.querySelector('.ashki-text').textContent = reactions[Math.floor(Math.random()*reactions.length)];
-              } else {
-                var reactions = ["Not quite — but that's how we learn!","Close! Don't stress, let's look at this together 🤔","Hmm, not that one. But you'll get the next one!","No worries — this is a tricky one.","Almost! Give the explanation a read 💪"];
-                ashkiBubble.querySelector('.ashki-text').textContent = reactions[Math.floor(Math.random()*reactions.length)];
-              }
-              ashkiBubble.style.display = 'flex';
-            }
+            showAshkiReaction(isCorrect);
 
             const feedback = document.getElementById(`feedback-${questionId}`);
             feedback.classList.add('show');
@@ -2287,5 +2304,11 @@
             lvOutro.addEventListener('click', () => { nextScreen(); });
         })();
     </script>
+    <div id="ashki-reaction" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:none;z-index:9999;animation:ashki-pop .4s cubic-bezier(.34,1.56,.64,1)">
+      <div style="display:flex;align-items:flex-end;gap:8px;background:white;border-radius:16px;padding:10px 14px;box-shadow:0 8px 32px rgba(0,0,0,.2)">
+        <img src="assets/ashki/ashki_master.png" style="width:40px;height:40px;object-fit:contain" alt="Ashki">
+        <div id="ashki-reaction-text" style="font:600 13px/1.4 'Outfit',sans-serif;color:#1A0A3A;max-width:200px"></div>
+      </div>
+    </div>
 </body>
 </html>
