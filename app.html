@@ -13,6 +13,7 @@
 :root{
   --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
   --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
+  --mc:#0D9488;--mc-l:#14B8A6;--mc-d:#0F6E48;--mc-xs:#F0FDFA;--mc-sm:#CCFBF1;
   --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
   --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
   --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
@@ -157,8 +158,19 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
    OPTION B — WARM & BOLD DESIGN
 ═══════════════════════════════════ */
 
+/* Subject Selector Pills */
+.subject-pills{display:flex;gap:10px;padding:12px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0;background:#05090F}
+.subject-pills::-webkit-scrollbar{display:none}
+.subject-pill{padding:8px 16px;border-radius:100px;font:600 12px/1 'Outfit',sans-serif;border:none;cursor:pointer;transition:all .2s ease;white-space:nowrap;flex-shrink:0;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
+.subject-pill:hover{background:rgba(255,255,255,.12)}
+.subject-pill.active{background:var(--fa);color:white}
+.subject-pill.active.mc-subject{background:var(--mc);color:white}
+
 /* Hero banner */
-.hero-banner{margin:8px 16px 0;padding:24px 20px 20px;background:linear-gradient(145deg,#2D1B69 0%,#1A0F3C 50%,#0C1E35 100%);border-radius:24px;position:relative;overflow:hidden;border:1px solid rgba(124,58,237,.2)}
+.hero-banner{margin:8px 16px 0;padding:24px 20px 20px;background:linear-gradient(145deg,#2D1B69 0%,#1A0F3C 50%,#0C1E35 100%);border-radius:24px;position:relative;overflow:hidden;border:1px solid rgba(124,58,237,.2);transition:border-color .3s ease}
+.hero-banner.mc-theme{border-color:rgba(13,148,136,.2)}
+.hero-banner.mc-theme::before{background:radial-gradient(circle,rgba(13,148,136,.15),transparent 70%)}
+.hero-banner.mc-theme::after{background:radial-gradient(circle,rgba(13,148,136,.15),transparent 70%)}
 .hero-banner::before{content:'';position:absolute;top:-40px;right:-20px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15),transparent 70%)}
 .hero-banner::after{content:'';position:absolute;bottom:-30px;left:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%)}
 
@@ -191,9 +203,11 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .section-title{font:700 11px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);letter-spacing:.15em;text-transform:uppercase}
 .section-see-all{font:600 11px/1 'Outfit',sans-serif;color:#7C3AED;cursor:pointer}
 
-.today-card{background:linear-gradient(135deg,#0F172A,#1A1040);border:1px solid rgba(2,132,199,.2);border-radius:20px;padding:18px;cursor:pointer;transition:transform .12s ease;position:relative;overflow:hidden}
+.today-card{background:linear-gradient(135deg,#0F172A,#1A1040);border:1px solid rgba(2,132,199,.2);border-radius:20px;padding:18px;cursor:pointer;transition:transform .12s ease,border-color .3s ease,background .3s ease;position:relative;overflow:hidden}
 .today-card:active{transform:scale(.97)}
-.today-card::after{content:'';position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(2,132,199,.12),transparent 70%)}
+.today-card::after{content:'';position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(2,132,199,.12),transparent 70%);transition:background .3s ease}
+.today-card.mc-theme{border-color:rgba(13,148,136,.2);background:linear-gradient(135deg,#0F2A27,#1A2B26)}
+.today-card.mc-theme::after{background:radial-gradient(circle,rgba(13,148,136,.12),transparent 70%)}
 
 .today-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
 .today-module{font:700 10px/1 'JetBrains Mono',monospace;color:#0284C7;letter-spacing:.1em;text-transform:uppercase}
@@ -219,6 +233,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .mg-card:active{transform:scale(.96)}
 .mg-card.completed{border-color:rgba(34,197,94,.15)}
 .mg-card.current{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
+.mg-card.mc-theme.current{border-color:rgba(13,148,136,.3);background:rgba(13,148,136,.05)}
 .mg-card.locked{opacity:.4}
 
 .mg-num{font:800 28px/1 'JetBrains Mono',monospace;margin-bottom:8px}
@@ -259,17 +274,26 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 <div class="sidebar" id="sidebar">
   <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
   <div class="si" data-target="dashboard" onclick="openDashboard()" style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">📊 Dashboard</div>
-  <div class="si-section">Chapters</div>
-  <div class="si completed" data-module="1" onclick="openModule(1)">M1 · Accounting Concepts</div>
-  <div class="si completed" data-module="2" onclick="openModule(2)">M2 · Double Entry</div>
-  <div class="si" data-module="3" onclick="openModule(3)">M3 · Journals & Ledgers</div>
-  <div class="si" data-module="4" onclick="openModule(4)">M4 · Trial Balance</div>
-  <div class="si" data-module="5" onclick="openModule(5)">M5 · Cash Journals</div>
-  <div class="si" data-module="6" onclick="openModule(6)">M6 · Debtors & Creditors</div>
-  <div class="si" data-module="7" onclick="openModule(7)">M7 · VAT</div>
-  <div class="si" data-module="8" onclick="openModule(8)">M8 · Year-End Adjustments</div>
-  <div class="si" data-module="9" onclick="openModule(9)">M9 · Financial Statements</div>
-  <div class="si" data-module="10" onclick="openModule(10)">M10 · Bank Reconciliation</div>
+  <div class="si-section">FA Chapters</div>
+  <div class="si completed fa-chapter" data-module="1" data-subject="fa" onclick="openModule(1)">M1 · Accounting Concepts</div>
+  <div class="si completed fa-chapter" data-module="2" data-subject="fa" onclick="openModule(2)">M2 · Double Entry</div>
+  <div class="si fa-chapter" data-module="3" data-subject="fa" onclick="openModule(3)">M3 · Journals & Ledgers</div>
+  <div class="si fa-chapter" data-module="4" data-subject="fa" onclick="openModule(4)">M4 · Trial Balance</div>
+  <div class="si fa-chapter" data-module="5" data-subject="fa" onclick="openModule(5)">M5 · Cash Journals</div>
+  <div class="si fa-chapter" data-module="6" data-subject="fa" onclick="openModule(6)">M6 · Debtors & Creditors</div>
+  <div class="si fa-chapter" data-module="7" data-subject="fa" onclick="openModule(7)">M7 · VAT</div>
+  <div class="si fa-chapter" data-module="8" data-subject="fa" onclick="openModule(8)">M8 · Year-End Adjustments</div>
+  <div class="si fa-chapter" data-module="9" data-subject="fa" onclick="openModule(9)">M9 · Financial Statements</div>
+  <div class="si fa-chapter" data-module="10" data-subject="fa" onclick="openModule(10)">M10 · Bank Reconciliation</div>
+  <div class="si-section">MC Chapters</div>
+  <div class="si mc-chapter" data-module="1" data-subject="mc" onclick="openModule(1)">M1 · Communication Theory</div>
+  <div class="si mc-chapter" data-module="2" data-subject="mc" onclick="openModule(2)">M2 · Meeting Procedures</div>
+  <div class="si mc-chapter" data-module="3" data-subject="mc" onclick="openModule(3)">M3 · Business Letters & Emails</div>
+  <div class="si mc-chapter" data-module="4" data-subject="mc" onclick="openModule(4)">M4 · Memos & Reports</div>
+  <div class="si mc-chapter" data-module="5" data-subject="mc" onclick="openModule(5)">M5 · Oral Communication</div>
+  <div class="si mc-chapter" data-module="6" data-subject="mc" onclick="openModule(6)">M6 · Visual Communication</div>
+  <div class="si mc-chapter" data-module="7" data-subject="mc" onclick="openModule(7)">M7 · Reading & Comprehension</div>
+  <div class="si mc-chapter" data-module="8" data-subject="mc" onclick="openModule(8)">M8 · Language & Editing</div>
   <div class="si-section">Resources</div>
   <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
   <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
@@ -299,8 +323,14 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
       <span class="sb-i">4G 87%</span>
     </div>
 
+    <!-- Subject Selector -->
+    <div class="subject-pills" id="subject-pills">
+      <button class="subject-pill active" data-subject="fa" onclick="switchSubject('fa')">💰 Financial Accounting</button>
+      <button class="subject-pill mc-subject" data-subject="mc" onclick="switchSubject('mc')">🗣️ Management Communication</button>
+    </div>
+
     <!-- Hero Banner -->
-    <div class="hero-banner">
+    <div class="hero-banner" id="hero-banner">
       <div class="hero-top">
         <div>
           <div class="hero-greeting">Sawubona</div>
@@ -393,7 +423,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
   </div>
 
 </div><!-- /phone -->
-<div class="shell-meta">Ayikho · Financial Accounting N4 · TVET Study App</div>
+<div class="shell-meta" id="shell-meta">Ayikho · Financial Accounting N4 · TVET Study App</div>
 </div><!-- /phone-col -->
 </div><!-- /shell -->
 
@@ -401,7 +431,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 // ═══════════════════════════════════
 //  MODULE CONFIG
 // ═══════════════════════════════════
-const MODULES = {
+const FA_MODULES = {
   1: { file:'ayikho-chapter-concepts.html',        name:'Accounting Concepts & Principles' },
   2: { file:'ayikho-chapter-accounting.html',       name:'Double Entry & Accounting Equation' },
   3: { file:'ayikho-chapter-journals.html',         name:'Journals & Ledgers' },
@@ -414,7 +444,22 @@ const MODULES = {
   10:{ file:'ayikho-chapter-bank-recon.html',           name:'Bank Reconciliation' }
 };
 
+const MC_MODULES = {
+  1: { file:'mc-chapter-communication-theory.html', name:'Communication Theory' },
+  2: { file:'mc-chapter-meeting-procedures.html', name:'Meeting Procedures' },
+  3: { file:'mc-chapter-business-letters.html', name:'Business Letters & Emails' },
+  4: { file:'mc-chapter-memos-reports.html', name:'Memos & Reports' },
+  5: { file:'mc-chapter-oral-communication.html', name:'Oral Communication' },
+  6: { file:'mc-chapter-visual-communication.html', name:'Visual Communication' },
+  7: { file:'mc-chapter-reading-comprehension.html', name:'Reading & Comprehension' },
+  8: { file:'mc-chapter-language-editing.html', name:'Language & Editing' }
+};
+
+// For backwards compatibility, MODULES points to current subject
+let MODULES = FA_MODULES;
+
 let currentModule = null;
+let currentSubject = 'fa';
 let demoMode = false;
 let onboardingDone = false;
 let moduleStartTime = null;
@@ -595,8 +640,11 @@ function generateModuleGrid(data) {
 
   grid.innerHTML = '';
 
-  for (let i = 1; i <= 10; i++) {
-    const mod = MODULES[i];
+  const maxModules = currentSubject === 'mc' ? 8 : 10;
+  const modules = currentSubject === 'mc' ? MC_MODULES : FA_MODULES;
+
+  for (let i = 1; i <= maxModules; i++) {
+    const mod = modules[i];
     if (!mod) continue;
 
     // Determine module status
@@ -613,6 +661,7 @@ function generateModuleGrid(data) {
 
     const card = document.createElement('div');
     card.className = `mg-card ${statusClass}`;
+    if (currentSubject === 'mc') card.classList.add('mc-theme');
     card.onclick = () => openModule(i);
 
     let numDisplay = String(i).padStart(2, '0');
@@ -678,12 +727,13 @@ function updateHomeStats() {
   const xpBadge = document.querySelector('.xp-badge');
   if (xpBadge) xpBadge.textContent = `⚡ ${data.totalXP} XP`;
 
-  // Update progress bar
+  // Update progress bar based on current subject
+  const maxModules = currentSubject === 'mc' ? 8 : 10;
   const progLabel = document.querySelector('.hero-prog-label strong');
-  if (progLabel) progLabel.textContent = `${data.completedCount} of 10 done`;
+  if (progLabel) progLabel.textContent = `${data.completedCount} of ${maxModules} done`;
 
   const progFill = document.querySelector('.hero-prog-fill');
-  if (progFill) progFill.style.width = `${(data.completedCount / 10) * 100}%`;
+  if (progFill) progFill.style.width = `${(data.completedCount / maxModules) * 100}%`;
 
   // Update Ashki speech based on streak
   let ashkiSpeech = 'Let\'s go!';
@@ -694,11 +744,11 @@ function updateHomeStats() {
   if (ashkiSpeechEl) ashkiSpeechEl.textContent = ashkiSpeech;
 
   // Update today's lesson card with current module
-  const currentModule = data.currentModule || 3;
-  const currentModData = MODULES[currentModule];
+  const currentMod = data.currentModule || 3;
+  const currentModData = MODULES[currentMod];
   if (currentModData) {
     const todayModule = document.querySelector('.today-module');
-    if (todayModule) todayModule.textContent = `MODULE ${currentModule} OF 10`;
+    if (todayModule) todayModule.textContent = `MODULE ${currentMod} OF ${maxModules}`;
 
     const todayTitle = document.querySelector('.today-title');
     if (todayTitle) todayTitle.textContent = currentModData.name;
@@ -763,7 +813,8 @@ window.onboardingComplete = function() {
 //  OPEN MODULE
 // ═══════════════════════════════════
 function openModule(num) {
-  const mod = MODULES[num];
+  const modules = currentSubject === 'mc' ? MC_MODULES : FA_MODULES;
+  const mod = modules[num];
   if (!mod) return;
 
   // Find the card element (support both old and new grid)
@@ -1058,12 +1109,91 @@ function openCapstoneMode() {
 }
 
 // ═══════════════════════════════════
+//  SUBJECT SWITCHING
+// ═══════════════════════════════════
+function switchSubject(subj) {
+  if (currentModule !== null) return; // Don't switch while in a module
+
+  currentSubject = subj;
+  MODULES = subj === 'mc' ? MC_MODULES : FA_MODULES;
+
+  // Update active pill
+  document.querySelectorAll('.subject-pill').forEach(pill => {
+    pill.classList.remove('active');
+    if (pill.dataset.subject === subj) {
+      pill.classList.add('active');
+    }
+  });
+
+  // Update hero banner theme
+  const heroBanner = document.getElementById('hero-banner');
+  if (heroBanner) {
+    if (subj === 'mc') {
+      heroBanner.classList.add('mc-theme');
+    } else {
+      heroBanner.classList.remove('mc-theme');
+    }
+  }
+
+  // Update today card theme
+  const todayCard = document.querySelector('.today-card');
+  if (todayCard) {
+    if (subj === 'mc') {
+      todayCard.classList.add('mc-theme');
+    } else {
+      todayCard.classList.remove('mc-theme');
+    }
+  }
+
+  // Update progress label and fill
+  const progLabel = document.querySelector('.hero-prog-label strong');
+  if (progLabel) {
+    const maxModules = subj === 'mc' ? 8 : 10;
+    const currentMod = subj === 'mc' ? 1 : 3; // Default current module
+    progLabel.textContent = `2 of ${maxModules} done`;
+  }
+
+  const progFill = document.querySelector('.hero-prog-fill');
+  if (progFill) {
+    progFill.style.width = '20%';
+  }
+
+  // Update module grid with correct modules
+  generateModuleGrid(null);
+
+  // Update shell-meta text
+  const shellMeta = document.getElementById('shell-meta');
+  if (shellMeta) {
+    shellMeta.textContent = subj === 'mc'
+      ? 'Ayikho · Management Communication N4 · TVET Study App'
+      : 'Ayikho · Financial Accounting N4 · TVET Study App';
+  }
+
+  // Update sidebar visibility
+  updateSidebarSubjectVisibility();
+  updateSidebar();
+}
+
+// ═══════════════════════════════════
 //  SIDEBAR
 // ═══════════════════════════════════
+function updateSidebarSubjectVisibility() {
+  const faChapters = document.querySelectorAll('.fa-chapter');
+  const mcChapters = document.querySelectorAll('.mc-chapter');
+
+  if (currentSubject === 'fa') {
+    faChapters.forEach(ch => ch.style.display = '');
+    mcChapters.forEach(ch => ch.style.display = 'none');
+  } else {
+    faChapters.forEach(ch => ch.style.display = 'none');
+    mcChapters.forEach(ch => ch.style.display = '');
+  }
+}
+
 function updateSidebar() {
   document.querySelectorAll('.sidebar .si').forEach(el => {
     el.classList.remove('active');
-    if (el.dataset.module && parseInt(el.dataset.module) === currentModule) {
+    if (el.dataset.module && el.dataset.subject === currentSubject && parseInt(el.dataset.module) === currentModule) {
       el.classList.add('active');
     }
   });
@@ -1115,10 +1245,13 @@ document.addEventListener('keydown', e => {
     showToast(demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF');
   }
 
-  // Number keys 1-9: jump to module
+  // Number keys 1-9: jump to module (from current subject)
   const num = parseInt(e.key);
   if (num >= 1 && num <= 9) {
-    openModule(num);
+    const maxModules = currentSubject === 'mc' ? 8 : 10;
+    if (num <= maxModules) {
+      openModule(num);
+    }
   }
 });
 
@@ -1142,6 +1275,9 @@ document.addEventListener('DOMContentLoaded', () => {
     onboardingDone = true;
     document.getElementById('chapter-view').classList.remove('active');
     document.getElementById('home-view').classList.remove('hidden');
+
+    // Initialize subject-specific sidebar visibility
+    updateSidebarSubjectVisibility();
 
     // Update stats from saved data
     updateHomeStats();
