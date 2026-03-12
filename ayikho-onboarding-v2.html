@@ -1783,16 +1783,26 @@
       background: var(--pl)
     }
 
-    btn-google {
+    .btn-google {
       width: 100%;
       padding: 14px;
-      border-radius: 10px;
+      border-radius: 14px;
       border: none;
       background: #ffffff;
       color: #333;
       font-weight: 600;
+      font-size: 15px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
       cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-google:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
   </style>
 </head>
@@ -3552,7 +3562,7 @@
         // Also try direct call as fallback
         try { if (window.parent.onboardingComplete) window.parent.onboardingComplete(); } catch (e) { }
       } else {
-        window.location.href = 'ayikho-chapter-home.html';
+        window.location.href = 'app.html';
       }
     }
 
