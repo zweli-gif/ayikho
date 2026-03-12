@@ -91,7 +91,11 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .hh-xp-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--fa));border-radius:100px;transition:width .6s ease}
 .hh-xp-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fa-l);min-width:60px;text-align:right}
 .hh-stats{display:flex;gap:8px;margin-top:12px;position:relative;z-index:1}
-.hh-stat{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;text-align:center}
+.hh-stat{flex:1;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer;transition:all .2s ease}
+.hh-stat:nth-child(1){border-color:#F59E0B}
+.hh-stat:nth-child(2){border-color:#0284C7}
+.hh-stat:nth-child(3){border-color:#22C55E}
+.hh-stat:active{transform:scale(.95)}
 .hh-stat-n{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:white;line-height:1}
 .hh-stat-l{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:3px}
 
@@ -200,12 +204,12 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .hero-name{font:900 26px/1.15 'Playfair Display',serif;color:#F8FAFC}
 
 .ashki-container{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(124,58,237,.2));border:2px solid rgba(245,158,11,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
-.ashki-emoji{font-size:36px;animation:wiggle 4s ease-in-out infinite}
-@keyframes wiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+.ashki-emoji{width:100%;height:100%;object-fit:contain;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-8px)}}
 
 .ashki-speech{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);background:#F59E0B;color:#1A0A3A;font:700 8px/1 'Outfit',sans-serif;padding:3px 6px;border-radius:6px;white-space:nowrap;letter-spacing:.02em}
 
-.hero-motivator{display:flex;align-items:center;gap:8px;margin-bottom:18px;position:relative;z-index:1}
+.hero-motivator{font:600 12px/1.4 'Outfit',sans-serif;color:var(--gold);margin-bottom:4px;position:relative;z-index:1}
 
 .streak-badge{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.2);padding:6px 12px;border-radius:100px;font:700 12px/1 'JetBrains Mono',monospace;color:#F59E0B}
 
@@ -291,6 +295,10 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .home-view .bn-label{font:600 9px/1 'Outfit',sans-serif;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em}
 .home-view .bn-item.active .bn-label{color:#7C3AED}
 .home-view .bn-dot{width:4px;height:4px;border-radius:50%;background:#7C3AED;margin-top:2px}
+
+/* Confetti burst animation */
+@keyframes confetti-burst{0%{opacity:1;transform:translate(var(--tx),0) rotateZ(0deg)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) rotateZ(360deg)}}
+.confetti-piece{position:fixed;pointer-events:none;width:10px;height:10px;animation:confetti-burst 2.5s ease-out forwards}
 </style>
 </head>
 <body>
@@ -399,15 +407,12 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
           <div class="hero-name">Zandile</div>
         </div>
         <div class="ashki-container">
-          <div class="ashki-emoji">🐺</div>
+          <img class="ashki-emoji" src="assets/ashki/ashki_master.png" alt="Ashki mascot">
           <div class="ashki-speech">Let's go!</div>
         </div>
       </div>
 
-      <div class="hero-motivator">
-        <div class="streak-badge">🔥 9 days</div>
-        <div class="xp-badge">⚡ 325 XP</div>
-      </div>
+      <div class="hero-motivator" id="hero-motivator">Ready to start? Just 5 minutes today.</div>
 
       <div class="hero-progress">
         <div class="hero-prog-label">
@@ -839,6 +844,15 @@ function updateHomeStats() {
   const ashkiSpeechEl = document.querySelector('.ashki-speech');
   if (ashkiSpeechEl) ashkiSpeechEl.textContent = ashkiSpeech;
 
+  // Update motivator message based on streak
+  let motivatorMsg = 'Ready to start? Just 5 minutes today.';
+  if (data.streakDays >= 7) motivatorMsg = `${data.streakDays}-day streak — you're crushing it! 🔥`;
+  else if (data.streakDays >= 3) motivatorMsg = `${data.streakDays} days in a row. Keep going! 💪`;
+  else if (data.streakDays >= 1) motivatorMsg = 'Welcome back! Let\'s learn something new.';
+
+  const motivatorEl = document.getElementById('hero-motivator');
+  if (motivatorEl) motivatorEl.textContent = motivatorMsg;
+
   // Update today's lesson card with current module
   const currentMod = data.currentModule || 3;
   const currentModData = MODULES[currentMod];
@@ -852,6 +866,25 @@ function updateHomeStats() {
 
   // Generate and update module grid
   generateModuleGrid(data);
+
+  // Setup stat click handlers
+  const statElements = document.querySelectorAll('.hh-stat');
+  statElements.forEach((stat, i) => {
+    stat.onclick = () => {
+      if (i === 0) {
+        // Streak stat
+        showToast(`🔥 ${data.streakDays}-day streak! Keep it up for 14 days to unlock a badge.`);
+      } else if (i === 1) {
+        // Progress stat
+        const pct = Math.round((data.completedCount / maxModules) * 100);
+        showToast(`📈 ${data.completedCount} of ${maxModules} modules complete. You're ${pct}% there!`);
+      } else if (i === 2) {
+        // Score stat
+        const avgScore = data.averageScore || 85;
+        showToast(`✓ ${avgScore}% average. That's excellent — exam ready!`);
+      }
+    };
+  });
 }
 
 // ═══════════════════════════════════
@@ -995,6 +1028,15 @@ function openModule(num) {
 //  GO HOME
 // ═══════════════════════════════════
 function goHome() {
+  // Check if module was just completed
+  let moduleWasCompleted = false;
+  if (currentModule && window.ayikhoData && typeof currentModule === 'number') {
+    const data = window.ayikhoData.getDashboardData();
+    if (data && data.moduleStatuses && data.moduleStatuses[currentModule]) {
+      moduleWasCompleted = data.moduleStatuses[currentModule].status === 'completed';
+    }
+  }
+
   // Save time spent in module
   if (currentModule && moduleStartTime && window.ayikhoData) {
     window.ayikhoData.addModuleTime(currentModule, Date.now() - moduleStartTime);
@@ -1012,6 +1054,11 @@ function goHome() {
     currentModule = null;
     updateSidebar();
     updateHomeStats();
+
+    // Fire confetti if module was completed
+    if (moduleWasCompleted) {
+      setTimeout(() => fireConfetti(), 200);
+    }
   }, 350);
 }
 
@@ -1359,6 +1406,40 @@ function showToast(msg) {
   document.body.appendChild(t);
   setTimeout(() => t.style.opacity = '0', 2000);
   setTimeout(() => t.remove(), 2500);
+}
+
+// ═══════════════════════════════════
+//  CONFETTI BURST
+// ═══════════════════════════════════
+function fireConfetti() {
+  const colors = ['#F59E0B', '#7C3AED', '#0284C7', '#22C55E', '#F43F5E'];
+  const phoneEl = document.querySelector('.phone');
+  if (!phoneEl) return;
+
+  const rect = phoneEl.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  for (let i = 0; i < 30; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = centerX + 'px';
+    piece.style.top = centerY + 'px';
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+    // Random explosion direction
+    const angle = (Math.random() * Math.PI * 2);
+    const distance = 150 + Math.random() * 100;
+    const tx = Math.cos(angle) * distance;
+    const ty = -Math.sin(angle) * distance - (Math.random() * 100);
+
+    piece.style.setProperty('--tx', tx + 'px');
+    piece.style.setProperty('--ty', ty + 'px');
+
+    document.body.appendChild(piece);
+
+    setTimeout(() => piece.remove(), 2500);
+  }
 }
 
 // ═══════════════════════════════════

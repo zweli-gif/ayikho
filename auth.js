@@ -263,7 +263,7 @@ window.switchToLogin = function () {
   goTo("s-login-phone");
 };
 window.switchToRegister = function () {
-  goTo("s-phone");
+  goTo("s-signup");
 };
 
 window.checkLoginPhoneStr = function () {
