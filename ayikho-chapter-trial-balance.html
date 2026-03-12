@@ -112,7 +112,7 @@
         .phone-frame {
             width: 375px;
             height: 812px;
-            background: var(--w);
+            background: #05090F;
             border-radius: 50px;
             border: 12px solid #05090F;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
@@ -989,7 +989,7 @@
         .ashki-text { font:400 14px/1.5 'Outfit'; color:var(--ink); }
         @keyframes ashkiSlideIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         /* ===== PEN-ON-BOARD VIDEO PLAYER ===== */
-        .landoh-video-wrap{position:relative;width:100%;height:100%;background:#FAFAFA;display:flex;flex-direction:column;overflow:hidden}
+        .landoh-video-wrap{position:relative;width:100%;height:100%;background:#FAFAFA;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none}
         .lv-title-card{position:absolute;inset:0;background:#1A1A2E;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:100;opacity:1;transition:opacity 0.8s ease}
         .lv-title-card.lv-hidden{opacity:0;pointer-events:none}
         .lv-title-card .lv-mod-num{font-size:12px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--fa);margin-bottom:12px;opacity:0;transform:translateY(10px);animation:lvFadeUp 0.6s 0.3s ease forwards}
@@ -1020,7 +1020,7 @@
         .lv-voice-text{flex:1;font-size:11px;font-weight:500;color:rgba(255,255,255,0.85);line-height:1.35;opacity:0;transition:opacity 0.4s ease}
         .lv-voice-text.lv-vis{opacity:1}
         .lv-chapter-ind{font-size:8px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:1px;white-space:nowrap}
-        .lv-board{flex:1;background:#FFFFFF;position:relative;padding:14px 16px 48px;overflow-y:auto;overflow-x:hidden}
+        .lv-board{flex:1;background:#1A1A2E;position:relative;padding:14px 16px 48px;overflow-y:auto;overflow-x:hidden}
         .lv-board::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px);background-size:100% 28px;background-position:0 14px}
         .lv-board::-webkit-scrollbar{width:3px}
         .lv-board::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:3px}

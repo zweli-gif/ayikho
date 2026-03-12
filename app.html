@@ -17,7 +17,7 @@
   --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
   --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
 }
-html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden}
+html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden;overscroll-behavior:none}
 
 /* ═══════════════════════════════════
    SHELL — PHONE + SIDEBAR
@@ -39,7 +39,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 
 /* Phone */
 .phone-col{display:flex;flex-direction:column;align-items:center}
-.phone{width:375px;height:812px;background:var(--w);border-radius:50px;overflow:hidden;position:relative;
+.phone{width:375px;height:812px;background:#05090F;border-radius:50px;overflow:hidden;position:relative;
   box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(2,132,199,.08)}
 
 /* ═══════════════════════════════════
@@ -59,12 +59,12 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .back-btn:hover{background:rgba(0,0,0,.85);transform:scale(1.05)}
 
 /* Loading state */
-.loading-overlay{position:absolute;inset:0;z-index:5;background:var(--w);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;border-radius:50px}
+.loading-overlay{position:absolute;inset:0;z-index:5;background:#05090F;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;border-radius:50px}
 .loading-overlay.show{opacity:1;pointer-events:auto}
-.loading-spinner{width:40px;height:40px;border:3px solid var(--fa-sm);border-top:3px solid var(--fa);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:14px}
+.loading-spinner{width:40px;height:40px;border:3px solid rgba(2,132,199,.2);border-top:3px solid var(--fa);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.loading-module{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--ink);margin-top:6px}
+.loading-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.loading-module{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white;margin-top:6px}
 
 /* ═══════════════════════════════════
    HOME SCREEN — STATUS BAR
@@ -95,12 +95,12 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 /* ═══════════════════════════════════
    MODULE CARDS
 ═══════════════════════════════════ */
-.modules-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 18px}
+.modules-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 18px;background:#05090F}
 .modules-area::-webkit-scrollbar{display:none}
 .modules-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:10px}
 .modules-label::after{content:'';flex:1;height:1px;background:var(--bord)}
 
-.module-card{border:2px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;background:var(--w)}
+.module-card{border:2px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;background:rgba(255,255,255,.05)}
 .module-card:hover{border-color:var(--fa);transform:translateY(-1px);box-shadow:0 8px 24px rgba(2,132,199,.1)}
 .module-card:active{transform:scale(.98)}
 .module-card.locked{opacity:.55;cursor:default;border-color:var(--bord)}
@@ -139,7 +139,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 /* ═══════════════════════════════════
    BOTTOM NAV
 ═══════════════════════════════════ */
-.bottom-nav{display:flex;align-items:center;justify-content:space-around;padding:10px 16px 28px;border-top:1px solid var(--bord);flex-shrink:0;background:var(--w)}
+.bottom-nav{display:flex;align-items:center;justify-content:space-around;padding:10px 16px 28px;border-top:1px solid var(--bord);flex-shrink:0;background:#05090F}
 .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.4;transition:opacity .2s}
 .bn-item.active{opacity:1}
 .bn-icon{font-size:22px}
@@ -152,6 +152,103 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 /* Current module indicator */
 .current-module-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--fa);transform:scaleX(0);transition:transform .3s ease;transform-origin:left;z-index:3}
 .current-module-bar.show{transform:scaleX(1)}
+
+/* ═══════════════════════════════════
+   OPTION B — WARM & BOLD DESIGN
+═══════════════════════════════════ */
+
+/* Hero banner */
+.hero-banner{margin:8px 16px 0;padding:24px 20px 20px;background:linear-gradient(145deg,#2D1B69 0%,#1A0F3C 50%,#0C1E35 100%);border-radius:24px;position:relative;overflow:hidden;border:1px solid rgba(124,58,237,.2)}
+.hero-banner::before{content:'';position:absolute;top:-40px;right:-20px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15),transparent 70%)}
+.hero-banner::after{content:'';position:absolute;bottom:-30px;left:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%)}
+
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;position:relative;z-index:1}
+.hero-greeting{font:500 13px/1.4 'Outfit',sans-serif;color:rgba(255,255,255,.5);margin-bottom:2px}
+.hero-name{font:900 26px/1.15 'Playfair Display',serif;color:#F8FAFC}
+
+.ashki-container{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(124,58,237,.2));border:2px solid rgba(245,158,11,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.ashki-emoji{font-size:36px;animation:wiggle 4s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+
+.ashki-speech{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);background:#F59E0B;color:#1A0A3A;font:700 8px/1 'Outfit',sans-serif;padding:3px 6px;border-radius:6px;white-space:nowrap;letter-spacing:.02em}
+
+.hero-motivator{display:flex;align-items:center;gap:8px;margin-bottom:18px;position:relative;z-index:1}
+
+.streak-badge{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.2);padding:6px 12px;border-radius:100px;font:700 12px/1 'JetBrains Mono',monospace;color:#F59E0B}
+
+.xp-badge{display:flex;align-items:center;gap:5px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);padding:6px 12px;border-radius:100px;font:700 12px/1 'JetBrains Mono',monospace;color:#A78BFA}
+
+.hero-progress{position:relative;z-index:1}
+.hero-prog-label{display:flex;justify-content:space-between;font:500 11px/1 'Outfit',sans-serif;color:rgba(255,255,255,.4);margin-bottom:6px}
+.hero-prog-label strong{color:#22C55E;font-weight:700}
+.hero-prog-track{height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
+.hero-prog-fill{height:100%;width:20%;background:linear-gradient(90deg,#22C55E,#0284C7);border-radius:100px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* Today's lesson section */
+.today-section{padding:20px 16px 0}
+
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font:700 11px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);letter-spacing:.15em;text-transform:uppercase}
+.section-see-all{font:600 11px/1 'Outfit',sans-serif;color:#7C3AED;cursor:pointer}
+
+.today-card{background:linear-gradient(135deg,#0F172A,#1A1040);border:1px solid rgba(2,132,199,.2);border-radius:20px;padding:18px;cursor:pointer;transition:transform .12s ease;position:relative;overflow:hidden}
+.today-card:active{transform:scale(.97)}
+.today-card::after{content:'';position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(2,132,199,.12),transparent 70%)}
+
+.today-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.today-module{font:700 10px/1 'JetBrains Mono',monospace;color:#0284C7;letter-spacing:.1em;text-transform:uppercase}
+.today-time{font:500 11px/1 'Outfit',sans-serif;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px}
+.today-title{font:800 18px/1.25 'Playfair Display',serif;color:#F8FAFC;margin-bottom:6px}
+.today-desc{font:400 12px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.45);margin-bottom:14px}
+
+.today-footer{display:flex;align-items:center;justify-content:space-between}
+.today-progress-wrap{flex:1;margin-right:14px}
+.today-prog-text{font:500 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.35);margin-bottom:4px}
+.today-prog-track{height:3px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.today-prog-fill{height:100%;width:25%;background:#0284C7;border-radius:100px}
+
+.today-btn{padding:10px 20px;background:linear-gradient(135deg,#0284C7,#0369A1);color:white;font:700 12px/1 'Outfit',sans-serif;border:none;border-radius:12px;cursor:pointer;flex-shrink:0;transition:transform .12s ease}
+.today-btn:active{transform:scale(.94)}
+
+/* Module grid */
+.modules-section{padding:20px 16px 120px}
+
+.module-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.mg-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px 14px;cursor:pointer;transition:transform .12s ease,border-color .15s ease;position:relative}
+.mg-card:active{transform:scale(.96)}
+.mg-card.completed{border-color:rgba(34,197,94,.15)}
+.mg-card.current{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
+.mg-card.locked{opacity:.4}
+
+.mg-num{font:800 28px/1 'JetBrains Mono',monospace;margin-bottom:8px}
+.mg-card.completed .mg-num{color:#22C55E}
+.mg-card.current .mg-num{color:#7C3AED}
+.mg-card .mg-num{color:rgba(255,255,255,.15)}
+.mg-card.locked .mg-num{color:rgba(255,255,255,.08)}
+
+.mg-name{font:600 12px/1.35 'Outfit',sans-serif;color:#F8FAFC;margin-bottom:6px}
+.mg-card.locked .mg-name{color:rgba(255,255,255,.3)}
+
+.mg-meta{font:500 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.3)}
+
+.mg-check{position:absolute;top:12px;right:12px;width:20px;height:20px;background:#22C55E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:white;font-weight:700}
+
+.mg-badge{display:inline-block;font:700 9px/1 'JetBrains Mono',monospace;padding:3px 7px;border-radius:6px;margin-top:6px}
+.mg-badge.gold{background:rgba(245,158,11,.1);color:#F59E0B}
+.mg-badge.purple{background:rgba(124,58,237,.1);color:#A78BFA}
+
+/* Option B bottom nav with SVG icons */
+.home-view .bottom-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 20px 28px;background:linear-gradient(to top,#05090F 70%,transparent);z-index:10}
+.home-view .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.35;transition:opacity .2s;cursor:pointer;padding:6px 12px}
+.home-view .bn-item.active{opacity:1}
+.home-view .bn-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.home-view .bn-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.home-view .bn-item.active .bn-icon{color:#7C3AED}
+.home-view .bn-item .bn-icon{color:rgba(255,255,255,.5)}
+.home-view .bn-label{font:600 9px/1 'Outfit',sans-serif;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em}
+.home-view .bn-item.active .bn-label{color:#7C3AED}
+.home-view .bn-dot{width:4px;height:4px;border-radius:50%;background:#7C3AED;margin-top:2px}
 </style>
 </head>
 <body>
@@ -196,113 +293,97 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 
   <!-- HOME VIEW -->
   <div class="home-view" id="home-view">
-    <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-    <div class="home-header">
-      <div class="hh-top">
-        <div><div class="hh-greeting">Sawubona 👋</div><div class="hh-name">Zandile</div></div>
-        <div class="hh-avatar">Z</div>
+    <!-- Status Bar -->
+    <div class="sb">
+      <span class="sb-t">09:41</span>
+      <span class="sb-i">4G 87%</span>
+    </div>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-top">
+        <div>
+          <div class="hero-greeting">Sawubona</div>
+          <div class="hero-name">Zandile</div>
+        </div>
+        <div class="ashki-container">
+          <div class="ashki-emoji">🐺</div>
+          <div class="ashki-speech">Let's go!</div>
+        </div>
       </div>
-      <div class="hh-xp-row">
-        <div class="hh-xp-bar"><div class="hh-xp-fill" style="width:38%"></div></div>
-        <div class="hh-xp-text">⚡ 325 XP</div>
+
+      <div class="hero-motivator">
+        <div class="streak-badge">🔥 9 days</div>
+        <div class="xp-badge">⚡ 325 XP</div>
       </div>
-      <div class="hh-stats">
-        <div class="hh-stat"><div class="hh-stat-n">🔥9</div><div class="hh-stat-l">Day streak</div></div>
-        <div class="hh-stat"><div class="hh-stat-n">2/10</div><div class="hh-stat-l">Modules done</div></div>
-        <div class="hh-stat"><div class="hh-stat-n">85%</div><div class="hh-stat-l">Avg. score</div></div>
+
+      <div class="hero-progress">
+        <div class="hero-prog-label">
+          <span>Your progress</span>
+          <strong>2 of 10 done</strong>
+        </div>
+        <div class="hero-prog-track">
+          <div class="hero-prog-fill"></div>
+        </div>
       </div>
     </div>
 
-    <div class="modules-area">
-      <div class="modules-label">Financial Accounting N4 · 10 Modules</div>
-
-      <!-- M1 -->
-      <div class="module-card completed" onclick="openModule(1)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="0"/></svg><div class="prog-ring-center"><span class="prog-ring-num">✓</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 1</div><div class="mc-title">Accounting Concepts & Principles</div><div class="mc-meta"><div class="mc-meta-item">⏱ 7 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">3/3 correct</div></div></div>
-        <div class="mc-right"><div class="mc-xp">+150 XP</div></div>
-      </div>
-      <div class="connector done"><div class="connector-line"></div></div>
-
-      <!-- M2 -->
-      <div class="module-card completed" onclick="openModule(2)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="0"/></svg><div class="prog-ring-center"><span class="prog-ring-num">✓</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 2</div><div class="mc-title">Double Entry & Accounting Equation</div><div class="mc-meta"><div class="mc-meta-item">⏱ 8 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">3/3 correct</div></div></div>
-        <div class="mc-right"><div class="mc-xp">+150 XP</div></div>
-      </div>
-      <div class="connector done"><div class="connector-line"></div></div>
-
-      <!-- M3 — CURRENT -->
-      <div class="module-card" onclick="openModule(3)" style="border-color:var(--fa);box-shadow:0 0 0 1px var(--fa),0 4px 16px rgba(2,132,199,.12)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">3</span></div></div>
-        <div class="mc-info"><div class="mc-module-num" style="color:var(--fa)">Module 3 · Up Next</div><div class="mc-title">Journals & Ledgers</div><div class="mc-meta"><div class="mc-meta-item">⏱ 9 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Journal builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M4 -->
-      <div class="module-card" onclick="openModule(4)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">4</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 4</div><div class="mc-title">Trial Balance</div><div class="mc-meta"><div class="mc-meta-item">⏱ 8 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ TB Builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M5 -->
-      <div class="module-card" onclick="openModule(5)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">5</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 5</div><div class="mc-title">Cash Receipts & Payments Journals</div><div class="mc-meta"><div class="mc-meta-item">⏱ 10 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Transaction sorter</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M6 -->
-      <div class="module-card" onclick="openModule(6)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">6</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 6</div><div class="mc-title">Debtors & Creditors Journals</div><div class="mc-meta"><div class="mc-meta-item">⏱ 10 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Invoice builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M7 -->
-      <div class="module-card" onclick="openModule(7)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">7</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 7</div><div class="mc-title">Value Added Tax (VAT)</div><div class="mc-meta"><div class="mc-meta-item">⏱ 8 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ VAT calculator</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M8 -->
-      <div class="module-card" onclick="openModule(8)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">8</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 8</div><div class="mc-title">Year-End Adjustments</div><div class="mc-meta"><div class="mc-meta-item">⏱ 11 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Depreciation calc</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M9 -->
-      <div class="module-card" onclick="openModule(9)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">9</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 9</div><div class="mc-title">Financial Statements</div><div class="mc-meta"><div class="mc-meta-item">⏱ 12 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Drag-and-drop builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M10 -->
-      <div class="module-card" onclick="openModule(10)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">10</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 10</div><div class="mc-title">Bank Reconciliation</div><div class="mc-meta"><div class="mc-meta-item">⏱ 9 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Transaction classifier</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
+    <!-- Today's Lesson -->
+    <div class="today-section">
+      <div class="section-header">
+        <div class="section-title">TODAY'S LESSON</div>
       </div>
 
-      <div style="height:16px"></div>
+      <div class="today-card">
+        <div class="today-top">
+          <div class="today-module">MODULE 3 OF 10</div>
+          <div class="today-time">⏱ 9 min</div>
+        </div>
+        <div class="today-title">Journals & Ledgers</div>
+        <div class="today-desc">Every transaction tells a story. Learn to record them like a pro using the journal builder.</div>
+        <div class="today-footer">
+          <div class="today-progress-wrap">
+            <div class="today-prog-text">4 of 15 screens done</div>
+            <div class="today-prog-track">
+              <div class="today-prog-fill"></div>
+            </div>
+          </div>
+          <button class="today-btn" onclick="openModule(3)">Continue →</button>
+        </div>
+      </div>
     </div>
 
+    <!-- All Modules -->
+    <div class="modules-section">
+      <div class="section-header">
+        <div class="section-title">ALL MODULES</div>
+        <div class="section-see-all">See map →</div>
+      </div>
+
+      <div class="module-grid" id="module-grid">
+        <!-- Modules will be generated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
     <div class="bottom-nav">
-      <div class="bn-item active"><div class="bn-icon">📚</div><div class="bn-label">Learn</div></div>
-      <div class="bn-item"><div class="bn-icon">📊</div><div class="bn-label">Progress</div></div>
-      <div class="bn-item"><div class="bn-icon">🏆</div><div class="bn-label">Badges</div></div>
-      <div class="bn-item"><div class="bn-icon">👤</div><div class="bn-label">Profile</div></div>
+      <div class="bn-item active" onclick="goHome()">
+        <div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="bn-label">Learn</div>
+        <div class="bn-dot"></div>
+      </div>
+      <div class="bn-item" onclick="openDashboard()">
+        <div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+        <div class="bn-label">Progress</div>
+      </div>
+      <div class="bn-item" onclick="showToast('Badges coming soon!')">
+        <div class="bn-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+        <div class="bn-label">Badges</div>
+      </div>
+      <div class="bn-item" onclick="showToast('Profile coming soon!')">
+        <div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="bn-label">Profile</div>
+      </div>
     </div>
   </div><!-- /home-view -->
 
@@ -385,7 +466,7 @@ window.addEventListener('message', function(e) {
           const iDoc = frame.contentDocument || frame.contentWindow.document;
           const style = iDoc.createElement('style');
           style.textContent = `
-            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
             .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -418,7 +499,7 @@ window.addEventListener('message', function(e) {
           const iDoc = frame.contentDocument || frame.contentWindow.document;
           const style = iDoc.createElement('style');
           style.textContent = `
-            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
             .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -451,7 +532,7 @@ window.addEventListener('message', function(e) {
           const iDoc = frame.contentDocument || frame.contentWindow.document;
           const style = iDoc.createElement('style');
           style.textContent = `
-            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
             .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -484,7 +565,7 @@ window.addEventListener('message', function(e) {
           const iDoc = frame.contentDocument || frame.contentWindow.document;
           const style = iDoc.createElement('style');
           style.textContent = `
-            html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
             .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -505,52 +586,126 @@ window.addEventListener('message', function(e) {
 // ═══════════════════════════════════
 //  UPDATE HOME STATS FROM DATA
 // ═══════════════════════════════════
+// ═══════════════════════════════════
+//  GENERATE MODULE GRID (for Option B)
+// ═══════════════════════════════════
+function generateModuleGrid(data) {
+  const grid = document.getElementById('module-grid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  for (let i = 1; i <= 10; i++) {
+    const mod = MODULES[i];
+    if (!mod) continue;
+
+    // Determine module status
+    let status = 'locked';
+    let statusClass = 'locked';
+    if (data && data.moduleStatuses && data.moduleStatuses[i]) {
+      status = data.moduleStatuses[i].status;
+      statusClass = status === 'completed' ? 'completed' : status === 'current' ? 'current' : 'locked';
+    } else {
+      // Default behavior: first 2 completed, 3 is current, rest locked
+      if (i <= 2) { status = 'completed'; statusClass = 'completed'; }
+      else if (i === 3) { status = 'current'; statusClass = 'current'; }
+    }
+
+    const card = document.createElement('div');
+    card.className = `mg-card ${statusClass}`;
+    card.onclick = () => openModule(i);
+
+    let numDisplay = String(i).padStart(2, '0');
+    let badgeHtml = '';
+
+    if (statusClass === 'completed') {
+      card.innerHTML = `
+        <div class="mg-check">✓</div>
+        <div class="mg-num">${numDisplay}</div>
+        <div class="mg-name">${mod.name}</div>
+        <div class="mg-meta">7-12 min · 3/3</div>
+        <div class="mg-badge gold">+150 XP</div>
+      `;
+    } else if (statusClass === 'current') {
+      card.innerHTML = `
+        <div class="mg-num">${numDisplay}</div>
+        <div class="mg-name">${mod.name}</div>
+        <div class="mg-meta">In progress</div>
+        <div class="mg-badge purple">25% done</div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="mg-num">${numDisplay}</div>
+        <div class="mg-name">${mod.name}</div>
+        <div class="mg-meta">7-12 min</div>
+      `;
+    }
+
+    grid.appendChild(card);
+  }
+}
+
 function updateHomeStats() {
-  if (!window.ayikhoData) return;
+  if (!window.ayikhoData) {
+    generateModuleGrid();
+    return;
+  }
 
   const data = window.ayikhoData.getDashboardData();
 
-  // Update XP display and bar
-  const xpText = document.querySelector('.hh-xp-text');
-  if (xpText) xpText.textContent = `⚡ ${data.totalXP} XP`;
+  // Update greeting based on time
+  const hour = new Date().getHours();
+  let greeting = 'Sawubona';
+  if (hour < 12) greeting = 'Morning';
+  else if (hour < 17) greeting = 'Afternoon';
+  else greeting = 'Evening';
 
-  const xpFill = document.querySelector('.hh-xp-fill');
-  if (xpFill) xpFill.style.width = `${Math.min((data.totalXP / 1500) * 100, 100)}%`;
+  const greetingEl = document.querySelector('.hero-greeting');
+  if (greetingEl) greetingEl.textContent = greeting;
 
-  // Update stats
-  const statNs = document.querySelectorAll('.hh-stat-n');
-  if (statNs[0]) statNs[0].textContent = `🔥${data.streakDays}`;
-  if (statNs[1]) statNs[1].textContent = `${data.completedCount}/10`;
-  if (statNs[2]) statNs[2].textContent = `${data.avgScore}%`;
-
-  // Update profile name and avatar if available
+  // Update profile name
   const profile = window.ayikhoData.getProfile();
   if (profile && profile.name) {
-    const nameEl = document.querySelector('.hh-name');
+    const nameEl = document.querySelector('.hero-name');
     if (nameEl) nameEl.textContent = profile.name;
-
-    const avatarEl = document.querySelector('.hh-avatar');
-    if (avatarEl) avatarEl.textContent = profile.name.charAt(0).toUpperCase();
   }
 
-  // Update module card statuses
-  const cards = document.querySelectorAll('.module-card');
-  cards.forEach((card, idx) => {
-    const moduleNum = idx + 1;
-    const moduleStatus = data.moduleStatuses[moduleNum];
+  // Update streak badge
+  const streakBadge = document.querySelector('.streak-badge');
+  if (streakBadge) streakBadge.textContent = `🔥 ${data.streakDays} days`;
 
-    if (moduleStatus) {
-      // Remove old status classes
-      card.classList.remove('completed', 'locked');
+  // Update XP badge
+  const xpBadge = document.querySelector('.xp-badge');
+  if (xpBadge) xpBadge.textContent = `⚡ ${data.totalXP} XP`;
 
-      // Add new status class
-      if (moduleStatus.status === 'completed') {
-        card.classList.add('completed');
-      } else if (moduleStatus.status === 'locked') {
-        card.classList.add('locked');
-      }
-    }
-  });
+  // Update progress bar
+  const progLabel = document.querySelector('.hero-prog-label strong');
+  if (progLabel) progLabel.textContent = `${data.completedCount} of 10 done`;
+
+  const progFill = document.querySelector('.hero-prog-fill');
+  if (progFill) progFill.style.width = `${(data.completedCount / 10) * 100}%`;
+
+  // Update Ashki speech based on streak
+  let ashkiSpeech = 'Let\'s go!';
+  if (data.streakDays >= 7) ashkiSpeech = 'On fire! 🔥';
+  else if (data.streakDays >= 3) ashkiSpeech = 'Great work!';
+
+  const ashkiSpeechEl = document.querySelector('.ashki-speech');
+  if (ashkiSpeechEl) ashkiSpeechEl.textContent = ashkiSpeech;
+
+  // Update today's lesson card with current module
+  const currentModule = data.currentModule || 3;
+  const currentModData = MODULES[currentModule];
+  if (currentModData) {
+    const todayModule = document.querySelector('.today-module');
+    if (todayModule) todayModule.textContent = `MODULE ${currentModule} OF 10`;
+
+    const todayTitle = document.querySelector('.today-title');
+    if (todayTitle) todayTitle.textContent = currentModData.name;
+  }
+
+  // Generate and update module grid
+  generateModuleGrid(data);
 }
 
 // ═══════════════════════════════════
@@ -589,19 +744,15 @@ window.onboardingComplete = function() {
     updateHomeStats();
 
     // Trigger the card entrance animations
-    const cards = document.querySelectorAll('.module-card');
+    const cards = document.querySelectorAll('.mg-card');
     cards.forEach((card, i) => {
       card.style.opacity = '0';
       card.style.transform = 'translateY(12px)';
       card.style.transition = 'opacity .3s ease, transform .3s ease';
       setTimeout(() => {
-        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
+        card.style.opacity = card.classList.contains('locked') ? '.4' : '1';
         card.style.transform = 'translateY(0)';
       }, 100 + i * 60);
-    });
-    document.querySelectorAll('.connector').forEach((c, i) => {
-      c.style.opacity = '0';
-      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
     });
 
     showToast('Welcome to Ayikho! Press D to unlock all modules');
@@ -615,9 +766,16 @@ function openModule(num) {
   const mod = MODULES[num];
   if (!mod) return;
 
-  // All modules unlocked for app launch
-  const cards = document.querySelectorAll('.module-card');
-  const card = cards[num - 1];
+  // Find the card element (support both old and new grid)
+  let card = null;
+  const mgCards = document.querySelectorAll('.mg-card');
+  const moduleCards = document.querySelectorAll('.module-card');
+
+  if (mgCards.length > 0) {
+    card = mgCards[num - 1];
+  } else if (moduleCards.length > 0) {
+    card = moduleCards[num - 1];
+  }
 
   // Card press animation
   if (card) {
@@ -669,7 +827,7 @@ function openModule(num) {
         const iDoc = frame.contentDocument || frame.contentWindow.document;
         const style = iDoc.createElement('style');
         style.textContent = `
-          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -733,7 +891,7 @@ function openDashboard() {
         const iDoc = frame.contentDocument || frame.contentWindow.document;
         const style = iDoc.createElement('style');
         style.textContent = `
-          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -768,7 +926,7 @@ function openQuizMode() {
         const iDoc = frame.contentDocument || frame.contentWindow.document;
         const style = iDoc.createElement('style');
         style.textContent = `
-          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -806,7 +964,7 @@ function openPapersMode() {
         const iDoc = frame.contentDocument || frame.contentWindow.document;
         const style = iDoc.createElement('style');
         style.textContent = `
-          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -844,7 +1002,7 @@ function openMemosMode() {
         const iDoc = frame.contentDocument || frame.contentWindow.document;
         const style = iDoc.createElement('style');
         style.textContent = `
-          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -882,7 +1040,7 @@ function openCapstoneMode() {
         const iDoc = frame.contentDocument || frame.contentWindow.document;
         const style = iDoc.createElement('style');
         style.textContent = `
-          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
@@ -938,7 +1096,9 @@ document.addEventListener('keydown', e => {
   if (e.key === 'd' || e.key === 'D') {
     if (currentModule !== null) return; // Don't toggle when inside a chapter
     demoMode = !demoMode;
-    document.querySelectorAll('.module-card.locked').forEach(card => {
+    // Support both old (.module-card) and new (.mg-card) grid
+    const selector = document.querySelectorAll('.mg-card.locked').length > 0 ? '.mg-card.locked' : '.module-card.locked';
+    document.querySelectorAll(selector).forEach(card => {
       if (demoMode) {
         card.style.opacity = '1';
         card.style.cursor = 'pointer';
@@ -947,7 +1107,7 @@ document.addEventListener('keydown', e => {
       } else {
         if (card.dataset.wasLocked) {
           card.classList.add('locked');
-          card.style.opacity = '.55';
+          card.style.opacity = '.4';
           card.style.cursor = 'default';
         }
       }
@@ -987,19 +1147,15 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHomeStats();
 
     // Trigger card entrance animations
-    const cards = document.querySelectorAll('.module-card');
+    const cards = document.querySelectorAll('.mg-card');
     cards.forEach((card, i) => {
       card.style.opacity = '0';
       card.style.transform = 'translateY(12px)';
       card.style.transition = 'opacity .3s ease, transform .3s ease';
       setTimeout(() => {
-        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
+        card.style.opacity = card.classList.contains('locked') ? '.4' : '1';
         card.style.transform = 'translateY(0)';
       }, 100 + i * 60);
-    });
-    document.querySelectorAll('.connector').forEach((c, i) => {
-      c.style.opacity = '0';
-      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
     });
   } else {
     // New student or first load — show onboarding
@@ -1021,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const iDoc = frame.contentDocument || frame.contentWindow.document;
         const style = iDoc.createElement('style');
         style.textContent = `
-          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}

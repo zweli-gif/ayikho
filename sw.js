@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ayikho-study-cache-v8';
+const CACHE_NAME = 'ayikho-study-cache-v9';
 const PRECACHE_URLS = [
     '/',
     '/index.html',

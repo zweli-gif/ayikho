@@ -44,6 +44,7 @@
             background: var(--bg-dark);
             color: var(--ink);
             overflow: hidden;
+            overscroll-behavior: none;
         }
 
         /* Phone Frame */
@@ -54,7 +55,7 @@
             border: 12px solid var(--bg-dark);
             border-radius: 50px;
             overflow: hidden;
-            background: var(--w);
+            background: #05090F;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
@@ -865,7 +866,7 @@
         }
         /* Full whiteboard area */
         .lv-board {
-            flex: 1; background: #FFFFFF; position: relative;
+            flex: 1; background: #1A1A2E; position: relative;
             padding: 14px 16px 48px; overflow-y: auto; overflow-x: hidden;
         }
         .lv-board::before {
