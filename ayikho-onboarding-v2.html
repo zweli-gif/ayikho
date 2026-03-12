@@ -1268,6 +1268,15 @@
       padding-top: 4px
     }
 
+    /* Quiz Intro Types */
+    .qi-types { display:flex; flex-direction:column; gap:10px }
+    .qi-type { display:flex; align-items:center; gap:14px; padding:14px 16px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); border-radius:14px; transition:all .28s cubic-bezier(.34, 1.56, .64, 1) }
+    .qi-type:hover { background:rgba(255,255,255,.1); transform:translateY(-2px) }
+    .qi-icon { font-size:28px; flex-shrink:0; width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.06); border-radius:12px }
+    .qi-info { flex:1 }
+    .qi-name { font:700 14px/1 'Outfit',sans-serif; color:white; margin-bottom:4px }
+    .qi-desc { font:400 11px/1.4 'Outfit',sans-serif; color:rgba(255,255,255,.45) }
+
     /* ──────────────────────────────────────
    PROFILE LOADING OVERLAY
 ────────────────────────────────────── */
@@ -1568,6 +1577,14 @@
       line-height: 1.5
     }
 
+    .pr-others-lbl { font:700 11px/1 'JetBrains Mono',monospace; color:rgba(255,255,255,.25); letter-spacing:.12em; text-transform:uppercase; margin-top:24px; margin-bottom:12px; padding-top:20px; border-top:1px solid rgba(255,255,255,.06) }
+    .pr-others { display:flex; flex-direction:column; gap:8px; padding-bottom:20px }
+    .pr-other { display:flex; align-items:center; gap:12px; padding:12px 14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); border-radius:12px }
+    .pr-other-icon { font-size:22px; flex-shrink:0 }
+    .pr-other-info { flex:1 }
+    .pr-other-name { font:600 13px/1 'Outfit',sans-serif; color:rgba(255,255,255,.7) }
+    .pr-other-desc { font:400 10px/1.3 'Outfit',sans-serif; color:rgba(255,255,255,.3); margin-top:3px }
+
     /* ──────────────────────────────────────
    EXAM DATES
 ────────────────────────────────────── */
@@ -1824,6 +1841,54 @@
       width: 100%;
       animation: fadeUp .5s ease .8s both
     }
+
+    /* Post-onboarding shared */
+    .po-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px; position:relative; overflow:hidden }
+    .po-confetti { position:absolute; inset:0; pointer-events:none }
+    .po-ashki-wrap { width:100px; height:100px; margin-bottom:20px; animation:float 3.2s cubic-bezier(.34, 1.56, .64, 1) infinite }
+    .po-ashki { width:100%; height:100%; object-fit:contain }
+    .po-foot { margin-top:auto; padding-top:32px; width:100% }
+
+    /* Tour cards */
+    .tour-card { display:flex; align-items:flex-start; gap:14px; padding:16px 0; border-bottom:1px solid var(--bord) }
+    .tour-card:last-child { border-bottom:none }
+    .tour-num { width:36px; height:36px; border-radius:10px; background:var(--pxs); color:var(--p); font:800 15px/36px 'Outfit',sans-serif; text-align:center; flex-shrink:0 }
+    .tour-info { flex:1 }
+    .tour-title { font:700 15px/1 'Outfit',sans-serif; color:var(--ink); margin-bottom:5px }
+    .tour-desc { font:400 12px/1.5 'Outfit',sans-serif; color:var(--mut) }
+
+    /* Plan dashboard */
+    .plan-stats { display:flex; gap:10px; margin-bottom:20px }
+    .plan-stat { flex:1; background:var(--pxs); border-radius:14px; padding:16px 12px; text-align:center }
+    .plan-stat-n { font:900 24px/1 'Playfair Display',serif; color:var(--p) }
+    .plan-stat-l { font:500 10px/1 'JetBrains Mono',monospace; color:var(--mut); text-transform:uppercase; letter-spacing:.08em; margin-top:4px }
+    .plan-section-lbl { font:700 10px/1 'JetBrains Mono',monospace; color:var(--dim); letter-spacing:.15em; text-transform:uppercase; margin-bottom:10px }
+    .plan-subjects { display:flex; flex-direction:column; gap:8px }
+    .plan-subj { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--surf); border:1px solid var(--bord); border-radius:14px }
+    .plan-subj-emoji { font-size:24px }
+    .plan-subj-info { flex:1 }
+    .plan-subj-name { font:600 13px/1 'Outfit',sans-serif; color:var(--ink) }
+    .plan-subj-meta { font:400 11px/1 'Outfit',sans-serif; color:var(--dim); margin-top:3px }
+    .plan-profile-card { display:flex; align-items:center; gap:14px; padding:14px 16px; background:var(--ink); border-radius:14px }
+    .plan-profile-icon { font-size:28px }
+    .plan-profile-info { flex:1 }
+    .plan-profile-name { font:700 14px/1 'Outfit',sans-serif; color:white }
+    .plan-profile-desc { font:400 11px/1.3 'Outfit',sans-serif; color:rgba(255,255,255,.5); margin-top:3px }
+    .plan-first-lesson { padding:18px; background:linear-gradient(135deg,#0F172A,#1A1040); border:1px solid rgba(2,132,199,.3); border-radius:16px; position:relative }
+    .plan-fl-badge { font:800 9px/1 'JetBrains Mono',monospace; color:#0284C7; letter-spacing:.15em; text-transform:uppercase; margin-bottom:8px }
+    .plan-fl-name { font:900 18px/1.2 'Playfair Display',serif; color:white }
+    .plan-fl-meta { font:400 11px/1 'Outfit',sans-serif; color:rgba(255,255,255,.4); margin-top:6px }
+
+    /* Let's Go screen */
+    .lg-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px; background:linear-gradient(165deg,#1A0A3A 0%,#2D1B69 50%,#4C1A99 100%); position:relative; overflow:hidden }
+    .lg-orb { position:absolute; border-radius:50%; filter:blur(60px); opacity:.3; animation:float 4s ease-in-out infinite }
+    .lg-orb1 { width:200px; height:200px; background:#7C3AED; top:-50px; right:-50px; animation-delay:-1s }
+    .lg-orb2 { width:160px; height:160px; background:#0284C7; bottom:60px; left:-40px; animation-delay:-2.5s }
+    .lg-emoji { font-size:56px; margin-bottom:16px; animation:float 3s ease-in-out infinite }
+    .lg-hl { font:900 32px/1.1 'Playfair Display',serif; color:white; text-align:center }
+    .lg-sub { font:400 14px/1.6 'Outfit',sans-serif; color:rgba(255,255,255,.6); text-align:center; margin-top:10px; max-width:260px }
+    .lg-ashki-wrap { margin-top:32px; text-align:center; position:relative }
+    .lg-ashki-speech { background:#F59E0B; color:#1A0A3A; font:700 11px/1 'Outfit',sans-serif; padding:6px 12px; border-radius:10px; margin-top:8px; display:inline-block }
 
     /* ──────────────────────────────────────
    WELCOME — COVER PAGE
@@ -2575,7 +2640,7 @@
             <div class="gp-fill" style="width:68%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="time-step">Step 7 of 10</div>
+            <div class="step-tag" id="time-step">Step 7 of 11</div>
             <div class="h1">When do you<br>study best?</div>
             <div class="sub" style="margin-top:4px">Reminders and sessions will match your real life.</div>
           </div>
@@ -2614,13 +2679,66 @@
                   hrs</span><span class="slider-mark">6 hrs</span></div>
             </div>
           </div>
-          <div class="foot"><button class="btn btn-p" onclick="goTo('s-q1')">One last thing →</button>
+          <div class="foot"><button class="btn btn-p" onclick="goTo('s-quiz-intro')">One last thing →</button>
             <div class="hint">4 quick questions to understand how you study now</div>
           </div>
         </div>
 
         <!-- ══════════════════════════════
-   S11–S14: STUDY HABITS QUIZ (4 questions)
+   S11: QUIZ INTRO
+══════════════════════════════ -->
+        <div class="screen" id="s-quiz-intro">
+          <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp" style="background:rgba(255,255,255,.1)"><div class="gp-fill" style="width:70%;background:var(--pl)"></div></div>
+          <div class="scr" style="padding:28px 24px;background:var(--ink)">
+            <div style="text-align:center;margin-bottom:24px">
+              <div style="font-size:40px;margin-bottom:12px">🧠</div>
+              <div style="font:900 22px/1.2 'Playfair Display',serif;color:white">How do you<br>actually study?</div>
+              <div style="font:400 13px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.55);margin-top:8px;max-width:280px;margin-inline:auto">Research shows most students use methods that <em style="color:#F59E0B">feel</em> productive but don't work. There are 4 common study types:</div>
+            </div>
+
+            <div class="qi-types">
+              <div class="qi-type">
+                <div class="qi-icon">🔥</div>
+                <div class="qi-info">
+                  <div class="qi-name">The Sprinter</div>
+                  <div class="qi-desc">Crams the night before. Intense but forgets fast.</div>
+                </div>
+              </div>
+              <div class="qi-type">
+                <div class="qi-icon">📖</div>
+                <div class="qi-info">
+                  <div class="qi-name">The Re-Reader</div>
+                  <div class="qi-desc">Highlights and re-reads. Feels good but low retention.</div>
+                </div>
+              </div>
+              <div class="qi-type">
+                <div class="qi-icon">🎯</div>
+                <div class="qi-info">
+                  <div class="qi-name">The Spacer</div>
+                  <div class="qi-desc">Plans ahead, tests themselves. The science-backed way.</div>
+                </div>
+              </div>
+              <div class="qi-type">
+                <div class="qi-icon">😬</div>
+                <div class="qi-info">
+                  <div class="qi-name">The Avoider</div>
+                  <div class="qi-desc">Overwhelmed, delays starting. Not lazy — just stuck.</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-top:20px">
+              <div style="font:500 12px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.4)">Answer 4 quick questions so Ayikho can personalise your experience</div>
+            </div>
+          </div>
+          <div class="foot" style="background:var(--ink);border-top:1px solid rgba(255,255,255,.06)">
+            <button class="btn btn-p" onclick="goTo('s-q1')">Find my study type →</button>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+   S12–S15: STUDY HABITS QUIZ (4 questions)
 ══════════════════════════════ -->
         <div class="screen" id="s-q1">
           <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
@@ -2630,7 +2748,7 @@
           </div>
           <div class="qhdr">
             <div class="q-nav">
-              <div class="q-back" onclick="goTo('s-studytime')">‹</div>
+              <div class="q-back" onclick="goTo('s-quiz-intro')">‹</div>
               <div class="q-pb">
                 <div class="q-pb-fill" style="width:25%"></div>
               </div>
@@ -2847,6 +2965,8 @@
               <div class="pr-ct" id="pc3">Study sessions are short and focused — 6 minutes is enough when it's done
                 right</div>
             </div>
+            <div class="pr-others-lbl">The other study types</div>
+            <div class="pr-others" id="pr-others"></div>
           </div>
           <div class="foot"><button class="btn btn-p" onclick="goTo('s-examdates')">Sounds good →</button></div>
         </div>
@@ -2860,7 +2980,7 @@
             <div class="gp-fill" style="width:92%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="exam-step">Step 9 of 10</div>
+            <div class="step-tag" id="exam-step">Step 10 of 11</div>
             <div class="h1">When are your<br>exams?</div>
             <div class="sub" style="margin-top:4px">Ayikho counts down and adjusts your daily target so you're ready in
               time.</div>
@@ -2880,7 +3000,7 @@
             <div class="gp-fill" style="width:96%"></div>
           </div>
           <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="dl-step">Step 10 of 10</div>
+            <div class="step-tag" id="dl-step">Step 11 of 11</div>
             <div class="h1">Download for<br>offline studying</div>
             <div class="sub" style="margin-top:4px">No WiFi later? Download your subjects now. Works on any data — even
               2G.</div>
@@ -2890,38 +3010,153 @@
             <div class="dl-wifi">Connected to WiFi now. <strong>Best time to download.</strong></div>
           </div>
           <div class="foot">
-            <button class="btn btn-p" onclick="goTo('s-done')">Download & Start studying →</button>
-            <button class="btn btn-ghost" onclick="goTo('s-done')">Skip — I'll download later</button>
+            <button class="btn btn-p" onclick="goTo('s-welcome-back')">Download & Start studying →</button>
+            <button class="btn btn-ghost" onclick="goTo('s-welcome-back')">Skip — I'll download later</button>
           </div>
         </div>
 
         <!-- ══════════════════════════════
-   S18: DONE
+   S19: WELCOME BACK
 ══════════════════════════════ -->
-        <div class="screen" id="s-done">
+        <div class="screen" id="s-welcome-back">
           <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="done-body">
-            <div class="done-icon">🎉</div>
-            <div class="done-hl">You're all set,<br>Zandile!</div>
-            <div class="done-sub">Your personalised study plan is ready. First lesson is waiting — it's only 6 minutes.
+          <div class="po-body" style="background:linear-gradient(165deg,#1A0A3A 0%,#4C1A99 40%,#7C3AED 70%,#9D5FFF 100%)">
+            <div class="po-confetti" id="po-confetti"></div>
+            <div class="po-ashki-wrap">
+              <img class="po-ashki" src="assets/ashki/ashki_master.png" alt="Ashki">
             </div>
-            <div class="done-stats">
-              <div class="done-stat">
-                <div class="done-stat-n" id="ds-subj">2</div>
-                <div class="done-stat-l">Subjects</div>
+            <div class="po-hl" style="color:white;font:900 28px/1.15 'Playfair Display',serif;text-align:center">Welcome to Ayikho,<br><span id="po-name">Zandile</span>!</div>
+            <div style="font:400 14px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.7);text-align:center;margin-top:10px;max-width:260px">Your personalised study plan is locked and loaded. Here's a quick tour of how everything works.</div>
+            <div class="po-foot">
+              <button class="btn btn-p" onclick="goTo('s-app-tour')" style="background:white;color:var(--p);box-shadow:0 4px 20px rgba(0,0,0,.2)">Show me around →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+   S20: APP TOUR
+══════════════════════════════ -->
+        <div class="screen" id="s-app-tour">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp"><div class="gp-fill" style="width:100%"></div></div>
+          <div class="shd" style="margin-bottom:8px">
+            <div class="step-tag">Quick tour</div>
+            <div class="h1">How Ayikho<br>works</div>
+          </div>
+          <div class="scr">
+            <div style="padding:0 24px 100px">
+              <div class="tour-card">
+                <div class="tour-num">1</div>
+                <div class="tour-info">
+                  <div class="tour-title">6-minute chapters</div>
+                  <div class="tour-desc">Each lesson is bite-sized. Learn a concept, see real SA examples, then test yourself — all in 6 minutes.</div>
+                </div>
               </div>
-              <div class="done-stat">
-                <div class="done-stat-n">75%</div>
-                <div class="done-stat-l">Your goal</div>
+              <div class="tour-card">
+                <div class="tour-num">2</div>
+                <div class="tour-info">
+                  <div class="tour-title">XP & streaks</div>
+                  <div class="tour-desc">Earn XP for every chapter you complete. Keep your streak alive by studying daily — Ashki will cheer you on.</div>
+                </div>
               </div>
-              <div class="done-stat">
-                <div class="done-stat-n">38</div>
-                <div class="done-stat-l">Modules</div>
+              <div class="tour-card">
+                <div class="tour-num">3</div>
+                <div class="tour-info">
+                  <div class="tour-title">Smart revision</div>
+                  <div class="tour-desc">Ayikho remembers what you struggle with and brings it back before you forget. Science calls it spaced repetition.</div>
+                </div>
+              </div>
+              <div class="tour-card">
+                <div class="tour-num">4</div>
+                <div class="tour-info">
+                  <div class="tour-title">Capstone exams</div>
+                  <div class="tour-desc">When you're ready, take a 60-minute mock exam that mirrors the real N4 paper. No surprises on exam day.</div>
+                </div>
+              </div>
+              <div class="tour-card">
+                <div class="tour-num" style="background:linear-gradient(135deg,#F59E0B,#F97316);color:white">★</div>
+                <div class="tour-info">
+                  <div class="tour-title">Meet Ashki</div>
+                  <div class="tour-desc">Your study buddy who celebrates your wins, nudges you when you slip, and makes studying feel less lonely.</div>
+                </div>
               </div>
             </div>
-            <div class="done-foot">
-              <button class="btn btn-p" onclick="startStudying()" style="border-radius:14px">Start studying now
-                →</button>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" onclick="goTo('s-your-plan')">Got it →</button>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+   S21: YOUR PLAN
+══════════════════════════════ -->
+        <div class="screen" id="s-your-plan">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp"><div class="gp-fill" style="width:100%"></div></div>
+          <div class="shd" style="margin-bottom:8px">
+            <div class="step-tag">Your plan</div>
+            <div class="h1">Here's what<br>we've built</div>
+            <div class="sub" style="margin-top:4px">Based on everything you told us</div>
+          </div>
+          <div class="scr">
+            <div style="padding:0 24px 100px">
+              <div class="plan-stats">
+                <div class="plan-stat">
+                  <div class="plan-stat-n" id="ps-subj">2</div>
+                  <div class="plan-stat-l">Subjects</div>
+                </div>
+                <div class="plan-stat">
+                  <div class="plan-stat-n" id="ps-goal">75%</div>
+                  <div class="plan-stat-l">Target mark</div>
+                </div>
+                <div class="plan-stat">
+                  <div class="plan-stat-n" id="ps-mods">38</div>
+                  <div class="plan-stat-l">Chapters</div>
+                </div>
+              </div>
+
+              <div class="plan-section-lbl">Your subjects</div>
+              <div class="plan-subjects" id="plan-subjects"></div>
+
+              <div class="plan-section-lbl" style="margin-top:20px">Your study profile</div>
+              <div class="plan-profile-card" id="plan-profile">
+                <div class="plan-profile-icon" id="plan-pr-icon">🔥</div>
+                <div class="plan-profile-info">
+                  <div class="plan-profile-name" id="plan-pr-name">Last-Minute Sprinter</div>
+                  <div class="plan-profile-desc">Ayikho will adapt to help you build better habits</div>
+                </div>
+              </div>
+
+              <div class="plan-section-lbl" style="margin-top:20px">Today's first lesson</div>
+              <div class="plan-first-lesson" id="plan-first-lesson">
+                <div class="plan-fl-badge">START HERE</div>
+                <div class="plan-fl-name" id="plan-fl-name">Accounting Concepts & Principles</div>
+                <div class="plan-fl-meta">6 min · Chapter 1 · FA N4</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" onclick="goTo('s-lets-go')">Looks great →</button>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════
+   S22: LET'S GO
+══════════════════════════════ -->
+        <div class="screen" id="s-lets-go">
+          <div class="sb sb-clear"><span class="sb-t" style="color:white">21:07</span><span class="sb-i" style="color:white">4G 🔋</span></div>
+          <div class="lg-body">
+            <div class="lg-orb lg-orb1"></div>
+            <div class="lg-orb lg-orb2"></div>
+            <div class="lg-emoji">🚀</div>
+            <div class="lg-hl">Let's do this.</div>
+            <div class="lg-sub">Your first 6-minute lesson is ready.<br>One chapter at a time — you've got this.</div>
+            <div class="lg-ashki-wrap">
+              <img class="lg-ashki" src="assets/ashki/ashki_master.png" alt="Ashki" style="width:80px;height:80px;object-fit:contain">
+              <div class="lg-ashki-speech">I believe in you! 💪</div>
+            </div>
+            <div class="po-foot">
+              <button class="btn btn-p" onclick="startStudying()" style="font-size:16px;padding:14px 32px;background:white;color:var(--p);box-shadow:0 4px 20px rgba(0,0,0,.3)">Start my first lesson →</button>
             </div>
           </div>
         </div>
@@ -3345,8 +3580,9 @@
       's-welcome', 's-signup', 's-name', 's-college',
       's-programme', 's-subjects',
       's-goal', 's-studytime',
-      's-q1', 's-q2', 's-q3', 's-q4',
-      's-profile', 's-examdates', 's-download', 's-done',
+      's-quiz-intro', 's-q1', 's-q2', 's-q3', 's-q4',
+      's-profile', 's-examdates', 's-download',
+      's-welcome-back', 's-app-tour', 's-your-plan', 's-lets-go',
       's-login-phone', 's-login-password'
     ];
 
@@ -3390,6 +3626,7 @@
       { id: 's-subjects', label: 'Subject picker' },
       { id: 's-goal', label: 'Goal mark' },
       { id: 's-studytime', label: 'Study time' },
+      { id: 's-quiz-intro', label: 'Study types intro' },
       { id: 's-q1', label: 'Habits — Q1' },
       { id: 's-q2', label: 'Habits — Q2' },
       { id: 's-q3', label: 'Habits — Q3' },
@@ -3397,7 +3634,10 @@
       { id: 's-profile', label: 'Profile reveal' },
       { id: 's-examdates', label: 'Exam dates' },
       { id: 's-download', label: 'Download' },
-      { id: 's-done', label: 'All done!' },
+      { id: 's-welcome-back', label: '🎉 Welcome!' },
+      { id: 's-app-tour', label: 'App tour' },
+      { id: 's-your-plan', label: 'Your plan' },
+      { id: 's-lets-go', label: 'Let\'s go!' },
       { id: 's-login-phone', label: 'Login Phone' },
       { id: 's-login-password', label: 'Login Password' },
     ];
@@ -3747,6 +3987,23 @@
         buildExamDates();
         buildDownloads();
 
+        // Show other study types
+        const othersContainer = document.getElementById('pr-others');
+        othersContainer.innerHTML = '';
+        Object.keys(PROFILES).forEach(key => {
+          if (key === pKey) return;
+          const other = PROFILES[key];
+          const card = document.createElement('div');
+          card.className = 'pr-other';
+          card.innerHTML = `
+            <div class="pr-other-icon">${other.icon}</div>
+            <div class="pr-other-info">
+              <div class="pr-other-name">${other.badge}</div>
+              <div class="pr-other-desc">${other.name}</div>
+            </div>`;
+          othersContainer.appendChild(card);
+        });
+
         // Reset loader state
         const loader = document.getElementById('pr-loader');
         const fill = document.getElementById('pr-fill');
@@ -3774,6 +4031,9 @@
 
         // Fade out loader after 3.2s → reveal profile
         setTimeout(() => loader.classList.add('hidden'), 3200);
+      }
+      if (id === 's-welcome-back' || id === 's-your-plan') {
+        buildYourPlan();
       }
       origGoTo(id);
     };
@@ -3841,6 +4101,62 @@
       });
       // update done screen stat
       document.getElementById('ds-subj').textContent = selectedSubjs.length;
+    }
+
+    // ═══════════════════════════════════════════════
+    // POPULATE YOUR-PLAN SCREEN
+    // ═══════════════════════════════════════════════
+    function buildYourPlan() {
+      if (!selectedProg || selectedSubjs.length === 0) {
+        selectProg('business');
+        selectedSubjs = ['ebm', 'fa'];
+      }
+      const prog = PROGRAMMES[selectedProg];
+
+      // Stats
+      let totalMods = 0;
+      selectedSubjs.forEach(key => { totalMods += prog.subjects[key].modules.length; });
+      const psSubj = document.getElementById('ps-subj');
+      const psMods = document.getElementById('ps-mods');
+      if (psSubj) psSubj.textContent = selectedSubjs.length;
+      if (psMods) psMods.textContent = totalMods;
+
+      // Subjects list
+      const container = document.getElementById('plan-subjects');
+      if (!container) return;
+      container.innerHTML = '';
+      selectedSubjs.forEach(key => {
+        const subj = prog.subjects[key];
+        const el = document.createElement('div');
+        el.className = 'plan-subj';
+        el.innerHTML = `
+          <div class="plan-subj-emoji">${subj.emoji}</div>
+          <div class="plan-subj-info">
+            <div class="plan-subj-name">${subj.name}</div>
+            <div class="plan-subj-meta">${subj.modules.length} chapters · ${subj.short}</div>
+          </div>`;
+        container.appendChild(el);
+      });
+
+      // Study profile
+      const pKey = deriveProfile();
+      const p = PROFILES[pKey];
+      const prIcon = document.getElementById('plan-pr-icon');
+      const prName = document.getElementById('plan-pr-name');
+      if (prIcon) prIcon.textContent = p.icon;
+      if (prName) prName.textContent = p.badge;
+
+      // First lesson
+      const firstSubj = prog.subjects[selectedSubjs[0]];
+      const flName = document.getElementById('plan-fl-name');
+      if (flName && firstSubj) flName.textContent = firstSubj.modules[0].name;
+
+      // Welcome name
+      const nameEl = document.getElementById('po-name');
+      const nameInput = document.querySelector('#name-in');
+      if (nameEl && nameInput && nameInput.value) {
+        nameEl.textContent = nameInput.value.split(' ')[0];
+      }
     }
 
     // ═══════════════════════════════════════════════
