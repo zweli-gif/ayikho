@@ -218,11 +218,97 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 
 .xp-badge{display:flex;align-items:center;gap:5px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);padding:6px 12px;border-radius:100px;font:700 12px/1 'JetBrains Mono',monospace;color:#A78BFA}
 
-.hero-progress{position:relative;z-index:1}
-.hero-prog-label{display:flex;justify-content:space-between;font:500 11px/1 'Outfit',sans-serif;color:rgba(255,255,255,.4);margin-bottom:6px}
-.hero-prog-label strong{color:#22C55E;font-weight:700}
-.hero-prog-track{height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;box-shadow:inset 0 0 4px rgba(255,255,255,.05)}
-.hero-prog-fill{height:100%;width:20%;background:linear-gradient(90deg,#22C55E,#0284C7);border-radius:100px;transition:width .8s cubic-bezier(.34, 1.56, .64, 1);box-shadow:0 0 12px rgba(34,197,94,.5);will-change:width}
+/* ═══════════════════════════════════
+   DASHBOARD STATS ROW
+═══════════════════════════════════ */
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;position:relative;z-index:1}
+.dash-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .28s cubic-bezier(.34, 1.56, .64, 1)}
+.dash-stat:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.dash-stat:active{transform:scale(.95)}
+.ds-icon{font-size:18px;margin-bottom:4px}
+.ds-fire{animation:fireFlicker 1.5s ease-in-out infinite}
+@keyframes fireFlicker{0%,100%{transform:scale(1) rotate(0deg)}25%{transform:scale(1.15) rotate(-3deg)}50%{transform:scale(1.05) rotate(2deg)}75%{transform:scale(1.12) rotate(-1deg)}}
+.ds-value{font:900 18px/1 'Playfair Display',serif;color:white}
+.ds-label{font:500 8px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+#ds-streak .ds-value{color:#F59E0B}
+#ds-xp .ds-value{color:#A78BFA}
+#ds-mark .ds-value{color:#22C55E}
+#ds-exam .ds-value{color:#38BDF8}
+
+/* ═══════════════════════════════════
+   DASHBOARD CARDS (shared)
+═══════════════════════════════════ */
+.dash-card{margin:10px 16px 0;padding:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:20px;transition:all .28s cubic-bezier(.34, 1.56, .64, 1)}
+.dash-card:hover{border-color:rgba(255,255,255,.1)}
+.dc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.dc-title{font:700 13px/1 'Outfit',sans-serif;color:white;display:flex;align-items:center;gap:6px}
+.dc-emoji{font-size:16px}
+.dc-badge{font:700 9px/1 'JetBrains Mono',monospace;padding:4px 8px;border-radius:100px;letter-spacing:.04em}
+
+/* ═══════════════════════════════════
+   STREAK CARD
+═══════════════════════════════════ */
+.streak-badge-pill{background:rgba(245,158,11,.12);color:#F59E0B;border:1px solid rgba(245,158,11,.2)}
+.streak-week{display:flex;justify-content:space-between;gap:4px;margin-bottom:16px}
+.streak-day{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.sd-dot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.08);transition:all .3s cubic-bezier(.34, 1.56, .64, 1)}
+.streak-day.done .sd-dot{background:linear-gradient(135deg,#F59E0B,#F97316);border-color:rgba(245,158,11,.4);box-shadow:0 0 12px rgba(245,158,11,.3)}
+.streak-day.today .sd-dot{background:rgba(245,158,11,.15);border:2px dashed #F59E0B;animation:todayPulse 2s ease-in-out infinite}
+@keyframes todayPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.3)}50%{box-shadow:0 0 0 6px rgba(245,158,11,.1)}}
+.sd-lbl{font:600 9px/1 'Outfit',sans-serif;color:rgba(255,255,255,.3)}
+.streak-day.done .sd-lbl{color:#F59E0B}
+.streak-day.today .sd-lbl{color:#F59E0B;font-weight:700}
+
+.xp-level-row{display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.xp-level-info{flex-shrink:0}
+.xp-level-badge{font:800 11px/1 'Outfit',sans-serif;color:#A78BFA;background:rgba(124,58,237,.15);padding:4px 10px;border-radius:8px;display:inline-block;margin-bottom:4px}
+.xp-level-text{font:500 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.35)}
+.xp-bar-wrap{flex:1}
+.xp-bar-track{height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,#7C3AED,#A78BFA);border-radius:100px;transition:width .8s cubic-bezier(.34, 1.56, .64, 1);box-shadow:0 0 10px rgba(124,58,237,.4)}
+
+/* ═══════════════════════════════════
+   EXAM COUNTDOWN CARD
+═══════════════════════════════════ */
+.exam-rows{display:flex;flex-direction:column;gap:10px}
+.exam-row-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:14px;transition:all .28s cubic-bezier(.34, 1.56, .64, 1)}
+.exam-row-item:hover{background:rgba(255,255,255,.06);transform:translateX(4px)}
+.er-color{width:4px;height:32px;border-radius:100px;flex-shrink:0}
+.er-info{flex:1;min-width:0}
+.er-name{font:600 12px/1 'Outfit',sans-serif;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.er-date{font:400 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.3);margin-top:3px}
+.er-days{text-align:right;margin-right:4px}
+.er-days-n{font:900 20px/1 'Playfair Display',serif;color:white}
+.er-days-l{font:500 8px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em}
+.er-ring{flex-shrink:0}
+.er-ring svg{display:block}
+
+/* ═══════════════════════════════════
+   MARKS PROGRESS CARD
+═══════════════════════════════════ */
+.marks-target-badge{background:rgba(34,197,94,.12);color:#22C55E;border:1px solid rgba(34,197,94,.2)}
+.marks-subjects{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.mark-subj{display:flex;flex-direction:column;gap:6px}
+.ms-info{display:flex;align-items:baseline;justify-content:space-between}
+.ms-name{font:600 12px/1 'Outfit',sans-serif;color:white}
+.ms-detail{font:500 11px/1 'JetBrains Mono',monospace}
+.ms-current{color:white;font-weight:700}
+.ms-arrow{color:rgba(255,255,255,.2);margin:0 2px}
+.ms-target{color:#22C55E}
+.ms-bar-wrap{position:relative}
+.ms-bar-track{height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:visible;position:relative}
+.ms-bar-fill{height:100%;border-radius:100px;transition:width .8s cubic-bezier(.34, 1.56, .64, 1);box-shadow:0 0 8px rgba(2,132,199,.3)}
+.ms-bar-target{position:absolute;top:-3px;width:2px;height:12px;background:#22C55E;border-radius:100px;transform:translateX(-50%);box-shadow:0 0 6px rgba(34,197,94,.5)}
+
+/* Marks Trend Mini Chart */
+.marks-trend{padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.mt-label{font:500 9px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.mt-chart{display:flex;align-items:flex-end;gap:6px;height:60px}
+.mt-bar{flex:1;background:linear-gradient(to top,rgba(34,197,94,.15),rgba(34,197,94,.3));border-radius:4px 4px 0 0;position:relative;transition:height .6s cubic-bezier(.34, 1.56, .64, 1);min-height:8px}
+.mt-bar.highlight{background:linear-gradient(to top,rgba(34,197,94,.3),rgba(34,197,94,.6))}
+.mt-bar.highlight::after{content:'';position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#22C55E;border-radius:50%;box-shadow:0 0 8px rgba(34,197,94,.6)}
+.mt-val{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font:700 8px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);white-space:nowrap}
+.mt-bar.highlight .mt-val{color:#22C55E}
 
 /* Today's lesson section */
 .today-section{padding:20px 16px 0}
@@ -444,11 +530,12 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
       <button class="subject-pill ebm-subject" data-subject="ebm" onclick="switchSubject('ebm')">🚀 Entrepreneurship</button>
     </div>
 
-    <!-- Hero Banner -->
+    <!-- Dashboard Hero -->
     <div class="hero-banner" id="hero-banner">
+      <!-- Compact greeting row -->
       <div class="hero-top">
         <div>
-          <div class="hero-greeting">Sawubona</div>
+          <div class="hero-greeting" id="hero-greeting">Sawubona</div>
           <div class="hero-name">Zandile</div>
         </div>
         <div class="ashki-container">
@@ -459,13 +546,153 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 
       <div class="hero-motivator" id="hero-motivator">Ready to start? Just 5 minutes today.</div>
 
-      <div class="hero-progress">
-        <div class="hero-prog-label">
-          <span>Your progress</span>
-          <strong>2 of 10 done</strong>
+      <!-- 4-stat quick glance row -->
+      <div class="dash-stats">
+        <div class="dash-stat" id="ds-streak">
+          <div class="ds-icon ds-fire">🔥</div>
+          <div class="ds-value" id="ds-streak-val">7</div>
+          <div class="ds-label">Day streak</div>
         </div>
-        <div class="hero-prog-track">
-          <div class="hero-prog-fill"></div>
+        <div class="dash-stat" id="ds-xp">
+          <div class="ds-icon ds-xp-icon">⚡</div>
+          <div class="ds-value" id="ds-xp-val">1,240</div>
+          <div class="ds-label">Total XP</div>
+        </div>
+        <div class="dash-stat" id="ds-mark">
+          <div class="ds-icon ds-mark-icon">📊</div>
+          <div class="ds-value" id="ds-mark-val">68%</div>
+          <div class="ds-label">Avg mark</div>
+        </div>
+        <div class="dash-stat" id="ds-exam">
+          <div class="ds-icon ds-exam-icon">📅</div>
+          <div class="ds-value" id="ds-exam-val">47</div>
+          <div class="ds-label">Days to exam</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Streak & XP Detail Card -->
+    <div class="dash-card streak-card">
+      <div class="dc-header">
+        <div class="dc-title">
+          <span class="dc-emoji">🔥</span>
+          <span>7-day streak</span>
+        </div>
+        <div class="dc-badge streak-badge-pill">Keep it alive!</div>
+      </div>
+      <div class="streak-week" id="streak-week">
+        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">M</div></div>
+        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">T</div></div>
+        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">W</div></div>
+        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">T</div></div>
+        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">F</div></div>
+        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">S</div></div>
+        <div class="streak-day today"><div class="sd-dot"></div><div class="sd-lbl">S</div></div>
+      </div>
+      <div class="xp-level-row">
+        <div class="xp-level-info">
+          <div class="xp-level-badge">Level 4</div>
+          <div class="xp-level-text">260 XP to Level 5</div>
+        </div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar-track">
+            <div class="xp-bar-fill" style="width:74%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exam Countdown Card -->
+    <div class="dash-card exam-card">
+      <div class="dc-header">
+        <div class="dc-title">
+          <span class="dc-emoji">📅</span>
+          <span>Exam countdown</span>
+        </div>
+      </div>
+      <div class="exam-rows" id="exam-rows">
+        <div class="exam-row-item">
+          <div class="er-color" style="background:var(--fa)"></div>
+          <div class="er-info">
+            <div class="er-name">Financial Accounting</div>
+            <div class="er-date">10 Nov 2025</div>
+          </div>
+          <div class="er-days">
+            <div class="er-days-n">47</div>
+            <div class="er-days-l">days</div>
+          </div>
+          <div class="er-ring">
+            <svg width="36" height="36" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="3"/>
+              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--fa)" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="56.5" transform="rotate(-90 18 18)"/>
+            </svg>
+          </div>
+        </div>
+        <div class="exam-row-item">
+          <div class="er-color" style="background:var(--mc)"></div>
+          <div class="er-info">
+            <div class="er-name">Management Comms</div>
+            <div class="er-date">12 Nov 2025</div>
+          </div>
+          <div class="er-days">
+            <div class="er-days-n">49</div>
+            <div class="er-days-l">days</div>
+          </div>
+          <div class="er-ring">
+            <svg width="36" height="36" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="3"/>
+              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--mc)" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="54.6" transform="rotate(-90 18 18)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marks Progress Card -->
+    <div class="dash-card marks-card">
+      <div class="dc-header">
+        <div class="dc-title">
+          <span class="dc-emoji">📊</span>
+          <span>Your marks</span>
+        </div>
+        <div class="dc-badge marks-target-badge">Target: 75%</div>
+      </div>
+      <div class="marks-subjects" id="marks-subjects">
+        <div class="mark-subj">
+          <div class="ms-info">
+            <div class="ms-name">Financial Accounting</div>
+            <div class="ms-detail"><span class="ms-current">68%</span> <span class="ms-arrow">→</span> <span class="ms-target">75%</span></div>
+          </div>
+          <div class="ms-bar-wrap">
+            <div class="ms-bar-track">
+              <div class="ms-bar-fill" style="width:68%;background:var(--fa)"></div>
+              <div class="ms-bar-target" style="left:75%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="mark-subj">
+          <div class="ms-info">
+            <div class="ms-name">Management Comms</div>
+            <div class="ms-detail"><span class="ms-current">72%</span> <span class="ms-arrow">→</span> <span class="ms-target">75%</span></div>
+          </div>
+          <div class="ms-bar-wrap">
+            <div class="ms-bar-track">
+              <div class="ms-bar-fill" style="width:72%;background:var(--mc)"></div>
+              <div class="ms-bar-target" style="left:75%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="marks-trend">
+        <div class="mt-label">Last 7 sessions</div>
+        <div class="mt-chart" id="mt-chart">
+          <div class="mt-bar" style="height:45%"><div class="mt-val">45</div></div>
+          <div class="mt-bar" style="height:52%"><div class="mt-val">52</div></div>
+          <div class="mt-bar" style="height:60%"><div class="mt-val">60</div></div>
+          <div class="mt-bar" style="height:55%"><div class="mt-val">55</div></div>
+          <div class="mt-bar" style="height:68%"><div class="mt-val">68</div></div>
+          <div class="mt-bar" style="height:72%"><div class="mt-val">72</div></div>
+          <div class="mt-bar highlight" style="height:78%"><div class="mt-val">78</div></div>
         </div>
       </div>
     </div>
