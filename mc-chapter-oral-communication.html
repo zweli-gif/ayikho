@@ -1,320 +1,661 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayikho - Module 5: Oral Communication</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --p: #0D9488; --pl: #14B8A6; --pd: #0F766E; --pxs: #F0FDF9; --psm: #CCFBF1; --fa: #F97316; --fa-l: #FB923C; --fa-d: #EA580C; --fa-xs: #FFF7ED; --fa-sm: #FFEDD5; --gold: #FBBF24; --green: #22C55E; --green-xs: #F0FDF4; --rose: #F43F5E; --ink: #0A1628; --mut: #475569; --dim: #94A3B8; --bord: #CFFAFE; --surf: #F0FDF9; --w: #FFFFFF; --bg-dark: #050F1B; }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); overflow: hidden; }
-        .phone-frame { width: 375px; height: 812px; margin: 20px auto; border: 12px solid var(--bg-dark); border-radius: 50px; overflow: hidden; background: #05090F; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; }
-        .status-bar { height: 48px; background: var(--ink); color: var(--w); display: flex; justify-content: space-between; align-items: center; padding: 0 16px; font-size: 14px; font-family: 'JetBrains Mono', monospace; }
-        .progress-strip { height: 3px; background: var(--bord); overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--fa); width: 20%; transition: width 0.3s ease; }
-        .screen-container { flex: 1; overflow: hidden; position: relative; }
-        .screen { width: 100%; height: 100%; display: flex; flex-direction: column; position: absolute; left: 0; top: 0; opacity: 0; transform: translateX(100px); transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
-        .screen.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-        .screen.prev { transform: translateX(-100px); }
-        .header { background: linear-gradient(135deg, var(--p) 0%, var(--pl) 100%); color: var(--w); padding: 24px 20px; flex-shrink: 0; }
-        .header h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-        .header p { font-size: 13px; opacity: 0.9; }
-        .sidebar { position: fixed; left: 0; top: 0; width: 60px; height: 812px; background: var(--ink); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px 0; z-index: 1000; border-radius: 0 50px 50px 0; }
-        .sidebar-nav { display: flex; flex-direction: column; gap: 12px; margin-top: 60px; }
-        .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); cursor: pointer; }
-        .nav-dot.active { background: var(--fa); width: 24px; border-radius: 4px; }
-        .body { flex: 1; overflow-y: auto; padding: 20px; background: var(--w); color: var(--ink); }
-        h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 16px; }
-        h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin: 20px 0 12px 0; }
-        p { line-height: 1.6; color: var(--mut); margin-bottom: 12px; font-size: 15px; }
-        .callout { background: var(--fa-xs); border-left: 4px solid var(--fa); padding: 16px; margin: 20px 0; border-radius: 8px; }
-        .callout.exam { background: var(--pxs); border-left-color: var(--p); }
-        .callout h4 { font-weight: 600; margin-bottom: 8px; font-size: 14px; }
-        .callout p { font-size: 14px; margin-bottom: 0; }
-        .card { background: var(--surf); border: 1px solid var(--bord); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-        button { background: var(--p); color: var(--w); border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: 600; }
-        .btn-secondary { background: var(--fa); }
-        .example-box { background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%); border-left: 4px solid var(--fa); padding: 16px; border-radius: 8px; margin: 16px 0; }
-        .example-title { font-weight: 700; color: var(--fa-d); margin-bottom: 12px; font-size: 14px; }
-        .example-step { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(249, 115, 22, 0.2); font-size: 13px; }
-        .example-step:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .quiz-option { padding: 12px 16px; background: var(--surf); border: 2px solid var(--bord); border-radius: 8px; cursor: pointer; font-size: 14px; margin-bottom: 8px; }
-        .quiz-option:hover { border-color: var(--p); background: var(--psm); }
-        .quiz-option.correct { background: var(--green-xs); border-color: var(--green); }
-        .quiz-option.incorrect { background: rgba(244, 63, 94, 0.1); border-color: var(--rose); }
-        .nav-buttons { display: flex; gap: 12px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--bord); }
-        .nav-buttons button { flex: 1; }
-        .body::-webkit-scrollbar { width: 6px; }
-        .body::-webkit-scrollbar-thumb { background: var(--bord); }
-    </style>
-    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
-    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · MC N4 · Oral Communication</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+<script src="student-data.js" onerror="console.log('ok')"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
+  --mc:#0D9488;--mc-l:#14B8A6;--mc-d:#0F766E;--mc-xs:#F0FDF9;--mc-sm:#CCFBF1;
+  --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
+  --ink:#0A1628;--mut:#334155;--dim:#64748B;
+  --bord:#CFFAFE;--surf:#F0FDF9;--w:#FFFFFF;
+}
+html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden;overscroll-behavior:none}
+.shell{display:flex;gap:20px;align-items:flex-start}
+.sidebar{display:flex;flex-direction:column;gap:3px;padding-top:80px}
+@media(max-width:900px){.sidebar{display:none}}
+.si{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.18);cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:7px;padding:3px 0;white-space:nowrap}
+.si::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+.si.active{color:var(--mc-l)}
+.phone{width:375px;height:812px;background:#05090F;border-radius:50px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(13,148,136,.08)}
+.stack{position:absolute;inset:0;overflow:hidden;background:#05090F}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff;transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);will-change:transform}
+.screen.active{transform:translateX(0)}
+.screen.exit{transform:translateX(-24%)}
+.sb{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
+.sb-t{font-weight:700;font-size:15px}
+.sb-i{font-size:11px;opacity:.8}
+.sb-mc{background:var(--mc);color:white}
+.sb-ink{background:var(--ink);color:white}
+.sb-w{background:var(--w);color:var(--ink)}
+.sb-win{background:var(--gold);color:var(--ink)}
+.gp{height:3px;background:var(--mc-sm);flex-shrink:0}
+.gp-fill{height:100%;background:var(--mc);transition:width .4s ease;border-radius:0 2px 2px 0}
+.scr{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scr::-webkit-scrollbar{display:none}
+.foot{padding:14px 22px 28px;flex-shrink:0}
+.btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-mc{background:var(--mc);color:white}
+.btn-mc:hover{background:var(--mc-l);transform:translateY(-1px);box-shadow:0 6px 24px rgba(13,148,136,.35)}
+.btn-ghost{background:var(--surf);color:var(--mut);margin-top:8px;font-size:13px;padding:12px}
+.btn-p{background:var(--p);color:white}
+.nav-hdr{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--bord);flex-shrink:0;background:white}
+.nav-back{width:36px;height:36px;border-radius:10px;background:var(--surf);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--mut);transition:all .2s;flex-shrink:0}
+.nav-back:hover{background:var(--mc-sm);color:var(--mc)}
+.nav-hdr-info{flex:1;min-width:0}
+.nav-hdr-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.nav-hdr-title{font-weight:700;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-hdr-right{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);flex-shrink:0}
+/* CHAPTER INTRO */
+.ci-hero{background:var(--mc);padding:28px 24px 32px;flex-shrink:0;position:relative;overflow:hidden}
+.ci-orb{position:absolute;border-radius:50%;background:rgba(255,255,255,.07)}
+.ci-orb1{width:300px;height:300px;top:-100px;right:-80px}
+.ci-orb2{width:180px;height:180px;bottom:-60px;left:-40px}
+.ci-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:16px}
+.ci-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:4px}
+.ci-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:white;line-height:1.1;margin-bottom:14px}
+.ci-meta-row{display:flex;gap:16px}
+.ci-meta{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,.7)}
+.ci-tldr{margin:20px 22px;background:var(--mc-sm);border-left:3px solid var(--mc);border-radius:0 12px 12px 0;padding:14px 16px}
+.ci-tldr-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--mc);margin-bottom:6px}
+.ci-tldr-text{font-size:14px;color:var(--ink);line-height:1.6;font-weight:500}
+.ci-what{padding:0 22px 8px}
+.ci-what-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.ci-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bord)}
+.ci-item:last-child{border-bottom:none}
+.ci-item-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0}
+.ci-item-info{flex:1}
+.ci-item-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ci-item-desc{font-size:11px;color:var(--mut)}
+.ci-item-badge{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 8px;border-radius:100px;flex-shrink:0}
+.cib-new{background:var(--mc-sm);color:var(--mc)}
+.cib-int{background:var(--pxs);color:var(--p)}
+.cib-eg{background:rgba(34,197,94,.1);color:var(--green)}
+/* VIDEO SCREEN */
+.vid-container{flex:1;display:flex;flex-direction:column;background:var(--ink)}
+.vid-player-wrap{position:relative;background:#000;flex-shrink:0}
+.vid-thumb{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#042f2e,#134e4a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.vid-thumb-bg{position:absolute;inset:0;background:radial-gradient(circle at 60% 40%,rgba(13,148,136,.3),transparent 60%)}
+.vid-thumb-text{position:absolute;bottom:16px;left:16px;right:16px}
+.vid-thumb-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white;margin-bottom:4px}
+.vid-thumb-sub{font-size:11px;color:rgba(255,255,255,.6)}
+.vid-play-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s;z-index:2;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.vid-play-btn:hover{transform:scale(1.08)}
+.vid-play-icon{font-size:26px;margin-left:4px}
+.vid-synth-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.7);letter-spacing:.06em}
+.vid-progress{height:3px;background:rgba(255,255,255,.15);cursor:pointer}
+.vid-progress-fill{height:100%;width:0%;background:var(--mc-l);transition:width .3s linear}
+.vid-controls{display:flex;align-items:center;gap:14px;padding:10px 16px}
+.vc-btn{font-size:18px;cursor:pointer;opacity:.8;background:none;border:none;color:white}
+.vc-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);flex:1}
+.vc-cc{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:2px 6px;cursor:pointer}
+.vid-chapters{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06)}
+.vc-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.vc-chapter{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .2s;margin-bottom:4px}
+.vc-chapter.active{background:rgba(13,148,136,.15);border-left:2px solid var(--mc-l)}
+.vc-ch-time{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mc-l);min-width:36px}
+.vc-ch-title{font-size:12px;color:rgba(255,255,255,.75)}
+.vc-ch-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.vc-chapter.active .vc-ch-dot{background:var(--mc-l)}
+.vid-skip{padding:0 16px 20px}
+.vid-skip-btn{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-radius:10px;padding:11px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+/* LESSON BODY */
+.lesson-body{padding:18px 22px;display:flex;flex-direction:column;gap:16px;background:white;flex:1;overflow-y:auto}
+.lesson-body::-webkit-scrollbar{display:none}
+.ls-section-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--mc);padding-bottom:6px;border-bottom:1px solid var(--mc-sm)}
+.ls-h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink);line-height:1.15}
+.ls-p{font-size:14px;color:var(--mut);line-height:1.7}
+.ls-p strong{color:var(--ink);font-weight:600}
+/* Term rows */
+.term-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bord)}
+.term-row:last-child{border-bottom:none}
+.term-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.term-word{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px}
+.term-def{font-size:12px;color:var(--mut);line-height:1.5}
+.term-eg{font-size:11px;color:var(--mc);margin-top:3px;font-style:italic}
+/* SA example block */
+.sa-example{background:linear-gradient(135deg,var(--mc-sm),var(--mc-xs));border-radius:14px;padding:16px;border:1px solid rgba(13,148,136,.15)}
+.sa-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--mc);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sa-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:8px}
+.sa-p{font-size:13px;color:var(--mut);line-height:1.6}
+.sa-p strong{color:var(--ink);font-weight:600}
+/* Model/diagram display */
+.model-display{background:var(--ink);border-radius:16px;padding:20px;text-align:center}
+.model-step{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:4px}
+.ms-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 12px;font-size:12px;color:white;font-weight:600;cursor:pointer;transition:all .2s;min-width:80px}
+.ms-box:hover,.ms-box.active{background:var(--mc);border-color:var(--mc-l)}
+.ms-arrow{color:rgba(255,255,255,.3);font-size:16px}
+.ms-noise{margin-top:10px;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);border-radius:10px;padding:8px 12px;font-size:11px;color:rgba(244,63,94,.8);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.ms-feedback{margin-top:6px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:8px 12px;font-size:11px;color:rgba(34,197,94,.8);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+/* Memory aid */
+.memory-aid{background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border-radius:12px;padding:14px 16px;border:1px solid rgba(245,158,11,.2)}
+.ma-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.ma-text{font-size:13px;color:var(--ink);line-height:1.6;font-weight:500}
+/* Worked example */
+.we-hdr{background:linear-gradient(135deg,var(--mc-d),var(--mc));padding:18px 22px 22px;flex-shrink:0}
+.we-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px}
+.we-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;line-height:1.15;margin-bottom:6px}
+.we-context{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.we-body{flex:1;overflow-y:auto;padding:18px 22px}
+.we-body::-webkit-scrollbar{display:none}
+.we-step{margin-bottom:20px}
+.we-step-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.we-step-num{width:32px;height:32px;border-radius:50%;background:var(--mc);color:white;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;flex-shrink:0}
+.we-step-title{font-weight:700;font-size:14px;color:var(--ink)}
+.we-block{background:var(--surf);border-radius:12px;padding:13px 15px;margin-bottom:10px;border:1px solid var(--bord)}
+.we-block-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mc);margin-bottom:6px}
+.we-block-text{font-size:13px;color:var(--ink);line-height:1.6}
+.we-block-text strong{color:var(--mc-d)}
+.we-wrong{background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.15);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--rose)}
+.we-right{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.15);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--green)}
+/* QUIZ */
+.quiz-hdr{background:var(--mc-d);padding:14px 22px 20px;flex-shrink:0}
+.quiz-progress-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.quiz-pb{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden}
+.quiz-pb-fill{height:100%;background:var(--mc-l);border-radius:100px;transition:width .4s ease}
+.quiz-cnt{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.35)}
+.quiz-q-text{font-size:16px;font-weight:700;color:white;line-height:1.45}
+.quiz-scenario{font-size:12px;color:rgba(255,255,255,.5);margin-top:5px;line-height:1.5;font-style:italic}
+.quiz-opts{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:9px;overflow-y:auto;background:white}
+.quiz-opts::-webkit-scrollbar{display:none}
+.q-opt{border:2px solid var(--bord);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all .2s;background:var(--w);user-select:none}
+.q-opt:hover{border-color:var(--mc);background:var(--mc-xs)}
+.q-opt.correct{border-color:var(--green);background:var(--green-xs)}
+.q-opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.05)}
+.q-opt.dimmed{opacity:.45}
+.q-letter{width:30px;height:30px;border-radius:50%;background:var(--surf);color:var(--mc);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0}
+.q-opt.correct .q-letter{background:var(--green);color:white}
+.q-opt.wrong .q-letter{background:var(--rose);color:white}
+.q-text{font-size:13px;color:var(--ink);line-height:1.5;padding-top:4px}
+.q-explanation{background:var(--mc-sm);border-radius:10px;padding:12px 14px;margin:0 20px;border-left:3px solid var(--mc);display:none}
+.q-explanation.show{display:block}
+.q-exp-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mc);margin-bottom:5px}
+.q-exp-text{font-size:12px;color:var(--ink);line-height:1.6}
+.quiz-next{padding:12px 20px 28px;flex-shrink:0;background:white}
+/* WIN SCREEN */
+.win-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 26px 10px;overflow-y:auto;background:white}
+.win-body::-webkit-scrollbar{display:none}
+.win-banner{background:linear-gradient(135deg,#F59E0B,#FBBF24);width:100%;border-radius:20px;padding:24px 20px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden}
+.win-banner::before{content:'🌟';position:absolute;font-size:80px;right:-10px;top:-10px;opacity:.15}
+.win-icon{font-size:48px;margin-bottom:8px}
+.win-hl{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.win-sub{font-size:13px;color:rgba(10,22,40,.6)}
+.win-xp{display:inline-flex;align-items:center;gap:6px;background:rgba(10,22,40,.15);border-radius:100px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink);margin-top:10px}
+.win-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bord);border:1px solid var(--bord);border-radius:16px;overflow:hidden;width:100%;margin-bottom:16px}
+.win-stat{background:var(--w);padding:16px 10px;text-align:center}
+.win-stat-n{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--mc);line-height:1;margin-bottom:3px}
+.win-stat-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.win-concepts{width:100%;background:var(--surf);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.win-concepts-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.win-concept{display:flex;align-items:center;gap:10px;padding:5px 0}
+.win-concept-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.win-concept-text{font-size:12px;color:var(--ink);font-weight:500}
+.win-next-card{width:100%;border:1.5px solid var(--bord);border-radius:14px;padding:14px 16px;background:var(--w);margin-bottom:16px}
+.win-next-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.win-next-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px}
+.win-next-meta{font-size:12px;color:var(--mut)}
+/* Ashki */
+.ashki-bubble{display:flex;align-items:flex-end;gap:10px;padding:16px;margin:0 0 12px}
+.ashki-avatar{width:48px;height:48px;border-radius:50%;background:var(--mc);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid var(--mc-l)}
+.ashki-speech{background:var(--pxs);border:1px solid var(--psm);border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:calc(100% - 66px)}
+.ashki-name{font:700 11px/1 'JetBrains Mono';color:var(--p);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.ashki-text{font:400 14px/1.5 'Outfit';color:var(--ink)}
+/* Info card */
+.info-card{background:var(--surf);border-radius:14px;padding:14px 16px;border:1px solid var(--bord)}
+.info-card-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.info-card-body{font-size:13px;color:var(--mut);line-height:1.6}
+/* Numbered steps */
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-item{display:flex;gap:12px;align-items:flex-start}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--mc);color:white;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0}
+.step-text{font-size:13px;color:var(--mut);line-height:1.6;padding-top:3px}
+.step-text strong{color:var(--ink)}
+/* Comparison table */
+.compare-table{width:100%;border-collapse:collapse;font-size:12px;border-radius:12px;overflow:hidden}
+.compare-table th{background:var(--mc);color:white;padding:8px 10px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.compare-table td{padding:9px 10px;border-bottom:1px solid var(--bord);color:var(--mut);vertical-align:top}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table td:first-child{color:var(--ink);font-weight:600}
+.compare-table tr:nth-child(even) td{background:var(--mc-xs)}
+</style>
 </head>
 <body>
-    <div class="sidebar">
-        <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
-        <div class="sidebar-nav" id="sidebarNav"></div>
-        <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/4</div>
-        </div>
+<div class="shell">
+<div class="sidebar" id="sidebar"><div class="si">Intro</div><div class="si">Video</div><div class="si">Part 1</div><div class="si">Worked Eg</div><div class="si">Part 2</div><div class="si">Q1</div><div class="si">Q2</div><div class="si">Q3</div><div class="si">Complete</div></div>
+<div>
+<div class="phone"><div class="stack" id="stack">
+
+<!-- S1: CHAPTER INTRO -->
+<div class="screen active" id="s-intro">
+  <div class="sb sb-mc"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:8%"></div></div>
+  <div class="scr">
+    <div class="ci-hero">
+      <div class="ci-orb ci-orb1"></div><div class="ci-orb ci-orb2"></div>
+      <div class="ci-badge">🗣️ Management Communication N4</div>
+      <div class="ci-num">Module 7 of 9</div>
+      <div class="ci-title">Oral Communication</div>
+      <div class="ci-meta-row">
+        <div class="ci-meta">⏱ 9 min</div><div class="ci-meta">🎬 3:45 video</div><div class="ci-meta">❓ 3 questions</div>
+      </div>
     </div>
-    <div class="phone-frame">
-        <div class="status-bar">
-            <div class="status-left"><span>14:30</span></div>
-            <div style="flex: 1; text-align: center; font-size: 12px;">Ayikho</div>
-            <div class="status-right"><span>4G</span><span>🔋</span></div>
-        </div>
-        <div class="progress-strip"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="screen-container" id="screenContainer"></div>
+    <div class="ci-tldr">
+      <div class="ci-tldr-tag">💬 TL;DR</div>
+      <div class="ci-tldr-text">How you talk = how people judge you. Phone calls, job interviews, presentations — all follow the same rules: prepare, speak clearly, listen actively. Your voice is your first CV.</div>
     </div>
+    <div class="ci-what" style="padding-top:4px">
+      <div class="ci-what-title">What you'll learn</div>
+      
+    <div class="ci-item">
+      <div class="ci-item-icon">📞</div>
+      <div class="ci-item-info">
+        <div class="ci-item-name">Telephone Technique</div>
+        <div class="ci-item-desc">How to handle business calls — calling and answering</div>
+      </div>
+      <div class="ci-item-badge cib-new">New</div>
+    </div>
+    <div class="ci-item">
+      <div class="ci-item-icon">🎤</div>
+      <div class="ci-item-info">
+        <div class="ci-item-name">Job Interviews & Presentations</div>
+        <div class="ci-item-desc">Structure, confidence, what NOT to say</div>
+      </div>
+      <div class="ci-item-badge cib-new">New</div>
+    </div>
+    <div class="ci-item">
+      <div class="ci-item-icon">👂</div>
+      <div class="ci-item-info">
+        <div class="ci-item-name">Active Listening</div>
+        <div class="ci-item-desc">The skill people forget — but examiners remember to test</div>
+      </div>
+      <div class="ci-item-badge cib-new">New</div>
+    </div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Let's go →</button>
+  </div>
+</div>
 
-    <script>
-        const MODULE_ID = 5;
-        let currentScreen = 0;
+<!-- S2: VIDEO -->
+<div class="screen" id="s-video">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:18%"></div></div>
+  <div class="vid-container">
+    <div class="vid-player-wrap">
+      <div class="vid-thumb">
+        <div class="vid-thumb-bg"></div>
+        <div class="vid-play-btn"><div class="vid-play-icon">▶</div></div>
+        <div class="vid-thumb-text">
+          <div class="vid-thumb-title">Speaking & Listening in the Workplace</div>
+          <div class="vid-thumb-sub">Management Comm N4 · Module 7 · 3:45</div>
+        </div>
+        <div class="vid-synth-badge">🎬 Synthesia · AI video</div>
+      </div>
+      <div class="vid-progress"><div class="vid-progress-fill" style="width:0%"></div></div>
+      <div class="vid-controls">
+        <button class="vc-btn">▶</button>
+        <button class="vc-btn">⏪</button>
+        <button class="vc-btn">⏩</button>
+        <span class="vc-time">0:00 / 3:45</span>
+        <span class="vc-cc">CC</span>
+        <button class="vc-btn">⛶</button>
+      </div>
+    </div>
+    <div class="vid-chapters">
+      <div class="vc-label">Chapter markers</div>
+      
+    <div class="vc-chapter active">
+      <span class="vc-ch-time">0:00</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Why Your Voice Matters</span>
+    </div>
+    <div class="vc-chapter ">
+      <span class="vc-ch-time">0:55</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Telephone Technique</span>
+    </div>
+    <div class="vc-chapter ">
+      <span class="vc-ch-time">2:00</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Interview Skills</span>
+    </div>
+    <div class="vc-chapter ">
+      <span class="vc-ch-time">3:00</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Active Listening</span>
+    </div>
+    </div>
+    <div class="vid-skip">
+      <button class="vid-skip-btn" onclick="next()">Skip video → go to lesson</button>
+    </div>
+  </div>
+</div>
 
-        const screens = [
-            {
-                id: 'intro',
-                title: 'Oral Communication',
-                subtitle: 'Module 5 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Speaking and Listening Skills</h2>
+<!-- S3: LESSON PART 1 -->
+<div class="screen" id="s-lesson1">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:30%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="prev()">←</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">MC N4 · Module 7 of 9</div>
+      <div class="nav-hdr-title">Oral Communication</div>
+    </div>
+    <div class="nav-hdr-right">Part 1</div>
+  </div>
+  <div class="lesson-body">
+      <div class="ls-section-lbl">Part 1 — Speaking</div>
+      <div class="ls-h2">Your Voice is Your Brand</div>
+      <p class="ls-p">In the workplace, people form opinions in the <strong>first 7 seconds</strong> of a call or conversation. Formal, clear, confident — that's the standard.</p>
+      <div class="ls-h2" style="font-size:17px;margin-top:8px">📞 Telephone Technique</div>
+      <p class="ls-p" style="margin-top:4px">On a business call, you can't use body language. Your <strong>words and tone carry everything</strong>.</p>
+      <div class="step-list">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Greet professionally:</strong> "Good morning, Capitec Bank, Nomsa speaking. How may I assist?"</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Listen without interrupting.</strong> Let the caller finish. Note key details (name, number, reason for call).</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Speak clearly and slowly.</strong> No slang. No "ja sure", no "no worries". Keep it professional.</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Summarise and confirm:</strong> "So I'll transfer your query to our loans department. Is there anything else?"</div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-text"><strong>Close formally:</strong> "Thank you for calling Capitec. Have a great day." Let the caller hang up first.</div></div>
+      </div>
+      <div class="sa-example" style="margin-top:16px">
+        <div class="sa-tag">🇿🇦 SA Contrast</div>
+        <div class="sa-title">Thabo's Woolworths Call</div>
+        <div class="we-right" style="margin-bottom:8px">✅ "Good morning. I'm Thabo Mthembu calling about the supervisor role advertised on your website. I have 5 years of retail experience and I'd like to discuss the opportunity."</div>
+        <div class="we-wrong">❌ "Hey um… I saw you're hiring? I dunno if you still are but like… I'd maybe be keen?"</div>
+        <p class="sa-p" style="margin-top:8px">The first Thabo gets the interview. The second Thabo gets a polite email saying "we've moved forward with other candidates."</p>
+      </div>
+    </div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Next →</button>
+  </div>
+</div>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Oral communication means talking and listening. Job interviews, phone calls, presentations—all require good speaking skills and active listening.</p>
-                    </div>
+<!-- S4: WORKED EXAMPLE -->
+<div class="screen" id="s-worked">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:45%"></div></div>
+  <div class="we-hdr">
+    <div class="we-badge">🎤 Job Interview Prep</div>
+    <div class="we-title">Zandile's Capitec Interview</div>
+    <div class="we-context">Zandile (19, studying Management Communication N4) is applying for a Capitec customer service role. Here's how she prepares.</div>
+  </div>
+  <div class="we-body">
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">1</div>
+        <div class="we-step-title">Research Before You Go</div>
+      </div>
+      <div class="we-block"><div class="we-block-text">She Googles Capitec: their values, products, recent news. She can now say "I noticed Capitec recently expanded its Business Banking services — I'd love to be part of that growth." <strong>Research = immediate credibility.</strong></div></div>
+    </div>
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">2</div>
+        <div class="we-step-title">Prepare Your "Tell Me About Yourself"</div>
+      </div>
+      <div class="we-block"><div class="we-block-text">Structure: <strong>Past → Present → Future</strong>. "I completed my N3 at Ekurhuleni West TVET. I'm currently studying N4 Management Communication. I want to build a career in financial services because I'm passionate about accessible banking."</div></div>
+    </div>
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">3</div>
+        <div class="we-step-title">Body Language Checklist</div>
+      </div>
+      <div class="we-block"><div class="we-block-text">✅ Firm handshake<br>✅ Eye contact (not staring — natural)<br>✅ Sit upright, slightly forward<br>❌ Don't cross arms (defensive)<br>❌ Don't look at your phone</div></div>
+    </div>
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">4</div>
+        <div class="we-step-title">End Strong</div>
+      </div>
+      <div class="we-block"><div class="we-block-text">Always have a question ready: "What does success look like in the first 90 days for this role?"<br><strong>Candidates who ask questions appear more interested and serious.</strong></div></div>
+    </div></div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
 
-                    <h3>Telephone Technique</h3>
-                    <p>Phone calls are formal conversations. You can't use body language. Your voice and words must carry the message.</p>
+<!-- S5: LESSON PART 2 -->
+<div class="screen" id="s-lesson2">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:58%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="prev()">←</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">MC N4 · Module 7 of 9</div>
+      <div class="nav-hdr-title">Oral Communication</div>
+    </div>
+    <div class="nav-hdr-right">Part 2</div>
+  </div>
+  <div class="lesson-body">
+      <div class="ls-section-lbl">Part 2 — Listening</div>
+      <div class="ls-h2">Active Listening</div>
+      <p class="ls-p">Most people listen to <strong>reply</strong>. Active listeners listen to <strong>understand</strong>. That's the difference — and the exam knows the difference too.</p>
+      <div class="info-card" style="margin-bottom:10px"><div class="info-card-title">👁️ Give full attention</div><div class="info-card-body">Put your phone down. Face the speaker. No multitasking. Show you're present — nod, make eye contact.</div></div>
+      <div class="info-card" style="margin-bottom:10px"><div class="info-card-title">🔄 Reflect back</div><div class="info-card-body">Paraphrase what you heard: "So what you're saying is the deadline moved to Friday — is that right?" This confirms understanding AND shows you were listening.</div></div>
+      <div class="info-card" style="margin-bottom:10px"><div class="info-card-title">❓ Ask clarifying questions</div><div class="info-card-body">If something is unclear, ask — don't guess. "Could you explain what you mean by 'urgent'?" It's professional, not rude.</div></div>
+      <div class="info-card" style="margin-bottom:16px"><div class="info-card-title">🤐 Don't interrupt</div><div class="info-card-body">Let the speaker finish. Even if you know the answer. Interrupting is disrespectful AND breaks communication flow.</div></div>
+      <div class="memory-aid">
+        <div class="ma-tag">🧠 Active Listening vs Passive Listening</div>
+        <div class="ma-text"><strong>Passive:</strong> You hear the words.<br><strong>Active:</strong> You understand the meaning, emotion, and intent behind the words.</div>
+        <div style="font-size:12px;color:var(--mut);margin-top:6px">Examiners will give you a scenario and ask which one Sipho is doing. Always check: is he responding to the meaning, or just hearing noise?</div>
+      </div>
+    </div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Start quiz →</button>
+  </div>
+</div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0;">When You Call</h3>
-                        <p style="margin: 0; font-size: 14px;">1. Greet: "Good morning. May I speak to the manager?"</p>
-                        <p style="margin: 12px 0 0 0; font-size: 14px;">2. Identify yourself: "My name is Zandile from Pick n Pay."</p>
-                        <p style="margin: 12px 0 0 0; font-size: 14px;">3. State your purpose: "I'm calling about the delivery order from yesterday."</p>
-                        <p style="margin: 12px 0 0 0; font-size: 14px;">4. Be brief and polite.</p>
-                        <p style="margin: 12px 0 0 0; font-size: 14px;">5. Thank them and confirm next steps.</p>
-                    </div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0;">When You Answer</h3>
-                        <p style="margin: 0; font-size: 14px;">1. Answer within 3 rings: "Good morning, Capitec Bank, how may I help?"</p>
-                        <p style="margin: 12px 0 0 0; font-size: 14px;">2. Listen carefully. Don't interrupt.</p>
-                        <p style="margin: 12px 0 0 0; font-size: 14px;">3. Take notes if needed.</p>
-                        <p style="margin: 12px 0 0 0; font-size: 14px;">4. Be helpful, even if the caller is upset.</p>
-                    </div>
+<div class="screen" id="s-q1">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:33%"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:33%"></div></div>
+      <div class="quiz-cnt">1 of 3</div>
+    </div>
+    <div class="quiz-q-text">A receptionist answers the phone at a law firm. Which response is most professional?</div>
+    
+  </div>
+  <div class="quiz-opts">
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q1')">
+      <div class="q-letter">A</div>
+      <div class="q-text">"Hello, who's this?"</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q1')">
+      <div class="q-letter">B</div>
+      <div class="q-text">"Ja?"</div>
+    </div>
+    <div class="q-opt" data-correct="true" onclick="checkAnswer(this,true,'q1')">
+      <div class="q-letter">C</div>
+      <div class="q-text">"Good morning, Lekgolo Attorneys, Siphiwe speaking. How may I assist you?"</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q1')">
+      <div class="q-letter">D</div>
+      <div class="q-text">"Hi, thanks for calling, what do you need?"</div>
+    </div></div>
+  <div class="q-explanation" id="exp-q1">
+    <div class="q-exp-lbl">💡 Explanation</div>
+    <div class="q-exp-text">A professional business telephone greeting includes: time of day greeting, company name, your name, and an offer to help. Option C ticks all four. Options A and B are too informal. Option D is missing the company name and 'Hi' is casual.</div>
+  </div>
+  <div class="quiz-next" id="next-q1" style="display:none">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
+<div class="screen" id="s-q2">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:66%"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:66%"></div></div>
+      <div class="quiz-cnt">2 of 3</div>
+    </div>
+    <div class="quiz-q-text">Nomsa is in a meeting. While her manager speaks, she keeps thinking about her NSFAS application. What is she doing?</div>
+    
+  </div>
+  <div class="quiz-opts">
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q2')">
+      <div class="q-letter">A</div>
+      <div class="q-text">Active listening — she's in the meeting</div>
+    </div>
+    <div class="q-opt" data-correct="true" onclick="checkAnswer(this,true,'q2')">
+      <div class="q-letter">B</div>
+      <div class="q-text">Passive listening — she hears but isn't fully engaged</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q2')">
+      <div class="q-letter">C</div>
+      <div class="q-text">Encoding — turning the message into meaning</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q2')">
+      <div class="q-letter">D</div>
+      <div class="q-text">Decoding — interpreting the message</div>
+    </div></div>
+  <div class="q-explanation" id="exp-q2">
+    <div class="q-exp-lbl">💡 Explanation</div>
+    <div class="q-exp-text">Passive listening is when you physically hear words but your mind is elsewhere — you're not fully processing the message. Nomsa is physically present but mentally distracted. Active listening requires full, intentional attention.</div>
+  </div>
+  <div class="quiz-next" id="next-q2" style="display:none">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
+<div class="screen" id="s-q3">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:100%"></div></div>
+      <div class="quiz-cnt">3 of 3</div>
+    </div>
+    <div class="quiz-q-text">Which of these is a sign of ACTIVE listening?</div>
+    
+  </div>
+  <div class="quiz-opts">
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q3')">
+      <div class="q-letter">A</div>
+      <div class="q-text">Checking your phone while someone talks to you</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q3')">
+      <div class="q-letter">B</div>
+      <div class="q-text">Planning your response while the speaker is still talking</div>
+    </div>
+    <div class="q-opt" data-correct="true" onclick="checkAnswer(this,true,'q3')">
+      <div class="q-letter">C</div>
+      <div class="q-text">Paraphrasing: "So what you're saying is the deadline is Friday — is that correct?"</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q3')">
+      <div class="q-letter">D</div>
+      <div class="q-text">Finishing the speaker's sentences for them</div>
+    </div></div>
+  <div class="q-explanation" id="exp-q3">
+    <div class="q-exp-lbl">💡 Explanation</div>
+    <div class="q-exp-text">Paraphrasing confirms understanding and shows engagement — that's the core of active listening. Checking your phone, planning your response while they talk, and finishing sentences are all forms of NOT listening properly.</div>
+  </div>
+  <div class="quiz-next" id="next-q3" style="display:none">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
 
-                    <h3>Job Interviews</h3>
-                    <p>An interview is a conversation where the employer assesses if you fit the job.</p>
+<!-- WIN SCREEN -->
+<div class="screen" id="s-win">
+  <div class="sb sb-win"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%"></div></div>
+  <div class="win-body">
+    <div class="win-banner">
+      <div class="win-icon">🎯</div>
+      <div class="win-hl">Module Complete!</div>
+      <div class="win-sub">Oral Communication</div>
+      <div class="win-xp">⚡ +80 XP</div>
+    </div>
+    <div class="win-stats">
+      <div class="win-stat"><div class="win-stat-n">3/3</div><div class="win-stat-l">Quiz Score</div></div>
+      <div class="win-stat"><div class="win-stat-n">9 min</div><div class="win-stat-l">Time Spent</div></div>
+      <div class="win-stat"><div class="win-stat-n">5</div><div class="win-stat-l">Concepts</div></div>
+    </div>
+    <div class="win-concepts">
+      <div class="win-concepts-lbl">New concepts learned</div>
+      
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">5-step telephone technique</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Job interview structure (Past→Present→Future)</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Active vs Passive listening</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Paraphrasing technique</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Body language in interviews</div>
+    </div>
+    </div>
+    <div class="ashki-bubble">
+      <div class="ashki-avatar">🎓</div>
+      <div class="ashki-speech">
+        <div class="ashki-name">Ashki</div>
+        <div class="ashki-text">Sho! 🎤 Your voice IS your brand — you get that now. The active listening definition alone shows up in almost every oral communication question. Locked.</div>
+      </div>
+    </div>
+    <div class="win-next-card">
+      <div class="win-next-lbl">Up next</div>
+      <div class="win-next-title">Module 8: Reading Comprehension</div>
+      <div class="win-next-meta">Management Communication N4 · 8 min</div>
+    </div>
+    <button class="btn btn-mc" style="width:100%;margin-bottom:24px" onclick="window.location.href='ayikho-chapter-home.html'">Back to Course →</button>
+  </div>
+</div>
 
-                    <div class="example-box">
-                        <div class="example-title">Interview Tips</div>
-                        <div class="example-step">
-                            <div style="font-weight: 600;">Before:</div>
-                            <div style="font-size: 13px;">Research the company. Prepare answers to common questions. Dress professionally. Arrive 10 minutes early.</div>
-                            <div style="font-weight: 600; margin-top: 12px;">During:</div>
-                            <div style="font-size: 13px;">Make eye contact. Speak clearly and confidently. Answer fully but briefly. Ask thoughtful questions.</div>
-                            <div style="font-weight: 600; margin-top: 12px;">After:</div>
-                            <div style="font-size: 13px;">Send a thank you email. Wait to hear back. Follow up after one week if no response.</div>
-                        </div>
-                    </div>
+</div></div>
+</div></div>
+<script>
+let cur = 0;
+const screens = document.querySelectorAll('.screen');
+const sideItems = document.querySelectorAll('.si');
 
-                    <h3>Presentations</h3>
-                    <p>Speaking to a group requires planning and confidence. Structure: introduction, key points, conclusion.</p>
+function go(n) {
+  if (n < 0 || n >= screens.length) return;
+  screens[cur].classList.remove('active');
+  screens[cur].classList.add('exit');
+  setTimeout(() => screens[cur < n ? cur : n].classList.remove('exit'), 320);
+  cur = n;
+  screens[cur].classList.add('active');
+  sideItems.forEach((s, i) => s.classList.toggle('active', i === cur));
+}
 
-                    <div class="card">
-                        <p><strong>1. Introduction:</strong> "Good morning. Today I'm speaking about customer service." Sets the topic and engages the audience.</p>
-                        <p style="margin-top: 12px;"><strong>2. Key Points:</strong> 3-5 main ideas. Use simple language. Give examples.</p>
-                        <p style="margin-top: 12px;"><strong>3. Conclusion:</strong> Summarise. Ask for questions. Thank the audience.</p>
-                    </div>
+function next() { go(cur + 1); }
+function prev() { go(cur - 1); }
 
-                    <h3>Body Language Matters</h3>
-                    <p>Even on the phone, your tone conveys attitude. Stand up for confidence. Smile—people hear it. Maintain eye contact in face-to-face. Avoid crossing arms (looks defensive).</p>
+function checkAnswer(el, correct, qid) {
+  const opts = el.parentElement.querySelectorAll('.q-opt');
+  if (opts[0].classList.contains('correct') || opts[0].classList.contains('wrong')) return;
+  opts.forEach(o => o.classList.add('dimmed'));
+  el.classList.remove('dimmed');
+  el.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    opts.forEach(o => {
+      if (o.dataset.correct === 'true') { o.classList.remove('dimmed'); o.classList.add('correct'); }
+    });
+  }
+  const exp = document.getElementById('exp-' + qid);
+  if (exp) exp.classList.add('show');
+  const nextBtn = document.getElementById('next-' + qid);
+  if (nextBtn) nextBtn.style.display = 'flex';
+}
 
-                    <div class="callout real-life">
-                        <h4>Woolworths Interview Scenario</h4>
-                        <p>Thabo calls to apply for a supervisor role. He says: "Good morning. I'm Thabo Mthembu. I've worked in retail for 5 years and I'm interested in the supervisor position advertised on your website." Clear, confident, to the point. Contrast with: "Um, hi, uh, I saw you're hiring?" The first candidate gets the interview.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'listening',
-                title: 'Active Listening',
-                subtitle: 'The Other Half of Communication',
-                type: 'lesson',
-                content: `
-                    <h2>Active Listening Skills</h2>
-
-                    <h3>What is Active Listening?</h3>
-                    <p>Really paying attention. Not just waiting for your turn to speak. Understanding the speaker's message AND their feelings.</p>
-
-                    <h3>How to Listen Actively</h3>
-
-                    <div class="card">
-                        <p><strong>1. Face the speaker:</strong> Look at them, not your phone.</p>
-                        <p style="margin-top: 12px;"><strong>2. Nod and use expressions:</strong> "I see." "Tell me more." Shows you're engaged.</p>
-                        <p style="margin-top: 12px;"><strong>3. Don't interrupt:</strong> Let them finish their thought.</p>
-                        <p style="margin-top: 12px;"><strong>4. Ask clarifying questions:</strong> "Do you mean...?" "Can you explain that again?"</p>
-                        <p style="margin-top: 12px;"><strong>5. Reflect back:</strong> "So what you're saying is..." Confirms you understood.</p>
-                    </div>
-
-                    <h3>Poor Listening Habits to Avoid</h3>
-                    <p><strong>Interrupting:</strong> Let the person finish. Interrupting is disrespectful and you might miss important info.</p>
-
-                    <p><strong>Planning your response while they talk:</strong> Your mind is elsewhere. Focus on what THEY'RE saying.</p>
-
-                    <p><strong>Judging:</strong> Don't dismiss them before they finish. Listen with an open mind.</p>
-
-                    <p><strong>Daydreaming:</strong> If you catch yourself lost in thought, refocus. Nod. Ask a question.</p>
-
-                    <div class="example-box">
-                        <div class="example-title">Good vs Poor Listening</div>
-                        <div class="example-step">
-                            <div style="font-weight: 600; margin-bottom: 8px;">Customer: "I've been waiting 3 days for my order and it hasn't arrived."</div>
-                            <div style="font-weight: 600;">Poor Response:</div>
-                            <div style="font-size: 13px; margin-bottom: 12px;">"Our delivery times are usually 5 days so you're actually early. Besides, we can't control the couriers." (Dismissive, not listening)</div>
-                            <div style="font-weight: 600;">Good Response:</div>
-                            <div style="font-size: 13px;">"I understand you're frustrated waiting 3 days. Let me check the tracking. What's your order number?" (Empathetic, engaged)</div>
-                        </div>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>You might get: "Identify barriers to listening in this conversation." Look for: interrupting, distractions, lack of attention, not asking questions, poor body language.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 2',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 2</h2>
-                    <div class="quiz-question">
-                        <h4>When answering a business phone call, what should you do first?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">A) Complain about how busy you are</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">B) Greet the caller and identify your company/department</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) Ask them to hold without explaining why</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Put them on speaker phone immediately</div>
-                        </div>
-                    </div>
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;"><p id="feedback-text-q1"></p></div>
-                    <div class="nav-buttons" id="nav-q1" style="display: none;"><button class="btn-secondary" onclick="nextQuestion()">Next Question</button></div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 2',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 2</h2>
-                    <div class="quiz-question">
-                        <h4>What is active listening?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">A) Staying quiet until it's your turn to talk</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">B) Fully paying attention and showing you understand what's being said</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Interrupting to give your opinion</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Looking at your phone while someone talks</div>
-                        </div>
-                    </div>
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;"><p id="feedback-text-q2"></p></div>
-                    <div class="nav-buttons" id="nav-q2" style="display: none;"><button class="btn-secondary" onclick="nextQuestion()">Next Question</button></div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            return `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Management Communication · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">${screen.content}</div>
-                </div>
-            `;
-        }
-
-        function initScreens() {
-            const container = document.getElementById('screenContainer');
-            screens.forEach((screen, index) => {
-                const div = document.createElement('div');
-                div.innerHTML = renderScreen(index);
-                container.appendChild(div.firstElementChild);
-            });
-            const sidebarNav = document.getElementById('sidebarNav');
-            screens.forEach((screen, index) => {
-                const dot = document.createElement('div');
-                dot.className = 'nav-dot' + (index === 0 ? ' active' : '');
-                dot.onclick = () => goToScreen(index);
-                sidebarNav.appendChild(dot);
-            });
-            updateCurrentScreen();
-        }
-
-        function goToScreen(index) {
-            if (index < 0 || index >= screens.length) return;
-            document.querySelectorAll('.screen').forEach((s, i) => {
-                s.classList.remove('active', 'prev');
-                if (i === index) s.classList.add('active');
-                else if (i < index) s.classList.add('prev');
-            });
-            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-            currentScreen = index;
-            updateCurrentScreen();
-            updateProgress();
-        }
-
-        function nextQuestion() {
-            if (currentScreen < screens.length - 1) goToScreen(currentScreen + 1);
-        }
-
-        function checkAnswer(element, isCorrect, questionId) {
-            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
-            const feedback = document.getElementById(`feedback-${questionId}`);
-            const feedbackText = document.getElementById(`feedback-text-${questionId}`);
-
-            if (isCorrect) {
-                element.classList.add('correct');
-                feedbackText.innerHTML = '✓ Correct! Good oral communication starts with courtesy and attention.';
-                feedback.style.background = 'var(--green-xs)';
-                feedback.style.border = '2px solid var(--green)';
-                feedback.style.color = 'var(--green)';
-            } else {
-                element.classList.add('incorrect');
-                feedbackText.innerHTML = '✗ Not quite. Professional phone communication begins with a greeting.';
-                feedback.style.background = 'rgba(244, 63, 94, 0.1)';
-                feedback.style.border = '2px solid var(--rose)';
-                feedback.style.color = 'var(--rose)';
-            }
-            feedback.style.display = 'block';
-            document.getElementById(`nav-${questionId}`).style.display = 'flex';
-        }
-
-        function updateProgress() {
-            document.getElementById('progressBar').style.width = ((currentScreen + 1) / screens.length) * 100 + '%';
-        }
-
-        function updateCurrentScreen() {
-            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/${screens.length}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', initScreens);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextQuestion();
-            if (e.key === 'ArrowLeft' && currentScreen > 0) goToScreen(currentScreen - 1);
-        });
-    </script>
+// Sidebar init
+sideItems.forEach((s, i) => s.addEventListener('click', () => go(i)));
+</script>
 </body>
 </html>

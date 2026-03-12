@@ -1,339 +1,653 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayikho - Module 2: Meeting Procedures</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --p: #0D9488; --pl: #14B8A6; --pd: #0F766E;
-            --pxs: #F0FDF9; --psm: #CCFBF1;
-            --fa: #F97316; --fa-l: #FB923C; --fa-d: #EA580C;
-            --fa-xs: #FFF7ED; --fa-sm: #FFEDD5;
-            --gold: #FBBF24; --green: #22C55E; --green-xs: #F0FDF4;
-            --rose: #F43F5E; --ink: #0A1628; --mut: #475569;
-            --dim: #94A3B8; --bord: #CFFAFE; --surf: #F0FDF9;
-            --w: #FFFFFF; --bg-dark: #050F1B;
-        }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--ink); overflow: hidden; }
-        .phone-frame { width: 375px; height: 812px; margin: 20px auto; border: 12px solid var(--bg-dark); border-radius: 50px; overflow: hidden; background: #05090F; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; }
-        .status-bar { height: 48px; background: var(--ink); color: var(--w); display: flex; justify-content: space-between; align-items: center; padding: 0 16px; font-size: 14px; font-family: 'JetBrains Mono', monospace; }
-        .status-left, .status-right { display: flex; gap: 8px; align-items: center; }
-        .progress-strip { height: 3px; background: var(--bord); position: relative; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--fa); width: 20%; transition: width 0.3s ease; }
-        .screen-container { flex: 1; overflow: hidden; position: relative; display: flex; }
-        .screen { width: 100%; height: 100%; display: flex; flex-direction: column; position: absolute; left: 0; top: 0; opacity: 0; transform: translateX(100px); transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
-        .screen.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-        .screen.prev { transform: translateX(-100px); }
-        .header { background: linear-gradient(135deg, var(--p) 0%, var(--pl) 100%); color: var(--w); padding: 24px 20px; flex-shrink: 0; }
-        .header h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-        .header p { font-size: 13px; opacity: 0.9; font-weight: 300; }
-        .sidebar { position: fixed; left: 0; top: 0; width: 60px; height: 812px; background: var(--ink); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px 0; z-index: 1000; border-radius: 0 50px 50px 0; }
-        .sidebar-nav { display: flex; flex-direction: column; gap: 12px; margin-top: 60px; }
-        .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); cursor: pointer; transition: all 0.2s ease; }
-        .nav-dot.active { background: var(--fa); width: 24px; border-radius: 4px; }
-        .nav-dot:hover { background: var(--fa-l); }
-        .body { flex: 1; overflow-y: auto; padding: 20px; background: var(--w); }
-        h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--ink); }
-        h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin: 20px 0 12px 0; color: var(--ink); }
-        p { line-height: 1.6; color: var(--mut); margin-bottom: 12px; font-size: 15px; }
-        .callout { background: var(--fa-xs); border-left: 4px solid var(--fa); padding: 16px; margin: 20px 0; border-radius: 8px; }
-        .callout.exam { background: var(--pxs); border-left-color: var(--p); }
-        .callout h4 { font-weight: 600; margin-bottom: 8px; font-size: 14px; }
-        .callout p { font-size: 14px; margin-bottom: 0; }
-        .card { background: var(--surf); border: 1px solid var(--bord); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-        button { background: var(--p); color: var(--w); border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; transition: all 0.2s ease; }
-        button:hover { background: var(--pl); transform: translateY(-2px); }
-        .btn-secondary { background: var(--fa); }
-        .btn-secondary:hover { background: var(--fa-l); }
-        .example-box { background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%); border-left: 4px solid var(--fa); padding: 16px; border-radius: 8px; margin: 16px 0; }
-        .example-title { font-weight: 700; color: var(--fa-d); margin-bottom: 12px; font-size: 14px; }
-        .example-step { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(249, 115, 22, 0.2); }
-        .example-step:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .step-label { font-weight: 600; color: var(--ink); font-size: 13px; }
-        .quiz-option { padding: 12px 16px; background: var(--surf); border: 2px solid var(--bord); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-size: 14px; text-align: left; margin-bottom: 8px; }
-        .quiz-option:hover { border-color: var(--p); background: var(--psm); }
-        .quiz-option.correct { background: var(--green-xs); border-color: var(--green); color: var(--green); }
-        .quiz-option.incorrect { background: rgba(244, 63, 94, 0.1); border-color: var(--rose); color: var(--rose); }
-        .nav-buttons { display: flex; gap: 12px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--bord); }
-        .nav-buttons button { flex: 1; }
-        .nav-buttons button:first-child { background: var(--surf); border: 2px solid var(--bord); color: var(--ink); }
-        .nav-buttons button:first-child:hover { background: var(--psm); }
-        .body::-webkit-scrollbar { width: 6px; }
-        .body::-webkit-scrollbar-track { background: var(--surf); }
-        .body::-webkit-scrollbar-thumb { background: var(--bord); border-radius: 3px; }
-    </style>
-    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
-    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · MC N4 · Meeting Procedures</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+<script src="student-data.js" onerror="console.log('ok')"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
+  --mc:#0D9488;--mc-l:#14B8A6;--mc-d:#0F766E;--mc-xs:#F0FDF9;--mc-sm:#CCFBF1;
+  --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
+  --ink:#0A1628;--mut:#334155;--dim:#64748B;
+  --bord:#CFFAFE;--surf:#F0FDF9;--w:#FFFFFF;
+}
+html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden;overscroll-behavior:none}
+.shell{display:flex;gap:20px;align-items:flex-start}
+.sidebar{display:flex;flex-direction:column;gap:3px;padding-top:80px}
+@media(max-width:900px){.sidebar{display:none}}
+.si{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.18);cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:7px;padding:3px 0;white-space:nowrap}
+.si::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+.si.active{color:var(--mc-l)}
+.phone{width:375px;height:812px;background:#05090F;border-radius:50px;overflow:hidden;position:relative;
+  box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(13,148,136,.08)}
+.stack{position:absolute;inset:0;overflow:hidden;background:#05090F}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff;transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);will-change:transform}
+.screen.active{transform:translateX(0)}
+.screen.exit{transform:translateX(-24%)}
+.sb{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
+.sb-t{font-weight:700;font-size:15px}
+.sb-i{font-size:11px;opacity:.8}
+.sb-mc{background:var(--mc);color:white}
+.sb-ink{background:var(--ink);color:white}
+.sb-w{background:var(--w);color:var(--ink)}
+.sb-win{background:var(--gold);color:var(--ink)}
+.gp{height:3px;background:var(--mc-sm);flex-shrink:0}
+.gp-fill{height:100%;background:var(--mc);transition:width .4s ease;border-radius:0 2px 2px 0}
+.scr{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scr::-webkit-scrollbar{display:none}
+.foot{padding:14px 22px 28px;flex-shrink:0}
+.btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-mc{background:var(--mc);color:white}
+.btn-mc:hover{background:var(--mc-l);transform:translateY(-1px);box-shadow:0 6px 24px rgba(13,148,136,.35)}
+.btn-ghost{background:var(--surf);color:var(--mut);margin-top:8px;font-size:13px;padding:12px}
+.btn-p{background:var(--p);color:white}
+.nav-hdr{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--bord);flex-shrink:0;background:white}
+.nav-back{width:36px;height:36px;border-radius:10px;background:var(--surf);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--mut);transition:all .2s;flex-shrink:0}
+.nav-back:hover{background:var(--mc-sm);color:var(--mc)}
+.nav-hdr-info{flex:1;min-width:0}
+.nav-hdr-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.nav-hdr-title{font-weight:700;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-hdr-right{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);flex-shrink:0}
+/* CHAPTER INTRO */
+.ci-hero{background:var(--mc);padding:28px 24px 32px;flex-shrink:0;position:relative;overflow:hidden}
+.ci-orb{position:absolute;border-radius:50%;background:rgba(255,255,255,.07)}
+.ci-orb1{width:300px;height:300px;top:-100px;right:-80px}
+.ci-orb2{width:180px;height:180px;bottom:-60px;left:-40px}
+.ci-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:16px}
+.ci-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:4px}
+.ci-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:white;line-height:1.1;margin-bottom:14px}
+.ci-meta-row{display:flex;gap:16px}
+.ci-meta{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,.7)}
+.ci-tldr{margin:20px 22px;background:var(--mc-sm);border-left:3px solid var(--mc);border-radius:0 12px 12px 0;padding:14px 16px}
+.ci-tldr-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--mc);margin-bottom:6px}
+.ci-tldr-text{font-size:14px;color:var(--ink);line-height:1.6;font-weight:500}
+.ci-what{padding:0 22px 8px}
+.ci-what-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.ci-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bord)}
+.ci-item:last-child{border-bottom:none}
+.ci-item-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0}
+.ci-item-info{flex:1}
+.ci-item-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ci-item-desc{font-size:11px;color:var(--mut)}
+.ci-item-badge{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 8px;border-radius:100px;flex-shrink:0}
+.cib-new{background:var(--mc-sm);color:var(--mc)}
+.cib-int{background:var(--pxs);color:var(--p)}
+.cib-eg{background:rgba(34,197,94,.1);color:var(--green)}
+/* VIDEO SCREEN */
+.vid-container{flex:1;display:flex;flex-direction:column;background:var(--ink)}
+.vid-player-wrap{position:relative;background:#000;flex-shrink:0}
+.vid-thumb{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#042f2e,#134e4a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.vid-thumb-bg{position:absolute;inset:0;background:radial-gradient(circle at 60% 40%,rgba(13,148,136,.3),transparent 60%)}
+.vid-thumb-text{position:absolute;bottom:16px;left:16px;right:16px}
+.vid-thumb-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white;margin-bottom:4px}
+.vid-thumb-sub{font-size:11px;color:rgba(255,255,255,.6)}
+.vid-play-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s;z-index:2;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.vid-play-btn:hover{transform:scale(1.08)}
+.vid-play-icon{font-size:26px;margin-left:4px}
+.vid-synth-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.7);letter-spacing:.06em}
+.vid-progress{height:3px;background:rgba(255,255,255,.15);cursor:pointer}
+.vid-progress-fill{height:100%;width:0%;background:var(--mc-l);transition:width .3s linear}
+.vid-controls{display:flex;align-items:center;gap:14px;padding:10px 16px}
+.vc-btn{font-size:18px;cursor:pointer;opacity:.8;background:none;border:none;color:white}
+.vc-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);flex:1}
+.vc-cc{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:2px 6px;cursor:pointer}
+.vid-chapters{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06)}
+.vc-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.vc-chapter{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .2s;margin-bottom:4px}
+.vc-chapter.active{background:rgba(13,148,136,.15);border-left:2px solid var(--mc-l)}
+.vc-ch-time{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mc-l);min-width:36px}
+.vc-ch-title{font-size:12px;color:rgba(255,255,255,.75)}
+.vc-ch-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.vc-chapter.active .vc-ch-dot{background:var(--mc-l)}
+.vid-skip{padding:0 16px 20px}
+.vid-skip-btn{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-radius:10px;padding:11px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+/* LESSON BODY */
+.lesson-body{padding:18px 22px;display:flex;flex-direction:column;gap:16px;background:white;flex:1;overflow-y:auto}
+.lesson-body::-webkit-scrollbar{display:none}
+.ls-section-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--mc);padding-bottom:6px;border-bottom:1px solid var(--mc-sm)}
+.ls-h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink);line-height:1.15}
+.ls-p{font-size:14px;color:var(--mut);line-height:1.7}
+.ls-p strong{color:var(--ink);font-weight:600}
+/* Term rows */
+.term-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bord)}
+.term-row:last-child{border-bottom:none}
+.term-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.term-word{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px}
+.term-def{font-size:12px;color:var(--mut);line-height:1.5}
+.term-eg{font-size:11px;color:var(--mc);margin-top:3px;font-style:italic}
+/* SA example block */
+.sa-example{background:linear-gradient(135deg,var(--mc-sm),var(--mc-xs));border-radius:14px;padding:16px;border:1px solid rgba(13,148,136,.15)}
+.sa-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--mc);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sa-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:8px}
+.sa-p{font-size:13px;color:var(--mut);line-height:1.6}
+.sa-p strong{color:var(--ink);font-weight:600}
+/* Model/diagram display */
+.model-display{background:var(--ink);border-radius:16px;padding:20px;text-align:center}
+.model-step{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:4px}
+.ms-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 12px;font-size:12px;color:white;font-weight:600;cursor:pointer;transition:all .2s;min-width:80px}
+.ms-box:hover,.ms-box.active{background:var(--mc);border-color:var(--mc-l)}
+.ms-arrow{color:rgba(255,255,255,.3);font-size:16px}
+.ms-noise{margin-top:10px;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);border-radius:10px;padding:8px 12px;font-size:11px;color:rgba(244,63,94,.8);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.ms-feedback{margin-top:6px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:8px 12px;font-size:11px;color:rgba(34,197,94,.8);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+/* Memory aid */
+.memory-aid{background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border-radius:12px;padding:14px 16px;border:1px solid rgba(245,158,11,.2)}
+.ma-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.ma-text{font-size:13px;color:var(--ink);line-height:1.6;font-weight:500}
+/* Worked example */
+.we-hdr{background:linear-gradient(135deg,var(--mc-d),var(--mc));padding:18px 22px 22px;flex-shrink:0}
+.we-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px}
+.we-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white;line-height:1.15;margin-bottom:6px}
+.we-context{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.we-body{flex:1;overflow-y:auto;padding:18px 22px}
+.we-body::-webkit-scrollbar{display:none}
+.we-step{margin-bottom:20px}
+.we-step-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.we-step-num{width:32px;height:32px;border-radius:50%;background:var(--mc);color:white;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;flex-shrink:0}
+.we-step-title{font-weight:700;font-size:14px;color:var(--ink)}
+.we-block{background:var(--surf);border-radius:12px;padding:13px 15px;margin-bottom:10px;border:1px solid var(--bord)}
+.we-block-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mc);margin-bottom:6px}
+.we-block-text{font-size:13px;color:var(--ink);line-height:1.6}
+.we-block-text strong{color:var(--mc-d)}
+.we-wrong{background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.15);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--rose)}
+.we-right{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.15);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--green)}
+/* QUIZ */
+.quiz-hdr{background:var(--mc-d);padding:14px 22px 20px;flex-shrink:0}
+.quiz-progress-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.quiz-pb{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden}
+.quiz-pb-fill{height:100%;background:var(--mc-l);border-radius:100px;transition:width .4s ease}
+.quiz-cnt{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.35)}
+.quiz-q-text{font-size:16px;font-weight:700;color:white;line-height:1.45}
+.quiz-scenario{font-size:12px;color:rgba(255,255,255,.5);margin-top:5px;line-height:1.5;font-style:italic}
+.quiz-opts{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:9px;overflow-y:auto;background:white}
+.quiz-opts::-webkit-scrollbar{display:none}
+.q-opt{border:2px solid var(--bord);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all .2s;background:var(--w);user-select:none}
+.q-opt:hover{border-color:var(--mc);background:var(--mc-xs)}
+.q-opt.correct{border-color:var(--green);background:var(--green-xs)}
+.q-opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.05)}
+.q-opt.dimmed{opacity:.45}
+.q-letter{width:30px;height:30px;border-radius:50%;background:var(--surf);color:var(--mc);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0}
+.q-opt.correct .q-letter{background:var(--green);color:white}
+.q-opt.wrong .q-letter{background:var(--rose);color:white}
+.q-text{font-size:13px;color:var(--ink);line-height:1.5;padding-top:4px}
+.q-explanation{background:var(--mc-sm);border-radius:10px;padding:12px 14px;margin:0 20px;border-left:3px solid var(--mc);display:none}
+.q-explanation.show{display:block}
+.q-exp-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mc);margin-bottom:5px}
+.q-exp-text{font-size:12px;color:var(--ink);line-height:1.6}
+.quiz-next{padding:12px 20px 28px;flex-shrink:0;background:white}
+/* WIN SCREEN */
+.win-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 26px 10px;overflow-y:auto;background:white}
+.win-body::-webkit-scrollbar{display:none}
+.win-banner{background:linear-gradient(135deg,#F59E0B,#FBBF24);width:100%;border-radius:20px;padding:24px 20px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden}
+.win-banner::before{content:'🌟';position:absolute;font-size:80px;right:-10px;top:-10px;opacity:.15}
+.win-icon{font-size:48px;margin-bottom:8px}
+.win-hl{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.win-sub{font-size:13px;color:rgba(10,22,40,.6)}
+.win-xp{display:inline-flex;align-items:center;gap:6px;background:rgba(10,22,40,.15);border-radius:100px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink);margin-top:10px}
+.win-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bord);border:1px solid var(--bord);border-radius:16px;overflow:hidden;width:100%;margin-bottom:16px}
+.win-stat{background:var(--w);padding:16px 10px;text-align:center}
+.win-stat-n{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--mc);line-height:1;margin-bottom:3px}
+.win-stat-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.win-concepts{width:100%;background:var(--surf);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.win-concepts-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.win-concept{display:flex;align-items:center;gap:10px;padding:5px 0}
+.win-concept-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.win-concept-text{font-size:12px;color:var(--ink);font-weight:500}
+.win-next-card{width:100%;border:1.5px solid var(--bord);border-radius:14px;padding:14px 16px;background:var(--w);margin-bottom:16px}
+.win-next-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.win-next-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px}
+.win-next-meta{font-size:12px;color:var(--mut)}
+/* Ashki */
+.ashki-bubble{display:flex;align-items:flex-end;gap:10px;padding:16px;margin:0 0 12px}
+.ashki-avatar{width:48px;height:48px;border-radius:50%;background:var(--mc);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid var(--mc-l)}
+.ashki-speech{background:var(--pxs);border:1px solid var(--psm);border-radius:16px 16px 16px 4px;padding:12px 16px;max-width:calc(100% - 66px)}
+.ashki-name{font:700 11px/1 'JetBrains Mono';color:var(--p);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.ashki-text{font:400 14px/1.5 'Outfit';color:var(--ink)}
+/* Info card */
+.info-card{background:var(--surf);border-radius:14px;padding:14px 16px;border:1px solid var(--bord)}
+.info-card-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.info-card-body{font-size:13px;color:var(--mut);line-height:1.6}
+/* Numbered steps */
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-item{display:flex;gap:12px;align-items:flex-start}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--mc);color:white;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0}
+.step-text{font-size:13px;color:var(--mut);line-height:1.6;padding-top:3px}
+.step-text strong{color:var(--ink)}
+/* Comparison table */
+.compare-table{width:100%;border-collapse:collapse;font-size:12px;border-radius:12px;overflow:hidden}
+.compare-table th{background:var(--mc);color:white;padding:8px 10px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.compare-table td{padding:9px 10px;border-bottom:1px solid var(--bord);color:var(--mut);vertical-align:top}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table td:first-child{color:var(--ink);font-weight:600}
+.compare-table tr:nth-child(even) td{background:var(--mc-xs)}
+</style>
 </head>
 <body>
-    <div class="sidebar">
-        <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
-        <div class="sidebar-nav" id="sidebarNav"></div>
-        <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/4</div>
-        </div>
+<div class="shell">
+<div class="sidebar" id="sidebar"><div class="si">Intro</div><div class="si">Video</div><div class="si">Part 1</div><div class="si">Worked Eg</div><div class="si">Part 2</div><div class="si">Q1</div><div class="si">Q2</div><div class="si">Q3</div><div class="si">Complete</div></div>
+<div>
+<div class="phone"><div class="stack" id="stack">
+
+<!-- S1: CHAPTER INTRO -->
+<div class="screen active" id="s-intro">
+  <div class="sb sb-mc"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:8%"></div></div>
+  <div class="scr">
+    <div class="ci-hero">
+      <div class="ci-orb ci-orb1"></div><div class="ci-orb ci-orb2"></div>
+      <div class="ci-badge">🗣️ Management Communication N4</div>
+      <div class="ci-num">Module 5 of 9</div>
+      <div class="ci-title">Meeting Procedures</div>
+      <div class="ci-meta-row">
+        <div class="ci-meta">⏱ 9 min</div><div class="ci-meta">🎬 3:55 video</div><div class="ci-meta">❓ 3 questions</div>
+      </div>
     </div>
-
-    <div class="phone-frame">
-        <div class="status-bar">
-            <div class="status-left"><span>10:15</span></div>
-            <div style="flex: 1; text-align: center; font-size: 12px;">Ayikho</div>
-            <div class="status-right"><span>4G</span><span>🔋</span></div>
-        </div>
-        <div class="progress-strip"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="screen-container" id="screenContainer"></div>
+    <div class="ci-tldr">
+      <div class="ci-tldr-tag">💬 TL;DR</div>
+      <div class="ci-tldr-text">AGM, Special, Committee meetings all have rules. Know: quorum (minimum people needed), agenda (plan), minutes (record). Chairperson leads. Secretary writes.</div>
     </div>
+    <div class="ci-what" style="padding-top:4px">
+      <div class="ci-what-title">What you'll learn</div>
+      
+    <div class="ci-item">
+      <div class="ci-item-icon">🏛️</div>
+      <div class="ci-item-info">
+        <div class="ci-item-name">Types of Meetings</div>
+        <div class="ci-item-desc">AGM, Special, Committee, Departmental — know the differences</div>
+      </div>
+      <div class="ci-item-badge cib-new">New</div>
+    </div>
+    <div class="ci-item">
+      <div class="ci-item-icon">📋</div>
+      <div class="ci-item-info">
+        <div class="ci-item-name">Agenda & Notice</div>
+        <div class="ci-item-desc">What must appear before a meeting takes place</div>
+      </div>
+      <div class="ci-item-badge cib-new">New</div>
+    </div>
+    <div class="ci-item">
+      <div class="ci-item-icon">👥</div>
+      <div class="ci-item-info">
+        <div class="ci-item-name">Roles & Procedures</div>
+        <div class="ci-item-desc">Chairperson, Secretary, Quorum, Minutes — all exam favourites</div>
+      </div>
+      <div class="ci-item-badge cib-new">New</div>
+    </div>
+    </div>
+  </div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Let's go →</button>
+  </div>
+</div>
 
-    <script>
-        const MODULE_ID = 2;
-        let currentScreen = 0;
+<!-- S2: VIDEO -->
+<div class="screen" id="s-video">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:18%"></div></div>
+  <div class="vid-container">
+    <div class="vid-player-wrap">
+      <div class="vid-thumb">
+        <div class="vid-thumb-bg"></div>
+        <div class="vid-play-btn"><div class="vid-play-icon">▶</div></div>
+        <div class="vid-thumb-text">
+          <div class="vid-thumb-title">Meeting Procedures & Terminology</div>
+          <div class="vid-thumb-sub">Management Comm N4 · Module 5 · 3:55</div>
+        </div>
+        <div class="vid-synth-badge">🎬 Synthesia · AI video</div>
+      </div>
+      <div class="vid-progress"><div class="vid-progress-fill" style="width:0%"></div></div>
+      <div class="vid-controls">
+        <button class="vc-btn">▶</button>
+        <button class="vc-btn">⏪</button>
+        <button class="vc-btn">⏩</button>
+        <span class="vc-time">0:00 / 3:55</span>
+        <span class="vc-cc">CC</span>
+        <button class="vc-btn">⛶</button>
+      </div>
+    </div>
+    <div class="vid-chapters">
+      <div class="vc-label">Chapter markers</div>
+      
+    <div class="vc-chapter active">
+      <span class="vc-ch-time">0:00</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Types of Meetings</span>
+    </div>
+    <div class="vc-chapter ">
+      <span class="vc-ch-time">1:15</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Notice & Agenda</span>
+    </div>
+    <div class="vc-chapter ">
+      <span class="vc-ch-time">2:20</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Key Procedures</span>
+    </div>
+    <div class="vc-chapter ">
+      <span class="vc-ch-time">3:10</span>
+      <div class="vc-ch-dot"></div>
+      <span class="vc-ch-title">Minutes</span>
+    </div>
+    </div>
+    <div class="vid-skip">
+      <button class="vid-skip-btn" onclick="next()">Skip video → go to lesson</button>
+    </div>
+  </div>
+</div>
 
-        const screens = [
-            {
-                id: 'intro',
-                title: 'Meeting Procedures',
-                subtitle: 'Module 2 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Types and Structure of Meetings</h2>
+<!-- S3: LESSON PART 1 -->
+<div class="screen" id="s-lesson1">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:30%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="prev()">←</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">MC N4 · Module 5 of 9</div>
+      <div class="nav-hdr-title">Meeting Procedures</div>
+    </div>
+    <div class="nav-hdr-right">Part 1</div>
+  </div>
+  <div class="lesson-body">
+      <div class="ls-section-lbl">Part 1 — Types of Meetings</div>
+      <div class="ls-h2">Not All Meetings Are Equal</div>
+      <p class="ls-p">The exam will describe a scenario and ask you to name the meeting type. Learn the key ones:</p>
+      <div class="term-row"><div class="term-icon">🗓️</div><div><div class="term-word">Annual General Meeting (AGM)</div><div class="term-def">Happens once a year. All shareholders or members attend. Reviews the year, votes on important decisions, elects directors.</div><div class="term-eg">e.g. Pick n Pay's AGM — shareholders vote on the new CEO appointment</div></div></div>
+      <div class="term-row"><div class="term-icon">⚡</div><div><div class="term-word">Special Meeting</div><div class="term-def">Called urgently when something important can't wait for the AGM. Outside the regular schedule.</div><div class="term-eg">e.g. Emergency meeting to vote on company merger</div></div></div>
+      <div class="term-row"><div class="term-icon">👥</div><div><div class="term-word">Committee Meeting</div><div class="term-def">A smaller group discusses specific work. Each committee has a job (HR, Finance, Disciplinary).</div><div class="term-eg">e.g. Finance committee meets to approve the Q1 budget</div></div></div>
+      <div class="term-row"><div class="term-icon">🏢</div><div><div class="term-word">Departmental / Team Meeting</div><div class="term-def">Manager meets with their team. Plan work, discuss progress, solve day-to-day problems.</div><div class="term-eg">e.g. Monday morning standup between a Nedbank branch manager and her tellers</div></div></div>
+      <div class="sa-example">
+        <div class="sa-tag">🇿🇦 SA Context</div>
+        <div class="sa-title">Taxi Association Annual Meeting</div>
+        <p class="sa-p">A taxi association holds its <strong>AGM</strong> every year. Members vote on route allocation, petrol levy increases, and elect the committee. This is exactly how AGMs work — formal voting, official records (minutes), quorum required.</p>
+      </div>
+    </div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Next →</button>
+  </div>
+</div>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Meetings need structure: notice, agenda, proper procedures, minutes—and someone has to lead. Know the types and terminology.</p>
-                    </div>
+<!-- S4: WORKED EXAMPLE -->
+<div class="screen" id="s-worked">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:45%"></div></div>
+  <div class="we-hdr">
+    <div class="we-badge">📋 Meeting Document Deep Dive</div>
+    <div class="we-title">Before, During & After a Meeting</div>
+    <div class="we-context">A formal meeting has three phases — each with specific documents and rules you must know.</div>
+  </div>
+  <div class="we-body">
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">1</div>
+        <div class="we-step-title">BEFORE — Notice</div>
+      </div>
+      <div class="we-block"><div class="we-block-text">An official announcement sent out in advance. Must include: <strong>date, time, venue, and agenda</strong>.<br>AGM notice must be sent at least <strong>21 days in advance</strong>. Some companies require 7 days minimum.</div></div>
+    </div>
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">2</div>
+        <div class="we-step-title">BEFORE — Agenda</div>
+      </div>
+      <div class="we-block"><div class="we-block-text">The plan for the meeting. Items in order:<br>1. Opening / Welcome<br>2. Apologies (who is absent)<br>3. Previous minutes (confirm last meeting's record)<br>4. Matters arising<br>5. New business items<br>6. Any other business (AOB)<br>7. Date of next meeting</div></div>
+    </div>
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">3</div>
+        <div class="we-step-title">DURING — Key Procedures</div>
+      </div>
+      <div class="we-block"><div class="we-block-text"><strong>Quorum:</strong> Min number of people needed for meeting to be valid. Can't proceed without it.<br><strong>Chairperson:</strong> Leads and controls the meeting. Neutral and fair.<br><strong>Secretary:</strong> Takes notes, manages documents, writes minutes.<br><strong>Motions:</strong> Formal proposals voted on during meeting.</div></div>
+    </div>
+    <div class="we-step">
+      <div class="we-step-header">
+        <div class="we-step-num">4</div>
+        <div class="we-step-title">AFTER — Minutes</div>
+      </div>
+      <div class="we-block"><div class="we-block-text"><strong>Minutes</strong> are the official written record of what was discussed and decided. They include: who was present, all decisions made, who is responsible for each action. Minutes must be approved at the <strong>next meeting</strong>.</div></div>
+    </div></div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
 
-                    <h3>Main Meeting Types</h3>
+<!-- S5: LESSON PART 2 -->
+<div class="screen" id="s-lesson2">
+  <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:58%"></div></div>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="prev()">←</button>
+    <div class="nav-hdr-info">
+      <div class="nav-hdr-sub">MC N4 · Module 5 of 9</div>
+      <div class="nav-hdr-title">Meeting Procedures</div>
+    </div>
+    <div class="nav-hdr-right">Part 2</div>
+  </div>
+  <div class="lesson-body">
+      <div class="ls-section-lbl">Part 2 — Key Terminology</div>
+      <div class="ls-h2">The Words the Exam Loves</div>
+      <p class="ls-p">These terms appear in almost every MC N4 exam. Know them by definition AND by example.</p>
+      <div class="info-card" style="margin-bottom:10px"><div class="info-card-title">⚖️ Quorum</div><div class="info-card-body">The <strong>minimum number of people</strong> required for a meeting to be valid. If quorum isn't reached, the meeting cannot proceed.<br><strong>Example:</strong> A committee has 10 members. The quorum is 6. Only 4 arrive → meeting is postponed.</div></div>
+      <div class="info-card" style="margin-bottom:10px"><div class="info-card-title">🗳️ Motion</div><div class="info-card-body">A formal proposal put to a vote during a meeting.<br><strong>Example:</strong> "I move that we increase the petrol levy by R0.50." Members vote Yes or No.</div></div>
+      <div class="info-card" style="margin-bottom:10px"><div class="info-card-title">🙋 Proposer & Seconder</div><div class="info-card-body">A motion needs TWO people: the <strong>proposer</strong> (suggests it) and the <strong>seconder</strong> (supports it). Can't vote on a motion that nobody seconds.</div></div>
+      <div class="info-card" style="margin-bottom:10px"><div class="info-card-title">📝 Proxy</div><div class="info-card-body">When a member can't attend, they give their <strong>voting power to someone else</strong>. That person is their proxy.<br><strong>Example:</strong> Lungelo can't make the AGM. He signs a proxy form naming Thandi to vote on his behalf.</div></div>
+      <div class="memory-aid">
+        <div class="ma-tag">🧠 Chair vs Secretary</div>
+        <div class="ma-text"><strong>Chair</strong> = CONTROLS the meeting. Speaks, leads, decides order of discussion.<br><strong>Secretary</strong> = RECORDS the meeting. Writes minutes, keeps documents, sends notices.</div>
+      </div>
+    </div>
+  <div class="foot">
+    <button class="btn btn-mc" onclick="next()">Start quiz →</button>
+  </div>
+</div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0;">Annual General Meeting (AGM)</h3>
-                        <p style="margin: 0;">Happens once per year. Shareholders or members meet to discuss the year's performance, vote on matters, and elect directors.</p>
-                    </div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0;">Special Meeting</h3>
-                        <p style="margin: 0;">Called urgently when something important happens outside the normal meeting schedule. Example: The company needs to make a major decision immediately.</p>
-                    </div>
+<div class="screen" id="s-q1">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:33%"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:33%"></div></div>
+      <div class="quiz-cnt">1 of 3</div>
+    </div>
+    <div class="quiz-q-text">A company needs to make an urgent decision about a supplier contract — it can't wait for the annual meeting. What type of meeting is called?</div>
+    
+  </div>
+  <div class="quiz-opts">
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q1')">
+      <div class="q-letter">A</div>
+      <div class="q-text">Annual General Meeting (AGM)</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q1')">
+      <div class="q-letter">B</div>
+      <div class="q-text">Committee Meeting</div>
+    </div>
+    <div class="q-opt" data-correct="true" onclick="checkAnswer(this,true,'q1')">
+      <div class="q-letter">C</div>
+      <div class="q-text">Special Meeting</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q1')">
+      <div class="q-letter">D</div>
+      <div class="q-text">Departmental Meeting</div>
+    </div></div>
+  <div class="q-explanation" id="exp-q1">
+    <div class="q-exp-lbl">💡 Explanation</div>
+    <div class="q-exp-text">A Special Meeting is called outside the regular schedule for urgent matters. AGMs happen once a year on schedule. Committee meetings handle specific departmental work. Departmental meetings are routine team check-ins.</div>
+  </div>
+  <div class="quiz-next" id="next-q1" style="display:none">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
+<div class="screen" id="s-q2">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:66%"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:66%"></div></div>
+      <div class="quiz-cnt">2 of 3</div>
+    </div>
+    <div class="quiz-q-text">A committee has 12 members and the quorum is 8. On meeting day, only 6 members arrive. What happens?</div>
+    
+  </div>
+  <div class="quiz-opts">
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q2')">
+      <div class="q-letter">A</div>
+      <div class="q-text">The meeting proceeds — 6 is more than half of the quorum</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q2')">
+      <div class="q-letter">B</div>
+      <div class="q-text">The meeting proceeds but votes don't count</div>
+    </div>
+    <div class="q-opt" data-correct="true" onclick="checkAnswer(this,true,'q2')">
+      <div class="q-letter">C</div>
+      <div class="q-text">The meeting cannot proceed — quorum was not reached</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q2')">
+      <div class="q-letter">D</div>
+      <div class="q-text">The meeting proceeds but decisions must be ratified later</div>
+    </div></div>
+  <div class="q-explanation" id="exp-q2">
+    <div class="q-exp-lbl">💡 Explanation</div>
+    <div class="q-exp-text">If quorum is not reached, the meeting simply cannot take place. Quorum is the minimum number needed for the meeting to be valid. 6 is less than 8 (the quorum) — so the meeting must be rescheduled.</div>
+  </div>
+  <div class="quiz-next" id="next-q2" style="display:none">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
+<div class="screen" id="s-q3">
+  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%"></div></div>
+  <div class="quiz-hdr">
+    <div class="quiz-progress-row">
+      <div class="quiz-pb"><div class="quiz-pb-fill" style="width:100%"></div></div>
+      <div class="quiz-cnt">3 of 3</div>
+    </div>
+    <div class="quiz-q-text">Who is responsible for writing the minutes of a meeting?</div>
+    
+  </div>
+  <div class="quiz-opts">
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q3')">
+      <div class="q-letter">A</div>
+      <div class="q-text">The Chairperson — they run the meeting</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q3')">
+      <div class="q-letter">B</div>
+      <div class="q-text">The Treasurer — they handle all records</div>
+    </div>
+    <div class="q-opt" data-correct="true" onclick="checkAnswer(this,true,'q3')">
+      <div class="q-letter">C</div>
+      <div class="q-text">The Secretary</div>
+    </div>
+    <div class="q-opt" data-correct="false" onclick="checkAnswer(this,false,'q3')">
+      <div class="q-letter">D</div>
+      <div class="q-text">The most senior person present</div>
+    </div></div>
+  <div class="q-explanation" id="exp-q3">
+    <div class="q-exp-lbl">💡 Explanation</div>
+    <div class="q-exp-text">The Secretary is responsible for taking notes, writing minutes, managing meeting documents, and sending out notices. The Chairperson leads and controls the discussion — they can't write while they're facilitating.</div>
+  </div>
+  <div class="quiz-next" id="next-q3" style="display:none">
+    <button class="btn btn-mc" onclick="next()">Continue →</button>
+  </div>
+</div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0;">Committee Meeting</h3>
-                        <p style="margin: 0;">A smaller group meets to discuss specific work. Example: HR committee, finance committee, disciplinary hearing.</p>
-                    </div>
+<!-- WIN SCREEN -->
+<div class="screen" id="s-win">
+  <div class="sb sb-win"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+  <div class="gp"><div class="gp-fill" style="width:100%"></div></div>
+  <div class="win-body">
+    <div class="win-banner">
+      <div class="win-icon">🎯</div>
+      <div class="win-hl">Module Complete!</div>
+      <div class="win-sub">Meeting Procedures</div>
+      <div class="win-xp">⚡ +80 XP</div>
+    </div>
+    <div class="win-stats">
+      <div class="win-stat"><div class="win-stat-n">3/3</div><div class="win-stat-l">Quiz Score</div></div>
+      <div class="win-stat"><div class="win-stat-n">9 min</div><div class="win-stat-l">Time Spent</div></div>
+      <div class="win-stat"><div class="win-stat-n">5</div><div class="win-stat-l">Concepts</div></div>
+    </div>
+    <div class="win-concepts">
+      <div class="win-concepts-lbl">New concepts learned</div>
+      
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">4 Types of Meetings</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Notice vs Agenda</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Quorum definition</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Chairperson vs Secretary roles</div>
+    </div>
+    <div class="win-concept">
+      <div class="win-concept-dot"></div>
+      <div class="win-concept-text">Minutes of a meeting</div>
+    </div>
+    </div>
+    <div class="ashki-bubble">
+      <div class="ashki-avatar">🎓</div>
+      <div class="ashki-speech">
+        <div class="ashki-name">Ashki</div>
+        <div class="ashki-text">Akisizwe! 🤝 Quorum is the word that trips everyone. You now know what it means AND how it works. Meeting procedures = done.</div>
+      </div>
+    </div>
+    <div class="win-next-card">
+      <div class="win-next-lbl">Up next</div>
+      <div class="win-next-title">Module 6: Language & Editing</div>
+      <div class="win-next-meta">Management Communication N4 · 8 min</div>
+    </div>
+    <button class="btn btn-mc" style="width:100%;margin-bottom:24px" onclick="window.location.href='ayikho-chapter-home.html'">Back to Course →</button>
+  </div>
+</div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0;">Departmental/Team Meeting</h3>
-                        <p style="margin: 0;">A manager meets with their team to plan work, discuss progress, and solve problems.</p>
-                    </div>
+</div></div>
+</div></div>
+<script>
+let cur = 0;
+const screens = document.querySelectorAll('.screen');
+const sideItems = document.querySelectorAll('.si');
 
-                    <h3>Before the Meeting: Notice & Agenda</h3>
-                    <p><strong>Notice:</strong> An official announcement telling people WHEN and WHERE the meeting is. It must be given enough time in advance (e.g., 7 days for an AGM).</p>
+function go(n) {
+  if (n < 0 || n >= screens.length) return;
+  screens[cur].classList.remove('active');
+  screens[cur].classList.add('exit');
+  setTimeout(() => screens[cur < n ? cur : n].classList.remove('exit'), 320);
+  cur = n;
+  screens[cur].classList.add('active');
+  sideItems.forEach((s, i) => s.classList.toggle('active', i === cur));
+}
 
-                    <p><strong>Agenda:</strong> A list of topics to be discussed, in order. It's sent with the notice so everyone knows what to expect.</p>
+function next() { go(cur + 1); }
+function prev() { go(cur - 1); }
 
-                    <div class="example-box">
-                        <div class="example-title">Example: Spaza Shop Owners' AGM</div>
-                        <div class="example-step">
-                            <div class="step-label">NOTICE: Meeting on 15 March at 2pm at Soweto Community Hall</div>
-                            <div class="step-label">AGENDA:</div>
-                            <div class="step-label">1. Welcome & apologies</div>
-                            <div class="step-label">2. Approval of 2024 minutes</div>
-                            <div class="step-label">3. Annual report (2024 sales, challenges)</div>
-                            <div class="step-label">4. Election of new committee</div>
-                            <div class="step-label">5. AOB (Any Other Business)</div>
-                        </div>
-                    </div>
+function checkAnswer(el, correct, qid) {
+  const opts = el.parentElement.querySelectorAll('.q-opt');
+  if (opts[0].classList.contains('correct') || opts[0].classList.contains('wrong')) return;
+  opts.forEach(o => o.classList.add('dimmed'));
+  el.classList.remove('dimmed');
+  el.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    opts.forEach(o => {
+      if (o.dataset.correct === 'true') { o.classList.remove('dimmed'); o.classList.add('correct'); }
+    });
+  }
+  const exp = document.getElementById('exp-' + qid);
+  if (exp) exp.classList.add('show');
+  const nextBtn = document.getElementById('next-' + qid);
+  if (nextBtn) nextBtn.style.display = 'flex';
+}
 
-                    <h3>The Chairperson's Role</h3>
-                    <p>The chair runs the meeting. They keep time, make sure everyone speaks fairly, manage conflict, and guide discussion. A good chair is neutral and fair.</p>
-
-                    <h3>Key Meeting Procedures</h3>
-                    <p><strong>Quorum:</strong> The minimum number of people needed for the meeting to be valid. Can't proceed without it.</p>
-
-                    <p><strong>Motion:</strong> A formal proposal. Example: "I move that we increase the membership fee to R50."</p>
-
-                    <p><strong>Resolution:</strong> A decision made by the group after voting on a motion.</p>
-
-                    <p><strong>Minutes:</strong> Official records of what happened—who was there, what was decided, who must do what by when.</p>
-
-                    <div class="callout real-life">
-                        <h4>🏢 Johannesburg Logistics Company</h4>
-                        <p>The monthly staff meeting starts at 2pm. Chair: Manager Sipho. First, they check who's present (quorum is 8 staff). Agenda items include safety updates and delivery targets. When deciding on overtime policy, someone moves a proposal. After discussion and voting, it becomes a resolution. The secretary writes minutes. Everyone gets a copy.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'minutes',
-                title: 'Minutes & Documentation',
-                subtitle: 'Recording Meetings Properly',
-                type: 'lesson',
-                content: `
-                    <h2>Meeting Minutes</h2>
-
-                    <h3>What Goes Into Minutes?</h3>
-                    <p>Minutes are the official record. They must include:</p>
-
-                    <div class="card">
-                        <p><strong>1. Date, time, location</strong> of the meeting</p>
-                        <p style="margin-top: 12px;"><strong>2. Attendees:</strong> Who was present and who apologised for absence</p>
-                        <p style="margin-top: 12px;"><strong>3. Agenda items:</strong> What was discussed, in order</p>
-                        <p style="margin-top: 12px;"><strong>4. Decisions:</strong> What motions were passed, what resolutions were made</p>
-                        <p style="margin-top: 12px;"><strong>5. Action items:</strong> Who must do what by when</p>
-                        <p style="margin-top: 12px;"><strong>6. Signature:</strong> Chair and secretary sign to confirm accuracy</p>
-                    </div>
-
-                    <h3>Writing Style for Minutes</h3>
-                    <p>Minutes are formal and factual. Use simple language. Record DECISIONS not detailed discussions. Example: Don't write "John said we need to buy new computers and then Sarah said..." Instead write: "It was resolved to purchase 5 new laptops by end of month. John will obtain quotes."</p>
-
-                    <div class="example-box">
-                        <div class="example-title">Real Minutes Extract</div>
-                        <div class="example-step">
-                            <div class="step-label">Date: 12 March 2025 | Time: 2pm | Venue: Board Room</div>
-                            <div class="step-label">Present: Naledi (Chair), Sipho, Zandile, Jacob</div>
-                            <div class="step-label">Apologies: Thabo (sick)</div>
-                            <div class="step-label">--- ITEM 3: Safety Procedures ---</div>
-                            <div class="step-label">It was resolved that all staff attend safety training by 30 April.</div>
-                            <div class="step-label">ACTION: Naledi to arrange trainer by 20 March.</div>
-                        </div>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Common Exam Question</h4>
-                        <p>"Draft minutes for the following meeting..." You must include all 6 elements above. Use formal language. Be brief but complete.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 2',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 2</h2>
-                    <div class="quiz-question">
-                        <h4>What is the main purpose of a meeting agenda?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) To tell people what will be discussed and in what order</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) To record the decisions made at the meeting</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) To announce the date and time of the meeting</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) To sign off on the minutes from the previous meeting</div>
-                        </div>
-                    </div>
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;"><p id="feedback-text-q1"></p></div>
-                    <div class="nav-buttons" id="nav-q1" style="display: none;"><button class="btn-secondary" onclick="nextQuestion()">Next Question</button></div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 2',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 2</h2>
-                    <div class="quiz-question">
-                        <h4>Which of the following MUST be included in meeting minutes?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">A) Detailed arguments from every speaker</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">B) Action items (who must do what by when)</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) The personal opinions of the chairperson</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Jokes and informal comments from attendees</div>
-                        </div>
-                    </div>
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;"><p id="feedback-text-q2"></p></div>
-                    <div class="nav-buttons" id="nav-q2" style="display: none;"><button class="btn-secondary" onclick="nextQuestion()">Next Question</button></div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            return `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Management Communication · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">${screen.content}</div>
-                </div>
-            `;
-        }
-
-        function initScreens() {
-            const container = document.getElementById('screenContainer');
-            screens.forEach((screen, index) => {
-                const div = document.createElement('div');
-                div.innerHTML = renderScreen(index);
-                container.appendChild(div.firstElementChild);
-            });
-
-            const sidebarNav = document.getElementById('sidebarNav');
-            screens.forEach((screen, index) => {
-                const dot = document.createElement('div');
-                dot.className = 'nav-dot' + (index === 0 ? ' active' : '');
-                dot.onclick = () => goToScreen(index);
-                sidebarNav.appendChild(dot);
-            });
-            updateCurrentScreen();
-        }
-
-        function goToScreen(index) {
-            if (index < 0 || index >= screens.length) return;
-            document.querySelectorAll('.screen').forEach((s, i) => {
-                s.classList.remove('active', 'prev');
-                if (i === index) s.classList.add('active');
-                else if (i < index) s.classList.add('prev');
-            });
-            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-            currentScreen = index;
-            updateCurrentScreen();
-            updateProgress();
-        }
-
-        function nextQuestion() {
-            if (currentScreen < screens.length - 1) goToScreen(currentScreen + 1);
-        }
-
-        function checkAnswer(element, isCorrect, questionId) {
-            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
-            const feedback = document.getElementById(`feedback-${questionId}`);
-            const feedbackText = document.getElementById(`feedback-text-${questionId}`);
-
-            if (isCorrect) {
-                element.classList.add('correct');
-                feedbackText.innerHTML = '✓ Correct! You understand meeting procedures.';
-                feedback.style.background = 'var(--green-xs)';
-                feedback.style.border = '2px solid var(--green)';
-                feedback.style.color = 'var(--green)';
-            } else {
-                element.classList.add('incorrect');
-                feedbackText.innerHTML = '✗ Not quite. Review the lesson on meeting structure and documentation.';
-                feedback.style.background = 'rgba(244, 63, 94, 0.1)';
-                feedback.style.border = '2px solid var(--rose)';
-                feedback.style.color = 'var(--rose)';
-            }
-            feedback.style.display = 'block';
-            document.getElementById(`nav-${questionId}`).style.display = 'flex';
-        }
-
-        function updateProgress() {
-            document.getElementById('progressBar').style.width = ((currentScreen + 1) / screens.length) * 100 + '%';
-        }
-
-        function updateCurrentScreen() {
-            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/${screens.length}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', initScreens);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextQuestion();
-            if (e.key === 'ArrowLeft' && currentScreen > 0) goToScreen(currentScreen - 1);
-        });
-    </script>
+// Sidebar init
+sideItems.forEach((s, i) => s.addEventListener('click', () => go(i)));
+</script>
 </body>
 </html>
