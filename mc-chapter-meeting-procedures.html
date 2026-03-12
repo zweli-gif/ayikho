@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayikho - Module 2: Meeting Procedures</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --p: #0D9488; --pl: #14B8A6; --pd: #0F766E;
+            --pxs: #F0FDF9; --psm: #CCFBF1;
+            --fa: #F97316; --fa-l: #FB923C; --fa-d: #EA580C;
+            --fa-xs: #FFF7ED; --fa-sm: #FFEDD5;
+            --gold: #FBBF24; --green: #22C55E; --green-xs: #F0FDF4;
+            --rose: #F43F5E; --ink: #0A1628; --mut: #475569;
+            --dim: #94A3B8; --bord: #CFFAFE; --surf: #F0FDF9;
+            --w: #FFFFFF; --bg-dark: #050F1B;
+        }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--ink); overflow: hidden; }
+        .phone-frame { width: 375px; height: 812px; margin: 20px auto; border: 12px solid var(--bg-dark); border-radius: 50px; overflow: hidden; background: #05090F; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; }
+        .status-bar { height: 48px; background: var(--ink); color: var(--w); display: flex; justify-content: space-between; align-items: center; padding: 0 16px; font-size: 14px; font-family: 'JetBrains Mono', monospace; }
+        .status-left, .status-right { display: flex; gap: 8px; align-items: center; }
+        .progress-strip { height: 3px; background: var(--bord); position: relative; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--fa); width: 20%; transition: width 0.3s ease; }
+        .screen-container { flex: 1; overflow: hidden; position: relative; display: flex; }
+        .screen { width: 100%; height: 100%; display: flex; flex-direction: column; position: absolute; left: 0; top: 0; opacity: 0; transform: translateX(100px); transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
+        .screen.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+        .screen.prev { transform: translateX(-100px); }
+        .header { background: linear-gradient(135deg, var(--p) 0%, var(--pl) 100%); color: var(--w); padding: 24px 20px; flex-shrink: 0; }
+        .header h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .header p { font-size: 13px; opacity: 0.9; font-weight: 300; }
+        .sidebar { position: fixed; left: 0; top: 0; width: 60px; height: 812px; background: var(--ink); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px 0; z-index: 1000; border-radius: 0 50px 50px 0; }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 12px; margin-top: 60px; }
+        .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); cursor: pointer; transition: all 0.2s ease; }
+        .nav-dot.active { background: var(--fa); width: 24px; border-radius: 4px; }
+        .nav-dot:hover { background: var(--fa-l); }
+        .body { flex: 1; overflow-y: auto; padding: 20px; background: var(--w); }
+        h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--ink); }
+        h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin: 20px 0 12px 0; color: var(--ink); }
+        p { line-height: 1.6; color: var(--mut); margin-bottom: 12px; font-size: 15px; }
+        .callout { background: var(--fa-xs); border-left: 4px solid var(--fa); padding: 16px; margin: 20px 0; border-radius: 8px; }
+        .callout.exam { background: var(--pxs); border-left-color: var(--p); }
+        .callout h4 { font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        .callout p { font-size: 14px; margin-bottom: 0; }
+        .card { background: var(--surf); border: 1px solid var(--bord); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        button { background: var(--p); color: var(--w); border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; transition: all 0.2s ease; }
+        button:hover { background: var(--pl); transform: translateY(-2px); }
+        .btn-secondary { background: var(--fa); }
+        .btn-secondary:hover { background: var(--fa-l); }
+        .example-box { background: linear-gradient(135deg, var(--fa-xs) 0%, var(--fa-sm) 100%); border-left: 4px solid var(--fa); padding: 16px; border-radius: 8px; margin: 16px 0; }
+        .example-title { font-weight: 700; color: var(--fa-d); margin-bottom: 12px; font-size: 14px; }
+        .example-step { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(249, 115, 22, 0.2); }
+        .example-step:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .step-label { font-weight: 600; color: var(--ink); font-size: 13px; }
+        .quiz-option { padding: 12px 16px; background: var(--surf); border: 2px solid var(--bord); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-size: 14px; text-align: left; margin-bottom: 8px; }
+        .quiz-option:hover { border-color: var(--p); background: var(--psm); }
+        .quiz-option.correct { background: var(--green-xs); border-color: var(--green); color: var(--green); }
+        .quiz-option.incorrect { background: rgba(244, 63, 94, 0.1); border-color: var(--rose); color: var(--rose); }
+        .nav-buttons { display: flex; gap: 12px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--bord); }
+        .nav-buttons button { flex: 1; }
+        .nav-buttons button:first-child { background: var(--surf); border: 2px solid var(--bord); color: var(--ink); }
+        .nav-buttons button:first-child:hover { background: var(--psm); }
+        .body::-webkit-scrollbar { width: 6px; }
+        .body::-webkit-scrollbar-track { background: var(--surf); }
+        .body::-webkit-scrollbar-thumb { background: var(--bord); border-radius: 3px; }
+    </style>
+    <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+    <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
+        <div class="sidebar-nav" id="sidebarNav"></div>
+        <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
+            <div id="currentScreen">1/4</div>
+        </div>
+    </div>
+
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="status-left"><span>10:15</span></div>
+            <div style="flex: 1; text-align: center; font-size: 12px;">Ayikho</div>
+            <div class="status-right"><span>4G</span><span>🔋</span></div>
+        </div>
+        <div class="progress-strip"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="screen-container" id="screenContainer"></div>
+    </div>
+
+    <script>
+        const MODULE_ID = 2;
+        let currentScreen = 0;
+
+        const screens = [
+            {
+                id: 'intro',
+                title: 'Meeting Procedures',
+                subtitle: 'Module 2 of 8',
+                type: 'lesson',
+                content: `
+                    <h2>Types and Structure of Meetings</h2>
+
+                    <div class="callout exam">
+                        <h4>TL;DR</h4>
+                        <p>Meetings need structure: notice, agenda, proper procedures, minutes—and someone has to lead. Know the types and terminology.</p>
+                    </div>
+
+                    <h3>Main Meeting Types</h3>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">Annual General Meeting (AGM)</h3>
+                        <p style="margin: 0;">Happens once per year. Shareholders or members meet to discuss the year's performance, vote on matters, and elect directors.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">Special Meeting</h3>
+                        <p style="margin: 0;">Called urgently when something important happens outside the normal meeting schedule. Example: The company needs to make a major decision immediately.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">Committee Meeting</h3>
+                        <p style="margin: 0;">A smaller group meets to discuss specific work. Example: HR committee, finance committee, disciplinary hearing.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top: 0;">Departmental/Team Meeting</h3>
+                        <p style="margin: 0;">A manager meets with their team to plan work, discuss progress, and solve problems.</p>
+                    </div>
+
+                    <h3>Before the Meeting: Notice & Agenda</h3>
+                    <p><strong>Notice:</strong> An official announcement telling people WHEN and WHERE the meeting is. It must be given enough time in advance (e.g., 7 days for an AGM).</p>
+
+                    <p><strong>Agenda:</strong> A list of topics to be discussed, in order. It's sent with the notice so everyone knows what to expect.</p>
+
+                    <div class="example-box">
+                        <div class="example-title">Example: Spaza Shop Owners' AGM</div>
+                        <div class="example-step">
+                            <div class="step-label">NOTICE: Meeting on 15 March at 2pm at Soweto Community Hall</div>
+                            <div class="step-label">AGENDA:</div>
+                            <div class="step-label">1. Welcome & apologies</div>
+                            <div class="step-label">2. Approval of 2024 minutes</div>
+                            <div class="step-label">3. Annual report (2024 sales, challenges)</div>
+                            <div class="step-label">4. Election of new committee</div>
+                            <div class="step-label">5. AOB (Any Other Business)</div>
+                        </div>
+                    </div>
+
+                    <h3>The Chairperson's Role</h3>
+                    <p>The chair runs the meeting. They keep time, make sure everyone speaks fairly, manage conflict, and guide discussion. A good chair is neutral and fair.</p>
+
+                    <h3>Key Meeting Procedures</h3>
+                    <p><strong>Quorum:</strong> The minimum number of people needed for the meeting to be valid. Can't proceed without it.</p>
+
+                    <p><strong>Motion:</strong> A formal proposal. Example: "I move that we increase the membership fee to R50."</p>
+
+                    <p><strong>Resolution:</strong> A decision made by the group after voting on a motion.</p>
+
+                    <p><strong>Minutes:</strong> Official records of what happened—who was there, what was decided, who must do what by when.</p>
+
+                    <div class="callout real-life">
+                        <h4>🏢 Johannesburg Logistics Company</h4>
+                        <p>The monthly staff meeting starts at 2pm. Chair: Manager Sipho. First, they check who's present (quorum is 8 staff). Agenda items include safety updates and delivery targets. When deciding on overtime policy, someone moves a proposal. After discussion and voting, it becomes a resolution. The secretary writes minutes. Everyone gets a copy.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'minutes',
+                title: 'Minutes & Documentation',
+                subtitle: 'Recording Meetings Properly',
+                type: 'lesson',
+                content: `
+                    <h2>Meeting Minutes</h2>
+
+                    <h3>What Goes Into Minutes?</h3>
+                    <p>Minutes are the official record. They must include:</p>
+
+                    <div class="card">
+                        <p><strong>1. Date, time, location</strong> of the meeting</p>
+                        <p style="margin-top: 12px;"><strong>2. Attendees:</strong> Who was present and who apologised for absence</p>
+                        <p style="margin-top: 12px;"><strong>3. Agenda items:</strong> What was discussed, in order</p>
+                        <p style="margin-top: 12px;"><strong>4. Decisions:</strong> What motions were passed, what resolutions were made</p>
+                        <p style="margin-top: 12px;"><strong>5. Action items:</strong> Who must do what by when</p>
+                        <p style="margin-top: 12px;"><strong>6. Signature:</strong> Chair and secretary sign to confirm accuracy</p>
+                    </div>
+
+                    <h3>Writing Style for Minutes</h3>
+                    <p>Minutes are formal and factual. Use simple language. Record DECISIONS not detailed discussions. Example: Don't write "John said we need to buy new computers and then Sarah said..." Instead write: "It was resolved to purchase 5 new laptops by end of month. John will obtain quotes."</p>
+
+                    <div class="example-box">
+                        <div class="example-title">Real Minutes Extract</div>
+                        <div class="example-step">
+                            <div class="step-label">Date: 12 March 2025 | Time: 2pm | Venue: Board Room</div>
+                            <div class="step-label">Present: Naledi (Chair), Sipho, Zandile, Jacob</div>
+                            <div class="step-label">Apologies: Thabo (sick)</div>
+                            <div class="step-label">--- ITEM 3: Safety Procedures ---</div>
+                            <div class="step-label">It was resolved that all staff attend safety training by 30 April.</div>
+                            <div class="step-label">ACTION: Naledi to arrange trainer by 20 March.</div>
+                        </div>
+                    </div>
+
+                    <div class="callout exam">
+                        <h4>📝 Common Exam Question</h4>
+                        <p>"Draft minutes for the following meeting..." You must include all 6 elements above. Use formal language. Be brief but complete.</p>
+                    </div>
+                `
+            },
+            {
+                id: 'quiz1',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 1 of 2',
+                type: 'quiz',
+                content: `
+                    <h2>Question 1 of 2</h2>
+                    <div class="quiz-question">
+                        <h4>What is the main purpose of a meeting agenda?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) To tell people what will be discussed and in what order</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) To record the decisions made at the meeting</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) To announce the date and time of the meeting</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) To sign off on the minutes from the previous meeting</div>
+                        </div>
+                    </div>
+                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;"><p id="feedback-text-q1"></p></div>
+                    <div class="nav-buttons" id="nav-q1" style="display: none;"><button class="btn-secondary" onclick="nextQuestion()">Next Question</button></div>
+                `
+            },
+            {
+                id: 'quiz2',
+                title: 'Check Your Understanding',
+                subtitle: 'Quiz - Question 2 of 2',
+                type: 'quiz',
+                content: `
+                    <h2>Question 2 of 2</h2>
+                    <div class="quiz-question">
+                        <h4>Which of the following MUST be included in meeting minutes?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">A) Detailed arguments from every speaker</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">B) Action items (who must do what by when)</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) The personal opinions of the chairperson</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Jokes and informal comments from attendees</div>
+                        </div>
+                    </div>
+                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;"><p id="feedback-text-q2"></p></div>
+                    <div class="nav-buttons" id="nav-q2" style="display: none;"><button class="btn-secondary" onclick="nextQuestion()">Next Question</button></div>
+                `
+            }
+        ];
+
+        function renderScreen(index) {
+            const screen = screens[index];
+            return `
+                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
+                    <div class="header">
+                        <h1>${screen.title}</h1>
+                        <p>Management Communication · ${screen.subtitle}</p>
+                    </div>
+                    <div class="body">${screen.content}</div>
+                </div>
+            `;
+        }
+
+        function initScreens() {
+            const container = document.getElementById('screenContainer');
+            screens.forEach((screen, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = renderScreen(index);
+                container.appendChild(div.firstElementChild);
+            });
+
+            const sidebarNav = document.getElementById('sidebarNav');
+            screens.forEach((screen, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot' + (index === 0 ? ' active' : '');
+                dot.onclick = () => goToScreen(index);
+                sidebarNav.appendChild(dot);
+            });
+            updateCurrentScreen();
+        }
+
+        function goToScreen(index) {
+            if (index < 0 || index >= screens.length) return;
+            document.querySelectorAll('.screen').forEach((s, i) => {
+                s.classList.remove('active', 'prev');
+                if (i === index) s.classList.add('active');
+                else if (i < index) s.classList.add('prev');
+            });
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentScreen = index;
+            updateCurrentScreen();
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentScreen < screens.length - 1) goToScreen(currentScreen + 1);
+        }
+
+        function checkAnswer(element, isCorrect, questionId) {
+            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            const feedbackText = document.getElementById(`feedback-text-${questionId}`);
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedbackText.innerHTML = '✓ Correct! You understand meeting procedures.';
+                feedback.style.background = 'var(--green-xs)';
+                feedback.style.border = '2px solid var(--green)';
+                feedback.style.color = 'var(--green)';
+            } else {
+                element.classList.add('incorrect');
+                feedbackText.innerHTML = '✗ Not quite. Review the lesson on meeting structure and documentation.';
+                feedback.style.background = 'rgba(244, 63, 94, 0.1)';
+                feedback.style.border = '2px solid var(--rose)';
+                feedback.style.color = 'var(--rose)';
+            }
+            feedback.style.display = 'block';
+            document.getElementById(`nav-${questionId}`).style.display = 'flex';
+        }
+
+        function updateProgress() {
+            document.getElementById('progressBar').style.width = ((currentScreen + 1) / screens.length) * 100 + '%';
+        }
+
+        function updateCurrentScreen() {
+            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/${screens.length}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', initScreens);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextQuestion();
+            if (e.key === 'ArrowLeft' && currentScreen > 0) goToScreen(currentScreen - 1);
+        });
+    </script>
+</body>
+</html>

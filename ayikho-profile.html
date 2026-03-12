@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayikho · Student Profile</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    :root {
+      --p: #7C3AED;
+      --pl: #9D5FFF;
+      --pd: #4C1A99;
+      --pxs: #F5F0FF;
+      --psm: #EDE8FF;
+      --fa: #0284C7;
+      --fa-l: #38BDF8;
+      --fa-d: #075985;
+      --fa-xs: #F0F9FF;
+      --fa-sm: #E0F2FE;
+      --gold: #F59E0B;
+      --green: #22C55E;
+      --green-xs: #F0FDF4;
+      --rose: #F43F5E;
+      --ink: #1A0A3A;
+      --mut: #6B5A8A;
+      --dim: #9580B8;
+      --bord: #DDD5F5;
+      --surf: #F7F4FF;
+      --w: #FFFFFF;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: #05090F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden
+    }
+
+    .shell {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start
+    }
+
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: var(--w);
+      border-radius: 50px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 0 2px #0D1117, 0 0 0 4px #060A10, 0 50px 120px rgba(0, 0, 0, .85), 0 0 200px rgba(2, 132, 199, .08);
+      display: flex;
+      flex-direction: column
+    }
+
+    /* STATUS BAR */
+    .sb {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+      background: var(--ink);
+      color: white
+    }
+
+    .sb-t {
+      font-weight: 700;
+      font-size: 15px
+    }
+
+    .sb-i {
+      font-size: 11px;
+      opacity: .8
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, var(--p), var(--pl));
+      padding: 32px 22px 24px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .1)
+    }
+
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: white;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 4px
+    }
+
+    .header-subtitle {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .7);
+      position: relative;
+      z-index: 1
+    }
+
+    /* PROFILE CARD */
+    .profile-card {
+      background: var(--w);
+      padding: 24px 22px;
+      border-bottom: 1px solid var(--bord);
+      flex-shrink: 0;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--p), var(--fa));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px
+    }
+
+    .profile-college {
+      font-size: 13px;
+      color: var(--mut);
+      margin-bottom: 8px
+    }
+
+    .profile-btn {
+      font-size: 12px;
+      color: var(--p);
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0
+    }
+
+    .profile-btn:hover {
+      text-decoration: underline
+    }
+
+    /* CONTENT AREA */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0
+    }
+
+    .content-area::-webkit-scrollbar {
+      display: none
+    }
+
+    .content {
+      padding: 20px 18px 24px
+    }
+
+    /* STATS GRID */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px
+    }
+
+    .stat-card {
+      background: var(--surf);
+      border: 1px solid var(--bord);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--p);
+      margin-bottom: 4px
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-weight: 600
+    }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 24px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--bord)
+    }
+
+    /* BADGES GRID */
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px
+    }
+
+    .badge {
+      background: var(--w);
+      border: 2px solid var(--bord);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      transition: all .25s;
+      cursor: default
+    }
+
+    .badge.unlocked {
+      border-color: var(--gold);
+      background: rgba(245, 158, 11, .05)
+    }
+
+    .badge-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+      opacity: .6;
+      transition: opacity .25s
+    }
+
+    .badge.unlocked .badge-icon {
+      opacity: 1
+    }
+
+    .badge-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--mut);
+      margin-bottom: 4px
+    }
+
+    .badge.unlocked .badge-name {
+      color: var(--gold)
+    }
+
+    .badge-desc {
+      font-size: 10px;
+      color: var(--dim);
+      line-height: 1.3
+    }
+
+    /* EDIT PROFILE SECTION */
+    .edit-section {
+      background: var(--surf);
+      border: 1px solid var(--bord);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px
+    }
+
+    .form-group {
+      margin-bottom: 14px
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dim);
+      display: block;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .05em
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--bord);
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--w);
+      transition: all .2s
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--p);
+      box-shadow: 0 0 0 3px var(--pxs)
+    }
+
+    .btn-save {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--p);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      margin-top: 8px
+    }
+
+    .btn-save:hover {
+      background: var(--pl)
+    }
+
+    .btn-save:active {
+      transform: scale(.98)
+    }
+
+    /* ASHKI MESSAGE */
+    .ashki-message {
+      background: var(--fa-xs);
+      border: 1px solid var(--fa-sm);
+      border-left: 4px solid var(--fa);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: flex-start
+    }
+
+    .ashki-avatar {
+      font-size: 24px;
+      flex-shrink: 0
+    }
+
+    .ashki-text {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5
+    }
+
+    .hidden {
+      display: none !important
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="shell">
+    <div class="phone">
+
+      <!-- STATUS BAR -->
+      <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+
+      <!-- HEADER -->
+      <div class="header">
+        <div class="header-title">Profile</div>
+        <div class="header-subtitle">Your FA N4 journey</div>
+      </div>
+
+      <!-- PROFILE CARD -->
+      <div class="profile-card">
+        <div class="avatar" id="avatar">A</div>
+        <div class="profile-info">
+          <div class="profile-name" id="studentName">Student Name</div>
+          <div class="profile-college" id="collegeName">Your TVET College</div>
+          <button class="profile-btn" onclick="toggleEditMode()">Edit Profile</button>
+        </div>
+      </div>
+
+      <!-- CONTENT AREA -->
+      <div class="content-area">
+        <div class="content">
+
+          <!-- STATS GRID -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value" id="totalXP">0</div>
+              <div class="stat-label">Total XP</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="modulesCount">0/10</div>
+              <div class="stat-label">Modules Done</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="avgScore">0%</div>
+              <div class="stat-label">Avg Quiz Score</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="streakDays">0</div>
+              <div class="stat-label">Day Streak</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="studyTime">0h</div>
+              <div class="stat-label">Study Time</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="sessionsCount">0</div>
+              <div class="stat-label">Sessions</div>
+            </div>
+          </div>
+
+          <!-- EDIT PROFILE SECTION -->
+          <div class="edit-section hidden" id="editSection">
+            <div class="section-title">✏️ Edit Details</div>
+            <form onsubmit="saveProfile(event)">
+              <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" id="editName" placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">College</label>
+                <input type="text" class="form-input" id="editCollege" placeholder="Your TVET college">
+              </div>
+              <button type="submit" class="btn-save">Save Changes</button>
+            </form>
+          </div>
+
+          <!-- ACHIEVEMENTS SECTION -->
+          <div class="section-title">🏆 Achievements</div>
+          <div class="badges-grid">
+            <div class="badge" id="badge-first">
+              <div class="badge-icon">🚀</div>
+              <div class="badge-name">First Module</div>
+              <div class="badge-desc">Complete any module</div>
+            </div>
+            <div class="badge" id="badge-perfect">
+              <div class="badge-icon">💯</div>
+              <div class="badge-name">Perfect Score</div>
+              <div class="badge-desc">100% on a quiz</div>
+            </div>
+            <div class="badge" id="badge-warrior">
+              <div class="badge-icon">⚡</div>
+              <div class="badge-name">Week Warrior</div>
+              <div class="badge-desc">7-day study streak</div>
+            </div>
+            <div class="badge" id="badge-halfway">
+              <div class="badge-icon">🎯</div>
+              <div class="badge-name">Halfway There</div>
+              <div class="badge-desc">5/10 modules done</div>
+            </div>
+            <div class="badge" id="badge-master">
+              <div class="badge-icon">👑</div>
+              <div class="badge-name">FA Master</div>
+              <div class="badge-desc">All 10 modules</div>
+            </div>
+            <div class="badge" id="badge-consistent">
+              <div class="badge-icon">📚</div>
+              <div class="badge-name">Consistent Learner</div>
+              <div class="badge-desc">30-day streak</div>
+            </div>
+          </div>
+
+          <!-- ASHKI MESSAGE -->
+          <div class="ashki-message">
+            <div class="ashki-avatar">📚</div>
+            <div class="ashki-text" id="ashkiMessage">Keep studying! You're on the right track.</div>
+          </div>
+
+          <div style="height: 20px;"></div>
+        </div>
+      </div>
+
+    </div><!-- /phone -->
+  </div><!-- /shell -->
+
+  <script>
+    // Load student data
+    let studentData = null;
+
+    function getStudentData() {
+      try {
+        // Try to get from parent window (app.html iframe)
+        if (window.parent && window.parent.ayikhoData) {
+          return window.parent.ayikhoData;
+        }
+        // Fallback to localStorage
+        const stored = localStorage.getItem('ayikho_student');
+        if (stored) {
+          return JSON.parse(stored);
+        }
+      } catch (e) {
+        console.log('Error loading student data:', e);
+      }
+      return null;
+    }
+
+    function initProfile() {
+      const data = getStudentData();
+      if (!data) {
+        // Use defaults
+        document.getElementById('studentName').textContent = 'Student';
+        document.getElementById('collegeName').textContent = 'Your TVET College';
+        return;
+      }
+
+      // Parse if it's raw JSON (not the class instance)
+      const profile = data.profile || data.data?.profile || {};
+      const stats = data.stats || data.data?.stats || {};
+      const modules = data.modules || data.data?.modules || {};
+
+      // Update profile display
+      const studentName = profile.name || 'Student';
+      document.getElementById('studentName').textContent = studentName;
+      document.getElementById('collegeName').textContent = profile.college || 'Your TVET College';
+
+      // Update avatar initial
+      const initial = studentName.charAt(0).toUpperCase();
+      document.getElementById('avatar').textContent = initial;
+
+      // Update edit form
+      document.getElementById('editName').value = studentName;
+      document.getElementById('editCollege').value = profile.college || '';
+
+      // Calculate stats
+      let completedCount = 0;
+      let totalScores = [];
+      for (let i = 1; i <= 10; i++) {
+        const mod = modules[String(i)] || {};
+        if (mod.status === 'completed') completedCount++;
+        if (mod.postQuiz && mod.postQuiz.total > 0) {
+          totalScores.push((mod.postQuiz.score / mod.postQuiz.total) * 100);
+        }
+      }
+
+      const avgScore = totalScores.length > 0 ? Math.round(totalScores.reduce((a, b) => a + b) / totalScores.length) : 0;
+      const totalTimeMs = stats.totalTimeMs || 0;
+      const totalTimeHours = Math.round(totalTimeMs / 3600000);
+      const totalXP = stats.totalXP || 0;
+      const streakDays = stats.streakDays || 0;
+      const sessionsCount = stats.sessionsCount || 0;
+
+      // Update stat cards
+      document.getElementById('totalXP').textContent = totalXP;
+      document.getElementById('modulesCount').textContent = completedCount + '/10';
+      document.getElementById('avgScore').textContent = avgScore + '%';
+      document.getElementById('streakDays').textContent = streakDays;
+      document.getElementById('studyTime').textContent = totalTimeHours + 'h';
+      document.getElementById('sessionsCount').textContent = sessionsCount;
+
+      // Unlock badges
+      if (completedCount >= 1) {
+        document.getElementById('badge-first').classList.add('unlocked');
+      }
+
+      let perfectScores = 0;
+      for (let i = 1; i <= 10; i++) {
+        const mod = modules[String(i)] || {};
+        if (mod.postQuiz && mod.postQuiz.total > 0 && mod.postQuiz.score === mod.postQuiz.total) {
+          perfectScores++;
+        }
+      }
+      if (perfectScores > 0) {
+        document.getElementById('badge-perfect').classList.add('unlocked');
+      }
+
+      if (streakDays >= 7) {
+        document.getElementById('badge-warrior').classList.add('unlocked');
+      }
+
+      if (completedCount >= 5) {
+        document.getElementById('badge-halfway').classList.add('unlocked');
+      }
+
+      if (completedCount >= 10) {
+        document.getElementById('badge-master').classList.add('unlocked');
+      }
+
+      if (streakDays >= 30) {
+        document.getElementById('badge-consistent').classList.add('unlocked');
+      }
+
+      // Update Ashki message
+      const ashkiMessage = document.getElementById('ashkiMessage');
+      if (completedCount >= 10) {
+        ashkiMessage.textContent = 'Incredible! You\'ve completed all 10 modules. You\'re ready for the N4 exam!';
+      } else if (avgScore >= 80) {
+        ashkiMessage.textContent = 'Excellent performance! Keep up this momentum to ace the N4 exam.';
+      } else if (completedCount >= 5) {
+        ashkiMessage.textContent = 'You\'re halfway there! Keep pushing to complete all modules.';
+      } else if (streakDays >= 7) {
+        ashkiMessage.textContent = 'Amazing consistency! Your daily studying is paying off.';
+      } else if (totalTimeHours > 0) {
+        ashkiMessage.textContent = 'Great start! Keep studying regularly to build a strong foundation.';
+      } else {
+        ashkiMessage.textContent = 'Start your first module to begin your journey to FA N4 mastery!';
+      }
+    }
+
+    function toggleEditMode() {
+      const editSection = document.getElementById('editSection');
+      editSection.classList.toggle('hidden');
+    }
+
+    function saveProfile(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('editName').value;
+      const college = document.getElementById('editCollege').value;
+
+      if (!name.trim()) {
+        alert('Please enter your name');
+        return;
+      }
+
+      // Update in parent window if available
+      if (window.parent && window.parent.ayikhoData && typeof window.parent.ayikhoData.setProfile === 'function') {
+        window.parent.ayikhoData.setProfile({
+          name: name,
+          college: college
+        });
+      } else {
+        // Update in localStorage
+        try {
+          const stored = localStorage.getItem('ayikho_student');
+          if (stored) {
+            const data = JSON.parse(stored);
+            data.profile.name = name;
+            data.profile.college = college;
+            localStorage.setItem('ayikho_student', JSON.stringify(data));
+          }
+        } catch (e) {
+          console.error('Error saving to localStorage:', e);
+        }
+      }
+
+      // Update UI
+      document.getElementById('studentName').textContent = name;
+      document.getElementById('collegeName').textContent = college || 'Your TVET College';
+      const initial = name.charAt(0).toUpperCase();
+      document.getElementById('avatar').textContent = initial;
+
+      // Close edit section
+      document.getElementById('editSection').classList.add('hidden');
+
+      alert('Profile updated!');
+    }
+
+    // Initialize on load
+    initProfile();
+  </script>
+
+</body>
+
+</html>

@@ -312,10 +312,39 @@
       <div class="content-area">
         <div class="papers-container">
 
+          <!-- Practice Papers Section -->
+          <div class="year-section">
+            <div class="year-header">Practice Papers</div>
+            <div class="paper-card" onclick="startPracticeExam(1)">
+              <div class="paper-icon">📋</div>
+              <div class="paper-info">
+                <div class="paper-title">Practice Paper 1</div>
+                <div class="paper-meta">15 Questions · 90 minutes</div>
+              </div>
+              <div class="paper-arrow">→</div>
+            </div>
+            <div class="paper-card" onclick="startPracticeExam(2)">
+              <div class="paper-icon">📋</div>
+              <div class="paper-info">
+                <div class="paper-title">Practice Paper 2</div>
+                <div class="paper-meta">15 Questions · 90 minutes</div>
+              </div>
+              <div class="paper-arrow">→</div>
+            </div>
+            <div class="paper-card" onclick="startPracticeExam(3)">
+              <div class="paper-icon">📋</div>
+              <div class="paper-info">
+                <div class="paper-title">Practice Paper 3</div>
+                <div class="paper-meta">15 Questions · 90 minutes</div>
+              </div>
+              <div class="paper-arrow">→</div>
+            </div>
+          </div>
+
           <!-- 2024 Papers -->
           <div class="year-section">
-            <div class="year-header">2024</div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2024-NOV-QP.pdf')">
+            <div class="year-header">2024 (Reference)</div>
+            <div class="paper-card" onclick="showComingSoon()">
               <div class="paper-icon">📄</div>
               <div class="paper-info">
                 <div class="paper-title">N4 Financial Accounting</div>
@@ -323,74 +352,11 @@
               </div>
               <div class="paper-arrow">→</div>
             </div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2024-JUN-QP.pdf')">
+            <div class="paper-card" onclick="showComingSoon()">
               <div class="paper-icon">📄</div>
               <div class="paper-info">
                 <div class="paper-title">N4 Financial Accounting</div>
                 <div class="paper-meta">June 2024 · Question Paper</div>
-              </div>
-              <div class="paper-arrow">→</div>
-            </div>
-          </div>
-
-          <!-- 2023 Papers -->
-          <div class="year-section">
-            <div class="year-header">2023</div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2023-NOV-QP.pdf')">
-              <div class="paper-icon">📄</div>
-              <div class="paper-info">
-                <div class="paper-title">N4 Financial Accounting</div>
-                <div class="paper-meta">November 2023 · Question Paper</div>
-              </div>
-              <div class="paper-arrow">→</div>
-            </div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2023-JUN-QP.pdf')">
-              <div class="paper-icon">📄</div>
-              <div class="paper-info">
-                <div class="paper-title">N4 Financial Accounting</div>
-                <div class="paper-meta">June 2023 · Question Paper</div>
-              </div>
-              <div class="paper-arrow">→</div>
-            </div>
-          </div>
-
-          <!-- 2022 Papers -->
-          <div class="year-section">
-            <div class="year-header">2022</div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2022-NOV-QP.pdf')">
-              <div class="paper-icon">📄</div>
-              <div class="paper-info">
-                <div class="paper-title">N4 Financial Accounting</div>
-                <div class="paper-meta">November 2022 · Question Paper</div>
-              </div>
-              <div class="paper-arrow">→</div>
-            </div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2022-JUN-QP.pdf')">
-              <div class="paper-icon">📄</div>
-              <div class="paper-info">
-                <div class="paper-title">N4 Financial Accounting</div>
-                <div class="paper-meta">June 2022 · Question Paper</div>
-              </div>
-              <div class="paper-arrow">→</div>
-            </div>
-          </div>
-
-          <!-- 2021 Papers -->
-          <div class="year-section">
-            <div class="year-header">2021</div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2021-NOV-QP.pdf')">
-              <div class="paper-icon">📄</div>
-              <div class="paper-info">
-                <div class="paper-title">N4 Financial Accounting</div>
-                <div class="paper-meta">November 2021 · Question Paper</div>
-              </div>
-              <div class="paper-arrow">→</div>
-            </div>
-            <div class="paper-card" onclick="openPaper('FA-N4-2021-JUN-QP.pdf')">
-              <div class="paper-icon">📄</div>
-              <div class="paper-info">
-                <div class="paper-title">N4 Financial Accounting</div>
-                <div class="paper-meta">June 2021 · Question Paper</div>
               </div>
               <div class="paper-arrow">→</div>
             </div>
@@ -404,9 +370,12 @@
   </div><!-- /shell -->
 
   <script>
-    function openPaper(filename) {
-      const url = 'assets/papers/' + filename;
-      window.open(url, '_blank');
+    function startPracticeExam(paperNum) {
+      window.location.href = 'ayikho-practice-exam.html?module=' + paperNum;
+    }
+
+    function showComingSoon() {
+      alert('Full past papers will be added soon. Use the practice papers to prepare!');
     }
   </script>
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ayikho-study-cache-v11';
+const CACHE_NAME = 'ayikho-study-cache-v12';
 const PRECACHE_URLS = [
     '/',
     '/index.html',
@@ -10,6 +10,7 @@ const PRECACHE_URLS = [
     '/student-data.js',
     '/firebase-config.js',
     '/tracking.js',
+    // Financial Accounting N4
     '/ayikho-chapter-concepts.html',
     '/ayikho-chapter-accounting.html',
     '/ayikho-chapter-journals.html',
@@ -23,10 +24,23 @@ const PRECACHE_URLS = [
     '/ayikho-quiz.html',
     '/ayikho-capstone.html',
     '/ayikho-papers.html',
+    '/ayikho-practice-exam.html',
     '/ayikho-memos.html',
+    '/ayikho-profile.html',
     '/quiz-bank.js',
     '/capstone-bank.js',
-    '/video-lessons.js'
+    '/video-lessons.js',
+    // Management Communication N4
+    '/mc-chapter-communication-theory.html',
+    '/mc-chapter-meeting-procedures.html',
+    '/mc-chapter-business-letters.html',
+    '/mc-chapter-memos-reports.html',
+    '/mc-chapter-oral-communication.html',
+    '/mc-chapter-visual-communication.html',
+    '/mc-chapter-reading-comprehension.html',
+    '/mc-chapter-language-editing.html',
+    '/mc-quiz-bank.js',
+    '/mc-video-lessons.js'
 ];
 
 self.addEventListener('install', event => {
