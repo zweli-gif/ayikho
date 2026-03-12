@@ -96,5 +96,14 @@
 
   <a href="ayikho-signin.html" class="btn-start">Start Learning</a>
   <a href="admin-dashboard.html" class="btn-admin">Admin Dashboard</a>
+
+  <script>
+    // Returning users skip straight to the app
+    try {
+      if (localStorage.getItem('ayikho-student-data')) {
+        window.location.replace('app.html');
+      }
+    } catch(e) {}
+  </script>
 </body>
 </html>
