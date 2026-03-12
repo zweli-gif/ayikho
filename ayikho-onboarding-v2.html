@@ -1629,10 +1629,11 @@
     }
 
     /* ──────────────────────────────────────
-   WELCOME
+   WELCOME — COVER PAGE
 ────────────────────────────────────── */
     #s-welcome {
-      background: var(--pd)
+      background: linear-gradient(165deg, #1A0A3A 0%, #4C1A99 40%, #7C3AED 70%, #9D5FFF 100%);
+      overflow: hidden;
     }
 
     .wbg {
@@ -1644,22 +1645,89 @@
     .worb {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(157, 95, 255, .3), transparent 70%)
     }
 
     .worb1 {
-      width: 440px;
-      height: 440px;
-      top: -120px;
-      right: -120px
+      width: 500px;
+      height: 500px;
+      top: -80px;
+      right: -140px;
+      background: radial-gradient(circle, rgba(245,158,11,.25), transparent 70%);
+      animation: worb-drift1 6s ease-in-out infinite;
     }
 
     .worb2 {
-      width: 300px;
-      height: 300px;
-      bottom: 60px;
-      left: -90px;
-      opacity: .5
+      width: 350px;
+      height: 350px;
+      bottom: 120px;
+      left: -100px;
+      background: radial-gradient(circle, rgba(34,197,94,.2), transparent 70%);
+      animation: worb-drift2 8s ease-in-out infinite;
+    }
+
+    .worb3 {
+      width: 200px;
+      height: 200px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(157,95,255,.3), transparent 70%);
+      animation: worb-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes worb-drift1 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-20px, 15px); }
+    }
+    @keyframes worb-drift2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(15px, -20px); }
+    }
+    @keyframes worb-pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .5; }
+      50% { transform: translate(-50%, -50%) scale(1.3); opacity: .8; }
+    }
+
+    /* Ashki mascot on cover */
+    .w-ashki-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      padding-top: 80px;
+      margin-bottom: 8px;
+    }
+
+    .w-ashki-img {
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 32px rgba(0,0,0,.35));
+      animation: ashki-float 3s ease-in-out infinite;
+    }
+
+    @keyframes ashki-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .w-ashki-speech {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: white;
+      color: var(--ink);
+      font: 600 11px/1.3 'Outfit', sans-serif;
+      padding: 8px 12px;
+      border-radius: 12px 12px 4px 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+      animation: speech-pop .5s cubic-bezier(.34,1.56,.64,1) .8s both;
+      max-width: 130px;
+    }
+
+    @keyframes speech-pop {
+      from { opacity: 0; transform: scale(.7); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .wcnt {
@@ -1669,46 +1737,50 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 0 32px 48px
+      padding: 0 32px 44px
     }
 
     .wlogo {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: .3em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, .4);
-      margin-bottom: 20px
+      color: rgba(255, 255, 255, .35);
+      margin-bottom: 10px;
+      text-align: center;
     }
 
     .wword {
       font-family: 'Playfair Display', serif;
-      font-size: 80px;
+      font-size: 56px;
       font-weight: 900;
       color: white;
-      line-height: .9;
-      letter-spacing: -.03em;
-      margin-bottom: 14px
+      line-height: .95;
+      letter-spacing: -.02em;
+      margin-bottom: 6px;
+      text-align: center;
     }
 
     .wmean {
-      font-size: 13px;
-      color: rgba(255, 255, 255, .5);
+      font-size: 12px;
+      color: rgba(255, 255, 255, .45);
       font-style: italic;
       letter-spacing: .02em;
-      margin-bottom: 8px
+      margin-bottom: 16px;
+      text-align: center;
     }
 
     .wtag {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
-      color: rgba(255, 255, 255, .85);
-      line-height: 1.55;
-      margin-bottom: 36px
+      color: rgba(255, 255, 255, .8);
+      line-height: 1.5;
+      margin-bottom: 28px;
+      text-align: center;
     }
 
     .wtag strong {
-      color: white;
+      color: var(--gold);
       font-weight: 700
     }
 
@@ -1724,14 +1796,56 @@
       cursor: pointer;
       text-align: center;
       width: 100%;
-      transition: all .2s;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, .25);
-      margin-bottom: 12px
+      transition: all .25s cubic-bezier(.34,1.56,.64,1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .3);
+      margin-bottom: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wbtn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(245,158,11,.15) 100%);
+      opacity: 0;
+      transition: opacity .25s;
     }
 
     .wbtn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, .35)
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(124,58,237,.4)
+    }
+
+    .wbtn:active {
+      transform: scale(.97);
+    }
+
+    .w-free-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      padding: 6px 14px;
+      margin: 16px auto 0;
+      font: 500 11px/1 'JetBrains Mono', monospace;
+      letter-spacing: .06em;
+      color: rgba(255,255,255,.5);
+    }
+
+    .w-free-badge .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: dot-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes dot-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
     }
 
     /* SIDEBAR */
@@ -1826,18 +1940,21 @@
           <div class="wbg">
             <div class="worb worb1"></div>
             <div class="worb worb2"></div>
+            <div class="worb worb3"></div>
+          </div>
+          <div class="w-ashki-wrap">
+            <img class="w-ashki-img" src="assets/ashki/ashki_master.png" alt="Ashki — your study buddy">
+            <div class="w-ashki-speech">Ready to ace your N4? Let's go!</div>
           </div>
           <div class="wcnt">
-            <div class="wlogo">Ayikho · N4–N6 TVET Study App</div>
-            <div class="wword">Ayi<br>kho.</div>
+            <div class="wword">Ayikho.</div>
             <div class="wmean">"there is none like it" — isiZulu</div>
-            <div class="wtag"><strong>No more failing alone.</strong> Your TVET study partner — plain English, SA
-              examples, always in your pocket.</div>
-            <button class="wbtn" onclick="goTo('s-phone')" style="margin-bottom:16px">Create Account →</button>
-            <div style="text-align:center; font-size:14px; color:rgba(255,255,255,.55);">
-              Already have an account? <span style="color:var(--pl); font-weight:700; cursor:pointer; text-decoration:underline;" onclick="window.switchToLogin()">Log in</span>
+            <div class="wtag"><strong>No more failing alone.</strong><br>Your TVET study partner — plain English, SA examples, always in your pocket.</div>
+            <button class="wbtn" onclick="goTo('s-phone')">Create Account →</button>
+            <div style="text-align:center; margin-top:14px; font-size:14px; color:rgba(255,255,255,.5);">
+              Already have an account? <span style="color:var(--gold); font-weight:700; cursor:pointer;" onclick="window.switchToLogin()">Log in</span>
             </div>
-            <div class="hint" style="color:rgba(255,255,255,.3); margin-top:20px">Free for all TVET students · Works offline</div>
+            <div class="w-free-badge"><span class="badge-dot"></span> Free for all TVET students · Works offline</div>
           </div>
         </div>
 
