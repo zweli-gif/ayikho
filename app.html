@@ -1367,8 +1367,8 @@ function showToast(msg) {
 document.addEventListener('DOMContentLoaded', () => {
   // Always show home screen for app launch
   // Onboarding is available via sidebar but doesn't block the experience
-  if (true) {
-    // Show home directly
+  if (false) {
+    // Show home directly (disabled — always show onboarding first)
     onboardingDone = true;
     document.getElementById('chapter-view').classList.remove('active');
     document.getElementById('home-view').classList.remove('hidden');
