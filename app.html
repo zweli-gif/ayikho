@@ -1037,6 +1037,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Don't show back button during onboarding
   // Don't show card animations yet — they'll play after onboarding completes
 });
+
+// ═══════════════════════════════════
+//  RETURN-TO-HOME ON APP RESUME
+// ═══════════════════════════════════
+// When user minimises/switches away and comes back, reset to home dashboard.
+// This prevents being stuck inside a chapter iframe after a long absence.
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && currentModule !== null) {
+    goHome();
+  }
+});
+
+// Also handle browser back-forward cache (bfcache) restoration
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted && currentModule !== null) {
+    goHome();
+  }
+});
 </script>
 </body>
 </html>
