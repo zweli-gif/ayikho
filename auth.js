@@ -3,17 +3,20 @@
  * Supports: South Africa (+27) and Ghana (+233)
  */
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 let auth = null;
 let regPhone = "";
 let regPass = "";
 let loginPhone = "";
 
+// Export onAuthStateChanged for routing
+window.onAuthStateChanged = onAuthStateChanged;
+
 // ── SUPPORTED COUNTRIES ───────────────────────────────
 const COUNTRIES = [
-  { code: "+27",  name: "South Africa", flag: "🇿🇦", placeholder: "81 234 5678" },
-  { code: "+233", name: "Ghana",        flag: "🇬🇭", placeholder: "24 123 4567" },
+  { code: "+27", name: "South Africa", flag: "🇿🇦", placeholder: "81 234 5678" },
+  { code: "+233", name: "Ghana", flag: "🇬🇭", placeholder: "24 123 4567" },
 ];
 
 // ── INIT ──────────────────────────────────────────────
@@ -99,34 +102,6 @@ function toEmail(phone) {
 }
 
 // ── REGISTRATION FLOW ──────────────────────────────────────────
-window.checkPhoneFlow1 = function () {
-  const input = document.getElementById("phone-in");
-  const hint = document.getElementById("phone-hint");
-  const phone = formatNumber(input.value);
-  if (!phone) {
-    hint.textContent = "Enter a valid cell number.";
-    hint.style.color = "var(--rose)";
-    return;
-  }
-  regPhone = phone;
-  document.getElementById("phone-confirm-in").value = "";
-  document.getElementById("phoneMatchError").style.display = "none";
-  goTo("s-phone-confirm");
-};
-
-window.checkPhoneFlow2 = function () {
-  const confirmInput = document.getElementById("phone-confirm-in").value;
-  const phone2 = formatNumber(confirmInput);
-  if (!phone2 || phone2 !== regPhone) {
-    document.getElementById("phoneMatchError").style.display = "block";
-    return;
-  }
-  document.getElementById("phoneMatchError").style.display = "none";
-  document.getElementById("pass-in").value = "";
-  document.getElementById("pass-hint").textContent = "Must be at least 8 characters with 1 number.";
-  document.getElementById("pass-hint").style.color = "";
-  goTo("s-password");
-};
 
 window.checkPassStrength = function () {
   const val = document.getElementById("pass-in").value;
@@ -143,47 +118,49 @@ window.checkPassStrength = function () {
   }
 };
 
-window.checkPassFlow1 = function () {
-  if (window.checkPassStrength()) {
-    regPass = document.getElementById("pass-in").value;
-    document.getElementById("pass-confirm-in").value = "";
-    document.getElementById("passMatchError").style.display = "none";
-    goTo("s-password-confirm");
-  }
-};
-
 window.registerUser = async function () {
-  const confirmPass = document.getElementById("pass-confirm-in").value;
-  if (confirmPass !== regPass) {
-    document.getElementById("passMatchError").style.display = "block";
+  const phoneInput = document.getElementById("phone-in");
+  const phoneHint = document.getElementById("phone-hint");
+  const phone = formatNumber(phoneInput.value);
+
+  const passInput = document.getElementById("pass-in");
+  const pass = passInput.value;
+  const matchError = document.getElementById("passMatchError");
+
+  if (!phone) {
+    phoneHint.textContent = "Enter a valid cell number.";
+    phoneHint.style.color = "var(--rose)";
     return;
   }
-  document.getElementById("passMatchError").style.display = "none";
+
+  if (!window.checkPassStrength()) {
+    return;
+  }
+
   const btn = document.getElementById("register-btn");
   btn.disabled = true;
   btn.textContent = "Creating account...";
+  matchError.style.display = "none";
 
   try {
     initAuth();
     if (!auth) throw new Error("Auth service unavailable");
-    const email = toEmail(regPhone);
-    const uc = await createUserWithEmailAndPassword(auth, email, regPass);
+    const email = toEmail(phone);
+    const uc = await createUserWithEmailAndPassword(auth, email, pass);
     console.log("User registered:", uc.user.email);
-    // On success, jump to name
-    // save the phone in window so student-data can access it later if needed
-    window.__tempPhone = regPhone;
+    window.__tempPhone = phone;
     goTo("s-name");
   } catch (err) {
     console.error("Register err:", err);
     if (err.code === "auth/email-already-in-use") {
-      document.getElementById("passMatchError").textContent = "Account already exists. Try logging in instead.";
+      matchError.textContent = "Account already exists. Try logging in instead.";
     } else {
-      document.getElementById("passMatchError").textContent = "Error: " + err.message;
+      matchError.textContent = "Error: " + err.message;
     }
-    document.getElementById("passMatchError").style.display = "block";
+    matchError.style.display = "block";
   } finally {
     btn.disabled = false;
-    btn.textContent = "Register →";
+    btn.textContent = "Create Account →";
   }
 };
 
@@ -266,46 +243,43 @@ window.switchToRegister = function () {
   goTo("s-signup");
 };
 
-window.checkLoginPhoneStr = function () {
-  const input = document.getElementById("login-phone-in");
-  const phone = formatNumber(input.value, true);
-  if (!phone) {
-    input.style.borderColor = "var(--rose)";
-    return;
-  }
-  input.style.borderColor = "";
-  loginPhone = phone;
-  document.getElementById("login-disp-phone").textContent = loginPhone;
-  document.getElementById("login-pass-in").value = "";
-  document.getElementById("login-hint").textContent = "";
-  goTo("s-login-password");
-};
-
 window.loginUser = async function () {
+  const phoneInput = document.getElementById("login-phone-in");
+  const phone = formatNumber(phoneInput.value, true);
   const pass = document.getElementById("login-pass-in").value;
   const hint = document.getElementById("login-hint");
-  if (!pass) return;
+
+  hint.textContent = "";
+
+  if (!phone) {
+    phoneInput.style.borderColor = "var(--rose)";
+    return;
+  }
+  phoneInput.style.borderColor = "";
+
+  if (!pass) {
+    hint.textContent = "Please enter your password.";
+    return;
+  }
 
   const btn = document.getElementById("login-btn");
   btn.disabled = true;
   btn.textContent = "Logging in...";
-  hint.textContent = "";
 
   try {
     initAuth();
     if (!auth) throw new Error("Auth service unavailable");
-    const email = toEmail(loginPhone);
+    const email = toEmail(phone);
     await signInWithEmailAndPassword(auth, email, pass);
     console.log("User logged in:", email);
-    
-    // Store phone globally so student-data etc knows
-    window.__tempPhone = loginPhone;
+
+    window.__tempPhone = phone;
 
     if (window.parent && window.parent !== window) {
       window.parent.postMessage('onboardingComplete', '*');
-      try { if (window.parent.onboardingComplete) window.parent.onboardingComplete(); } catch (e) {}
+      try { if (window.parent.onboardingComplete) window.parent.onboardingComplete(); } catch (e) { }
     } else {
-      window.location.href = 'app.html';
+      window.location.href = 'ayikho-prototype.html';
     }
   } catch (err) {
     console.error("Login err:", err);

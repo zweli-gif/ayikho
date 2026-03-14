@@ -1,675 +1,1659 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ayikho · FA N4 · Full Prototype</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="firebase-config.js" onerror="console.log('Firebase config not loaded — prototype mode')"></script>
-<script src="tracking.js" onerror="console.log('Tracking not loaded — prototype mode')"></script>
-<script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
-  --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
-  --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
-  --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
-  --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
-}
-html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden}
 
-/* ═══════════════════════════════════
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayikho · FA N4 · Full Prototype</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="firebase-config.js" onerror="console.log('Firebase config not loaded — prototype mode')"></script>
+  <script src="auth.js" onerror="console.log('Auth not loaded — prototype mode')"></script>
+  <script src="tracking.js" onerror="console.log('Tracking not loaded — prototype mode')"></script>
+  <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    :root {
+      --p: #7C3AED;
+      --pl: #9D5FFF;
+      --pd: #4C1A99;
+      --pxs: #F5F0FF;
+      --psm: #EDE8FF;
+      --fa: #0284C7;
+      --fa-l: #38BDF8;
+      --fa-d: #075985;
+      --fa-xs: #F0F9FF;
+      --fa-sm: #E0F2FE;
+      --gold: #F59E0B;
+      --green: #22C55E;
+      --green-xs: #F0FDF4;
+      --rose: #F43F5E;
+      --ink: #1A0A3A;
+      --mut: #6B5A8A;
+      --dim: #9580B8;
+      --bord: #DDD5F5;
+      --surf: #F7F4FF;
+      --w: #FFFFFF;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: #05090F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden
+    }
+
+    /* ═══════════════════════════════════
    SHELL — PHONE + SIDEBAR
 ═══════════════════════════════════ */
-.shell{display:flex;gap:20px;align-items:flex-start}
+    .shell {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start
+    }
 
-/* Sidebar */
-.sidebar{display:flex;flex-direction:column;gap:4px;padding-top:60px;min-width:140px}
-@media(max-width:900px){.sidebar{display:none}}
-.si{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.18);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;padding:4px 0;white-space:nowrap}
-.si::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
-.si.active{color:var(--fa-l)}
-.si.completed{color:var(--green)}
-.si:hover{color:rgba(255,255,255,.5)}
-.si-home{color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)}
-.si-home.active{color:var(--p)}
-.si-section{font-size:7px;letter-spacing:.2em;color:rgba(255,255,255,.12);margin-top:10px;margin-bottom:2px;cursor:default}
-.si-section::before{display:none}
+    /* Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-top: 60px;
+      min-width: 140px
+    }
 
-/* Phone */
-.phone-col{display:flex;flex-direction:column;align-items:center}
-.phone{width:375px;height:812px;background:var(--w);border-radius:50px;overflow:hidden;position:relative;
-  box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(2,132,199,.08)}
+    @media(max-width:900px) {
+      .sidebar {
+        display: none
+      }
+    }
 
-/* ═══════════════════════════════════
+    .si {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .18);
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 0;
+      white-space: nowrap
+    }
+
+    .si::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0
+    }
+
+    .si.active {
+      color: var(--fa-l)
+    }
+
+    .si.completed {
+      color: var(--green)
+    }
+
+    .si:hover {
+      color: rgba(255, 255, 255, .5)
+    }
+
+    .si-home {
+      color: rgba(255, 255, 255, .35);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, .06)
+    }
+
+    .si-home.active {
+      color: var(--p)
+    }
+
+    .si-section {
+      font-size: 7px;
+      letter-spacing: .2em;
+      color: rgba(255, 255, 255, .12);
+      margin-top: 10px;
+      margin-bottom: 2px;
+      cursor: default
+    }
+
+    .si-section::before {
+      display: none
+    }
+
+    /* Phone */
+    .phone-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: var(--w);
+      border-radius: 50px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 0 2px #0D1117, 0 0 0 4px #060A10, 0 50px 120px rgba(0, 0, 0, .85), 0 0 200px rgba(2, 132, 199, .08)
+    }
+
+    /* ═══════════════════════════════════
    HOME VIEW — layered inside phone
 ═══════════════════════════════════ */
-.home-view{position:absolute;inset:0;display:flex;flex-direction:column;transition:opacity .3s ease,transform .3s ease;z-index:1}
-.home-view.hidden{opacity:0;transform:scale(.96);pointer-events:none}
+    .home-view {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      transition: opacity .3s ease, transform .3s ease;
+      z-index: 1
+    }
 
-/* Chapter iframe overlay */
-.chapter-view{position:absolute;inset:0;z-index:2;opacity:0;transform:translateX(100%);transition:opacity .35s ease,transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none;border-radius:50px;overflow:hidden}
-.chapter-view.active{opacity:1;transform:translateX(0);pointer-events:auto}
-.chapter-view iframe{width:100%;height:100%;border:none;border-radius:50px}
+    .home-view.hidden {
+      opacity: 0;
+      transform: scale(.96);
+      pointer-events: none
+    }
 
-/* Back button floating over iframe */
-.back-btn{position:absolute;top:54px;left:14px;z-index:10;width:34px;height:34px;border-radius:10px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:white;font-size:16px;opacity:0;pointer-events:none}
-.back-btn.show{opacity:1;pointer-events:auto}
-.back-btn:hover{background:rgba(0,0,0,.85);transform:scale(1.05)}
+    /* Chapter iframe overlay */
+    .chapter-view {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity .35s ease, transform .35s cubic-bezier(.4, 0, .2, 1);
+      pointer-events: none;
+      border-radius: 50px;
+      overflow: hidden
+    }
 
-/* Loading state */
-.loading-overlay{position:absolute;inset:0;z-index:5;background:var(--w);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;border-radius:50px}
-.loading-overlay.show{opacity:1;pointer-events:auto}
-.loading-spinner{width:40px;height:40px;border:3px solid var(--fa-sm);border-top:3px solid var(--fa);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:14px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.loading-module{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--ink);margin-top:6px}
+    .chapter-view.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto
+    }
 
-/* ═══════════════════════════════════
+    .chapter-view iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 50px
+    }
+
+    /* Back button floating over iframe */
+    .back-btn {
+      position: absolute;
+      top: 54px;
+      left: 14px;
+      z-index: 10;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, .65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, .12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .2s;
+      color: white;
+      font-size: 16px;
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .back-btn.show {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 0, 0, .85);
+      transform: scale(1.05)
+    }
+
+    /* Loading state */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: var(--w);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+      border-radius: 50px
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--fa-sm);
+      border-top: 3px solid var(--fa);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin-bottom: 14px
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .loading-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--dim)
+    }
+
+    .loading-module {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--ink);
+      margin-top: 6px
+    }
+
+    /* ═══════════════════════════════════
    HOME SCREEN — STATUS BAR
 ═══════════════════════════════════ */
-.sb{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;background:var(--ink);color:white}
-.sb-t{font-weight:700;font-size:15px}
-.sb-i{font-size:11px;opacity:.8}
+    .sb {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+      background: var(--ink);
+      color: white
+    }
 
-/* ═══════════════════════════════════
+    .sb-t {
+      font-weight: 700;
+      font-size: 15px
+    }
+
+    .sb-i {
+      font-size: 11px;
+      opacity: .8
+    }
+
+    /* ═══════════════════════════════════
    HOME SCREEN — HEADER
 ═══════════════════════════════════ */
-.home-header{background:var(--ink);padding:0 22px 24px;position:relative;overflow:hidden;flex-shrink:0}
-.home-header::before{content:'';position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(2,132,199,.15),transparent 70%)}
-.home-header::after{content:'';position:absolute;bottom:-30px;left:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.1),transparent 70%)}
-.hh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:1}
-.hh-greeting{font-size:12px;color:rgba(255,255,255,.5)}
-.hh-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white}
-.hh-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--fa));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;border:2px solid rgba(255,255,255,.2)}
-.hh-xp-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
-.hh-xp-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
-.hh-xp-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--fa));border-radius:100px;transition:width .6s ease}
-.hh-xp-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fa-l);min-width:60px;text-align:right}
-.hh-stats{display:flex;gap:8px;margin-top:12px;position:relative;z-index:1}
-.hh-stat{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;text-align:center}
-.hh-stat-n{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:white;line-height:1}
-.hh-stat-l{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:3px}
+    .home-header {
+      background: var(--ink);
+      padding: 0 22px 24px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0
+    }
 
-/* ═══════════════════════════════════
+    .home-header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(2, 132, 199, .15), transparent 70%)
+    }
+
+    .home-header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, .1), transparent 70%)
+    }
+
+    .hh-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hh-greeting {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .5)
+    }
+
+    .hh-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: white
+    }
+
+    .hh-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--p), var(--fa));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, .2)
+    }
+
+    .hh-xp-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hh-xp-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 100px;
+      overflow: hidden
+    }
+
+    .hh-xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--p), var(--fa));
+      border-radius: 100px;
+      transition: width .6s ease
+    }
+
+    .hh-xp-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--fa-l);
+      min-width: 60px;
+      text-align: right
+    }
+
+    .hh-stats {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hh-stat {
+      flex: 1;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: center
+    }
+
+    .hh-stat-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: white;
+      line-height: 1
+    }
+
+    .hh-stat-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .35);
+      margin-top: 3px
+    }
+
+    /* ═══════════════════════════════════
    MODULE CARDS
 ═══════════════════════════════════ */
-.modules-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 18px}
-.modules-area::-webkit-scrollbar{display:none}
-.modules-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.modules-label::after{content:'';flex:1;height:1px;background:var(--bord)}
+    .modules-area {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px 18px
+    }
 
-.module-card{border:2px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;background:var(--w)}
-.module-card:hover{border-color:var(--fa);transform:translateY(-1px);box-shadow:0 8px 24px rgba(2,132,199,.1)}
-.module-card:active{transform:scale(.98)}
-.module-card.locked{opacity:.55;cursor:default;border-color:var(--bord)}
-.module-card.locked:hover{border-color:var(--bord);transform:none;box-shadow:none}
-.module-card.completed{border-color:var(--green);background:var(--green-xs)}
+    .modules-area::-webkit-scrollbar {
+      display: none
+    }
 
-.prog-ring-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
-.prog-ring{transform:rotate(-90deg)}
-.prog-ring-bg{fill:none;stroke:var(--bord);stroke-width:4}
-.prog-ring-fill{fill:none;stroke:var(--fa);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
-.module-card.completed .prog-ring-fill{stroke:var(--green)}
-.module-card.locked .prog-ring-fill{stroke:var(--bord)}
-.prog-ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px}
-.prog-ring-num{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--fa)}
-.module-card.completed .prog-ring-num{color:var(--green)}
-.module-card.locked .prog-ring-num{color:var(--dim)}
+    .modules-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
 
-.mc-info{flex:1;min-width:0}
-.mc-module-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin-bottom:2px}
-.module-card.completed .mc-module-num{color:var(--green)}
-.module-card.locked .mc-module-num{color:var(--dim)}
-.mc-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mc-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mut)}
-.mc-meta-item{display:flex;align-items:center;gap:3px}
+    .modules-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--bord)
+    }
 
-.mc-right{flex-shrink:0;text-align:right}
-.mc-xp{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--green);background:var(--green-xs);padding:3px 8px;border-radius:100px;display:inline-block}
-.mc-locked-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);border:1px solid var(--bord);padding:3px 8px;border-radius:100px}
-.mc-arrow{font-size:16px;color:var(--fa);opacity:.5}
-.module-card.completed .mc-arrow{color:var(--green)}
+    .module-card {
+      border: 2px solid var(--bord);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all .25s;
+      position: relative;
+      overflow: hidden;
+      background: var(--w)
+    }
 
-.connector{display:flex;align-items:center;justify-content:center;height:20px;position:relative}
-.connector-line{width:2px;height:100%;background:var(--bord)}
-.connector.done .connector-line{background:var(--green)}
+    .module-card:hover {
+      border-color: var(--fa);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, .1)
+    }
 
-/* ═══════════════════════════════════
+    .module-card:active {
+      transform: scale(.98)
+    }
+
+    .module-card.locked {
+      opacity: .55;
+      cursor: default;
+      border-color: var(--bord)
+    }
+
+    .module-card.locked:hover {
+      border-color: var(--bord);
+      transform: none;
+      box-shadow: none
+    }
+
+    .module-card.completed {
+      border-color: var(--green);
+      background: var(--green-xs)
+    }
+
+    .prog-ring-wrap {
+      position: relative;
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0
+    }
+
+    .prog-ring {
+      transform: rotate(-90deg)
+    }
+
+    .prog-ring-bg {
+      fill: none;
+      stroke: var(--bord);
+      stroke-width: 4
+    }
+
+    .prog-ring-fill {
+      fill: none;
+      stroke: var(--fa);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset .6s ease
+    }
+
+    .module-card.completed .prog-ring-fill {
+      stroke: var(--green)
+    }
+
+    .module-card.locked .prog-ring-fill {
+      stroke: var(--bord)
+    }
+
+    .prog-ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px
+    }
+
+    .prog-ring-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--fa)
+    }
+
+    .module-card.completed .prog-ring-num {
+      color: var(--green)
+    }
+
+    .module-card.locked .prog-ring-num {
+      color: var(--dim)
+    }
+
+    .mc-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .mc-module-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--fa);
+      margin-bottom: 2px
+    }
+
+    .module-card.completed .mc-module-num {
+      color: var(--green)
+    }
+
+    .module-card.locked .mc-module-num {
+      color: var(--dim)
+    }
+
+    .mc-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .mc-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--mut)
+    }
+
+    .mc-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 3px
+    }
+
+    .mc-right {
+      flex-shrink: 0;
+      text-align: right
+    }
+
+    .mc-xp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-xs);
+      padding: 3px 8px;
+      border-radius: 100px;
+      display: inline-block
+    }
+
+    .mc-locked-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--dim);
+      border: 1px solid var(--bord);
+      padding: 3px 8px;
+      border-radius: 100px
+    }
+
+    .mc-arrow {
+      font-size: 16px;
+      color: var(--fa);
+      opacity: .5
+    }
+
+    .module-card.completed .mc-arrow {
+      color: var(--green)
+    }
+
+    .connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20px;
+      position: relative
+    }
+
+    .connector-line {
+      width: 2px;
+      height: 100%;
+      background: var(--bord)
+    }
+
+    .connector.done .connector-line {
+      background: var(--green)
+    }
+
+    /* ═══════════════════════════════════
    BOTTOM NAV
 ═══════════════════════════════════ */
-.bottom-nav{display:flex;align-items:center;justify-content:space-around;padding:10px 16px 28px;border-top:1px solid var(--bord);flex-shrink:0;background:var(--w)}
-.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.4;transition:opacity .2s}
-.bn-item.active{opacity:1}
-.bn-icon{font-size:22px}
-.bn-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase}
-.bn-item.active .bn-label{color:var(--fa)}
+    .bottom-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 16px 28px;
+      border-top: 1px solid var(--bord);
+      flex-shrink: 0;
+      background: var(--w)
+    }
 
-/* Shell meta */
-.shell-meta{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.15);text-align:center;margin-top:10px}
+    .bn-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      opacity: .4;
+      transition: opacity .2s
+    }
 
-/* Current module indicator */
-.current-module-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--fa);transform:scaleX(0);transition:transform .3s ease;transform-origin:left;z-index:3}
-.current-module-bar.show{transform:scaleX(1)}
-</style>
+    .bn-item.active {
+      opacity: 1
+    }
+
+    .bn-icon {
+      font-size: 22px
+    }
+
+    .bn-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase
+    }
+
+    .bn-item.active .bn-label {
+      color: var(--fa)
+    }
+
+    /* Shell meta */
+    .shell-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .15);
+      text-align: center;
+      margin-top: 10px
+    }
+
+    /* Current module indicator */
+    .current-module-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--fa);
+      transform: scaleX(0);
+      transition: transform .3s ease;
+      transform-origin: left;
+      z-index: 3
+    }
+
+    .current-module-bar.show {
+      transform: scaleX(1)
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="shell">
+  <div class="shell">
 
-<!-- ═══════════ SIDEBAR ═══════════ -->
-<div class="sidebar" id="sidebar">
-  <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
-  <div class="si" data-target="dashboard" onclick="openDashboard()" style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">📊 Dashboard</div>
-  <div class="si-section">Chapters</div>
-  <div class="si completed" data-module="1" onclick="openModule(1)">M1 · Accounting Concepts</div>
-  <div class="si completed" data-module="2" onclick="openModule(2)">M2 · Double Entry</div>
-  <div class="si" data-module="3" onclick="openModule(3)">M3 · Journals & Ledgers</div>
-  <div class="si" data-module="4" onclick="openModule(4)">M4 · Trial Balance</div>
-  <div class="si" data-module="5" onclick="openModule(5)">M5 · Cash Journals</div>
-  <div class="si" data-module="6" onclick="openModule(6)">M6 · Debtors & Creditors</div>
-  <div class="si" data-module="7" onclick="openModule(7)">M7 · VAT</div>
-  <div class="si" data-module="8" onclick="openModule(8)">M8 · Year-End Adjustments</div>
-  <div class="si" data-module="9" onclick="openModule(9)">M9 · Financial Statements</div>
-  <div class="si" data-module="10" onclick="openModule(10)">M10 · Bank Reconciliation</div>
-  <div class="si-section">Resources</div>
-  <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
-  <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
-  <div class="si" onclick="openMemosMode()">📋 Memos</div>
-  <div class="si" onclick="openCapstoneMode()">🏆 Capstone</div>
-</div>
-
-<!-- ═══════════ PHONE ═══════════ -->
-<div class="phone-col">
-<div class="phone">
-
-  <!-- LOADING OVERLAY -->
-  <div class="loading-overlay" id="loading">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading module</div>
-    <div class="loading-module" id="loading-name">...</div>
-  </div>
-
-  <!-- BACK BUTTON (floating over iframe) -->
-  <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
-
-  <!-- HOME VIEW -->
-  <div class="home-view" id="home-view">
-    <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-    <div class="home-header">
-      <div class="hh-top">
-        <div><div class="hh-greeting">Sawubona 👋</div><div class="hh-name">Zandile</div></div>
-        <div class="hh-avatar">Z</div>
-      </div>
-      <div class="hh-xp-row">
-        <div class="hh-xp-bar"><div class="hh-xp-fill" style="width:38%"></div></div>
-        <div class="hh-xp-text">⚡ 325 XP</div>
-      </div>
-      <div class="hh-stats">
-        <div class="hh-stat"><div class="hh-stat-n">🔥9</div><div class="hh-stat-l">Day streak</div></div>
-        <div class="hh-stat"><div class="hh-stat-n">2/10</div><div class="hh-stat-l">Modules done</div></div>
-        <div class="hh-stat"><div class="hh-stat-n">85%</div><div class="hh-stat-l">Avg. score</div></div>
-      </div>
-    </div>
-
-    <div class="modules-area">
-      <div class="modules-label">Financial Accounting N4 · 10 Modules</div>
-
-      <!-- M1 -->
-      <div class="module-card completed" onclick="openModule(1)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="0"/></svg><div class="prog-ring-center"><span class="prog-ring-num">✓</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 1</div><div class="mc-title">Accounting Concepts & Principles</div><div class="mc-meta"><div class="mc-meta-item">⏱ 7 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">3/3 correct</div></div></div>
-        <div class="mc-right"><div class="mc-xp">+150 XP</div></div>
-      </div>
-      <div class="connector done"><div class="connector-line"></div></div>
-
-      <!-- M2 -->
-      <div class="module-card completed" onclick="openModule(2)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="0"/></svg><div class="prog-ring-center"><span class="prog-ring-num">✓</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 2</div><div class="mc-title">Double Entry & Accounting Equation</div><div class="mc-meta"><div class="mc-meta-item">⏱ 8 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">3/3 correct</div></div></div>
-        <div class="mc-right"><div class="mc-xp">+150 XP</div></div>
-      </div>
-      <div class="connector done"><div class="connector-line"></div></div>
-
-      <!-- M3 — CURRENT -->
-      <div class="module-card" onclick="openModule(3)" style="border-color:var(--fa);box-shadow:0 0 0 1px var(--fa),0 4px 16px rgba(2,132,199,.12)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">3</span></div></div>
-        <div class="mc-info"><div class="mc-module-num" style="color:var(--fa)">Module 3 · Up Next</div><div class="mc-title">Journals & Ledgers</div><div class="mc-meta"><div class="mc-meta-item">⏱ 9 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Journal builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M4 -->
-      <div class="module-card" onclick="openModule(4)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">4</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 4</div><div class="mc-title">Trial Balance</div><div class="mc-meta"><div class="mc-meta-item">⏱ 8 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ TB Builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M5 -->
-      <div class="module-card" onclick="openModule(5)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">5</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 5</div><div class="mc-title">Cash Receipts & Payments Journals</div><div class="mc-meta"><div class="mc-meta-item">⏱ 10 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Transaction sorter</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M6 -->
-      <div class="module-card" onclick="openModule(6)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">6</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 6</div><div class="mc-title">Debtors & Creditors Journals</div><div class="mc-meta"><div class="mc-meta-item">⏱ 10 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Invoice builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M7 -->
-      <div class="module-card" onclick="openModule(7)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">7</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 7</div><div class="mc-title">Value Added Tax (VAT)</div><div class="mc-meta"><div class="mc-meta-item">⏱ 8 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ VAT calculator</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M8 -->
-      <div class="module-card" onclick="openModule(8)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">8</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 8</div><div class="mc-title">Year-End Adjustments</div><div class="mc-meta"><div class="mc-meta-item">⏱ 11 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Depreciation calc</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M9 -->
-      <div class="module-card" onclick="openModule(9)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">9</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 9</div><div class="mc-title">Financial Statements</div><div class="mc-meta"><div class="mc-meta-item">⏱ 12 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Drag-and-drop builder</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
-      </div>
-      <div class="connector"><div class="connector-line"></div></div>
-
-      <!-- M10 -->
-      <div class="module-card" onclick="openModule(10)">
-        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52"><circle class="prog-ring-bg" cx="26" cy="26" r="22"/><circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/></svg><div class="prog-ring-center"><span class="prog-ring-num">10</span></div></div>
-        <div class="mc-info"><div class="mc-module-num">Module 10</div><div class="mc-title">Bank Reconciliation</div><div class="mc-meta"><div class="mc-meta-item">⏱ 9 min</div><div class="mc-meta-item">·</div><div class="mc-meta-item">🛠️ Transaction classifier</div></div></div>
-        <div class="mc-right"><div class="mc-arrow">→</div></div>
+    <<<<<<< HEAD <!-- ═══════════ SIDEBAR ═══════════ -->
+      <div class="sidebar" id="sidebar">
+        <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
+        <div class="si" data-target="dashboard" onclick="openDashboard()"
+          style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">
+          📊 Dashboard</div>
+        <div class="si-section">Chapters</div>
+        <div class="si completed" data-module="1" onclick="openModule(1)">M1 · Accounting Concepts</div>
+        <div class="si completed" data-module="2" onclick="openModule(2)">M2 · Double Entry</div>
+        <div class="si" data-module="3" onclick="openModule(3)">M3 · Journals & Ledgers</div>
+        <div class="si" data-module="4" onclick="openModule(4)">M4 · Trial Balance</div>
+        <div class="si" data-module="5" onclick="openModule(5)">M5 · Cash Journals</div>
+        <div class="si" data-module="6" onclick="openModule(6)">M6 · Debtors & Creditors</div>
+        <div class="si" data-module="7" onclick="openModule(7)">M7 · VAT</div>
+        <div class="si" data-module="8" onclick="openModule(8)">M8 · Year-End Adjustments</div>
+        <div class="si" data-module="9" onclick="openModule(9)">M9 · Financial Statements</div>
+        <div class="si" data-module="10" onclick="openModule(10)">M10 · Bank Reconciliation</div>
+        <div class="si-section">Resources</div>
+        <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
+        <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
+        <div class="si" onclick="openMemosMode()">📋 Memos</div>
+        <div class="si" onclick="openCapstoneMode()">🏆 Capstone</div>
       </div>
 
-      <div style="height:16px"></div>
-    </div>
+      <!-- ═══════════ PHONE ═══════════ -->
+      <div class="phone-col">
+        <div class="phone">
 
-    <div class="bottom-nav">
-      <div class="bn-item active"><div class="bn-icon">📚</div><div class="bn-label">Learn</div></div>
-      <div class="bn-item"><div class="bn-icon">📊</div><div class="bn-label">Progress</div></div>
-      <div class="bn-item"><div class="bn-icon">🏆</div><div class="bn-label">Badges</div></div>
-      <div class="bn-item"><div class="bn-icon">👤</div><div class="bn-label">Profile</div></div>
-    </div>
-  </div><!-- /home-view -->
+          <!-- LOADING OVERLAY -->
+          <div class="loading-overlay" id="loading">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading module</div>
+            <div class="loading-module" id="loading-name">...</div>
+          </div>
 
-  <!-- CHAPTER VIEW (iframe loads here) -->
-  <div class="chapter-view" id="chapter-view">
-    <iframe id="chapter-frame" src="about:blank" allow="autoplay"></iframe>
-  </div>
+          <!-- BACK BUTTON (floating over iframe) -->
+          <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
 
-</div><!-- /phone -->
-<div class="shell-meta">Starts with onboarding → Press D to unlock all · Esc to go home · 1-9 to jump</div>
-</div><!-- /phone-col -->
-</div><!-- /shell -->
+          <!-- HOME VIEW -->
+          <div class="home-view" id="home-view">
+            <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+            <div class="home-header">
+              <div class="hh-top">
+                <div>
+                  <div class="hh-greeting">Sawubona 👋</div>
+                  <div class="hh-name">Zandile</div>
+                </div>
+                <div class="hh-avatar">Z</div>
+              </div>
+              <div class="hh-xp-row">
+                <div class="hh-xp-bar">
+                  <div class="hh-xp-fill" style="width:38%"></div>
+                </div>
+                <div class="hh-xp-text">⚡ 325 XP</div>
+              </div>
+              <div class="hh-stats">
+                <div class="hh-stat">
+                  <div class="hh-stat-n">🔥9</div>
+                  <div class="hh-stat-l">Day streak</div>
+                </div>
+                <div class="hh-stat">
+                  <div class="hh-stat-n">2/10</div>
+                  <div class="hh-stat-l">Modules done</div>
+                </div>
+                <div class="hh-stat">
+                  <div class="hh-stat-n">85%</div>
+                  <div class="hh-stat-l">Avg. score</div>
+                </div>
+              </div>
+              =======
+              <!-- ═══════════ SIDEBAR ═══════════ -->
+              <div class="sidebar" id="sidebar">
+                <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
+                <div class="si" data-target="dashboard" onclick="openDashboard()"
+                  style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">
+                  📊 Dashboard</div>
+                <div class="si-section">Chapters</div>
+                <div class="si completed" data-module="1" onclick="openModule(1)">M1 · Accounting Concepts</div>
+                <div class="si completed" data-module="2" onclick="openModule(2)">M2 · Double Entry</div>
+                <div class="si" data-module="3" onclick="openModule(3)">M3 · Journals & Ledgers</div>
+                <div class="si" data-module="4" onclick="openModule(4)">M4 · Trial Balance</div>
+                <div class="si" data-module="5" onclick="openModule(5)">M5 · Cash Journals</div>
+                <div class="si" data-module="6" onclick="openModule(6)">M6 · Debtors & Creditors</div>
+                <div class="si" data-module="7" onclick="openModule(7)">M7 · VAT</div>
+                <div class="si" data-module="8" onclick="openModule(8)">M8 · Year-End Adjustments</div>
+                <div class="si" data-module="9" onclick="openModule(9)">M9 · Financial Statements</div>
+                <div class="si" data-module="10" onclick="openModule(10)">M10 · Bank Reconciliation</div>
+                >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
+              </div>
 
-<script>
-// ═══════════════════════════════════
-//  MODULE CONFIG
-// ═══════════════════════════════════
-const MODULES = {
-  1: { file:'ayikho-chapter-concepts.html',        name:'Accounting Concepts & Principles' },
-  2: { file:'ayikho-chapter-accounting.html',       name:'Double Entry & Accounting Equation' },
-  3: { file:'ayikho-chapter-journals.html',         name:'Journals & Ledgers' },
-  4: { file:'ayikho-chapter-trial-balance.html',    name:'Trial Balance' },
-  5: { file:'ayikho-chapter-cash-journals.html',    name:'Cash Receipts & Payments Journals' },
-  6: { file:'ayikho-chapter-debtors-creditors.html',name:'Debtors & Creditors Journals' },
-  7: { file:'ayikho-chapter-vat.html',              name:'Value Added Tax (VAT)' },
-  8: { file:'ayikho-chapter-adjustments.html',      name:'Year-End Adjustments' },
-  9: { file:'ayikho-chapter-financial-statements.html', name:'Financial Statements' },
-  10:{ file:'ayikho-chapter-bank-recon.html',           name:'Bank Reconciliation' }
-};
+              <!-- ═══════════ PHONE ═══════════ -->
+              <div class="phone-col">
+                <div class="phone">
 
-let currentModule = null;
-let demoMode = false;
-let onboardingDone = false;
-let moduleStartTime = null;
+                  <!-- LOADING OVERLAY -->
+                  <div class="loading-overlay" id="loading">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Loading module</div>
+                    <div class="loading-module" id="loading-name">...</div>
+                  </div>
 
-// Init Firebase tracking (fails silently if not configured)
-try {
-  if (window.ayikhoTracker && typeof FIREBASE_CONFIG !== 'undefined') {
-    window.ayikhoTracker.initFirebase(FIREBASE_CONFIG);
-  }
-} catch(e) { console.log('Tracking not active — prototype mode'); }
+                  <!-- BACK BUTTON (floating over iframe) -->
+                  <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
 
-// Listen for tracking events from chapter iframes
-window.addEventListener('message', function(e) {
-  try {
-    if (e.data && e.data.type === 'trackEvent' && window.ayikhoTracker) {
-      window.ayikhoTracker.track(e.data.eventType, e.data.data);
-    }
-  } catch(err) {}
-});
+                  <!-- HOME VIEW -->
+                  <div class="home-view" id="home-view">
+                    <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+                    <div class="home-header">
+                      <div class="hh-top">
+                        <div>
+                          <div class="hh-greeting">Sawubona 👋</div>
+                          <div class="hh-name">Student</div>
+                        </div>
+                        <div class="hh-avatar">Z</div>
+                      </div>
+                      <div class="hh-xp-row">
+                        <div class="hh-xp-bar">
+                          <div class="hh-xp-fill" style="width:38%"></div>
+                        </div>
+                        <div class="hh-xp-text">⚡ 325 XP</div>
+                      </div>
+                      <div class="hh-stats">
+                        <div class="hh-stat">
+                          <div class="hh-stat-n">🔥9</div>
+                          <div class="hh-stat-l">Day streak</div>
+                        </div>
+                        <div class="hh-stat">
+                          <div class="hh-stat-n">2/10</div>
+                          <div class="hh-stat-l">Modules done</div>
+                        </div>
+                        <div class="hh-stat">
+                          <div class="hh-stat-n">85%</div>
+                          <div class="hh-stat-l">Avg. score</div>
+                        </div>
+                      </div>
+                    </div>
 
-// Listen for progress events from chapter iframes
-window.addEventListener('message', function(e) {
-  if (e.data && e.data.type === 'moduleComplete' && window.ayikhoData) {
-    window.ayikhoData.completeModule(e.data.moduleId);
-  }
-  if (e.data && e.data.type === 'quizAnswer' && window.ayikhoData) {
-    window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType, e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic);
-  }
-  if (e.data && e.data.type === 'screenChange' && window.ayikhoData) {
-    window.ayikhoData.setModuleScreen(e.data.moduleId, e.data.screenIndex, e.data.totalScreens);
-  }
-  if (e.data && e.data.type === 'goHome') {
-    goHome();
-  }
-  if (e.data && e.data.type === 'openQuiz') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Quiz Mode';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-quiz.html';
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'quiz';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
-            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-            .shell{display:block!important;gap:0!important;height:100%!important}
-            .sidebar{display:none!important}
-            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-            .shell-meta{display:none!important}
-            .shell > div{height:100%!important}
-            .app-container,.container{height:100%!important}
-            body > div:first-child{height:100%!important}
-            .phone-col{display:block!important;height:100%!important}
-          `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-    }, 300);
-  }
-  if (e.data && e.data.type === 'openPapers') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Past Papers';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-papers.html';
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'papers';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
-            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-            .shell{display:block!important;gap:0!important;height:100%!important}
-            .sidebar{display:none!important}
-            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-            .shell-meta{display:none!important}
-            .shell > div{height:100%!important}
-            .app-container,.container{height:100%!important}
-            body > div:first-child{height:100%!important}
-            .phone-col{display:block!important;height:100%!important}
-          `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-    }, 300);
-  }
-  if (e.data && e.data.type === 'openMemos') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Memos';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-memos.html';
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'memos';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
-            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-            .shell{display:block!important;gap:0!important;height:100%!important}
-            .sidebar{display:none!important}
-            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-            .shell-meta{display:none!important}
-            .shell > div{height:100%!important}
-            .app-container,.container{height:100%!important}
-            body > div:first-child{height:100%!important}
-            .phone-col{display:block!important;height:100%!important}
-          `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-    }, 300);
-  }
-  if (e.data && e.data.type === 'openCapstone') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Capstone Exam';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.src = 'ayikho-capstone.html';
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'capstone';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
-            html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-            .shell{display:block!important;gap:0!important;height:100%!important}
-            .sidebar{display:none!important}
-            .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-            .shell-meta{display:none!important}
-            .shell > div{height:100%!important}
-            .app-container,.container{height:100%!important}
-            body > div:first-child{height:100%!important}
-            .phone-col{display:block!important;height:100%!important}
-          `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-    }, 300);
-  }
-});
+                    <div class="modules-area">
+                      <div class="modules-label">Financial Accounting N4 · 10 Modules</div>
 
-// ═══════════════════════════════════
-//  UPDATE HOME STATS FROM DATA
-// ═══════════════════════════════════
-function updateHomeStats() {
-  if (!window.ayikhoData) return;
+                      <!-- M1 -->
+                      <div class="module-card completed" onclick="openModule(1)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="0" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">✓</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 1</div>
+                          <div class="mc-title">Accounting Concepts & Principles</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 7 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">3/3 correct</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-xp">+150 XP</div>
+                        </div>
+                      </div>
+                      <div class="connector done">
+                        <div class="connector-line"></div>
+                      </div>
 
-  const data = window.ayikhoData.getDashboardData();
+                      <!-- M2 -->
+                      <div class="module-card completed" onclick="openModule(2)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="0" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">✓</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 2</div>
+                          <div class="mc-title">Double Entry & Accounting Equation</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 8 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">3/3 correct</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-xp">+150 XP</div>
+                        </div>
+                      </div>
+                      <div class="connector done">
+                        <div class="connector-line"></div>
+                      </div>
 
-  // Update XP display and bar
-  const xpText = document.querySelector('.hh-xp-text');
-  if (xpText) xpText.textContent = `⚡ ${data.totalXP} XP`;
+                      <!-- M3 — CURRENT -->
+                      <div class="module-card" onclick="openModule(3)"
+                        style="border-color:var(--fa);box-shadow:0 0 0 1px var(--fa),0 4px 16px rgba(2,132,199,.12)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">3</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num" style="color:var(--fa)">Module 3 · Up Next</div>
+                          <div class="mc-title">Journals & Ledgers</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 9 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ Journal builder</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
+                      <div class="connector">
+                        <div class="connector-line"></div>
+                      </div>
 
-  const xpFill = document.querySelector('.hh-xp-fill');
-  if (xpFill) xpFill.style.width = `${Math.min((data.totalXP / 1500) * 100, 100)}%`;
+                      <!-- M4 -->
+                      <div class="module-card" onclick="openModule(4)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">4</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 4</div>
+                          <div class="mc-title">Trial Balance</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 8 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ TB Builder</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
+                      <div class="connector">
+                        <div class="connector-line"></div>
+                      </div>
 
-  // Update stats
-  const statNs = document.querySelectorAll('.hh-stat-n');
-  if (statNs[0]) statNs[0].textContent = `🔥${data.streakDays}`;
-  if (statNs[1]) statNs[1].textContent = `${data.completedCount}/10`;
-  if (statNs[2]) statNs[2].textContent = `${data.avgScore}%`;
+                      <!-- M5 -->
+                      <div class="module-card" onclick="openModule(5)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">5</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 5</div>
+                          <div class="mc-title">Cash Receipts & Payments Journals</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 10 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ Transaction sorter</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
+                      <div class="connector">
+                        <div class="connector-line"></div>
+                      </div>
 
-  // Update profile name and avatar if available
-  const profile = window.ayikhoData.getProfile();
-  if (profile && profile.name) {
-    const nameEl = document.querySelector('.hh-name');
-    if (nameEl) nameEl.textContent = profile.name;
+                      <!-- M6 -->
+                      <div class="module-card" onclick="openModule(6)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">6</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 6</div>
+                          <div class="mc-title">Debtors & Creditors Journals</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 10 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ Invoice builder</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
+                      <div class="connector">
+                        <div class="connector-line"></div>
+                      </div>
 
-    const avatarEl = document.querySelector('.hh-avatar');
-    if (avatarEl) avatarEl.textContent = profile.name.charAt(0).toUpperCase();
-  }
+                      <!-- M7 -->
+                      <div class="module-card" onclick="openModule(7)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">7</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 7</div>
+                          <div class="mc-title">Value Added Tax (VAT)</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 8 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ VAT calculator</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
+                      <div class="connector">
+                        <div class="connector-line"></div>
+                      </div>
 
-  // Update module card statuses
-  const cards = document.querySelectorAll('.module-card');
-  cards.forEach((card, idx) => {
-    const moduleNum = idx + 1;
-    const moduleStatus = data.moduleStatuses[moduleNum];
+                      <!-- M8 -->
+                      <div class="module-card" onclick="openModule(8)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">8</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 8</div>
+                          <div class="mc-title">Year-End Adjustments</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 11 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ Depreciation calc</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
+                      <div class="connector">
+                        <div class="connector-line"></div>
+                      </div>
 
-    if (moduleStatus) {
-      // Remove old status classes
-      card.classList.remove('completed', 'locked');
+                      <!-- M9 -->
+                      <div class="module-card" onclick="openModule(9)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">9</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 9</div>
+                          <div class="mc-title">Financial Statements</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 12 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ Drag-and-drop builder</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
+                      <div class="connector">
+                        <div class="connector-line"></div>
+                      </div>
 
-      // Add new status class
-      if (moduleStatus.status === 'completed') {
-        card.classList.add('completed');
-      } else if (moduleStatus.status === 'locked') {
-        card.classList.add('locked');
-      }
-    }
-  });
-}
+                      <!-- M10 -->
+                      <div class="module-card" onclick="openModule(10)">
+                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                              stroke-dashoffset="138.23" />
+                          </svg>
+                          <div class="prog-ring-center"><span class="prog-ring-num">10</span></div>
+                        </div>
+                        <div class="mc-info">
+                          <div class="mc-module-num">Module 10</div>
+                          <div class="mc-title">Bank Reconciliation</div>
+                          <div class="mc-meta">
+                            <div class="mc-meta-item">⏱ 9 min</div>
+                            <div class="mc-meta-item">·</div>
+                            <div class="mc-meta-item">🛠️ Transaction classifier</div>
+                          </div>
+                        </div>
+                        <div class="mc-right">
+                          <div class="mc-arrow">→</div>
+                        </div>
+                      </div>
 
-// ═══════════════════════════════════
-//  ONBOARDING → HOME TRANSITION
-// ═══════════════════════════════════
-// Listen for postMessage from onboarding iframe (needed for file:// cross-origin)
-window.addEventListener('message', function(e) {
-  if (e.data === 'onboardingComplete') window.onboardingComplete();
-});
+                      <div style="height:16px"></div>
+                    </div>
 
-// Called by onboarding iframe when user taps "Start studying now"
-window.onboardingComplete = function() {
-  if (onboardingDone) return; // prevent double-fire
-  onboardingDone = true;
+                    <div class="bottom-nav">
+                      <div class="bn-item active">
+                        <div class="bn-icon">📚</div>
+                        <div class="bn-label">Learn</div>
+                      </div>
+                      <div class="bn-item">
+                        <div class="bn-icon">📊</div>
+                        <div class="bn-label">Progress</div>
+                      </div>
+                      <div class="bn-item">
+                        <div class="bn-icon">🏆</div>
+                        <div class="bn-label">Badges</div>
+                      </div>
+                      <div class="bn-item">
+                        <div class="bn-icon">👤</div>
+                        <div class="bn-label">Profile</div>
+                      </div>
+                    </div>
+                  </div><!-- /home-view -->
 
-  // Mark onboarding as complete in persistence layer
-  if (window.ayikhoData) {
-    window.ayikhoData.setOnboardingComplete(true);
-  }
+                  <!-- CHAPTER VIEW (iframe loads here) -->
+                  <div class="chapter-view" id="chapter-view">
+                    <iframe id="chapter-frame" src="about:blank" allow="autoplay"></iframe>
+                  </div>
 
-  // Hide the chapter-view (which has onboarding loaded)
-  document.getElementById('chapter-view').classList.remove('active');
+                </div><!-- /phone -->
+                <div class="shell-meta">Starts with onboarding → Press D to unlock all · Esc to go home · 1-9 to jump
+                </div>
+              </div><!-- /phone-col -->
+            </div><!-- /shell -->
 
-  // Remove the onload handler so setting src=about:blank doesn't re-activate chapter-view
-  document.getElementById('chapter-frame').onload = null;
+            <<<<<<< HEAD // Listen for progress events from chapter iframes window.addEventListener('message',
+              function(e) { if (e.data && e.data.type==='moduleComplete' && window.ayikhoData) {
+              window.ayikhoData.completeModule(e.data.moduleId); } if (e.data && e.data.type==='quizAnswer' &&
+              window.ayikhoData) { window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType,
+              e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic); } if (e.data &&
+              e.data.type==='screenChange' && window.ayikhoData) { window.ayikhoData.setModuleScreen(e.data.moduleId,
+              e.data.screenIndex, e.data.totalScreens); } if (e.data && e.data.type==='goHome' ) { goHome(); } if
+              (e.data && e.data.type==='openQuiz' ) { const loading=document.getElementById('loading');
+              document.getElementById('loading-name').textContent='Quiz Mode' ; loading.classList.add('show');
+              setTimeout(()=> {
+              const frame = document.getElementById('chapter-frame');
+              frame.src = 'ayikho-quiz.html';
+              frame.onload = () => {
+              loading.classList.remove('show');
+              document.getElementById('home-view').classList.add('hidden');
+              document.getElementById('chapter-view').classList.add('active');
+              document.getElementById('back-btn').classList.add('show');
+              currentModule = 'quiz';
+              updateSidebar();
+              try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
+              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+              .shell{display:block!important;gap:0!important;height:100%!important}
+              .sidebar{display:none!important}
+              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+              .shell-meta{display:none!important}
+              .shell > div{height:100%!important}
+              .app-container,.container{height:100%!important}
+              body > div:first-child{height:100%!important}
+              .phone-col{display:block!important;height:100%!important}
+              `;
+              iDoc.head.appendChild(style);
+              } catch(e) {}
+              };
+              }, 300);
+              }
+              if (e.data && e.data.type === 'openPapers') {
+              const loading = document.getElementById('loading');
+              document.getElementById('loading-name').textContent = 'Past Papers';
+              loading.classList.add('show');
+              setTimeout(() => {
+              const frame = document.getElementById('chapter-frame');
+              frame.src = 'ayikho-papers.html';
+              frame.onload = () => {
+              loading.classList.remove('show');
+              document.getElementById('home-view').classList.add('hidden');
+              document.getElementById('chapter-view').classList.add('active');
+              document.getElementById('back-btn').classList.add('show');
+              currentModule = 'papers';
+              updateSidebar();
+              try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
+              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+              .shell{display:block!important;gap:0!important;height:100%!important}
+              .sidebar{display:none!important}
+              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+              .shell-meta{display:none!important}
+              .shell > div{height:100%!important}
+              .app-container,.container{height:100%!important}
+              body > div:first-child{height:100%!important}
+              .phone-col{display:block!important;height:100%!important}
+              `;
+              iDoc.head.appendChild(style);
+              } catch(e) {}
+              };
+              }, 300);
+              }
+              if (e.data && e.data.type === 'openMemos') {
+              const loading = document.getElementById('loading');
+              document.getElementById('loading-name').textContent = 'Memos';
+              loading.classList.add('show');
+              setTimeout(() => {
+              const frame = document.getElementById('chapter-frame');
+              frame.src = 'ayikho-memos.html';
+              frame.onload = () => {
+              loading.classList.remove('show');
+              document.getElementById('home-view').classList.add('hidden');
+              document.getElementById('chapter-view').classList.add('active');
+              document.getElementById('back-btn').classList.add('show');
+              currentModule = 'memos';
+              updateSidebar();
+              try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
+              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+              .shell{display:block!important;gap:0!important;height:100%!important}
+              .sidebar{display:none!important}
+              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+              .shell-meta{display:none!important}
+              .shell > div{height:100%!important}
+              .app-container,.container{height:100%!important}
+              body > div:first-child{height:100%!important}
+              .phone-col{display:block!important;height:100%!important}
+              `;
+              iDoc.head.appendChild(style);
+              } catch(e) {}
+              };
+              }, 300);
+              }
+              if (e.data && e.data.type === 'openCapstone') {
+              const loading = document.getElementById('loading');
+              document.getElementById('loading-name').textContent = 'Capstone Exam';
+              loading.classList.add('show');
+              setTimeout(() => {
+              const frame = document.getElementById('chapter-frame');
+              frame.src = 'ayikho-capstone.html';
+              frame.onload = () => {
+              loading.classList.remove('show');
+              document.getElementById('home-view').classList.add('hidden');
+              document.getElementById('chapter-view').classList.add('active');
+              document.getElementById('back-btn').classList.add('show');
+              currentModule = 'capstone';
+              updateSidebar();
+              try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
+              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+              .shell{display:block!important;gap:0!important;height:100%!important}
+              .sidebar{display:none!important}
+              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+              .shell-meta{display:none!important}
+              .shell > div{height:100%!important}
+              .app-container,.container{height:100%!important}
+              body > div:first-child{height:100%!important}
+              .phone-col{display:block!important;height:100%!important}
+              `;
+              iDoc.head.appendChild(style);
+              } catch(e) {}
+              };
+              }, 300);
+              }
+              });
+              =======
+              <script>
+                // ═══════════════════════════════════
+                //  MODULE CONFIG
+                // ═══════════════════════════════════
+                const MODULES = {
+                  1: { file: 'ayikho-chapter-concepts.html', name: 'Accounting Concepts & Principles' },
+                  2: { file: 'ayikho-chapter-accounting.html', name: 'Double Entry & Accounting Equation' },
+                  3: { file: 'ayikho-chapter-journals.html', name: 'Journals & Ledgers' },
+                  4: { file: 'ayikho-chapter-trial-balance.html', name: 'Trial Balance' },
+                  5: { file: 'ayikho-chapter-cash-journals.html', name: 'Cash Receipts & Payments Journals' },
+                  6: { file: 'ayikho-chapter-debtors-creditors.html', name: 'Debtors & Creditors Journals' },
+                  7: { file: 'ayikho-chapter-vat.html', name: 'Value Added Tax (VAT)' },
+                  8: { file: 'ayikho-chapter-adjustments.html', name: 'Year-End Adjustments' },
+                  9: { file: 'ayikho-chapter-financial-statements.html', name: 'Financial Statements' },
+                  10: { file: 'ayikho-chapter-bank-recon.html', name: 'Bank Reconciliation' }
+                };
 
-  setTimeout(() => {
-    // Clear the iframe
-    document.getElementById('chapter-frame').src = 'about:blank';
-    // Reveal the home screen with a nice entrance
-    document.getElementById('home-view').classList.remove('hidden');
-    currentModule = null;
-    updateSidebar();
+                let currentModule = null;
+                let demoMode = false;
+                let onboardingDone = false;
+                let moduleStartTime = null;
 
-    // Update home stats from data
-    updateHomeStats();
+                // Init Firebase tracking (fails silently if not configured)
+                try {
+                  if (window.ayikhoTracker && typeof FIREBASE_CONFIG !== 'undefined') {
+                    window.ayikhoTracker.initFirebase(FIREBASE_CONFIG);
+                  }
+                } catch (e) { console.log('Tracking not active — prototype mode'); }
 
-    // Trigger the card entrance animations
-    const cards = document.querySelectorAll('.module-card');
-    cards.forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(12px)';
-      card.style.transition = 'opacity .3s ease, transform .3s ease';
-      setTimeout(() => {
-        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
-        card.style.transform = 'translateY(0)';
-      }, 100 + i * 60);
-    });
-    document.querySelectorAll('.connector').forEach((c, i) => {
-      c.style.opacity = '0';
-      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
-    });
+                // Listen for tracking events from chapter iframes
+                window.addEventListener('message', function (e) {
+                  try {
+                    if (e.data && e.data.type === 'trackEvent' && window.ayikhoTracker) {
+                      window.ayikhoTracker.track(e.data.eventType, e.data.data);
+                    }
+                  } catch (err) { }
+                });
 
-    showToast('Welcome to Ayikho! Press D to unlock all modules');
-  }, 350);
-};
+                // Listen for progress events from chapter iframes
+                window.addEventListener('message', function (e) {
+                  if (e.data && e.data.type === 'moduleComplete' && window.ayikhoData) {
+                    window.ayikhoData.completeModule(e.data.moduleId);
+                  }
+                  if (e.data && e.data.type === 'quizAnswer' && window.ayikhoData) {
+                    window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType, e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic);
+                  }
+                  if (e.data && e.data.type === 'screenChange' && window.ayikhoData) {
+                    window.ayikhoData.setModuleScreen(e.data.moduleId, e.data.screenIndex, e.data.totalScreens);
+                  }
+                  if (e.data && e.data.type === 'goHome') {
+                    goHome();
+                  }
+                  if (e.data && e.data.type === 'nextModule') {
+                    const nextId = e.data.currentModuleId + 1;
+                    if (MODULES[nextId]) {
+                      openModule(nextId);
+                    } else {
+                      goHome();
+                    }
+                  }
+                });
 
-// ═══════════════════════════════════
-//  OPEN MODULE
-// ═══════════════════════════════════
-function openModule(num) {
-  const mod = MODULES[num];
-  if (!mod) return;
+                // ═══════════════════════════════════
+                //  UPDATE HOME STATS FROM DATA
+                // ═══════════════════════════════════
+                function updateHomeStats() {
+                  if (!window.ayikhoData) return;
 
-  // All modules unlocked for prototype demo
-  const cards = document.querySelectorAll('.module-card');
-  const card = cards[num - 1];
+                  const data = window.ayikhoData.getDashboardData();
 
-  // Card press animation
-  if (card) {
-    card.style.transform = 'scale(.96)';
-    card.style.transition = 'transform .12s ease';
-  }
+                  // Update XP display and bar
+                  const xpText = document.querySelector('.hh-xp-text');
+                  if (xpText) xpText.textContent = `⚡ ${data.totalXP} XP`;
 
-  // Show loading
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = mod.name;
-  loading.classList.add('show');
+                  const xpFill = document.querySelector('.hh-xp-fill');
+                  if (xpFill) xpFill.style.width = `${Math.min((data.totalXP / 1500) * 100, 100)}% `;
 
-  setTimeout(() => {
-    if (card) card.style.transform = '';
+                  // Update stats
+                  // Update stats
+                  const statNs = document.querySelectorAll('.hh-stat-n');
+                  if (statNs[0]) statNs[0].textContent = `🔥${data.streakDays} `;
+                  if (statNs[1]) statNs[1].textContent = `${data.completedCount}/10`;
+                  if (statNs[2]) statNs[2].textContent = `${data.avgScore}%`;
 
-    // Load iframe
-    const frame = document.getElementById('chapter-frame');
-    frame.src = mod.file;
+                  // Update profile name and avatar if available
+                  const profile = window.ayikhoData.getProfile();
+                  if (profile && profile.name) {
+                    const nameParts = profile.name.split(' ');
+                    const firstName = nameParts[0];
+                    const hhName = document.querySelector('.hh-name');
+                    if (hhName) hhName.textContent = firstName;
 
-    frame.onload = () => {
-      // Hide loading, show chapter
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = num;
-      moduleStartTime = Date.now();
-      updateSidebar();
+                    const hhAvatar = document.querySelector('.hh-avatar');
+                    if (hhAvatar) hhAvatar.textContent = firstName.charAt(0).toUpperCase();
+                  }
 
-      // Track module start
-      if (window.ayikhoTracker) {
-        window.ayikhoTracker.trackModuleStart(num);
-        // Send tracker config to iframe
-        try {
-          frame.contentWindow.postMessage({
-            type: 'initTracker',
-            userId: window.ayikhoTracker.userId,
-            moduleId: num
-          }, '*');
-        } catch(e) {}
-      }
+                  // Update module card statuses
+                  const cards = document.querySelectorAll('.module-card');
+                  cards.forEach((card, idx) => {
+                    const moduleNum = idx + 1;
+                    const moduleStatus = data.moduleStatuses[moduleNum];
 
-      // Record module start in persistence layer
-      if (window.ayikhoData) {
-        window.ayikhoData.startModule(num);
-      }
+                    if (moduleStatus) {
+                      // Remove old status classes
+                      card.classList.remove('completed', 'locked');
 
-      // Inject styles into iframe to hide its shell/sidebar (show only phone innards)
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
+                      // Add new status class
+                      if (moduleStatus.status === 'completed') {
+                        card.classList.add('completed');
+                      } else if (moduleStatus.status === 'locked') {
+                        card.classList.add('locked');
+                      }
+                    }
+                  });
+                }
+
+                // ═══════════════════════════════════
+                //  ONBOARDING → HOME TRANSITION
+                // ═══════════════════════════════════
+                // Listen for postMessage from onboarding iframe (needed for file:// cross-origin)
+                window.addEventListener('message', function (e) {
+                  if (e.data === 'onboardingComplete') window.onboardingComplete();
+                });
+
+                // Called by onboarding iframe when user taps "Start studying now"
+                window.onboardingComplete = function () {
+                  if (onboardingDone) return; // prevent double-fire
+                  onboardingDone = true;
+
+                  // Mark onboarding as complete in persistence layer
+                  if (window.ayikhoData) {
+                    window.ayikhoData.setOnboardingComplete(true);
+                  }
+
+                  // Hide the chapter-view (which has onboarding loaded)
+                  document.getElementById('chapter-view').classList.remove('active');
+
+                  // Remove the onload handler so setting src=about:blank doesn't re-activate chapter-view
+                  document.getElementById('chapter-frame').onload = null;
+
+                  setTimeout(() => {
+                    // Clear the iframe
+                    document.getElementById('chapter-frame').src = 'about:blank';
+                    // Reveal the home screen with a nice entrance
+                    document.getElementById('home-view').classList.remove('hidden');
+                    currentModule = null;
+                    updateSidebar();
+
+                    // Update home stats from data
+                    updateHomeStats();
+
+                    // Trigger the card entrance animations
+                    const cards = document.querySelectorAll('.module-card');
+                    cards.forEach((card, i) => {
+                      card.style.opacity = '0';
+                      card.style.transform = 'translateY(12px)';
+                      card.style.transition = 'opacity .3s ease, transform .3s ease';
+                      setTimeout(() => {
+                        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
+                        card.style.transform = 'translateY(0)';
+                      }, 100 + i * 60);
+                    });
+                    document.querySelectorAll('.connector').forEach((c, i) => {
+                      c.style.opacity = '0';
+                      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
+                    });
+
+                    showToast('Welcome to Ayikho! Press D to unlock all modules');
+                  }, 350);
+                };
+
+                // ═══════════════════════════════════
+                //  OPEN MODULE
+                // ═══════════════════════════════════
+                function openModule(num) {
+                  const mod = MODULES[num];
+                  if (!mod) return;
+
+                  // All modules unlocked for prototype demo
+                  const cards = document.querySelectorAll('.module-card');
+                  const card = cards[num - 1];
+
+                  // Card press animation
+                  if (card) {
+                    card.style.transform = 'scale(.96)';
+                    card.style.transition = 'transform .12s ease';
+                  }
+
+                  // Show loading
+                  const loading = document.getElementById('loading');
+                  document.getElementById('loading-name').textContent = mod.name;
+                  loading.classList.add('show');
+
+                  setTimeout(() => {
+                    if (card) card.style.transform = '';
+
+                    // Load iframe
+                    const frame = document.getElementById('chapter-frame');
+                    frame.src = mod.file;
+
+                    frame.onload = () => {
+                      // Hide loading, show chapter
+                      loading.classList.remove('show');
+                      document.getElementById('home-view').classList.add('hidden');
+                      document.getElementById('chapter-view').classList.add('active');
+                      document.getElementById('back-btn').classList.add('show');
+                      currentModule = num;
+                      moduleStartTime = Date.now();
+                      updateSidebar();
+
+                      // Track module start
+                      if (window.ayikhoTracker) {
+                        window.ayikhoTracker.trackModuleStart(num);
+                        // Send tracker config to iframe
+                        try {
+                          frame.contentWindow.postMessage({
+                            type: 'initTracker',
+                            userId: window.ayikhoTracker.userId,
+                            moduleId: num
+                          }, '*');
+                        } catch (e) { }
+                      }
+
+                      // Record module start in persistence layer
+                      if (window.ayikhoData) {
+                        window.ayikhoData.startModule(num);
+                      }
+
+                      // Inject styles into iframe to hide its shell/sidebar (show only phone innards)
+                      try {
+                        const iDoc = frame.contentDocument || frame.contentWindow.document;
+                        const style = iDoc.createElement('style');
+                        style.textContent = `
+          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+                        iDoc.head.appendChild(style);
+                      } catch (e) { /* cross-origin, ignore */ }
+                    };
+                  }, 300);
+                }
+
+                // ═══════════════════════════════════
+                //  GO HOME
+                // ═══════════════════════════════════
+                function goHome() {
+                  // Save time spent in module
+                  if (currentModule && moduleStartTime && window.ayikhoData) {
+                    window.ayikhoData.addModuleTime(currentModule, Date.now() - moduleStartTime);
+                  }
+
+                  document.getElementById('chapter-view').classList.remove('active');
+                  document.getElementById('back-btn').classList.remove('show');
+
+                  // Clear onload handler so about:blank doesnt re-activate chapter-view
+                  document.getElementById('chapter-frame').onload = null;
+
+                  setTimeout(() => {
+                    document.getElementById('home-view').classList.remove('hidden');
+                    document.getElementById('chapter-frame').src = 'about:blank';
+                    currentModule = null;
+                    updateSidebar();
+                    updateHomeStats();
+                  }, 350);
+                }
+
+                // ═══════════════════════════════════
+                //  OPEN DASHBOARD
+                // ═══════════════════════════════════
+                function openDashboard() {
+                  const loading = document.getElementById('loading');
+                  document.getElementById('loading-name').textContent = 'Dashboard';
+                  loading.classList.add('show');
+
+                  setTimeout(() => {
+                    const frame = document.getElementById('chapter-frame');
+                    frame.src = 'ayikho-dashboard.html';
+                    frame.onload = () => {
+                      loading.classList.remove('show');
+                      document.getElementById('home-view').classList.add('hidden');
+                      document.getElementById('chapter-view').classList.add('active');
+                      document.getElementById('back-btn').classList.add('show');
+                      currentModule = 'dashboard';
+                      // Highlight dashboard in sidebar
+                      document.querySelectorAll('.sidebar .si').forEach(el => el.classList.remove('active'));
+                      document.querySelector('[data-target="dashboard"]').classList.add('active');
+                      try {
+                        const iDoc = frame.contentDocument || frame.contentWindow.document;
+                        const style = iDoc.createElement('style');
+                        style.textContent = `
+          html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+                        iDoc.head.appendChild(style);
+                      } catch (e) { }
+                    };
+                  }, 300);
+                }
+
+                // ═══════════════════════════════════
+                //  OPEN QUIZ MODE
+                // ═══════════════════════════════════
+                function openQuizMode() {
+                  const loading = document.getElementById('loading');
+                  document.getElementById('loading-name').textContent = 'Quiz Mode';
+                  loading.classList.add('show');
+
+                  setTimeout(() => {
+                    const frame = document.getElementById('chapter-frame');
+                    frame.src = 'ayikho-quiz.html';
+                    frame.onload = () => {
+                      loading.classList.remove('show');
+                      document.getElementById('home-view').classList.add('hidden');
+                      document.getElementById('chapter-view').classList.add('active');
+                      document.getElementById('back-btn').classList.add('show');
+                      currentModule = 'quiz';
+                      updateSidebar();
+                      try {
+                        const iDoc = frame.contentDocument || frame.contentWindow.document;
+                        const style = iDoc.createElement('style');
+                        style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -680,95 +1664,34 @@ function openModule(num) {
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-        iDoc.head.appendChild(style);
-      } catch(e) { /* cross-origin, ignore */ }
-    };
-  }, 300);
-}
+                        iDoc.head.appendChild(style);
+                      } catch (e) { }
+                    };
+                  }, 300);
+                }
 
-// ═══════════════════════════════════
-//  GO HOME
-// ═══════════════════════════════════
-function goHome() {
-  // Save time spent in module
-  if (currentModule && moduleStartTime && window.ayikhoData) {
-    window.ayikhoData.addModuleTime(currentModule, Date.now() - moduleStartTime);
-  }
+                // ═══════════════════════════════════
+                //  OPEN PAPERS MODE
+                // ═══════════════════════════════════
+                function openPapersMode() {
+                  const loading = document.getElementById('loading');
+                  document.getElementById('loading-name').textContent = 'Past Papers';
+                  loading.classList.add('show');
 
-  document.getElementById('chapter-view').classList.remove('active');
-  document.getElementById('back-btn').classList.remove('show');
-
-  // Clear onload handler so about:blank doesnt re-activate chapter-view
-  document.getElementById('chapter-frame').onload = null;
-
-  setTimeout(() => {
-    document.getElementById('home-view').classList.remove('hidden');
-    document.getElementById('chapter-frame').src = 'about:blank';
-    currentModule = null;
-    updateSidebar();
-    updateHomeStats();
-  }, 350);
-}
-
-// ═══════════════════════════════════
-//  OPEN DASHBOARD
-// ═══════════════════════════════════
-function openDashboard() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Dashboard';
-  loading.classList.add('show');
-
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-dashboard.html';
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'dashboard';
-      // Highlight dashboard in sidebar
-      document.querySelectorAll('.sidebar .si').forEach(el => el.classList.remove('active'));
-      document.querySelector('[data-target="dashboard"]').classList.add('active');
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important;height:100%!important}
-          .sidebar{display:none!important}
-          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-          .shell-meta{display:none!important}
-          .phone-col{display:block!important;height:100%!important}
-        `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-  }, 300);
-}
-
-// ═══════════════════════════════════
-//  OPEN QUIZ MODE
-// ═══════════════════════════════════
-function openQuizMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Quiz Mode';
-  loading.classList.add('show');
-
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-quiz.html';
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'quiz';
-      updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
+                  setTimeout(() => {
+                    const frame = document.getElementById('chapter-frame');
+                    frame.src = 'ayikho-papers.html';
+                    frame.onload = () => {
+                      loading.classList.remove('show');
+                      document.getElementById('home-view').classList.add('hidden');
+                      document.getElementById('chapter-view').classList.add('active');
+                      document.getElementById('back-btn').classList.add('show');
+                      currentModule = 'papers';
+                      updateSidebar();
+                      try {
+                        const iDoc = frame.contentDocument || frame.contentWindow.document;
+                        const style = iDoc.createElement('style');
+                        style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -779,34 +1702,34 @@ function openQuizMode() {
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-  }, 300);
-}
+                        iDoc.head.appendChild(style);
+                      } catch (e) { }
+                    };
+                  }, 300);
+                }
 
-// ═══════════════════════════════════
-//  OPEN PAPERS MODE
-// ═══════════════════════════════════
-function openPapersMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Past Papers';
-  loading.classList.add('show');
+                // ═══════════════════════════════════
+                //  OPEN MEMOS MODE
+                // ═══════════════════════════════════
+                function openMemosMode() {
+                  const loading = document.getElementById('loading');
+                  document.getElementById('loading-name').textContent = 'Memos';
+                  loading.classList.add('show');
 
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-papers.html';
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'papers';
-      updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
+                  setTimeout(() => {
+                    const frame = document.getElementById('chapter-frame');
+                    frame.src = 'ayikho-memos.html';
+                    frame.onload = () => {
+                      loading.classList.remove('show');
+                      document.getElementById('home-view').classList.add('hidden');
+                      document.getElementById('chapter-view').classList.add('active');
+                      document.getElementById('back-btn').classList.add('show');
+                      currentModule = 'memos';
+                      updateSidebar();
+                      try {
+                        const iDoc = frame.contentDocument || frame.contentWindow.document;
+                        const style = iDoc.createElement('style');
+                        style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -817,226 +1740,214 @@ function openPapersMode() {
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-  }, 300);
-}
+                        iDoc.head.appendChild(style);
+                      } catch (e) { }
+                    };
+                  }, 300);
+                }
 
-// ═══════════════════════════════════
-//  OPEN MEMOS MODE
-// ═══════════════════════════════════
-function openMemosMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Memos';
-  loading.classList.add('show');
+                // ═══════════════════════════════════
+                //  OPEN CAPSTONE MODE
+                // ═══════════════════════════════════
+                function openCapstoneMode() {
+                  const loading = document.getElementById('loading');
+                  document.getElementById('loading-name').textContent = 'Capstone Exam';
+                  loading.classList.add('show');
 
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-memos.html';
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'memos';
-      updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important;height:100%!important}
-          .sidebar{display:none!important}
-          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-          .shell-meta{display:none!important}
-          .shell > div{height:100%!important}
-          .app-container,.container{height:100%!important}
-          body > div:first-child{height:100%!important}
-          .phone-col{display:block!important;height:100%!important}
-        `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-  }, 300);
-}
+                  setTimeout(() => {
+                    const frame = document.getElementById('chapter-frame');
+                    frame.src = 'ayikho-capstone.html';
+                    frame.onload = () => {
+                      loading.classList.remove('show');
+                      document.getElementById('home-view').classList.add('hidden');
+                      document.getElementById('chapter-view').classList.add('active');
+                      document.getElementById('back-btn').classList.add('show');
+                      currentModule = 'capstone';
+                      updateSidebar();
+                      try {
+                        const iDoc = frame.contentDocument || frame.contentWindow.document;
+                        const style = iDoc.createElement('style');
+                        style.textContent = `
+                          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+                          .shell{display:block!important;gap:0!important;height:100%!important}
+                          .sidebar{display:none!important}
+                          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+                          .shell-meta{display:none!important}
+                          .app-container,.container{height:100%!important}
+                          body > div:first-child{height:100%!important}
+                          .phone-col{display:block!important;height:100%!important}
+                        `;
+                        iDoc.head.appendChild(style);
+                      } catch (e) { }
+                    };
+                  }, 300);
+                }
 
-// ═══════════════════════════════════
-//  OPEN CAPSTONE MODE
-// ═══════════════════════════════════
-function openCapstoneMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Capstone Exam';
-  loading.classList.add('show');
+                // ═══════════════════════════════════
+                //  SIDEBAR
+                // ═══════════════════════════════════
+                function updateSidebar() {
+                  document.querySelectorAll('.sidebar .si').forEach(el => {
+                    el.classList.remove('active');
+                    if (el.dataset.module && parseInt(el.dataset.module) === currentModule) {
+                      el.classList.add('active');
+                    }
+                  });
+                  const homeBtn = document.querySelector('.si-home');
+                  if (homeBtn) homeBtn.classList.toggle('active', currentModule === null);
+                }
 
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-capstone.html';
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'capstone';
-      updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important;height:100%!important}
-          .sidebar{display:none!important}
-          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-          .shell-meta{display:none!important}
-          .shell > div{height:100%!important}
-          .app-container,.container{height:100%!important}
-          body > div:first-child{height:100%!important}
-          .phone-col{display:block!important;height:100%!important}
-        `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-  }, 300);
-}
+                // ═══════════════════════════════════
+                //  KEYBOARD NAV
+                // ═══════════════════════════════════
+                document.addEventListener('keydown', e => {
+                  // Don't intercept keys during onboarding
+                  if (!onboardingDone && e.key !== 'Escape') return;
 
-// ═══════════════════════════════════
-//  SIDEBAR
-// ═══════════════════════════════════
-function updateSidebar() {
-  document.querySelectorAll('.sidebar .si').forEach(el => {
-    el.classList.remove('active');
-    if (el.dataset.module && parseInt(el.dataset.module) === currentModule) {
-      el.classList.add('active');
-    }
-  });
-  const homeBtn = document.querySelector('.si-home');
-  if (homeBtn) homeBtn.classList.toggle('active', currentModule === null);
-}
+                  // Escape: go home (or skip onboarding)
+                  if (e.key === 'Escape') {
+                    if (!onboardingDone) {
+                      // Skip onboarding entirely
+                      window.onboardingComplete();
+                      return;
+                    }
+                    if (currentModule !== null) {
+                      goHome();
+                      return;
+                    }
+                    return;
+                  }
 
-// ═══════════════════════════════════
-//  KEYBOARD NAV
-// ═══════════════════════════════════
-document.addEventListener('keydown', e => {
-  // Don't intercept keys during onboarding
-  if (!onboardingDone && e.key !== 'Escape') return;
+                  // D: toggle demo mode (unlock all)
+                  if (e.key === 'd' || e.key === 'D') {
+                    if (currentModule !== null) return; // Don't toggle when inside a chapter
+                    demoMode = !demoMode;
+                    document.querySelectorAll('.module-card.locked').forEach(card => {
+                      if (demoMode) {
+                        card.style.opacity = '1';
+                        card.style.cursor = 'pointer';
+                        card.dataset.wasLocked = 'true';
+                        card.classList.remove('locked');
+                      } else {
+                        if (card.dataset.wasLocked) {
+                          card.classList.add('locked');
+                          card.style.opacity = '.55';
+                          card.style.cursor = 'default';
+                        }
+                      }
+                    });
+                    showToast(demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF');
+                  }
 
-  // Escape: go home (or skip onboarding)
-  if (e.key === 'Escape') {
-    if (!onboardingDone) {
-      // Skip onboarding entirely
-      window.onboardingComplete();
-      return;
-    }
-    if (currentModule !== null) {
-      goHome();
-      return;
-    }
-    return;
-  }
+                  // Number keys 1-9: jump to module
+                  const num = parseInt(e.key);
+                  if (num >= 1 && num <= 9) {
+                    openModule(num);
+                  }
+                });
 
-  // D: toggle demo mode (unlock all)
-  if (e.key === 'd' || e.key === 'D') {
-    if (currentModule !== null) return; // Don't toggle when inside a chapter
-    demoMode = !demoMode;
-    document.querySelectorAll('.module-card.locked').forEach(card => {
-      if (demoMode) {
-        card.style.opacity = '1';
-        card.style.cursor = 'pointer';
-        card.dataset.wasLocked = 'true';
-        card.classList.remove('locked');
-      } else {
-        if (card.dataset.wasLocked) {
-          card.classList.add('locked');
-          card.style.opacity = '.55';
-          card.style.cursor = 'default';
-        }
-      }
-    });
-    showToast(demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF');
-  }
+                function showToast(msg) {
+                  const t = document.createElement('div');
+                  t.textContent = msg;
+                  t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,10,58,.9);color:white;padding:10px 18px;border-radius:100px;font-family:JetBrains Mono,monospace;font-size:11px;z-index:999;transition:opacity .5s;backdrop-filter:blur(8px)';
+                  document.body.appendChild(t);
+                  setTimeout(() => t.style.opacity = '0', 2000);
+                  setTimeout(() => t.remove(), 2500);
+                }
 
-  // Number keys 1-9: jump to module
-  const num = parseInt(e.key);
-  if (num >= 1 && num <= 9) {
-    openModule(num);
-  }
-});
+                // ═══════════════════════════════════
+                //  STARTUP — CHECK ONBOARDING & AUTH STATUS
+                // ═══════════════════════════════════
+                document.addEventListener('DOMContentLoaded', () => {
+                  // 1. Initialize Firebase Auth
+                  initAuth();
 
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,10,58,.9);color:white;padding:10px 18px;border-radius:100px;font-family:JetBrains Mono,monospace;font-size:11px;z-index:999;transition:opacity .5s;backdrop-filter:blur(8px)';
-  document.body.appendChild(t);
-  setTimeout(() => t.style.opacity = '0', 2000);
-  setTimeout(() => t.remove(), 2500);
-}
+                  // 2. We use onAuthStateChanged to delay the final redirect
+                  // so we definitely know if they are logged in or not.
+                  if (auth) {
+                    onAuthStateChanged(auth, (user) => {
+                      if (user && window.ayikhoData && window.ayikhoData.isOnboardingComplete()) {
+                        // Returning AND logged in student — skip onboarding and show home directly
+                        onboardingDone = true;
+                        showHomeView();
+                      } else {
+                        // Not logged in or no onboarding complete -> show onboarding
+                        // If they completed onboarding but aren't logged in, they are a returning user who needs to log in.
+                        const needsLogin = window.ayikhoData && window.ayikhoData.isOnboardingComplete();
+                        showOnboardingView(needsLogin);
+                      }
+                    });
+                  } else {
+                    // Fallback for prototype mode without Firebase
+                    if (window.ayikhoData && window.ayikhoData.isOnboardingComplete()) {
+                      onboardingDone = true;
+                      showHomeView();
+                    } else {
+                      showOnboardingView(false);
+                    }
+                  }
 
-// ═══════════════════════════════════
-//  STARTUP — CHECK ONBOARDING STATUS
-// ═══════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  // Always show home screen for prototype demo
-  // Onboarding is available via sidebar but doesn't block the experience
-  if (true) {
-    // Show home directly
-    onboardingDone = true;
-    document.getElementById('chapter-view').classList.remove('active');
-    document.getElementById('home-view').classList.remove('hidden');
+                  function showHomeView() {
+                    document.getElementById('chapter-view').classList.remove('active');
+                    document.getElementById('home-view').classList.remove('hidden');
 
-    // Update stats from saved data
-    updateHomeStats();
+                    // Update stats from saved data
+                    updateHomeStats();
 
-    // Trigger card entrance animations
-    const cards = document.querySelectorAll('.module-card');
-    cards.forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(12px)';
-      card.style.transition = 'opacity .3s ease, transform .3s ease';
-      setTimeout(() => {
-        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
-        card.style.transform = 'translateY(0)';
-      }, 100 + i * 60);
-    });
-    document.querySelectorAll('.connector').forEach((c, i) => {
-      c.style.opacity = '0';
-      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
-    });
-  } else {
-    // New student or first load — show onboarding
-    // Hide home view immediately
-    document.getElementById('home-view').classList.add('hidden');
+                    // Trigger card entrance animations
+                    const cards = document.querySelectorAll('.module-card');
+                    cards.forEach((card, i) => {
+                      card.style.opacity = '0';
+                      card.style.transform = 'translateY(12px)';
+                      card.style.transition = 'opacity .3s ease, transform .3s ease';
+                      setTimeout(() => {
+                        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
+                        card.style.transform = 'translateY(0)';
+                      }, 100 + i * 60);
+                    });
+                    document.querySelectorAll('.connector').forEach((c, i) => {
+                      c.style.opacity = '0';
+                      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
+                    });
+                  }
 
-    // Load onboarding into the chapter iframe
-    const frame = document.getElementById('chapter-frame');
-    frame.src = 'ayikho-onboarding-v2.html';
+                  function showOnboardingView(needsLogin) {
+                    // New student, logged out, or first load — show onboarding
+                    // Hide home view immediately
+                    document.getElementById('home-view').classList.add('hidden');
 
-    frame.onload = () => {
-      // Guard: only activate for onboarding, not for about:blank
-      if (onboardingDone) return;
+                    // Load onboarding into the chapter iframe
+                    const frame = document.getElementById('chapter-frame');
+                    frame.src = needsLogin ? 'ayikho-onboarding-v2.html#login' : 'ayikho-onboarding-v2.html';
 
-      // Show the chapter-view (which now has onboarding)
-      document.getElementById('chapter-view').classList.add('active');
+                    frame.onload = () => {
+                      // Guard: only activate for onboarding, not for about:blank
+                      if (onboardingDone) return;
 
-      // Inject styles to strip onboarding's shell if it has one
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+                      // Show the chapter-view (which now has onboarding)
+                      document.getElementById('chapter-view').classList.add('active');
+
+                      // Inject styles to strip onboarding's shell if it has one
+                      try {
+                        const iDoc = frame.contentDocument || frame.contentWindow.document;
+                        const style = iDoc.createElement('style');
+                        style.textContent = `
+              html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
           .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
           .shell-meta{display:none!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-        iDoc.head.appendChild(style);
-      } catch(e) { /* cross-origin, ignore */ }
-    };
-  }
+                        iDoc.head.appendChild(style);
+                      } catch (e) { /* cross-origin, ignore */ }
+                    };
+                  }
 
-  // Don't show back button during onboarding
-  // Don't show card animations yet — they'll play after onboarding completes
-});
-</script>
+                  // Don't show back button during onboarding
+                  // Don't show card animations yet — they'll play after onboarding completes
+                });
+              </script>
 </body>
+
 </html>
