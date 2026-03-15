@@ -530,205 +530,84 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Data Management',
-                subtitle: 'Module 6 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Organizing Your Files</h2>
+        {
+            id: 'intro',
+            title: 'Data Management',
+            subtitle: 'Module 6 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Organising Digital Files',
+            subtitle: 'Module 6 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>Good file management is like a clean desk — you find things faster, work more efficiently, and never lose important documents. Bad file management costs SA businesses millions in lost productivity every year.</p></div>
+<h3>Folder Structures</h3>
+<p>A folder is a container for files, like a physical folder in a filing cabinet. You create folders inside folders (subfolders) to organise everything logically.</p>
+<p><strong>Example structure for a TVET student:</strong></p>
+<p>📁 TVET N4<br>&nbsp;&nbsp;📁 Financial Accounting<br>&nbsp;&nbsp;&nbsp;&nbsp;📁 Notes<br>&nbsp;&nbsp;&nbsp;&nbsp;📁 Assignments<br>&nbsp;&nbsp;&nbsp;&nbsp;📁 Past Papers<br>&nbsp;&nbsp;📁 Computer Practice<br>&nbsp;&nbsp;📁 Management Communication<br>&nbsp;&nbsp;📁 Entrepreneurship</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Good file organization saves time and prevents disaster. Master folder structures, naming conventions, and backups for N4.</p>
-                    </div>
+<h3>File Naming Conventions</h3>
+<p>Good file names tell you what\'s inside without opening the file:</p>
+<p>✅ "FA_Assignment3_Zandile_March2025.docx"<br>❌ "Document1.docx"<br>❌ "New folder (2)/final FINAL v3 (copy).docx"</p>
+<p>Rules: No spaces (use underscores), include date, include your name, be descriptive.</p>
 
-                    <h3>File Basics</h3>
-                    <p>A file is data stored on your computer. Documents, photos, videos, spreadsheets. Each file has a name and location.</p>
+<div class="callout sa">
+<h4>🇿🇦 Real example</h4>
+<p>At Shoprite head office, there are 150,000+ documents on the shared drive. If someone saves a file as "Report.xlsx", nobody can find it. Their naming convention: "DEPARTMENT_DocumentType_Date.ext" — like "FINANCE_BudgetQ3_2025-09.xlsx". Every employee follows this. That\'s data management.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Backups and File Types',
+            subtitle: 'Module 6 of 8',
+            type: 'lesson',
+            content: `
+<h3>Why Backups Matter</h3>
+<p>Your laptop gets stolen. Load shedding fries your hard drive. Your little brother deletes your assignment. Without a backup, that work is gone forever.</p>
+<p><strong>Backup rule: 3-2-1</strong><br>3 copies of important files<br>2 different storage types (laptop + cloud, or laptop + flash drive)<br>1 copy off-site (cloud storage like Google Drive or OneDrive)</p>
 
-                    <p><strong>File name:</strong> The name of the file. Example: "Q3_Sales_Report.xlsx"</p>
-                    <p><strong>File extension:</strong> The type. .docx (Word), .xlsx (Excel), .pdf, .jpg. Tells the computer which program to open it with.</p>
+<h3>Common File Types</h3>
+<p><strong>.docx</strong> — Word document<br><strong>.xlsx</strong> — Excel spreadsheet<br><strong>.pptx</strong> — PowerPoint presentation<br><strong>.pdf</strong> — Portable Document Format (can\'t be easily edited — use for final documents)<br><strong>.jpg / .png</strong> — Image files<br><strong>.zip</strong> — Compressed file (makes files smaller for email)</p>
 
-                    <h3>Folder Structure</h3>
-                    <p>Organize files in folders. Think of it like filing cabinets. One drawer per department. Files inside folders inside folders.</p>
-
-                    <p><strong>Good structure:</strong></p>
-                    <p>My Documents / Work / 2026 / Projects / Q1_Budget.xlsx</p>
-                    <p><strong>Bad structure:</strong></p>
-                    <p>Desktop / file1 / document / something.xlsx</p>
-
-                    <h3>File Naming Conventions</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Be Descriptive</h3>
-                        <p style="margin: 0;"><strong>Good:</strong> "2026_Q1_Sales_Report.xlsx" <strong>Bad:</strong> "report.xlsx"</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Use Dates</h3>
-                        <p style="margin: 0;">Start with date for easy sorting. "2026-03-12_Meeting_Notes.docx"</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Avoid Spaces</h3>
-                        <p style="margin: 0;">Use underscores or hyphens. "My_Budget" not "My Budget"</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Use Lowercase</h3>
-                        <p style="margin: 0;">Easier to read. "project_status" not "PROJECT_STATUS"</p>
-                    </div>
-
-                    <h3>Backup Strategies</h3>
-                    <p><strong>Backup:</strong> A copy of your files stored elsewhere. Protection against loss.</p>
-                    <p><strong>Cloud Storage:</strong> Google Drive, OneDrive, Dropbox. Files saved online. Access from any device. Automatic backup.</p>
-                    <p><strong>External Hard Drive:</strong> USB drive or portable hard drive. Physical backup. Keep at home or safe location.</p>
-
-                    <div class="callout real-life">
-                        <h4>SA Example</h4>
-                        <p>A municipal office has 500 employee records. If files are messy, finding one takes hours. Good organization: Employees / 2026 / Last_Name_First_Name / Mthembu_Thabo.pdf. Backup to Google Drive and external hard drive. If the office computer crashes, no problem—files are safe.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'key-terms',
-                title: 'Data Protection',
-                subtitle: 'Backup & Security',
-                type: 'lesson',
-                content: `
-                    <h2>Advanced Data Management</h2>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">File Path</h3>
-                        <p style="margin: 0;">The location of a file on the computer. C:\\Users\\MyName\\Documents\\Folder\\file.docx. Shows the route to the file.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Directory</h3>
-                        <p style="margin: 0;">Another word for folder. A directory contains files and other directories.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Version Control</h3>
-                        <p style="margin: 0;">Track changes to files. "Report_v1.docx" then "Report_v2.docx". Know which version is latest.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Archive</h3>
-                        <p style="margin: 0;">Store old files separately. Keeps active work folders clean. Move to Archive / 2025 / when year is done.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Compression</h3>
-                        <p style="margin: 0;">Reduce file size. ZIP files take less storage and send faster via email.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>N4 exams test: creating folder structures, naming files correctly, explaining backup importance, and file path knowledge. Be ready to design a filing system for a business scenario. Example: "Design a folder structure for a law firm with 50 clients."</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a good file naming convention?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Be descriptive, use dates, avoid spaces, use lowercase</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Use any name you want with many spaces</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) File names don't matter</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Use special characters like !@#$</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the purpose of backing up files?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) To create copies stored elsewhere in case of data loss</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) To delete old files</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) To make files smaller</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) To organize folders</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is cloud storage used for?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) Storing files online accessible from any device with internet</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Only for photos</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) It's just marketing hype</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Removing files from your computer</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Computer Practice N4 · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam asks about file extensions, backup methods, and folder structures. Know what each file type is used for. Know the difference between saving (.docx = editable) and exporting (.pdf = final). Know at least 3 backup strategies.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does the file extension .xlsx indicate?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>A Word document</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>An Excel spreadsheet</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>A PowerPoint presentation</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>A PDF file</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> .xlsx is the file extension for Microsoft Excel spreadsheets. .docx is Word, .pptx is PowerPoint, and .pdf is Portable Document Format.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What is the 3-2-1 backup rule?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>3 passwords, 2 users, 1 computer</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>3 copies, 2 storage types, 1 off-site</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>3 files, 2 folders, 1 drive</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>3 days, 2 weeks, 1 month</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> The 3-2-1 rule means: keep 3 copies of important data, on 2 different types of storage media, with 1 copy stored off-site (like in the cloud).</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which file name follows good naming conventions?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Document1.docx</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>assignment.docx</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>FA_Assignment3_Zandile_Mar2025.docx</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>new folder/final (2).docx</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> Good file names are descriptive, include the subject, your name, and date, with no spaces (use underscores). 'FA_Assignment3_Zandile_Mar2025.docx' tells you exactly what's inside.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Data Management!</h2><p style="color:var(--dim);margin-bottom:24px">Computer Practice N4 · Module 6 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#8B5CF6;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
