@@ -107,7 +107,25 @@ tr:hover td{background:rgba(124,58,237,.03)}
 <div class="row row-2">
 <div class="chart-card"><div class="chart-title">Students by province <span>Registered users per province</span></div><div class="chart-wrap"><canvas id="ch-province"></canvas></div></div>
 <div class="chart-card"><div class="chart-title">Study level distribution <span>N1–N6 breakdown</span></div><div class="chart-wrap"><canvas id="ch-level"></canvas></div></div>
+<div class="table-card">
+<div class="table-head" style="display:flex;justify-content:space-between;align-items:center">Dream: "Where do you see yourself in 5 years?"<button onclick="downloadCSV()" style="background:var(--p);color:white;border:none;border-radius:8px;padding:8px 16px;font-family:Outfit,sans-serif;font-weight:700;font-size:12px;cursor:pointer">↓ Download all users as CSV</button></div>
+<table id="dreams-5yr-table"><tr><th>Name</th><th>College</th><th>Province</th><th>5-year goal</th></tr>
+<tr><td colspan="4" class="zero-msg">Awaiting registrations…</td></tr></table>
 </div>
+
+<div class="table-card">
+<div class="table-head">Dream: "If money and responsibilities were not an issue, what would you do with your life?"</div>
+<table id="dreams-life-table"><tr><th>Name</th><th>College</th><th>Province</th><th>Life dream</th></tr>
+<tr><td colspan="4" class="zero-msg">Awaiting registrations…</td></tr></table>
+</div>
+
+<div class="table-card">
+<div class="table-head" style="display:flex;justify-content:space-between;align-items:center">All registered users <span id="user-count-label" style="font-weight:400;font-size:12px;color:var(--t3)">0 users</span></div>
+<div style="max-height:400px;overflow-y:auto">
+<table id="users-table"><tr><th>Name</th><th>Gender</th><th>Phone</th><th>Province</th><th>College</th><th>Level</th><th>Course</th><th>Subjects</th><th>Registered</th></tr>
+<tr><td colspan="9" class="zero-msg">Awaiting registrations…</td></tr></table>
+</div></div>
+
 </div>
 
 <!-- PRODUCT -->
@@ -212,7 +230,7 @@ async function loadDashboard(){
 var C={};var daily=[];
 try{
 var{initializeApp}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-var{getFirestore,doc,getDoc}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+var{getFirestore,doc,getDoc,collection,getDocs}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
 if(!window.FIREBASE_CONFIG)throw'no config';
 var app=initializeApp(window.FIREBASE_CONFIG,'ayikho-dash');
 var db=getFirestore(app);
@@ -222,6 +240,14 @@ var today=new Date();
 for(var i=29;i>=0;i--){var d=new Date(today);d.setDate(d.getDate()-i);var key='daily-'+d.toISOString().slice(0,10);
 try{var ds=await getDoc(doc(db,'analytics',key));daily.push(ds.exists()?{date:d.toISOString().slice(0,10),...ds.data()}:{date:d.toISOString().slice(0,10)})}catch(e){daily.push({date:d.toISOString().slice(0,10)})}}
 console.log('[Dashboard] Firestore loaded:',C);
+
+// Load individual user profiles
+var usersSnap = await getDocs(collection(db,'users'));
+var allUsers = [];
+usersSnap.forEach(function(d){ allUsers.push({id:d.id,...d.data()}); });
+allUsers.sort(function(a,b){ return (b.registeredDate||'').localeCompare(a.registeredDate||''); });
+window._ayikhoUsers = allUsers;
+console.log('[Dashboard] Loaded',allUsers.length,'user profiles');
 }catch(e){console.warn('[Dashboard] Firestore failed, zeros:',e);for(var i=0;i<30;i++){var d=new Date();d.setDate(d.getDate()-(29-i));daily.push({date:d.toISOString().slice(0,10)})}}
 
 function g(k){return C[k]||0}
@@ -282,6 +308,55 @@ new Chart(document.getElementById('ch-moodtrend'),{type:'line',data:{labels:dayL
 
 new Chart(document.getElementById('ch-device'),{type:'doughnut',data:{labels:['Mobile','Desktop','Tablet'],datasets:[{data:[0,0,0],backgroundColor:['#7C3AED','#0284C7','#F59E0B'],borderWidth:0}]},options:LEG});
 new Chart(document.getElementById('ch-os'),{type:'doughnut',data:{labels:['Android','iOS','Windows','macOS','Other'],datasets:[{data:[0,0,0,0,0],backgroundColor:['#22C55E','#0284C7','#7C3AED','#6B5A8A','#9580B8'],borderWidth:0}]},options:LEG});
+
+// Render user tables
+var users = window._ayikhoUsers || [];
+if (users.length > 0) {
+  // Users table
+  var ut = '<tr><th>Name</th><th>Gender</th><th>Phone</th><th>Province</th><th>College</th><th>Level</th><th>Course</th><th>Subjects</th><th>Registered</th></tr>';
+  users.forEach(function(u){ ut += '<tr><td>'+(u.name||'—')+'</td><td>'+(u.gender||'—')+'</td><td>'+(u.phone||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.level||'—')+'</td><td>'+(u.course||'—')+'</td><td>'+((u.subjects||[]).join(', ')||'—')+'</td><td>'+(u.registeredDate||'—')+'</td></tr>'; });
+  document.getElementById('users-table').innerHTML = ut;
+  document.getElementById('user-count-label').textContent = users.length + ' users';
+
+  // 5-year dreams
+  var d5 = '<tr><th>Name</th><th>College</th><th>Province</th><th>5-year goal</th></tr>';
+  users.filter(function(u){return u.fiveYearGoal}).forEach(function(u){ d5 += '<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.fiveYearGoal+'</td></tr>'; });
+  document.getElementById('dreams-5yr-table').innerHTML = d5;
+
+  // Life dreams
+  var dl = '<tr><th>Name</th><th>College</th><th>Province</th><th>Life dream</th></tr>';
+  users.filter(function(u){return u.dream}).forEach(function(u){ dl += '<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.dream+'</td></tr>'; });
+  document.getElementById('dreams-life-table').innerHTML = dl;
+}
+}
+
+function downloadCSV() {
+  var users = window._ayikhoUsers || [];
+  if (users.length === 0) { alert('No users to export yet'); return; }
+  var headers = ['Name','Gender','Phone','Province','College','Level','Course','Subjects','5-Year Goal','Life Dream','Registered Date'];
+  var rows = [headers.join(',')];
+  users.forEach(function(u) {
+    var row = [
+      '"'+(u.name||'').replace(/"/g,'""')+'"',
+      '"'+(u.gender||'')+'"',
+      '"'+(u.phone||'')+'"',
+      '"'+(u.province||'')+'"',
+      '"'+(u.college||'')+'"',
+      '"'+(u.level||'')+'"',
+      '"'+(u.course||'')+'"',
+      '"'+((u.subjects||[]).join('; '))+'"',
+      '"'+(u.fiveYearGoal||'').replace(/"/g,'""')+'"',
+      '"'+(u.dream||'').replace(/"/g,'""')+'"',
+      '"'+(u.registeredDate||'')+'"'
+    ];
+    rows.push(row.join(','));
+  });
+  var csv = rows.join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'ayikho-users-'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click(); URL.revokeObjectURL(url);
 }
 </script>
 </body></html>
