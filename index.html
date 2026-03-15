@@ -348,31 +348,7 @@ document.getElementById('chapter-view').classList.add('active');document.getElem
 curMod=num!==undefined?num:label;if(typeof num==='number')modStart=Date.now();
 try{var d=fr.contentDocument||fr.contentWindow.document;var s=d.createElement('style');s.textContent=STRIP;d.head.appendChild(s);
 /* Smart universal nav — detects chapter's nav system, injects fixed bottom bar */
-if(typeof num==='number'){var navScript=d.createElement('script');navScript.textContent=`(function(){
-var bar=document.createElement('div');bar.id='ayk-bar';
-bar.innerHTML='<div style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:white;border-top:2px solid #EDE8FF;padding:10px 16px 28px;display:flex;align-items:center;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.08)"><button id="ayk-b" style="flex:1;background:#F7F4FF;border:none;border-radius:14px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;color:#7C3AED;cursor:pointer">← Back</button><button id="ayk-n" style="flex:2;background:#7C3AED;border:none;border-radius:14px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;color:white;cursor:pointer">Next →</button></div>';
-document.body.appendChild(bar);
-var pad=document.createElement('div');pad.style.height='80px';document.body.appendChild(pad);
-/* Hide any existing bottom foot/nav so there's no double bar */
-var existing=document.querySelectorAll('.foot,.bottom-bar,.nav-bottom,[class*=footer]');
-existing.forEach(function(el){el.style.display='none'});
-/* Detect nav system and wire buttons */
-document.getElementById('ayk-n').addEventListener('click',function(){
-  if(typeof nextScreen==='function')return nextScreen();
-  if(typeof next==='function')return next();
-  /* goTo pattern: find all screens, go to next active */
-  var screens=document.querySelectorAll('.screen');
-  if(screens.length>1){for(var i=0;i<screens.length;i++){if(screens[i].classList.contains('active')&&i<screens.length-1){if(typeof goTo==='function'){goTo(screens[i+1].id);return}if(typeof goToScreen==='function'){goToScreen(i+1);return}}}};
-  window.scrollBy({top:window.innerHeight*0.7,behavior:'smooth'});
-});
-document.getElementById('ayk-b').addEventListener('click',function(){
-  if(typeof prevScreen==='function')return prevScreen();
-  if(typeof prev==='function')return prev();
-  var screens=document.querySelectorAll('.screen');
-  if(screens.length>1){for(var i=0;i<screens.length;i++){if(screens[i].classList.contains('active')&&i>0){if(typeof goTo==='function'){goTo(screens[i-1].id);return}if(typeof goToScreen==='function'){goToScreen(i-1);return}}}};
-  parent.postMessage({type:'goHome'},'*');
-});
-})()`;d.body.appendChild(navScript)}
+
 }catch(x){}
 if(typeof num==='number'&&window.ayikhoData)window.ayikhoData.startModule(num)};
 fr.src=src},300)}
