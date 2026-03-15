@@ -280,7 +280,7 @@ if(btn){btn.textContent='Checking...';btn.disabled=true;}
   }
 })();}
 function filterColleges(){var p=document.getElementById('onb-province').value;var c=document.getElementById('onb-college');c.innerHTML='<option value="">Select TVET college</option>';if(COLLEGES[p])COLLEGES[p].forEach(function(n){var o=document.createElement('option');o.textContent=n;c.appendChild(o)})}
-function finishOnboarding(){var name=document.getElementById('onb-name').value.trim()||'Student';var gender=document.getElementById('onb-gender').value;var prov=document.getElementById('onb-province').value;var col=document.getElementById('onb-college').value;var level=document.getElementById('onb-level').value;var course=document.getElementById('onb-course').value;var subjects=[];['onb-subj1','onb-subj2','onb-subj3','onb-subj4'].forEach(function(id){var v=document.getElementById(id).value;if(v)subjects.push(v)});var fiveYear=document.getElementById('onb-5year').value.trim();var dream=document.getElementById('onb-dream').value.trim();var nom=(document.getElementById('onb-nom')||{}).value||'';nom=nom.trim();var emailInput=(document.getElementById('onb-email')||{}).value||'';var realEmail=emailInput.trim().toLowerCase();var phone='';try{phone=localStorage.getItem('ayikho_phone')||''}catch(e){}if(window.ayikhoData){window.ayikhoData.setProfile({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone,email:realEmail,nom:nom});window.ayikhoData.setOnboardingComplete(true);if(realEmail&&window.updateUserEmail)window.updateUserEmail(realEmail);}try{localStorage.setItem('ayikho_profile',JSON.stringify({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream}))}catch(e){}onbDone=true;if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackRegistration({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone});document.getElementById('onb-overlay').classList.add('gone');setTimeout(function(){document.getElementById('onb-overlay').style.display='none';showMoodCheck()},600)}
+function finishOnboarding(){var name=document.getElementById('onb-name').value.trim()||'Student';var gender=document.getElementById('onb-gender').value;var prov=document.getElementById('onb-province').value;var col=document.getElementById('onb-college').value;var level=document.getElementById('onb-level').value;var course=document.getElementById('onb-course').value;var subjects=[];['onb-subj1','onb-subj2','onb-subj3','onb-subj4'].forEach(function(id){var v=document.getElementById(id).value;if(v)subjects.push(v)});var fiveYear=document.getElementById('onb-5year').value.trim();var dream=document.getElementById('onb-dream').value.trim();var nom=(document.getElementById('onb-nom')||{}).value||'';nom=nom.trim();var emailInput=(document.getElementById('onb-email')||{}).value||'';var realEmail=emailInput.trim().toLowerCase();var phone='';try{phone=localStorage.getItem('ayikho_phone')||''}catch(e){}if(window.ayikhoData){window.ayikhoData.setProfile({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone,email:realEmail,nom:nom});window.ayikhoData.setOnboardingComplete(true);if(realEmail&&window.updateUserEmail)window.updateUserEmail(realEmail);}try{localStorage.setItem('ayikho_profile',JSON.stringify({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream}))}catch(e){}onbDone=true;sessionStorage.setItem('ayikho_user_auth','1');if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackRegistration({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone});document.getElementById('onb-overlay').classList.add('gone');setTimeout(function(){document.getElementById('onb-overlay').style.display='none';showMoodCheck()},600)}
 /* Mood */
 function showMoodCheck(){document.getElementById('mood-overlay').classList.add('active')}
 function updateProfile(){var n=getUserName();try{var prof=JSON.parse(localStorage.getItem('ayikho_profile')||'{}');document.getElementById('pf-name').textContent=prof.name||n;document.getElementById('pf-college').textContent=(prof.college||'TVET College')+(prof.province?' · '+prof.province:'')}catch(e){}}
@@ -288,7 +288,7 @@ function setMood(mood){var faces={struggling:'😔',okay:'😐',good:'😊'};var
 function getGreeting(){var h=new Date().getHours();return h<12?'Morning':h<17?'Afternoon':'Evening'}
 function getUserName(){var n='Student';if(window.ayikhoData){var p=window.ayikhoData.getProfile();if(p&&p.name)n=p.name}else{try{var prof=JSON.parse(localStorage.getItem('ayikho_profile')||'{}');if(prof.name)n=prof.name}catch(e){}}try{var av=document.getElementById('hero-avatar');if(av){var parts=n.split(' ');av.textContent=parts.length>1?parts[0][0]+parts[1][0]:n.substring(0,2).toUpperCase()}}catch(e){}return n}
 /* PostMessage */
-window.addEventListener('message',function(e){if(!e.data)return;try{if(e.data.type==='trackEvent'&&window.ayikhoTracker)window.ayikhoTracker.track(e.data.eventType,e.data.data)}catch(x){}if(e.data.type==='moduleComplete'&&window.ayikhoData){window.ayikhoData.completeModule(e.data.moduleId);if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackModuleComplete(curSubj,e.data.moduleId)}if(e.data.type==='quizAnswer'){if(window.ayikhoData)window.ayikhoData.recordQuizAnswer(e.data.moduleId,e.data.quizType,e.data.questionNum,e.data.isCorrect,e.data.questionText,e.data.topic);if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackQuizAnswer(e.data.isCorrect)};if(e.data.type==='screenChange'&&window.ayikhoData)window.ayikhoData.setModuleScreen(e.data.moduleId,e.data.screenIndex,e.data.totalScreens);if(e.data.type==='goHome')goHome();if(e.data.type==='openQuiz')loadIframe('ayikho-quiz.html?course=fa','Quiz Mode');if(e.data.type==='openPapers')loadIframe('ayikho-papers.html','Past Papers');if(e.data.type==='openMemos')loadIframe('ayikho-memos.html','Memos');if(e.data.type==='openCapstone')loadIframe('ayikho-capstone.html','Capstone Exam')});
+window.addEventListener('message',function(e){if(!e.data)return;try{if(e.data.type==='trackEvent'&&window.ayikhoTracker)window.ayikhoTracker.track(e.data.eventType,e.data.data)}catch(x){}if(e.data.type==='moduleComplete'&&window.ayikhoData){window.ayikhoData.completeModule(e.data.moduleId);if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackModuleComplete(curSubj,e.data.moduleId)}if(e.data.type==='quizAnswer'){if(window.ayikhoData)window.ayikhoData.recordQuizAnswer(e.data.moduleId,e.data.quizType,e.data.questionNum,e.data.isCorrect,e.data.questionText,e.data.topic);if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackQuizAnswer(e.data.isCorrect)};if(e.data.type==='screenChange'&&window.ayikhoData)window.ayikhoData.setModuleScreen(e.data.moduleId,e.data.screenIndex,e.data.totalScreens);if(e.data.type==='goHome')goHome();if(e.data==='onboardingComplete'||e.data.type==='onboardingComplete'){sessionStorage.setItem('ayikho_user_auth','1');}if(e.data.type==='openQuiz')loadIframe('ayikho-quiz.html?course=fa','Quiz Mode');if(e.data.type==='openPapers')loadIframe('ayikho-papers.html','Past Papers');if(e.data.type==='openMemos')loadIframe('ayikho-memos.html','Memos');if(e.data.type==='openCapstone')loadIframe('ayikho-capstone.html','Capstone Exam')});
 /* Iframe — with demo fallback for standalone testing */
 function demoChapter(num,label){
 var s=SUBJ[curSubj];var m=s.m[num]||{n:label,t:'8 min'};
@@ -376,7 +376,26 @@ genBadges();renderMolweni();renderLB();renderComm();renderMoodCal();
 if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
 var hasData=!!window.ayikhoData;var done=hasData?window.ayikhoData.isOnboardingComplete():false;
 if(!done){try{done=!!localStorage.getItem('ayikho_profile')}catch(e){}}
-if(done){onbNext('login');}
+if(done){
+  // Check if user already authenticated this session — skip login screen
+  if(sessionStorage.getItem('ayikho_user_auth')==='1'){
+    onbDone=true;
+    document.getElementById('onb-overlay').style.display='none';
+    var todayKey='ayikho_mood_'+new Date().toDateString();
+    var logged=false; try{logged=!!localStorage.getItem(todayKey)}catch(e){}
+    if(logged){
+      document.getElementById('home-view').classList.remove('hidden');
+      document.getElementById('hero-name').innerHTML=getGreeting()+'<br>'+getUserName();
+      updateProfile();
+      var m=localStorage.getItem(todayKey);
+      document.getElementById('sc-mood').textContent={good:'😊',okay:'😐',struggling:'😔'}[m]||'😊';
+    } else {
+      showMoodCheck();
+    }
+  } else {
+    onbNext('login');
+  }
+}
 /* no data layer = first time user, onboarding shows by default */
 
 // ── CONNECT FIREBASE TO STUDENT DATA LAYER ──
@@ -434,6 +453,7 @@ window.doLogin = async function(){
     var auth=getAuth(app);
     await signInWithEmailAndPassword(auth,email,pw);
     btn.textContent='Welcome back!';
+    sessionStorage.setItem('ayikho_user_auth','1');
     document.getElementById('onb-overlay').classList.add('gone');
     setTimeout(function(){
       document.getElementById('onb-overlay').style.display='none';
