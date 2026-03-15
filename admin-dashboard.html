@@ -291,7 +291,7 @@ async function loadDashboard(){
 var C={};var daily=[];
 try{
 var{initializeApp}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-var{getFirestore,doc,getDoc,collection,getDocs}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+var{getFirestore,doc,getDoc,collection,getDocs,onSnapshot}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
 if(!window.FIREBASE_CONFIG)throw'no config';
 var app=initializeApp(window.FIREBASE_CONFIG,'ayikho-dash');
 var db=getFirestore(app);
@@ -303,12 +303,49 @@ try{var ds=await getDoc(doc(db,'analytics',key));daily.push(ds.exists()?{date:d.
 console.log('[Dashboard] Firestore loaded:',C);
 
 // Load individual user profiles
-var usersSnap = await getDocs(collection(db,'users'));
-var allUsers = [];
-usersSnap.forEach(function(d){ allUsers.push({id:d.id,...d.data()}); });
-allUsers.sort(function(a,b){ return (b.registeredDate||'').localeCompare(a.registeredDate||''); });
-window._ayikhoUsers = allUsers;
-console.log('[Dashboard] Loaded',allUsers.length,'user profiles');
+// ── LIVE LISTENER — updates dashboard the moment any user registers ──
+onSnapshot(collection(db,'users'), function(snap) {
+  var allUsers = [];
+  snap.forEach(function(d){ allUsers.push({id:d.id,...d.data()}); });
+  allUsers.sort(function(a,b){ return (b.registeredDate||'').localeCompare(a.registeredDate||''); });
+  window._ayikhoUsers = allUsers;
+  console.log('[Dashboard] Live update — users:', allUsers.length);
+  // Update north star + user KPIs live
+  var U = allUsers.length;
+  var ns=document.getElementById('ns-val'); if(ns) ns.textContent=U.toLocaleString();
+  var ku=document.getElementById('k-users'); if(ku) ku.textContent=U.toLocaleString()+' users';
+  var ku2=document.getElementById('k-users2'); if(ku2) ku2.textContent=U.toLocaleString();
+  var tu=document.getElementById('t-users'); if(tu) tu.textContent=U.toLocaleString();
+  var paying=Math.round(U*0.274);
+  var kp=document.getElementById('k-paying'); if(kp) kp.textContent=paying.toLocaleString()+' users';
+  var km=document.getElementById('k-mrr'); if(km) km.textContent='R'+(paying*50).toLocaleString()+' /month';
+  var ka=document.getElementById('k-arr'); if(ka) ka.textContent='R'+(paying*50*12).toLocaleString()+' /year';
+  var gF=allUsers.filter(function(u){return (u.gender||'').toLowerCase()==='female'}).length;
+  var gM=allUsers.filter(function(u){return (u.gender||'').toLowerCase()==='male'}).length;
+  var kfp=document.getElementById('k-female'); if(kfp) kfp.textContent=U>0?Math.round(gF/U*100)+'%':'—';
+  var kfn=document.getElementById('k-female-n'); if(kfn) kfn.textContent=gF+' students';
+  var kmp=document.getElementById('k-male'); if(kmp) kmp.textContent=U>0?Math.round(gM/U*100)+'%':'—';
+  var kmn=document.getElementById('k-male-n'); if(kmn) kmn.textContent=gM+' students';
+  // Re-render all user tables
+  if (U > 0) {
+    var ut='<tr><th>Name</th><th>Gender</th><th>Phone</th><th>Province</th><th>College</th><th>Level</th><th>Course</th><th>Subjects</th><th>Registered</th></tr>';
+    allUsers.forEach(function(u){ ut+='<tr><td>'+(u.name||'—')+'</td><td>'+(u.gender||'—')+'</td><td>'+(u.phone||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.level||'—')+'</td><td>'+(u.course||'—')+'</td><td>'+((u.subjects||[]).join(', ')||'—')+'</td><td>'+(u.registeredDate||'—')+'</td></tr>'; });
+    document.getElementById('users-table').innerHTML=ut;
+    document.getElementById('user-count-label').textContent=allUsers.length+' users';
+    var d5='<tr><th>Name</th><th>College</th><th>Province</th><th>5-year goal</th></tr>';
+    allUsers.filter(function(u){return u.fiveYearGoal}).forEach(function(u){ d5+='<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.fiveYearGoal+'</td></tr>'; });
+    document.getElementById('dreams-5yr-table').innerHTML=d5;
+    var dl='<tr><th>Name</th><th>College</th><th>Province</th><th>Life dream</th></tr>';
+    allUsers.filter(function(u){return u.dream}).forEach(function(u){ dl+='<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.dream+'</td></tr>'; });
+    document.getElementById('dreams-life-table').innerHTML=dl;
+  }
+  // Re-render master list
+  renderMasterList(allUsers);
+  // Flash the north star to signal a live update
+  var nsEl=document.getElementById('ns-val');
+  if(nsEl){ nsEl.style.transition='color .3s'; nsEl.style.color='#22C55E'; setTimeout(function(){ nsEl.style.color=''; },1200); }
+});
+console.log('[Dashboard] Live listener attached to users/ collection');
 }catch(e){console.warn('[Dashboard] Firestore failed, zeros:',e);for(var i=0;i<30;i++){var d=new Date();d.setDate(d.getDate()-(29-i));daily.push({date:d.toISOString().slice(0,10)})}}
 
 function g(k){return C[k]||0}
@@ -370,26 +407,7 @@ new Chart(document.getElementById('ch-moodtrend'),{type:'line',data:{labels:dayL
 new Chart(document.getElementById('ch-device'),{type:'doughnut',data:{labels:['Mobile','Desktop','Tablet'],datasets:[{data:[0,0,0],backgroundColor:['#7C3AED','#0284C7','#F59E0B'],borderWidth:0}]},options:LEG});
 new Chart(document.getElementById('ch-os'),{type:'doughnut',data:{labels:['Android','iOS','Windows','macOS','Other'],datasets:[{data:[0,0,0,0,0],backgroundColor:['#22C55E','#0284C7','#7C3AED','#6B5A8A','#9580B8'],borderWidth:0}]},options:LEG});
 
-// Render user tables + master list
-var users = window._ayikhoUsers || [];
-renderMasterList(users);
-if (users.length > 0) {
-  // Users table
-  var ut = '<tr><th>Name</th><th>Gender</th><th>Phone</th><th>Province</th><th>College</th><th>Level</th><th>Course</th><th>Subjects</th><th>Registered</th></tr>';
-  users.forEach(function(u){ ut += '<tr><td>'+(u.name||'—')+'</td><td>'+(u.gender||'—')+'</td><td>'+(u.phone||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.level||'—')+'</td><td>'+(u.course||'—')+'</td><td>'+((u.subjects||[]).join(', ')||'—')+'</td><td>'+(u.registeredDate||'—')+'</td></tr>'; });
-  document.getElementById('users-table').innerHTML = ut;
-  document.getElementById('user-count-label').textContent = users.length + ' users';
-
-  // 5-year dreams
-  var d5 = '<tr><th>Name</th><th>College</th><th>Province</th><th>5-year goal</th></tr>';
-  users.filter(function(u){return u.fiveYearGoal}).forEach(function(u){ d5 += '<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.fiveYearGoal+'</td></tr>'; });
-  document.getElementById('dreams-5yr-table').innerHTML = d5;
-
-  // Life dreams
-  var dl = '<tr><th>Name</th><th>College</th><th>Province</th><th>Life dream</th></tr>';
-  users.filter(function(u){return u.dream}).forEach(function(u){ dl += '<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.dream+'</td></tr>'; });
-  document.getElementById('dreams-life-table').innerHTML = dl;
-}
+// User tables + master list rendered live via onSnapshot listener above
 }
 
 function downloadCSV() {
