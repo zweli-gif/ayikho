@@ -530,202 +530,122 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Introduction to Computers',
-                subtitle: 'Module 1 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>What is a Computer?</h2>
+        {
+            id: 'intro',
+            title: 'Introduction to Computers',
+            subtitle: 'Module 1 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'What is a Computer?',
+            subtitle: 'Module 1 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>A computer is an electronic device that processes data. Hardware is the physical stuff. Software is the programs. Know the difference — it's a guaranteed exam question.</p></div>
+<h3>Hardware vs Software</h3>
+<p><strong>Hardware</strong> is everything you can physically touch — the screen you\'re reading this on, the keyboard, the hard drive inside. If it breaks, you can hold the pieces.</p>
+<p><strong>Software</strong> is the programs that make hardware useful — Windows, Microsoft Office, Chrome. You can\'t touch it, but without it, your laptop is an expensive doorstop.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>A computer is an electronic device that processes data using hardware and software. Know the difference between these two—it's essential for N4.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Real talk</h4>
+<p>Think about your phone. The phone itself (screen, battery, camera) = hardware. WhatsApp, TikTok, the Capitec app = software. You need both to send that "sharp sharp" voice note.</p>
+</div>
 
-                    <h3>Hardware vs Software</h3>
-                    <p><strong>Hardware</strong> is the physical stuff you can touch. The monitor, keyboard, hard drive, motherboard, RAM. If you can pick it up, it's hardware.</p>
+<h3>Input → Processing → Output</h3>
+<p>Every computer does three things:</p>
+<p><strong>Input:</strong> You give it data — typing on a keyboard, clicking a mouse, scanning a barcode at Shoprite.</p>
+<p><strong>Processing:</strong> The CPU (brain of the computer) takes that data and does something with it — calculates your total, checks your balance, opens your app.</p>
+<p><strong>Output:</strong> The computer gives you results — displays your balance on screen, prints a receipt, plays a voice note through speakers.</p>
 
-                    <p><strong>Software</strong> is the programs and instructions that make the hardware work. Windows, Microsoft Office, Google Chrome. You can't touch it, but you can use it.</p>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam loves asking you to classify devices as input, output, or storage. A keyboard = input. A monitor = output. A flash drive = storage. A printer = output. A scanner = input. A touchscreen = BOTH input and output. That last one catches people.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Key Hardware Components',
+            subtitle: 'Module 1 of 8',
+            type: 'lesson',
+            content: `
+<h3>The CPU (Central Processing Unit)</h3>
+<p>The brain. It does all the thinking — every calculation, every instruction. Measured in GHz (gigahertz). More GHz = faster processing. Intel and AMD are the big brands.</p>
 
-                    <h3>Input, Processing, and Output</h3>
-                    <p>Every computer does three things:</p>
-                    <p><strong>Input:</strong> You give the computer information using keyboard, mouse, scanner, microphone.</p>
-                    <p><strong>Processing:</strong> The CPU (processor) handles the data and does calculations. This is the "thinking" part.</p>
-                    <p><strong>Output:</strong> The computer sends results to you via monitor, printer, speakers.</p>
+<h3>RAM (Random Access Memory)</h3>
+<p>The short-term memory. When you open WhatsApp, it loads into RAM so it runs fast. When you close it or switch off, RAM clears. More RAM = more apps open at once without slowing down. Most phones have 4-8GB RAM.</p>
 
-                    <h3>Key Hardware Components</h3>
+<h3>Hard Drive / SSD (Storage)</h3>
+<p>The long-term memory. Your photos, music, documents — they live here even when the computer is off. SSD (Solid State Drive) is faster but more expensive. HDD (Hard Disk Drive) is slower but cheaper and stores more.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">CPU (Processor)</h3>
-                        <p style="margin: 0;">The brain of the computer. Executes all instructions and does calculations. Measured in GHz (gigahertz). Faster = more GHz.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Spaza shop analogy</h4>
+<p>Think of a spaza shop:<br>• CPU = the owner who serves customers (processes requests)<br>• RAM = the counter space (what\'s being worked on right now)<br>• Hard drive = the shelves in the back (everything stored long-term)<br>• More counter space (RAM) means you can serve more customers at once without going to the back</p>
+</div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">RAM (Random Access Memory)</h3>
-                        <p style="margin: 0;">Temporary memory. Used when you're running programs. When you shut down, RAM clears. More RAM = more programs at once. Measured in GB.</p>
-                    </div>
+<h3>Motherboard</h3>
+<p>The backbone that connects everything together. CPU, RAM, storage, USB ports — they all plug into the motherboard. It\'s the circuit board you see when you open a computer.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Storage (HDD or SSD)</h3>
-                        <p style="margin: 0;">Permanent storage. Saves your files, OS, programs. HDD is older and slower. SSD is newer and faster. Measured in GB or TB.</p>
-                    </div>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>Know the difference between RAM and storage: RAM is temporary (clears when off), storage is permanent (keeps data). The exam asks this almost every time.</p>
+</div>
+`
+        },
+        {
+            id: 's3',
+            title: 'Types of Computers & Software',
+            subtitle: 'Module 1 of 8',
+            type: 'lesson',
+            content: `
+<h3>Types of Computers</h3>
+<p><strong>Desktop:</strong> Sits on a desk. Separate screen, keyboard, mouse. Used in offices, internet cafés. Can be upgraded easily.</p>
+<p><strong>Laptop:</strong> Portable. All-in-one design. Battery powered. The most common computer for students and professionals.</p>
+<p><strong>Tablet:</strong> Touchscreen, no keyboard (unless you attach one). Good for browsing and reading. iPad, Samsung Tab.</p>
+<p><strong>Smartphone:</strong> A computer in your pocket. Makes calls, runs apps, connects to the internet. Most TVET students access Ayikho from here.</p>
+<p><strong>Server:</strong> A powerful computer that stores data and serves it to other computers. When you open ayikho.com, a server sends you this page.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Motherboard</h3>
-                        <p style="margin: 0;">The main circuit board connecting all parts. Like the nervous system of the computer.</p>
-                    </div>
+<h3>Types of Software</h3>
+<p><strong>System software:</strong> Runs the computer itself. Windows, macOS, Android, Linux. Also called the Operating System (OS). Without it, the computer won\'t start.</p>
+<p><strong>Application software:</strong> Programs you use to do things. MS Word for documents, Excel for spreadsheets, Chrome for the internet, WhatsApp for messaging.</p>
 
-                    <h3>Operating Systems (OS)</h3>
-                    <p><strong>Windows:</strong> Made by Microsoft. Most common in offices and homes in South Africa. Used at Vodacom, Eskom call centres.</p>
-                    <p><strong>macOS:</strong> Apple computers. Less common but used in creative industries like media and design agencies.</p>
-                    <p><strong>Linux:</strong> Free and open-source. Used on servers and by some tech companies. Growing in SA universities.</p>
-
-                    <div class="callout real-life">
-                        <h4>SA Example</h4>
-                        <p>A student at Wits TVET College sits at a computer lab for the first time. The teacher says: "The black box is the CPU—that's the processor. The RAM is 8GB—fast memory for what you're doing right now. Your files save to the hard drive. Windows 10 is your operating system—it controls everything."</p>
-                    </div>
-                `
-            },
-            {
-                id: 'key-terms',
-                title: 'Key Hardware Terms',
-                subtitle: 'Important Definitions',
-                type: 'lesson',
-                content: `
-                    <h2>Computer Components Glossary</h2>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Peripheral</h3>
-                        <p style="margin: 0;">Any external device connected to the computer. Printer, scanner, mouse, keyboard, external hard drive.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">ROM (Read-Only Memory)</h3>
-                        <p style="margin: 0;">Permanent memory that can't be changed. Stores startup instructions. Stays even when computer is off.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">HDD (Hard Disk Drive)</h3>
-                        <p style="margin: 0;">Older storage using spinning magnetic disks. Slower than SSD but cheaper. Common in office computers.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">SSD (Solid State Drive)</h3>
-                        <p style="margin: 0;">Modern storage using flash memory. No moving parts. Much faster and more reliable. Found in new laptops and high-end systems.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">GPU (Graphics Card)</h3>
-                        <p style="margin: 0;">Specialized processor for graphics. Essential for gaming, video editing, design work. Separate from CPU.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>N4 exams often ask: "Explain the difference between RAM and storage" or "What does the CPU do?" Be ready to explain each component's role in simple terms. Use examples from workplaces you know.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the main difference between hardware and software?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Hardware is physical; software is programs and instructions</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Hardware is faster than software</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) Software runs without hardware</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Hardware is cheaper than software</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What happens to data stored in RAM when you turn off the computer?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) It disappears because RAM is temporary memory</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) It stays on the hard drive</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) It moves to ROM</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) It automatically saves to the cloud</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which component processes instructions and performs calculations?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) CPU (Processor)</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) RAM</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Hard Drive</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Monitor</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Computer Practice N4 · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout sa">
+<h4>🇿🇦 SA context</h4>
+<p>At a Capitec branch, the teller\'s computer runs Windows (system software) and the Capitec banking app (application software). The server in Stellenbosch stores your account data. When the teller checks your balance, the application software sends a request to the server, which sends your balance back.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which of the following is an example of hardware?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Microsoft Word</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">B</span>Google Chrome</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">C</span>A keyboard</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>WhatsApp</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> A keyboard is hardware because it's a physical device you can touch. The others are all software (programs).</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does RAM do?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Stores files permanently when the computer is off</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>Temporarily holds data for programs currently in use</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>Connects the computer to the internet</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Displays images on the screen</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> RAM is temporary memory that holds data for programs you're currently using. When you switch off, RAM clears. That's why you need to save your work!</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">A touchscreen monitor is classified as:</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Input device only</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>Output device only</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>Both input and output device</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Storage device</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> A touchscreen is BOTH — it displays information (output) and accepts your finger taps (input). This is a favourite exam trick question.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Introduction to Computers!</h2><p style="color:var(--dim);margin-bottom:24px">Computer Practice N4 · Module 1 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#8B5CF6;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
