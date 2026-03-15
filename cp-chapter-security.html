@@ -530,198 +530,91 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Computer Security & POPIA',
-                subtitle: 'Module 8 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Protecting Data and Privacy</h2>
+        {
+            id: 'intro',
+            title: 'Computer Security & POPIA',
+            subtitle: 'Module 8 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Protecting Your Digital Life',
+            subtitle: 'Module 8 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>Cybercrime costs SA over R2.2 billion a year. Your personal data is valuable — protect it like you'd protect your bank card PIN. And know POPIA — it's the law.</p></div>
+<h3>Why Computer Security Matters</h3>
+<p>In SA, cybercrime is growing fast. SIM swap fraud, phishing emails pretending to be from SARS, fake Capitec SMSes asking for your PIN — it\'s everywhere. As a computer professional, you need to know how to protect yourself AND the organisations you\'ll work for.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Know malware, firewalls, strong passwords, phishing, POPIA law, and encryption for N4 success.</p>
-                    </div>
+<h3>Types of Threats</h3>
+<p><strong>Virus:</strong> A program that copies itself and damages files. Spreads through infected USB drives, email attachments, downloads.</p>
+<p><strong>Malware:</strong> Any software designed to harm — viruses, worms, trojans, ransomware. Ransomware encrypts your files and demands money to unlock them.</p>
+<p><strong>Phishing:</strong> Fake emails or messages pretending to be from a trusted source (your bank, SARS, your college) to steal your password or personal information.</p>
+<p><strong>Social engineering:</strong> Tricking people into giving up information. "Hi, I\'m calling from Capitec IT. I need your password to fix your account." No legitimate company asks for your password. Ever.</p>
 
-                    <h3>Common Threats</h3>
-                    <p><strong>Malware:</strong> Malicious software designed to harm your computer. Includes viruses, ransomware, spyware.</p>
-                    <p><strong>Virus:</strong> Copies itself and spreads to other computers. Slows down your system, corrupts files.</p>
-                    <p><strong>Ransomware:</strong> Locks your files and demands payment to unlock them. Devastating for businesses.</p>
-                    <p><strong>Phishing:</strong> Fake emails or websites to trick you into giving passwords or money. Looks legitimate but isn't.</p>
+<div class="callout sa">
+<h4>🇿🇦 Real threats in SA</h4>
+<p>• SIM swap fraud: criminals get a copy of your SIM to intercept banking OTPs<br>• SARS phishing: fake emails saying "your refund is ready, click here"<br>• WhatsApp scams: "Hi Mom, I have a new number, please send R500"<br>• Public WiFi sniffing: criminals on the same free WiFi at McDonald\'s can see your data</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'POPIA — Protection of Personal Information Act',
+            subtitle: 'Module 8 of 8',
+            type: 'lesson',
+            content: `
+<h3>What is POPIA?</h3>
+<p>POPIA (Protection of Personal Information Act) is South Africa\'s data protection law, fully enforced since July 2021. It controls how organisations collect, store, use, and share your personal information.</p>
 
-                    <h3>Protection Methods</h3>
+<h3>Key Principles</h3>
+<p><strong>Purpose:</strong> Organisations can only collect data for a specific, lawful reason. Shoprite collects your Smart Shopper data to give you discounts — they can\'t sell it to a random company.</p>
+<p><strong>Consent:</strong> They must ask your permission. Those "I agree to the terms" checkboxes? That\'s POPIA consent.</p>
+<p><strong>Minimality:</strong> Only collect what you actually need. A gym doesn\'t need your ID number to give you a membership.</p>
+<p><strong>Security:</strong> Organisations must protect your data from breaches. If they get hacked and your data leaks, they must tell you within a reasonable time.</p>
+<p><strong>Your rights:</strong> You can ask any organisation what data they have on you, ask them to correct it, or ask them to delete it.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Antivirus Software</h3>
-                        <p style="margin: 0;">Scans your computer for malware. Windows Defender is built-in. Other options: Norton, McAfee, AVG. Run scans regularly.</p>
-                    </div>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>POPIA is heavily tested in the N4 exam. Know: what personal information means (name, ID number, address, email, biometrics), the 8 conditions of lawful processing, the role of the Information Regulator, and what a data breach is. Also know the difference between a responsible party (the organisation) and a data subject (the person whose data it is — that\'s you).</p>
+</div>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Firewall</h3>
-                        <p style="margin: 0;">Controls what gets in and out of your computer. Blocks unauthorized access. Windows has a built-in firewall.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Strong Passwords</h3>
-                        <p style="margin: 0;">Min 12 characters. Mix uppercase, lowercase, numbers, symbols. "MyP@ssw0rd!2026" not "password123"</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Two-Factor Authentication</h3>
-                        <p style="margin: 0;">Two steps to log in. Password + code from phone. Even if someone gets your password, they can't log in.</p>
-                    </div>
-
-                    <h3>POPIA (Protection of Personal Information Act)</h3>
-                    <p>South African law protecting personal data. Companies must:</p>
-                    <p>- Tell people when collecting their data<br>- Keep data secure<br>- Get permission before using data<br>- Allow people to access their own data<br>- Delete data when no longer needed</p>
-
-                    <p><strong>Penalties:</strong> Breaking POPIA is serious. Fines up to R10 million. Jail time. A company got fined R10 million for a POPIA breach.</p>
-
-                    <div class="callout real-life">
-                        <h4>SA Example</h4>
-                        <p>A company stored customer data on unsecured servers. Hackers accessed personal information. 50,000 customers' IDs, phone numbers, addresses exposed. The company violated POPIA. They faced R10 million fine, lost customer trust, destroyed reputation. Should have: encrypted data, used strong passwords, regular security audits.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'key-terms',
-                title: 'Security Best Practices',
-                subtitle: 'Data Protection & Privacy',
-                type: 'lesson',
-                content: `
-                    <h2>Advanced Security Concepts</h2>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Encryption</h3>
-                        <p style="margin: 0;">Scrambles data so only authorized people can read it. Like a secret code. Data is unreadable without the decryption key.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Data Breach</h3>
-                        <p style="margin: 0;">Unauthorized access to data. Someone gets sensitive information. Companies must notify affected people within 60 days under POPIA.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Update and Patches</h3>
-                        <p style="margin: 0;">Software updates fix security holes. Enable automatic updates. Don't ignore "Update Available" notifications.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bold: 0;">Biometric Security</h3>
-                        <p style="margin: 0;">Fingerprint, face recognition, iris scan. More secure than passwords because you can't lose your fingerprint.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">VPN (Virtual Private Network)</h3>
-                        <p style="margin: 0;">Encrypts your internet connection. Private company or individual network. Protects privacy on public WiFi.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>N4 exams ask: "Identify the phishing email" or "Explain POPIA requirements" or "What makes a strong password?" Be ready to: identify fake emails, explain malware types, know POPIA law, create strong passwords, and explain when to use encryption.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is phishing?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Fake emails or websites designed to trick you into giving sensitive information</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) A type of fish in the ocean</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) A legitimate email from your bank</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) A file type on computers</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is POPIA and what is its main purpose?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) South African law that protects personal data and privacy</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) A type of antivirus software</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) A password manager</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Only applies to banks</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What makes a strong password?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) At least 12 characters with uppercase, lowercase, numbers, and symbols</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Just numbers like "12345678"</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Your name repeated like "john john john"</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) A simple word like "password"</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Computer Practice N4 · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout sa">
+<h4>🇿🇦 POPIA in everyday life</h4>
+<p>When Woolworths asks for your email to send you a receipt — that\'s data collection under POPIA. When you tick "I agree" on the Ayikho sign-up — that\'s consent. When your TVET college stores your marks — they\'re the responsible party and must protect that data. If their system gets hacked, they must notify you and the Information Regulator.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does POPIA stand for?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Protection of Online Privacy Act</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>Protection of Personal Information Act</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Policy on Personal Information Access</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>Prevention of Phishing and Online Abuse</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> POPIA stands for Protection of Personal Information Act. It's South Africa's data protection law that controls how organisations handle personal data.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which of the following is an example of phishing?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Installing antivirus software</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>Receiving a fake email from 'SARS' asking for your banking details</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>Backing up your files to the cloud</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Changing your password regularly</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> Phishing is when criminals send fake messages pretending to be from trusted organisations (like SARS or your bank) to trick you into giving up personal information. SARS will never ask for banking details via email.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Under POPIA, what right do you have regarding your personal data?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>No rights — organisations own your data</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">B</span>The right to access, correct, and request deletion of your data</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">C</span>The right to sell your data</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>The right to hack the organisation's database</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> Under POPIA, you (the data subject) have the right to know what data an organisation holds about you, to correct inaccurate data, and to request deletion of your data.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Computer Security & POPIA!</h2><p style="color:var(--dim);margin-bottom:24px">Computer Practice N4 · Module 8 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#8B5CF6;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
