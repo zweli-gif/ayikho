@@ -317,6 +317,18 @@ if(!done){try{done=!!localStorage.getItem('ayikho_profile')}catch(e){}}
 if(done){onbNext('login');}
 /* no data layer = first time user, onboarding shows by default */
 
+// ── CONNECT FIREBASE TO STUDENT DATA LAYER ──
+if(window.ayikhoData && window.FIREBASE_CONFIG){
+  window.ayikhoData.initFirebase(window.FIREBASE_CONFIG).then(function(){
+    console.log('[App] Firebase connected to student data layer');
+    if(window.ayikhoData.isOnboardingComplete()){
+      window.ayikhoData._syncUserProfile();
+    }
+  }).catch(function(e){console.warn('[App] Firebase init failed:',e);});
+}
+if(window.ayikhoTracker && window.FIREBASE_CONFIG){
+  window.ayikhoTracker.initFirebase(window.FIREBASE_CONFIG);
+}
 
 });
 
