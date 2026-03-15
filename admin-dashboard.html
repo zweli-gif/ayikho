@@ -80,7 +80,7 @@ tr:hover td{background:rgba(124,58,237,.03)}
 <body>
 <div class="auth" id="auth"><div class="auth-title">Ayikho Admin</div><div class="auth-sub">Enter PIN to access dashboard</div><input class="auth-input" id="pin" type="password" maxlength="4" placeholder="····" autofocus><div class="auth-err" id="pin-err"></div></div>
 <div class="dash" id="dash">
-<div class="topbar"><div><div class="topbar-brand">Ayikho Admin</div><div class="topbar-meta">NATED N4–N6 · TVET Study & Employability Platform</div></div><div class="topbar-right"><div class="topbar-live">Live</div><button onclick="manualRefresh()" style="background:rgba(124,58,237,.1);border:1px solid var(--bord);color:var(--pl);border-radius:8px;padding:6px 14px;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer">&#x21BA; Refresh</button><div style="font-size:10px;color:var(--t3);font-family:JetBrains Mono,monospace" id="last-updated"></div><div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace" id="dash-date"></div></div></div>
+<div class="topbar"><div><div class="topbar-brand">Ayikho Admin</div><div class="topbar-meta">NATED N4–N6 · TVET Study & Employability Platform</div></div><div class="topbar-right"><div class="topbar-live">Live</div><button onclick="manualRefresh()" style="background:rgba(124,58,237,.1);border:1px solid var(--bord);color:var(--pl);border-radius:8px;padding:6px 14px;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer">↺ Refresh</button><div style="font-size:10px;color:var(--t3);font-family:JetBrains Mono,monospace" id="last-updated"></div><div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace" id="dash-date"></div></div></div>
 <div class="tabs">
 <div class="tab on" data-tab="overview">Overview</div>
 <div class="tab" data-tab="users">Users</div>
@@ -623,7 +623,7 @@ function manualRefresh(){
       btn.textContent='&#x21BA; Refresh'; btn.disabled=false;
       console.log('[Dashboard] Manual refresh — users:', U);
     }catch(e){
-      btn.textContent='&#x21BA; Refresh'; btn.disabled=false;
+      btn.textContent='↺ Refresh'; btn.disabled=false;
       console.warn('[Dashboard] Manual refresh failed:', e);
     }
   })();
