@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 100%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,265 +530,87 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Business Ethics & Social Responsibility',
-                subtitle: 'Module 8 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>What is Business Ethics?</h2>
+        {
+            id: 'intro',
+            title: 'Business Ethics & Social Responsibility',
+            subtitle: 'Module 8 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Doing Business the Right Way',
+            subtitle: 'Module 8 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>Ethics isn't just about not stealing. It's about how you treat employees, customers, the environment, and your community. In SA, BBBEE adds another layer — businesses must actively contribute to transformation.</p></div>
+<h3>What is Business Ethics?</h3>
+<p>Business ethics is about doing the right thing — even when nobody is watching, and even when the wrong thing would make more money short-term.</p>
+<p>Ethical dilemmas in business:</p>
+<p>• A supplier offers you a R5,000 "gift" to choose their products. Do you take it? (Bribery/corruption)<br>• You discover your product has a defect. Do you recall it (expensive) or stay quiet? (Consumer safety)<br>• You can save money by dumping waste in the river. Do you? (Environmental responsibility)<br>• You could pay workers below minimum wage because they\'re desperate. Do you? (Labour rights)</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Business ethics means doing what is right, not just what is legal. Corporate Social Responsibility (CSR) means benefiting society. Good ethics build trust and long-term success.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Ethics in SA business</h4>
+<p>SA has seen the damage of unethical business: Steinhoff\'s R200 billion accounting fraud, state capture corruption, construction companies colluding on pricing. These aren\'t just crimes — they destroyed jobs, pensions, and trust. Ethical business isn\'t a nice-to-have. It\'s the foundation of a working economy.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'BBBEE & Corporate Social Responsibility',
+            subtitle: 'Module 8 of 8',
+            type: 'lesson',
+            content: `
+<h3>BBBEE (Broad-Based Black Economic Empowerment)</h3>
+<p>BBBEE is SA\'s framework for economic transformation. It aims to increase Black ownership, management, skills development, and procurement in business. Companies are scored on a BBBEE scorecard:</p>
+<p><strong>Ownership:</strong> Black people owning shares in the business.</p>
+<p><strong>Management control:</strong> Black people in senior management and board positions.</p>
+<p><strong>Skills development:</strong> Training and developing Black employees (including learnerships and internships).</p>
+<p><strong>Enterprise development:</strong> Supporting Black-owned small businesses.</p>
+<p><strong>Preferential procurement:</strong> Buying from BBBEE-compliant suppliers.</p>
+<p><strong>Socio-economic development:</strong> Investing in communities (CSI projects).</p>
 
-                    <h3>Ethics vs Law</h3>
-                    <p><strong>Law:</strong> Rules enforced by government. Minimum standard.</p>
-                    <p><strong>Ethics:</strong> Moral principles. Often goes beyond law.</p>
-                    <p><strong>Example:</strong> It might be legal to pay workers R15/hour (below minimum wage is illegal, so actually this is unlawful), but it's unethical to underplay knowingly qualified workers. It's legal to sell expired food with a discount label, but it's unethical.</p>
+<h3>Why BBBEE Matters for You</h3>
+<p>If you start a business, your BBBEE level affects which government and corporate contracts you can win. A Level 1 BBBEE company gets preference over a Level 8. As a Black-owned business, you start with a natural advantage — but you still need to understand the scoring system.</p>
 
-                    <h3>Key Ethical Principles</h3>
+<h3>Corporate Social Responsibility (CSR)</h3>
+<p>Going beyond legal requirements to benefit society. Examples: Shoprite\'s hunger relief programme, Capitec\'s financial literacy workshops, Woolworths\' sustainability commitments. CSR builds brand loyalty and attracts talent.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Honesty & Transparency</h3>
-                        <p style="margin: 0;">Don't deceive customers or suppliers. Disclose product issues. Clear pricing. Build trust.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Fair Treatment</h3>
-                        <p style="margin: 0;">Pay fair wages. No discrimination. Safe working conditions. Respect employees as humans.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Environmental Responsibility</h3>
-                        <p style="margin: 0;">Minimize pollution. Recycle. Don't destroy forests for short-term profit.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Community Contribution</h3>
-                        <p style="margin: 0;">Give back. Support local projects. Hire from the community. Create jobs.</p>
-                    </div>
-
-                    <h3>Real Example: The Steinhoff Collapse</h3>
-                    <div class="example-box">
-                        <div class="example-title">When Ethics Failed — R200 Billion Wiped Out</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>2016:</strong> Steinhoff was Africa's largest furniture retailer. Executives hid losses and inflated profits.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>2017:</strong> Auditors discovered the fraud. R200 billion share value vanished in days. Thousands lost jobs.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Lesson:</strong> Short-term dishonesty destroys long-term value. Shareholders, employees, suppliers—all lost massively.</div>
-                        </div>
-                    </div>
-
-                    <div class="callout real-life">
-                        <h4>Triple Bottom Line</h4>
-                        <p><strong>Profit:</strong> Financial success. <strong>People:</strong> Fair treatment, employee wellbeing, community benefit. <strong>Planet:</strong> Environmental protection. Sustainable business addresses all three.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'csr',
-                title: 'CSR & Stakeholders',
-                subtitle: 'Module 8 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Corporate Social Responsibility</h2>
-
-                    <h3>What is CSR?</h3>
-                    <p>CSR is business commitment to contribute positively to society beyond making profit.</p>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Examples of CSR</h3>
-                        <p style="margin: 0;">Donating to schools, sponsoring local sports teams, environmental cleanup, skills training programs, free health screening, supporting local suppliers.</p>
-                    </div>
-
-                    <h3>King IV (South Africa's Governance Code)</h3>
-                    <p>King IV is SA's framework for responsible corporate governance. Requirements:</p>
-                    <p>• Ethical leadership and accountability</p>
-                    <p>• Diversity in board/management</p>
-                    <p>• Risk management</p>
-                    <p>• Stakeholder relations</p>
-                    <p>Applies to all registered companies. Large companies must report CSR activities publicly.</p>
-
-                    <h3>Whistleblowing</h3>
-                    <p>Whistleblowers report unethical/illegal activity within a company.</p>
-                    <p><strong>Example:</strong> An accountant discovers management hiding corruption. She reports to the board or authorities.</p>
-                    <p><strong>Protection:</strong> South African law protects whistleblowers from retaliation. They can't be fired for reporting illegal activity.</p>
-
-                    <h3>Stakeholders</h3>
-                    <p><strong>Stakeholders</strong> are anyone affected by your business:</p>
-                    <p>• Employees (fair wages, safety)</p>
-                    <p>• Customers (quality, honesty)</p>
-                    <p>• Suppliers (timely payment)</p>
-                    <p>• Communities (jobs, no pollution)</p>
-                    <p>• Environment (sustainability)</p>
-                    <p>• Government (taxes, compliance)</p>
-                    <p>Ethical businesses balance all stakeholder interests, not just shareholder profit.</p>
-
-                    <div class="callout exam">
-                        <h4>Key Concept: Sustainability</h4>
-                        <p>Sustainable business can continue indefinitely without harming society or environment. Unsustainable business extracts resources quickly, harms people, then collapses (like Steinhoff).</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the difference between ethics and law?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Law is the minimum standard; ethics goes beyond it based on moral principles</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Ethics is a law that applies only to government</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) They are exactly the same thing</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Business has no ethics; only law matters</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What does CSR (Corporate Social Responsibility) mean?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) Business commitment to contribute positively to society and environment beyond profit</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Only large corporations must do this</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) A requirement to give all profit to government</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) A punishment for unethical businesses</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is King IV in South Africa?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) A governance framework requiring ethical leadership, diversity, risk management</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) A king who ruled in the fourth century</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) A tax imposed on small businesses</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) A four-step process for fraud</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a whistleblower?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) Someone who reports unethical or illegal activity within a company</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) A person who works with whistles for safety</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) Someone who should always stay quiet</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) A referee at a sports event</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the "Triple Bottom Line"?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">A) Profit, People (fair treatment), and Planet (environment)</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">B) Only making profit matters</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) Three business locations</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) The lowest financial line item in a budget</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>Know: the elements of the BBBEE scorecard (at least 4), what CSR means and 2 examples, the difference between ethics and law (something can be legal but still unethical), and the consequences of unethical business behaviour for the business AND society.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does BBBEE stand for?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Better Business Bureau for Economic Equality</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>Broad-Based Black Economic Empowerment</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Basic Business and Economic Education</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>Black Business Enterprise and Employment</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> BBBEE stands for Broad-Based Black Economic Empowerment — SA's framework for economic transformation to address historical inequality in business ownership and management.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which of the following is an example of Corporate Social Responsibility (CSR)?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Paying employee salaries on time</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>A company sponsoring a school feeding programme in a township</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>Charging customers the correct prices</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Filing tax returns on time</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> CSR goes BEYOND legal requirements. Paying salaries, charging correct prices, and filing taxes are legal obligations. Sponsoring a feeding programme is voluntary social investment — that's CSR.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">If a supplier offers you a personal 'gift' of R5,000 to choose their products over a competitor's, this is:</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Good business practice</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>A loyalty reward</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>Bribery and corruption</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Normal in SA business</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> This is bribery — exchanging personal gifts for business decisions. It's unethical, illegal under the Prevention and Combating of Corrupt Activities Act, and can result in criminal charges and business closure.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Business Ethics & Social Responsibility!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 8 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
