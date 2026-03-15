@@ -261,21 +261,28 @@ if(btn){btn.textContent='Checking...';btn.disabled=true;}
     var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG||{});
     var auth=getAuth(app);
     var pseudoEmail='27'+ph1.replace(/^0/,'').replace(/\D/g,'')+'@ayikho.app';
-    await createUserWithEmailAndPassword(auth,pseudoEmail,p1);
-    // Success — account created, proceed to profile
+    var uc = await createUserWithEmailAndPassword(auth,pseudoEmail,p1);
+    // Success — sign them in and proceed to profile
     try{localStorage.setItem('ayikho_phone',fullPhone);localStorage.setItem('ayikho_pass_set','true')}catch(e){}
+    sessionStorage.setItem('ayikho_user_auth','1');
     if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackOnboardingStep('account_created');
     if(btn){btn.textContent='Continue →';btn.disabled=false;}
     onbNext(3);
   }catch(e){
     if(btn){btn.textContent='Continue →';btn.disabled=false;}
     if(e.code==='auth/email-already-in-use'){
-      err.textContent='An account already exists for this number. Please log in instead.';
+      err.textContent='Account already exists for this number. Please log in instead.';
+      err.style.display='block';
+    } else if(e.code==='auth/network-request-failed'){
+      err.textContent='No internet connection. Please check your signal and try again.';
+      err.style.display='block';
+    } else if(e.code==='auth/weak-password'){
+      err.textContent='Password is too weak. Use at least 6 characters.';
       err.style.display='block';
     } else {
-      // Network or other error — allow offline flow
-      try{localStorage.setItem('ayikho_phone',fullPhone);localStorage.setItem('ayikho_pass_set','true')}catch(ex){}
-      onbNext(3);
+      // Show the actual error — never silently skip Firebase registration
+      err.textContent='Could not create account: '+( e.message||e.code||'Unknown error')+'. Please try again.';
+      err.style.display='block';
     }
   }
 })();}
