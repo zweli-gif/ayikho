@@ -268,6 +268,8 @@ function fireConfetti(){var colors=['#F59E0B','#7C3AED','#0284C7','#22C55E','#F4
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!onbDone){finishOnboarding();return}if(document.getElementById('mood-overlay').classList.contains('active')){setMood('okay');return}if(document.getElementById('course-view').classList.contains('active')){closeCourseView();return}if(curMod!==null){goHome();return}}if((e.key==='d'||e.key==='D')&&curMod===null&&onbDone){demo=!demo;showToast(demo?'🔓 Demo ON':'🔒 Demo OFF')}var n=parseInt(e.key);if(n>=1&&n<=10&&onbDone)openModule(n)});
 /* STARTUP */
 document.addEventListener('DOMContentLoaded',function(){
+/* ?reset in URL = full wipe, shows onboarding */
+if(location.search.indexOf('reset')>-1){if(window.ayikhoData){window.ayikhoData.data.onboardingComplete=false;window.ayikhoData.data.profile={name:'',province:'',college:'',phone:'',currentMark:0,targetMark:70,createdAt:Date.now()};window.ayikhoData._save()}localStorage.clear();history.replaceState(null,'',location.pathname);location.reload();return}
 makeNav('nav0','home');makeNav('nav1','progress');makeNav('nav2','badges');makeNav('nav3','profile');
 genBadges();renderMolweni();renderLB();renderComm();renderMoodCal();
 var hasData=!!window.ayikhoData;var done=hasData?window.ayikhoData.isOnboardingComplete():false;
