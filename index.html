@@ -317,7 +317,11 @@ if(!done){try{done=!!localStorage.getItem('ayikho_profile')}catch(e){}}
 if(done){onbNext('login');}
 /* no data layer = first time user, onboarding shows by default */
 
-async function doLogin(){
+
+});
+
+// ── GLOBAL: must be outside DOMContentLoaded so onclick can reach it ──
+window.doLogin = async function(){
   var ph=(document.getElementById('login-ph').value||'').replace(/\s/g,'').replace(/^0/,'');
   var pw=document.getElementById('login-pw').value;
   var err=document.getElementById('login-err');
@@ -336,14 +340,14 @@ async function doLogin(){
     document.getElementById('onb-overlay').classList.add('gone');
     setTimeout(function(){
       document.getElementById('onb-overlay').style.display='none';
-      onbDone=true;
+      window.onbDone=true;
       var todayKey='ayikho_mood_'+new Date().toDateString();
       var logged=false; try{logged=!!localStorage.getItem(todayKey)}catch(e){}
       if(logged){
         document.getElementById('home-view').classList.remove('hidden');
-        document.getElementById('hero-name').innerHTML=getGreeting()+'<br>'+getUserName();
-        updateProfile();
-      } else { showMoodCheck(); }
+        document.getElementById('hero-name').innerHTML=window.getGreeting?getGreeting():('Hey')+'<br>'+(window.getUserName?getUserName():'');
+        if(window.updateProfile)updateProfile();
+      } else { if(window.showMoodCheck)showMoodCheck(); }
     },800);
   }catch(e){
     var msg='Incorrect number or password.';
@@ -351,9 +355,7 @@ async function doLogin(){
     if(e.code==='auth/network-request-failed')msg='No internet. Check your connection.';
     err.textContent=msg; btn.textContent='Log in'; btn.disabled=false;
   }
-}
-
-});
+};
 </script>
 </body>
 </html>
