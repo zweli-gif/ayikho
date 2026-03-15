@@ -292,8 +292,13 @@ if(location.search.indexOf('reset')>-1){if(window.ayikhoData){window.ayikhoData.
 makeNav('nav0','home');makeNav('nav1','progress');makeNav('nav2','badges');makeNav('nav3','profile');
 genBadges();renderMolweni();renderLB();renderComm();renderMoodCal();
 if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
-var hasData=!!window.ayikhoData;var done=hasData?window.ayikhoData.isOnboardingComplete():false;
-if(!done){try{done=!!localStorage.getItem('ayikho_profile')}catch(e){}}
+var hasData=!!window.ayikhoData;
+var _rawDone=hasData?window.ayikhoData.isOnboardingComplete():false;
+if(!_rawDone){try{_rawDone=!!localStorage.getItem('ayikho_profile')}catch(e){}}
+var _profile=hasData?window.ayikhoData.getProfile():{};
+var _storedProfile={}; try{_storedProfile=JSON.parse(localStorage.getItem('ayikho_profile')||'{}')}catch(e){}
+var _name=(_profile.name||_storedProfile.name||'').trim();
+var done=_rawDone&&!!(_name&&_name!=='Student');
 if(done){onbDone=true;document.getElementById('onb-overlay').style.display='none';var todayKey='ayikho_mood_'+new Date().toDateString();var logged=false;try{logged=!!localStorage.getItem(todayKey)}catch(e){}if(logged){document.getElementById('home-view').classList.remove('hidden');document.getElementById('hero-name').innerHTML=getGreeting()+'<br>'+getUserName();updateProfile();var m=localStorage.getItem(todayKey);document.getElementById('sc-mood').textContent={good:'😊',okay:'😐',struggling:'😔'}[m]||'😊'}else{showMoodCheck()}}
 /* no data layer = first time user, onboarding shows by default */
 });
