@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayikho - Module 3: Spreadsheets</title>
+    <title>Ayikho - Module 3: Spreadsheets (MS Excel)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -530,200 +530,128 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Spreadsheets',
-                subtitle: 'Module 3 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Microsoft Excel Basics</h2>
+        {
+            id: 'intro',
+            title: 'Spreadsheets (MS Excel)',
+            subtitle: 'Module 3 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Excel Fundamentals',
+            subtitle: 'Module 3 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>Excel is where numbers come alive. Every accountant, manager, and business owner uses it. Master cells, formulas, and charts — and you master the language of business.</p></div>
+<h3>What is a Spreadsheet?</h3>
+<p>A spreadsheet is a grid of cells organised in rows (1, 2, 3...) and columns (A, B, C...). Each cell has an address — A1, B3, D7. You can type text, numbers, or formulas into any cell.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Excel is for numbers, calculations, and data. Know cells, formulas, functions (SUM, AVERAGE, IF, VLOOKUP), and charts for N4.</p>
-                    </div>
+<h3>Why Excel Matters</h3>
+<p>In SA workplaces, Excel is everywhere:</p>
+<p>• <strong>Shoprite:</strong> Tracks inventory, sales reports, staff schedules</p>
+<p>• <strong>Capitec:</strong> Calculates loan payments, interest, risk scores</p>
+<p>• <strong>SARS:</strong> Manages tax calculations, audit data</p>
+<p>• <strong>Small business:</strong> Tracks income, expenses, profit/loss</p>
 
-                    <h3>What is a Spreadsheet?</h3>
-                    <p>A spreadsheet is a table of data. Rows, columns, cells. You put in numbers, text, or formulas. Excel calculates automatically.</p>
+<div class="callout sa">
+<h4>🇿🇦 Mama Nkosi\'s Spaza Shop</h4>
+<p>Mama Nkosi tracks her spaza shop sales in a notebook. Column A: product name. Column B: price. Column C: quantity sold. Column D: total (price × quantity). At the end of the month, she adds up Column D to see her revenue. This is exactly what Excel does — but faster, without calculation errors, and with pretty charts.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Formulas and Functions',
+            subtitle: 'Module 3 of 8',
+            type: 'lesson',
+            content: `
+<h3>Basic Formulas</h3>
+<p>Every formula starts with <strong>=</strong> (equals sign).</p>
+<p><strong>=A1+B1</strong> → adds the values in A1 and B1</p>
+<p><strong>=A1*B1</strong> → multiplies them (use * not ×)</p>
+<p><strong>=A1-B1</strong> → subtracts</p>
+<p><strong>=A1/B1</strong> → divides (use / not ÷)</p>
 
-                    <p>Every business uses Excel: finance teams track money, sales teams track orders, HR tracks employee data. Essential skill.</p>
+<h3>Essential Functions</h3>
+<p><strong>=SUM(A1:A10)</strong> → adds everything from A1 to A10. The most-used function in the world.</p>
+<p><strong>=AVERAGE(A1:A10)</strong> → calculates the average (mean).</p>
+<p><strong>=MAX(A1:A10)</strong> → finds the highest number.</p>
+<p><strong>=MIN(A1:A10)</strong> → finds the lowest number.</p>
+<p><strong>=COUNT(A1:A10)</strong> → counts how many cells have numbers in them.</p>
 
-                    <h3>Understanding the Grid</h3>
-                    <p><strong>Cell:</strong> A single box in the spreadsheet. Identified by column letter + row number. A1, B3, Z10.</p>
-                    <p><strong>Range:</strong> A group of cells. A1:A10 means cells A1 to A10. Used in formulas.</p>
-                    <p><strong>Column:</strong> Vertical. Labeled A, B, C, etc.</p>
-                    <p><strong>Row:</strong> Horizontal. Numbered 1, 2, 3, etc.</p>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The practical exam gives you a spreadsheet and asks you to write formulas. The most common: SUM a column, calculate AVERAGE of marks, find MAX/MIN values, use IF to check pass/fail. Practice these until you can do them in your sleep.</p>
+</div>
 
-                    <h3>Formulas and Functions</h3>
+<h3>VLOOKUP — The Power Move</h3>
+<p><strong>=VLOOKUP(lookup_value, table_array, col_index, FALSE)</strong></p>
+<p>Searches a table for a value. Example: You have a table of employee IDs and salaries. VLOOKUP lets you type in an employee ID and automatically find their salary.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">SUM</h3>
-                        <p style="margin: 0;"><strong>=SUM(A1:A10)</strong> adds all numbers from A1 to A10. Total sales, total expenses.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Real example</h4>
+<p>At Transnet, they have 50,000+ employees. If HR needs to find Sipho\'s employee number and get his salary, they don\'t scroll through 50,000 rows. They use VLOOKUP: =VLOOKUP("EMP4521", A1:D50000, 4, FALSE) — and boom, Sipho\'s salary appears instantly.</p>
+</div>
+`
+        },
+        {
+            id: 's3',
+            title: 'Charts and Data Presentation',
+            subtitle: 'Module 3 of 8',
+            type: 'lesson',
+            content: `
+<h3>Why Charts?</h3>
+<p>Numbers in a table are hard to read. A chart makes patterns visible instantly. Your manager doesn\'t want to stare at 200 rows — they want one chart that shows the trend.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">AVERAGE</h3>
-                        <p style="margin: 0;"><strong>=AVERAGE(B1:B5)</strong> calculates the average of values. Mean salary, average test score.</p>
-                    </div>
+<h3>Types of Charts</h3>
+<p><strong>Bar/Column chart:</strong> Compares different items. "Which product sold most?" Use when you\'re comparing categories.</p>
+<p><strong>Line chart:</strong> Shows trends over time. "How did sales change month by month?" Use when time is on the X-axis.</p>
+<p><strong>Pie chart:</strong> Shows parts of a whole. "What percentage of sales came from each product?" Use when you want to show proportions. Must add up to 100%.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">IF</h3>
-                        <p style="margin: 0;"><strong>=IF(A1>100,"Pass","Fail")</strong> tests a condition. If true, show first result. If false, show second.</p>
-                    </div>
+<h3>How to Create a Chart</h3>
+<p>1. Select your data (including headings)<br>2. Insert → Chart → choose type<br>3. Excel creates the chart automatically<br>4. Customise: add title, legend, data labels</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">VLOOKUP</h3>
-                        <p style="margin: 0;">Searches a table for a value. Finds matching data. Looking up employee ID to find salary.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Spaza shop chart</h4>
+<p>Mama Nkosi\'s monthly sales: Bread R2,400 | Airtime R3,100 | Cold drinks R1,800 | Snacks R950 | Cigarettes R2,200. A pie chart instantly shows that airtime is her biggest seller (30% of revenue). A bar chart lets her compare all five side-by-side. This is the kind of analysis that turns a spaza shop into a franchise.</p>
+</div>
 
-                    <h3>Data Visualization</h3>
-                    <p><strong>Charts:</strong> Visual representation of data. Bar charts, line graphs, pie charts. Insert via Insert tab.</p>
-
-                    <div class="callout real-life">
-                        <h4>SA Example</h4>
-                        <p>You're tracking sales at a spaza shop in Soweto. Column A: product names. Column B: prices. Column C: quantity sold. You use SUM to calculate total revenue. You use AVERAGE to find the most popular item. You create a pie chart to show which products sell most.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'key-terms',
-                title: 'Spreadsheet Features',
-                subtitle: 'Key Functions & Tools',
-                type: 'lesson',
-                content: `
-                    <h2>Advanced Excel Concepts</h2>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Cell Reference</h3>
-                        <p style="margin: 0;">The address of a cell. A1 is column A, row 1. Used in formulas. =A1+B1 adds cells A1 and B1.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Absolute Reference</h3>
-                        <p style="margin: 0;">A cell reference that doesn't change when copied. Written as $A$1. Locks the cell to a specific location.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Relative Reference</h3>
-                        <p style="margin: 0;">A cell reference that changes when copied. A1 becomes A2, A3, etc. Normal cell reference.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Formatting</h3>
-                        <p style="margin: 0;">Change appearance of cells. Bold, color, currency format (R). Makes data easier to read.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Filtering and Sorting</h3>
-                        <p style="margin: 0;">Organize data. Sort by sales amount (high to low). Filter to show only items above R100.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>N4 exams test: formulas (SUM, AVERAGE, IF), cell references, creating charts, and interpreting data. Practice writing formulas from word problems. Example: "Calculate total profit for items in range B5:B20" = =SUM(B5:B20)</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What does the formula =SUM(A1:A10) do?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Adds all numbers from A1 to A10</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Counts how many cells have data</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) Calculates the average</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Finds the highest value</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the difference between relative and absolute cell references?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) Relative changes when copied; absolute stays the same with $ symbols</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Absolute is faster than relative</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) There is no difference</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Relative only works for numbers</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is VLOOKUP used for?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) Searching a table for a value and returning related data</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Creating line graphs</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Calculating sums only</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Formatting cells</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Computer Practice N4 · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam asks: "Which chart type is most suitable for showing...?" Bar = comparison between items. Line = trend over time. Pie = percentage/proportion of a whole. Learn these three and you\'ll get the marks.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does the formula =SUM(B2:B10) do?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Finds the average of B2 to B10</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>Adds up all values from B2 to B10</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Counts the cells from B2 to B10</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>Finds the highest value in B2 to B10</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> SUM adds up all the values in the range B2 to B10. AVERAGE gives the mean, COUNT counts cells, and MAX finds the highest value.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which chart type is best for showing how sales changed over 12 months?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Pie chart</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">B</span>Bar chart</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">C</span>Line chart</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Scatter chart</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> A line chart shows trends over time — perfect for monthly sales data. Pie charts show parts of a whole. Bar charts compare categories. Scatter charts show relationships between two variables.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">In the cell address C5, what does the C represent?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>The row number</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">B</span>The column letter</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">C</span>The sheet name</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>The formula</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> In a cell address, the letter (C) is the column and the number (5) is the row. So C5 is the cell at column C, row 5.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Spreadsheets (MS Excel)!</h2><p style="color:var(--dim);margin-bottom:24px">Computer Practice N4 · Module 3 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#8B5CF6;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
