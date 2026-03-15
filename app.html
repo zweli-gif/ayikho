@@ -233,13 +233,28 @@ ld.classList.remove('show');document.getElementById('home-view').classList.add('
 document.getElementById('chapter-view').classList.add('active');document.getElementById('back-btn').classList.add('show');
 curMod=num!==undefined?num:label;if(typeof num==='number')modStart=Date.now();
 try{var d=fr.contentDocument||fr.contentWindow.document;var s=d.createElement('style');s.textContent=STRIP;d.head.appendChild(s);
-/* Inject floating nav bar */
+/* Inject floating nav bar — must be a script in iframe context so it can call nextScreen/prevScreen */
 if(typeof num==='number'){
-var nav=d.createElement('div');
-nav.id='ayikho-nav';
-nav.innerHTML='<div style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:white;border-top:2px solid #EDE8FF;padding:12px 20px 32px;display:flex;align-items:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,.08)"><button onclick="if(typeof prevScreen===\'function\')prevScreen();else parent.postMessage({type:\'goHome\'},\'*\')" style="flex:1;background:#F7F4FF;border:none;border-radius:14px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;color:#7C3AED;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">← Back</button><button onclick="if(typeof nextScreen===\'function\')nextScreen();else window.scrollBy({top:window.innerHeight*0.8,behavior:\'smooth\'})" style="flex:2;background:#7C3AED;border:none;border-radius:14px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">Next →</button></div>';
-d.body.appendChild(nav);
-var pad=d.createElement('div');pad.style.height='90px';d.body.appendChild(pad);
+var navScript=d.createElement('script');
+navScript.textContent=`
+(function(){
+var nav=document.createElement('div');
+nav.innerHTML='<div style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:white;border-top:2px solid #EDE8FF;padding:12px 20px 32px;display:flex;align-items:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,.08)"><button id="ayk-back" style="flex:1;background:#F7F4FF;border:none;border-radius:14px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;color:#7C3AED;cursor:pointer">← Back</button><button id="ayk-next" style="flex:2;background:#7C3AED;border:none;border-radius:14px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;color:white;cursor:pointer">Next →</button></div>';
+document.body.appendChild(nav);
+var pad=document.createElement('div');pad.style.height='90px';document.body.appendChild(pad);
+document.getElementById('ayk-back').addEventListener('click',function(){
+  if(typeof prevScreen==='function')prevScreen();
+  else if(typeof goToScreen==='function'&&typeof currentScreen!=='undefined'&&currentScreen>0)goToScreen(currentScreen-1);
+  else parent.postMessage({type:'goHome'},'*');
+});
+document.getElementById('ayk-next').addEventListener('click',function(){
+  if(typeof nextScreen==='function')nextScreen();
+  else if(typeof goToScreen==='function'&&typeof currentScreen!=='undefined')goToScreen(currentScreen+1);
+  else window.scrollBy({top:window.innerHeight*0.8,behavior:'smooth'});
+});
+})();
+`;
+d.body.appendChild(navScript);
 }}catch(x){}
 if(typeof num==='number'&&window.ayikhoData)window.ayikhoData.startModule(num)};
 fr.src=src},300)}
