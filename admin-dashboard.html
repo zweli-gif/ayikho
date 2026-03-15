@@ -60,6 +60,22 @@ tr:hover td{background:rgba(124,58,237,.03)}
 .ns-val{font-size:48px;font-weight:900;background:linear-gradient(135deg,var(--p),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .ns-desc{font-size:13px;color:var(--t2);margin-top:4px}
 .zero-msg{text-align:center;padding:40px;color:var(--t3);font-size:13px}
+
+/* ── FOUNDER NOTES WIDGET ── */
+.notes-fab{position:fixed;bottom:28px;right:28px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--gold));border:none;cursor:pointer;box-shadow:0 4px 18px rgba(124,58,237,.35);display:flex;align-items:center;justify-content:center;font-size:22px;z-index:999;transition:transform .2s}
+.notes-fab:hover{transform:scale(1.1)}
+.notes-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:flex-end;padding:90px 28px 28px;pointer-events:none;opacity:0;transition:opacity .2s}
+.notes-modal.open{pointer-events:auto;opacity:1}
+.notes-box{background:white;border-radius:18px;box-shadow:0 12px 48px rgba(0,0,0,.18);padding:24px;width:380px;max-width:100%;transform:translateY(20px);transition:transform .25s;border:1.5px solid var(--bord)}
+.notes-modal.open .notes-box{transform:translateY(0)}
+.notes-box-title{font-size:13px;font-weight:800;color:var(--t1);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.notes-box-context{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--p);background:rgba(124,58,237,.08);padding:3px 8px;border-radius:6px;font-weight:600}
+.notes-textarea{width:100%;margin-top:12px;border:1.5px solid var(--bord);border-radius:10px;padding:12px;font-family:Outfit,sans-serif;font-size:13px;color:var(--t1);resize:none;height:110px;outline:none;line-height:1.5}
+.notes-textarea:focus{border-color:var(--p)}
+.notes-actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+.notes-btn-save{background:var(--p);color:white;border:none;border-radius:8px;padding:9px 20px;font-family:Outfit,sans-serif;font-weight:700;font-size:12px;cursor:pointer}
+.notes-btn-cancel{background:transparent;color:var(--t3);border:1.5px solid var(--bord);border-radius:8px;padding:9px 16px;font-family:Outfit,sans-serif;font-weight:600;font-size:12px;cursor:pointer}
+.notes-saved{font-size:11px;color:var(--green);font-weight:700;margin-top:8px;text-align:center;min-height:16px}
 </style>
 </head>
 <body>
@@ -498,13 +514,85 @@ function exportXLSX() {
     var row=[i+1,u.name||'',u.gender||'',u.phone||'',u.province||'',u.college||'',u.level||'',u.course||'',u.fiveYearGoal||'',u.dream||'',u.registeredDate||'','Active'];
     html+='<tr>'+row.map(function(v){return '<td>'+String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</td>';}).join('')+'</tr>';
   });
-  html+='</table></body></html>';
+  html+='</table>
+<!-- FOUNDER NOTES WIDGET -->
+<button class="notes-fab" onclick="openNotes()" title="Add a note">📝</button>
+<div class="notes-modal" id="notes-modal" onclick="if(event.target===this)closeNotes()">
+  <div class="notes-box">
+    <div class="notes-box-title">
+      Founder note
+      <span class="notes-box-context" id="notes-context">Overview</span>
+    </div>
+    <div style="font-size:11px;color:var(--t3);margin-top:4px">What are you seeing? What's on your mind?</div>
+    <textarea class="notes-textarea" id="notes-text" placeholder="e.g. User 3 registered from Limpopo but college field was blank — check the onboarding dropdown…"></textarea>
+    <div class="notes-actions">
+      <button class="notes-btn-cancel" onclick="closeNotes()">Cancel</button>
+      <button class="notes-btn-save" onclick="saveNote()">Save note</button>
+    </div>
+    <div class="notes-saved" id="notes-saved"></div>
+  </div>
+</div>
+
+</body></html>';
   var blob=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a'); a.href=url;
   a.download='Ayikho_Master_List_'+new Date().toISOString().slice(0,10)+'.xls';
   a.click(); URL.revokeObjectURL(url);
 }
+
+// ── FOUNDER NOTES ──
+var _currentTab = 'Overview';
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){ _currentTab = t.textContent.trim(); });
+});
+
+function openNotes(){
+  document.getElementById('notes-context').textContent = _currentTab;
+  document.getElementById('notes-text').value = '';
+  document.getElementById('notes-saved').textContent = '';
+  document.getElementById('notes-modal').classList.add('open');
+  setTimeout(function(){ document.getElementById('notes-text').focus(); }, 200);
+}
+
+function closeNotes(){
+  document.getElementById('notes-modal').classList.remove('open');
+}
+
+async function saveNote(){
+  var text = document.getElementById('notes-text').value.trim();
+  if (!text) { document.getElementById('notes-saved').textContent = 'Write something first!'; return; }
+  var note = {
+    text: text,
+    tab: _currentTab,
+    savedAt: new Date().toISOString(),
+    savedBy: 'founder'
+  };
+  // Save to localStorage immediately
+  try {
+    var existing = JSON.parse(localStorage.getItem('ayikho_founder_notes') || '[]');
+    existing.unshift(note);
+    localStorage.setItem('ayikho_founder_notes', JSON.stringify(existing.slice(0, 100)));
+  } catch(e){}
+  // Save to Firebase if available
+  try {
+    var{initializeApp,getApps}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+    var{getFirestore,collection,addDoc,serverTimestamp}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+    if(window.FIREBASE_CONFIG){
+      var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG,'ayikho-notes');
+      var db=getFirestore(app);
+      await addDoc(collection(db,'founder_notes'),{...note, savedAt: serverTimestamp()});
+    }
+  } catch(e){ /* silent — localStorage backup is enough */ }
+  document.getElementById('notes-saved').textContent = '✓ Saved to ' + _currentTab + ' · ' + new Date().toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'});
+  setTimeout(closeNotes, 1400);
+}
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeNotes();
+  if((e.metaKey||e.ctrlKey) && e.key==='Enter' && document.getElementById('notes-modal').classList.contains('open')) saveNote();
+});
+
 </script>
 </body></html>
 
