@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 12.5%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,273 +530,102 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Introduction to Entrepreneurship',
-                subtitle: 'Module 1 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>What is Entrepreneurship?</h2>
+        {
+            id: 'intro',
+            title: 'Introduction to Entrepreneurship',
+            subtitle: 'Module 1 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'What is an Entrepreneur?',
+            subtitle: 'Module 1 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>An entrepreneur spots an opportunity, takes a risk, and builds something. SA needs entrepreneurs — the formal economy can't employ everyone. Your side hustle today could be your empire tomorrow.</p></div>
+<h3>Defining Entrepreneurship</h3>
+<p>An entrepreneur is someone who identifies a business opportunity, takes a calculated risk, and organises resources to make it happen. They create value — jobs, products, services — where none existed before.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Entrepreneurship is the process of creating and running your own business. Entrepreneurs identify opportunities, take risks, and build enterprises to solve problems and make profit.</p>
-                    </div>
+<h3>Why SA Needs Entrepreneurs</h3>
+<p>South Africa\'s unemployment rate is over 30%. The formal sector can\'t absorb everyone. Entrepreneurship isn\'t just a career choice — it\'s a survival skill. From the taxi industry to township spaza shops to tech startups in Braamfontein, entrepreneurs are the backbone of the SA economy.</p>
 
-                    <h3>The Entrepreneur's Journey</h3>
-                    <p>An entrepreneur is someone who sees a problem or opportunity and acts on it by starting a business. Unlike an employee who works for someone else, an entrepreneur works for themselves, takes on risks, and keeps the profits (or losses).</p>
+<div class="callout sa">
+<h4>🇿🇦 From Rosettenville to Global Brand</h4>
+<p><strong>Nando\'s:</strong> 1987. Robert Brozin and Robbie Brozin bought a restaurant in Rosettenville, Johannesburg. Simple idea: peri-peri chicken. They took a risk, developed a unique recipe, and built a brand. Today: 1,200+ restaurants in 24 countries. That\'s entrepreneurship — seeing an opportunity nobody else saw.</p>
+</div>
 
-                    <p><strong>Key characteristics of entrepreneurs:</strong></p>
-                    <p>• Risk-taking: They invest their own money and time with no guarantee of success.</p>
-                    <p>• Innovation: They create new products or find better ways to deliver services.</p>
-                    <p>• Problem-solving: They spot gaps in the market and fill them.</p>
-                    <p>• Resilience: They bounce back from failures and keep going.</p>
-                    <p>• Passion: They believe deeply in their business idea.</p>
+<h3>Characteristics of Successful Entrepreneurs</h3>
+<p><strong>Risk-taker:</strong> Willing to invest time and money without guaranteed returns.</p>
+<p><strong>Creative:</strong> Sees solutions where others see problems.</p>
+<p><strong>Persistent:</strong> Doesn\'t give up after the first failure. Or the fifth.</p>
+<p><strong>Decisive:</strong> Makes decisions quickly with imperfect information.</p>
+<p><strong>Hard-working:</strong> The hustle is real. Especially in the first 2-3 years.</p>
 
-                    <h3>Types of Business Ownership</h3>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam lists characteristics and asks you to identify which belong to entrepreneurs. Also know: the difference between an entrepreneur and an employee, and why entrepreneurship matters for economic growth and job creation in SA.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Types of Businesses in SA',
+            subtitle: 'Module 1 of 8',
+            type: 'lesson',
+            content: `
+<h3>Sole Proprietor</h3>
+<p>One person owns and runs the business. Most spaza shops, hair salons, and freelancers are sole proprietors. Easy to start — no registration required (but you should register with SARS). The downside: you\'re personally liable for all debts. If the business fails, creditors can take your personal assets.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Sole Trader</h3>
-                        <p style="margin: 0;">One person owns and runs the business. They keep all profits but are liable for all debts. Easy to start, minimal red tape.</p>
-                    </div>
+<h3>Partnership</h3>
+<p>Two or more people share ownership. They share profits, losses, and responsibilities. A partnership agreement should be in writing — even between friends. Especially between friends.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Partnership</h3>
-                        <p style="margin: 0;">Two or more people share ownership, profits, and liabilities. Partners pool resources and skills. Each partner is legally liable for the business.</p>
-                    </div>
+<h3>Close Corporation (CC)</h3>
+<p>No longer available for new registration since 2011, but existing CCs still operate. Limited to 10 members. Members have limited liability.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Close Corporation (CC)</h3>
-                        <p style="margin: 0;">A registered business with up to 10 members. Limited liability—owners' personal assets are protected if the business fails. Requires CIPC registration.</p>
-                    </div>
+<h3>Private Company (Pty Ltd)</h3>
+<p>The standard business structure in SA. Separate legal entity — the company exists independently of its owners. Shareholders have limited liability (you can only lose what you invested, not your house). Must register with CIPC (Companies and Intellectual Property Commission).</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Private Company (Pty Ltd)</h3>
-                        <p style="margin: 0;">A registered business with shared ownership. Members have limited liability. Can raise capital by selling shares to other owners.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Examples</h4>
+<p>• <strong>Sole Proprietor:</strong> Mama selling vetkoek at the taxi rank<br>• <strong>Partnership:</strong> Two friends opening a car wash together<br>• <strong>Pty Ltd:</strong> Capitec Bank (Pty) Ltd, Shoprite Holdings (Pty) Ltd<br>• Even Ayikho started as an idea, then became a registered entity</p>
+</div>
 
-                    <h3>Real Example: Nando's Success Story</h3>
-                    <div class="example-box">
-                        <div class="example-title">From Rosettenville to Global Brand</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>1987:</strong> Two entrepreneurs, Robert Brozin and Robbie Brozin, opened the first Nando's in Rosettenville, Johannesburg with a simple idea: grilled chicken with peri-peri sauce.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>They took a risk:</strong> Invested their own money, developed a unique recipe, and pioneered a new restaurant concept in South Africa.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Innovation:</strong> Nando's combined Portuguese peri-peri flavours with South African hospitality to create a brand.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Growth:</strong> From one store to hundreds across Africa and globally. Today, Nando's is an enterprise worth billions.</div>
-                        </div>
-                    </div>
-
-                    <div class="callout real-life">
-                        <h4>Why This Matters</h4>
-                        <p>Nando's proves that a small idea from South Africa can become a global business. The founders identified an opportunity (no good casual peri-peri restaurant), took the risk, and built an empire.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'types',
-                title: 'Business Types & Risk',
-                subtitle: 'Module 1 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Enterprise vs Sole Trader vs Partnership</h2>
-
-                    <h3>What is an Enterprise?</h3>
-                    <p>An enterprise is any business activity that produces goods or services for profit. It's a broad term covering all business types—from a street vendor to a manufacturing company. Enterprises range from informal (unregistered) to formal (registered with government).</p>
-
-                    <h3>Characteristics of Entrepreneurs</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">1. Visionary Thinking</h3>
-                        <p style="margin: 0;">See opportunities others miss. Example: Noticing that informal traders need payment solutions led to the creation of many fintech startups in SA.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">2. Willingness to Take Risks</h3>
-                        <p style="margin: 0;">Invest personal time and money knowing there's no guarantee. They accept that 9 in 10 startups might fail.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">3. Resourcefulness</h3>
-                        <p style="margin: 0;">Do more with less. Start with minimal capital, use local suppliers, solve problems creatively.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">4. Determination</h3>
-                        <p style="margin: 0;">Don't give up. Keep trying after failures. Elon Musk's companies failed multiple times before success.</p>
-                    </div>
-
-                    <h3>Risk in Business</h3>
-                    <p><strong>Financial risk:</strong> Losing money invested. An entrepreneur might invest R50,000 and earn nothing in year one.</p>
-                    <p><strong>Market risk:</strong> Your product might not sell. You researched wrong or timing was off.</p>
-                    <p><strong>Operational risk:</strong> Equipment breaks, staff quits, suppliers fail to deliver.</p>
-                    <p><strong>Legal risk:</strong> Not registering properly means personal liability. If the business owes debt, creditors can take your house.</p>
-
-                    <div class="callout exam">
-                        <h4>Key Concept: Limited vs Unlimited Liability</h4>
-                        <p><strong>Unlimited:</strong> Sole traders and partnerships. You're personally liable for all business debts.<br><strong>Limited:</strong> CC and Pty Ltd. Your personal assets are protected. The business is liable, not you personally.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which of the following best describes entrepreneurship?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Creating and running a business to solve problems and make profit</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Working as an employee for a large company</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) Buying and selling shares on the stock exchange</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Government regulation of businesses</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>A sole trader in South Africa is best described as:</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) One person who owns and runs the business, keeping all profits and bearing all losses</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) A business owned by the government</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) A business that must have limited liability protection</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) A partnership between exactly two people</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which business structure offers limited liability to its owners?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">A) Sole trader</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">B) Close Corporation (CC)</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) General partnership</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) All of the above</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What does "risk-taking" mean in entrepreneurship?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) Investing your own money and time knowing there's no guarantee of profit</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) Gambling all your savings on lottery tickets</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) Avoiding any decisions that might fail</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Always following what competitors do</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>In a partnership, what is each partner's liability for business debts?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">A) Only liable for their own actions</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">B) Jointly and severally liable—each partner is liable for all debts</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) The partnership is liable, but partners are always protected</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) Partnerships don't have financial liability</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>Know the advantages and disadvantages of EACH business form. The exam gives you a scenario and asks: "Which form of business ownership is most suitable?" For a one-person small business = sole proprietor. For a business that needs to raise investment = Pty Ltd.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What best describes an entrepreneur?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Someone who works a 9-5 job</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>Someone who identifies opportunities, takes risks, and starts a business</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Someone who only invests in stocks</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>A government employee</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> An entrepreneur identifies business opportunities, takes calculated risks, and organises resources to build a business. It's about creating value, not just investing or working for someone else.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Why can new Close Corporations (CCs) no longer be registered in SA?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>They were too expensive</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>The law changed in 2011 — only Pty Ltd companies can be registered now</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>CCs were declared illegal</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>They had too many members</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> Since the Companies Act of 2008 (implemented 2011), no new CCs can be registered. Existing ones can continue operating, but new businesses must register as a Private Company (Pty Ltd) or other available forms.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which business form gives the owner limited liability?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Sole proprietor</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>Partnership</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>Private Company (Pty Ltd)</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>All of the above</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> A Pty Ltd company is a separate legal entity — shareholders can only lose what they invested. Sole proprietors and partners have unlimited liability, meaning personal assets can be seized for business debts.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Introduction to Entrepreneurship!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 1 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
