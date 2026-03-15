@@ -3,7 +3,7 @@
  * Supports: South Africa (+27) and Ghana (+233)
  */
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateEmail, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 let auth = null;
 let regPhone = "";
@@ -286,5 +286,29 @@ window.loginUser = async function () {
     hint.textContent = "Incorrect password or account not found.";
     btn.disabled = false;
     btn.textContent = "Log in →";
+  }
+};
+
+// ── UPDATE REAL EMAIL + ENABLE PASSWORD RESET ──
+window.updateUserEmail = async function(realEmail) {
+  initAuth();
+  if (!auth || !auth.currentUser) return;
+  try {
+    await updateEmail(auth.currentUser, realEmail);
+    localStorage.setItem('ayikho_real_email', realEmail);
+    console.log('[Auth] Real email updated:', realEmail);
+  } catch (e) {
+    console.warn('[Auth] Email update failed:', e.message);
+  }
+};
+
+window.sendPasswordReset = async function(realEmail) {
+  initAuth();
+  if (!auth) return { success: false, error: 'Auth unavailable' };
+  try {
+    await sendPasswordResetEmail(auth, realEmail);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e.code };
   }
 };
