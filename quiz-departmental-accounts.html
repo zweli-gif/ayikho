@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · Departmental Accounts Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--fa:#0284C7;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;--p:#7C3AED;--gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;--ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;--bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;}
+body{font-family:'Outfit',sans-serif;background:#05090F;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.phone{width:375px;min-height:812px;background:white;border-radius:50px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.85);}
+.hdr{background:linear-gradient(135deg,#059669,#047857);padding:24px 20px 20px;color:white;}
+.hdr-tag{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;opacity:.7;margin-bottom:6px;}
+.hdr h1{font-size:24px;font-weight:900;margin-bottom:4px;}
+.hdr p{font-size:12px;opacity:.8;}
+.progress-wrap{padding:16px 20px 0;background:#F0FDF4;}
+.progress-bar{height:6px;background:#BBF7D0;border-radius:10px;overflow:hidden;margin-bottom:12px;}
+.progress-fill{height:100%;background:#059669;border-radius:10px;transition:width .4s ease;}
+.progress-txt{font-size:11px;color:#059669;font-weight:700;font-family:"JetBrains Mono",monospace;padding-bottom:12px;}
+.body{padding:20px;}
+.q-card{background:var(--surf);border-radius:16px;padding:18px;margin-bottom:16px;border-left:4px solid #059669;}
+.q-num{font-size:9px;font-weight:800;color:#059669;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;}
+.q-text{font-size:14px;font-weight:700;color:var(--ink);line-height:1.6;}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.opt{background:white;border:2px solid var(--bord);border-radius:12px;padding:14px 16px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;text-align:left;}
+.opt-badge{width:28px;height:28px;border-radius:8px;background:var(--surf);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:var(--mut);flex-shrink:0;font-family:"JetBrains Mono",monospace;}
+.opt:hover{border-color:#059669;background:#F0FDF4;}
+.opt.correct{border-color:var(--green);background:var(--green-xs);color:#15803D;}
+.opt.correct .opt-badge{background:var(--green);color:white;}
+.opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.07);color:#be123c;}
+.opt.wrong .opt-badge{background:var(--rose);color:white;}
+.opt.disabled{pointer-events:none;}
+.feedback{border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.6;margin-bottom:16px;display:none;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--green-xs);border:1.5px solid var(--green);color:#15803D;}
+.feedback.wrong{background:rgba(244,63,94,.07);border:1.5px solid var(--rose);color:#be123c;}
+.nav-row{display:flex;gap:10px;margin-top:4px;}
+.btn{flex:1;border:none;border-radius:12px;padding:14px;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;}
+.btn-go{background:#059669;color:white;}
+.btn-ghost{background:var(--surf);color:var(--mut);border:1.5px solid var(--bord);}
+.screen{display:none;} .screen.active{display:block;}
+.win{text-align:center;padding:32px 20px;}
+.win-emoji{font-size:64px;margin-bottom:16px;display:block;}
+.score-ring{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#059669,#047857);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;color:white;}
+.score-ring .big{font-size:36px;font-weight:900;line-height:1;}
+.score-ring .lbl{font-size:11px;font-weight:700;opacity:.8;}
+.summary{background:var(--surf);border-radius:14px;padding:16px;text-align:left;margin-bottom:20px;}
+.sum-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bord);font-size:13px;}
+.sum-row:last-child{border:none;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="hdr">
+    <div class="hdr-tag">Financial Accounting N4</div>
+    <h1>Departmental Accounts</h1>
+    <p>10 exam-style questions · Test your knowledge</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pbar" style="width:0%"></div></div>
+    <div class="progress-txt" id="ptxt">Question 1 of 10</div>
+  </div>
+  <div class="body" id="quiz-body"></div>
+</div>
+
+<script>
+var QS = [
+  {q:"What is the main purpose of keeping departmental accounts?",
+   opts:["To reduce the number of journal entries","To see which departments are profitable and which are not","To avoid paying tax per department","To combine all income into one account"],
+   ans:1, exp:"Departmental accounts let the owner see exactly which department makes profit and which loses money — so they can make better business decisions."},
+  {q:"Sipho's Hardware buys R6 300 of electrical equipment on credit from Voltex. Which journal records this?",
+   opts:["Cash Payments Journal","General Journal","Columnar Purchases Journal — Electrical Department","Interdepartmental Transfers Journal"],
+   ans:2, exp:"Credit purchases go in the Columnar Purchases Journal. Since the stock is for the Electrical Department, the amount goes in the Electrical column."},
+  {q:"How many columnar journals are used in departmental accounts?",
+   opts:["4","5","6","7"],
+   ans:3, exp:"There are 7 columnar journals: Purchases, Purchases Returns, Sales, Sales Returns, Cash Journals (CRJ & CPJ), Interdepartmental Transfers, and General Journal."},
+  {q:"The Paint Department transfers R2 400 worth of stock to the Tools Department. The journal entry is:",
+   opts:["Dr Paint R2 400 / Cr Tools R2 400","Dr Tools R2 400 / Cr Paint R2 400","Dr Purchases R2 400 / Cr Tools R2 400","Dr Bank R2 400 / Cr Paint R2 400"],
+   ans:1, exp:"The RECEIVER is Debited, the GIVER is Credited. Tools is receiving the stock so Tools Dr. Paint is giving the stock so Paint Cr."},
+  {q:"Interdepartmental transfers are always recorded at:",
+   opts:["Selling price","Cost price plus 10% mark-up","Cost price","Market value"],
+   ans:2, exp:"Transfers between departments are always at COST PRICE. No mark-up. No profit is made on an internal transfer."},
+  {q:"The Departmental Trading Statement shows gross profit for each department. The formula for Gross Profit is:",
+   opts:["Sales + Cost of Sales","Sales − Operating Expenses","Net Sales − Cost of Sales","Net Sales + Opening Stock"],
+   ans:2, exp:"Gross Profit = Net Sales (Sales minus Returns) minus Cost of Sales. Cost of Sales includes Opening Stock + Purchases + Transfers In − Returns − Transfers Out − Closing Stock."},
+  {q:"Rent of R48 000 must be allocated. Tools uses 500m², Paint uses 300m², Electrical uses 200m² (total 1 000m²). How much goes to the Paint Department?",
+   opts:["R24 000","R14 400","R9 600","R16 000"],
+   ans:1, exp:"Paint = 300/1000 × R48 000 = 0.3 × R48 000 = R14 400. Always divide the department's floor space by total floor space, then multiply by the expense."},
+  {q:"Which type of expense can be traced directly to ONE department?",
+   opts:["Allocated expense","Shared expense","Direct expense","Joint expense"],
+   ans:2, exp:"A Direct Expense belongs to one specific department — like the salary of a departmental manager or packaging used only by that department."},
+  {q:"The Departmental P&L Statement shows:",
+   opts:["Only gross profit per department","Net profit after deducting direct and allocated expenses","Only the sales per department","The balance sheet per department"],
+   ans:1, exp:"The Departmental P&L starts with Gross Profit (from the Trading Statement), then deducts BOTH direct expenses and allocated expenses to arrive at Net Profit per department."},
+  {q:"The Tools Department had Net Sales of R95 000 and Cost of Sales of R57 000. What is the Gross Profit percentage?",
+   opts:["40%","60%","38%","62%"],
+   ans:0, exp:"Gross Profit = R95 000 − R57 000 = R38 000. GP% = R38 000 ÷ R95 000 × 100 = 40%. Always divide Gross Profit by Net Sales — not Cost of Sales."}
+];
+
+var cur=0, score=0, answered=Array(QS.length).fill(false);
+
+function build(){
+  var body=document.getElementById('quiz-body');
+  body.innerHTML='';
+  QS.forEach(function(q,i){
+    var div=document.createElement('div');
+    div.className='screen'+(i===0?' active':'');
+    div.id='q'+i;
+    var optsHtml=q.opts.map(function(o,j){
+      return '<div class="opt" id="opt-'+i+'-'+j+'" onclick="pick('+i+','+j+')">'
+        +'<div class="opt-badge">'+String.fromCharCode(65+j)+'</div>'
+        +'<span>'+o+'</span></div>';
+    }).join('');
+    div.innerHTML='<div class="q-card"><div class="q-num">Question '+(i+1)+' of '+QS.length+'</div><div class="q-text">'+q.q+'</div></div>'
+      +'<div class="opts">'+optsHtml+'</div>'
+      +'<div class="feedback" id="fb-'+i+'"></div>'
+      +'<div class="nav-row">'
+      +(i>0?'<button class="btn btn-ghost" onclick="go('+(i-1)+')">← Back</button>':'')
+      +(i<QS.length-1?'<button class="btn btn-go" id="nb-'+i+'" onclick="go('+(i+1)+')" style="display:none">Next →</button>':'')
+      +(i===QS.length-1?'<button class="btn btn-go" id="nb-'+i+'" onclick="showWin()" style="display:none">See Results 🏆</button>':'')
+      +'</div>';
+    body.appendChild(div);
+  });
+  var win=document.createElement('div');
+  win.className='screen'; win.id='win';
+  win.innerHTML='<div class="win"><span class="win-emoji">🏆</span>'
+    +'<div class="score-ring"><div class="big" id="win-score">0</div><div class="lbl">/ '+QS.length+'</div></div>'
+    +'<div class="summary">'
+    +'<div class="sum-row"><span>Correct answers</span><span id="w-correct">0</span></div>'
+    +'<div class="sum-row"><span>Wrong answers</span><span id="w-wrong">0</span></div>'
+    +'<div class="sum-row"><span>Your score</span><span id="w-pct">0%</span></div>'
+    +'</div>'
+    +'<div id="w-msg" style="font-size:14px;color:var(--mut);margin-bottom:20px;line-height:1.6"></div>'
+    +'<button class="btn btn-go" style="max-width:280px;margin:0 auto;display:block" onclick="restart()">Try Again 🔄</button>'
+    +'</div>';
+  body.appendChild(win);
+}
+
+function go(idx){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('q'+idx).classList.add('active');
+  cur=idx;
+  document.getElementById('pbar').style.width=(idx/QS.length*100)+'%';
+  document.getElementById('ptxt').textContent='Question '+(idx+1)+' of '+QS.length;
+}
+
+function pick(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;
+  var q=QS[qi];
+  var correct=oi===q.ans;
+  if(correct)score++;
+  for(var j=0;j<q.opts.length;j++){
+    var el=document.getElementById('opt-'+qi+'-'+j);
+    el.classList.add('disabled');
+    if(j===q.ans)el.classList.add('correct');
+    else if(j===oi&&!correct)el.classList.add('wrong');
+  }
+  var fb=document.getElementById('fb-'+qi);
+  fb.className='feedback show '+(correct?'correct':'wrong');
+  fb.innerHTML=(correct?'✅ <strong>Correct!</strong> ':'❌ <strong>Not quite.</strong> ')+q.exp;
+  var nb=document.getElementById('nb-'+qi);
+  if(nb)nb.style.display='flex';
+}
+
+function showWin(){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('win').classList.add('active');
+  document.getElementById('win-score').textContent=score;
+  document.getElementById('w-correct').textContent=score;
+  document.getElementById('w-wrong').textContent=QS.length-score;
+  var pct=Math.round(score/QS.length*100);
+  document.getElementById('w-pct').textContent=pct+'%';
+  document.getElementById('pbar').style.width='100%';
+  document.getElementById('ptxt').textContent='Complete!';
+  document.getElementById('w-msg').textContent=pct>=80?'🔥 Excellent! You're ready for the exam.':pct>=60?'💪 Good effort! Review the questions you missed.':'📖 Keep going — read the study card and try again.';
+}
+
+function restart(){
+  cur=0;score=0;answered=Array(QS.length).fill(false);
+  build();
+  document.getElementById('pbar').style.width='0%';
+  document.getElementById('ptxt').textContent='Question 1 of '+QS.length;
+}
+
+build();
+</script>
+</body>
+</html>
