@@ -1162,6 +1162,19 @@
         .eq-val { font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ink); }
         #tab-is.active-tab, #tab-bs.active-tab, #tab-eq.active-tab { background:var(--fa)!important;color:white!important;border-color:var(--fa)!important; }
 
+
+        /* ── IFRAME OVERRIDE — removes dark bg when loaded inside app ── */
+        html { background: white !important; }
+        body { background: white !important; overflow: auto !important; }
+        .phone-frame {
+            width: 100% !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
     </style>
     <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
     <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
