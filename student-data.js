@@ -28,9 +28,16 @@ class AyikhoStudentData {
       userId: localStorage.getItem('ayikho_userId') || this._generateId(),
       profile: {
         name: '',
+        gender: '',
         province: '',
         college: '',
         phone: '',
+        level: '',
+        course: '',
+        subjects: [],
+        fiveYearGoal: '',
+        dream: '',
+        registeredDate: new Date().toISOString().split('T')[0],
         currentMark: 0,
         targetMark: 70,
         createdAt: Date.now()
@@ -157,6 +164,33 @@ class AyikhoStudentData {
     } catch (e) { /* silent fail */ }
   }
 
+  // ── WRITE FLAT PROFILE TO users/ COLLECTION (powers admin dashboard master list) ──
+  async _syncUserProfile() {
+    if (!this.db || !this.firebaseRefs) return;
+    try {
+      const { doc, setDoc, serverTimestamp } = this.firebaseRefs;
+      const p = this.data.profile;
+      await setDoc(doc(this.db, 'users', this.data.userId), {
+        userId:         this.data.userId,
+        name:           p.name           || '',
+        gender:         p.gender         || '',
+        phone:          p.phone          || '',
+        province:       p.province       || '',
+        college:        p.college        || '',
+        level:          p.level          || '',
+        course:         p.course         || '',
+        subjects:       p.subjects       || [],
+        fiveYearGoal:   p.fiveYearGoal   || '',
+        dream:          p.dream          || '',
+        registeredDate: p.registeredDate || new Date().toISOString().split('T')[0],
+        lastSyncedAt:   serverTimestamp()
+      }, { merge: true });
+      console.log('[AyikhoData] users/ profile synced:', this.data.userId);
+    } catch (e) {
+      console.warn('[AyikhoData] users/ sync failed:', e.message);
+    }
+  }
+
   // ══════════════════════════════════
   //  PUBLIC API — PROFILE
   // ══════════════════════════════════
@@ -164,6 +198,8 @@ class AyikhoStudentData {
   setProfile(profile) {
     this.data.profile = { ...this.data.profile, ...profile };
     this._save();
+    // Keep users/ collection in sync whenever profile fields change
+    this._syncUserProfile();
   }
 
   getProfile() {
@@ -173,6 +209,8 @@ class AyikhoStudentData {
   setOnboardingComplete(val) {
     this.data.onboardingComplete = val;
     this._save();
+    // Fire profile to users/ collection the moment onboarding finishes
+    if (val) this._syncUserProfile();
   }
 
   isOnboardingComplete() {
@@ -476,3 +514,4 @@ class AyikhoStudentData {
 // ── GLOBAL INSTANCE ──
 window.ayikhoData = new AyikhoStudentData();
 window.ayikhoData.initDefaults();
+
