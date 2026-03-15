@@ -295,15 +295,20 @@ function filterColleges(){var p=document.getElementById('onb-province').value;va
 function finishOnboarding(){var name=document.getElementById('onb-name').value.trim()||'Student';var gender=document.getElementById('onb-gender').value;var prov=document.getElementById('onb-province').value;var col=document.getElementById('onb-college').value;var level=document.getElementById('onb-level').value;var course=document.getElementById('onb-course').value;var subjects=[];['onb-subj1','onb-subj2','onb-subj3','onb-subj4'].forEach(function(id){var v=document.getElementById(id).value;if(v)subjects.push(v)});var fiveYear=document.getElementById('onb-5year').value.trim();var dream=document.getElementById('onb-dream').value.trim();var nom=(document.getElementById('onb-nom')||{}).value||'';nom=nom.trim();var emailInput=(document.getElementById('onb-email')||{}).value||'';var realEmail=emailInput.trim().toLowerCase();var phone='';try{phone=localStorage.getItem('ayikho_phone')||''}catch(e){}if(window.ayikhoData){window.ayikhoData.setProfile({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone,email:realEmail,nom:nom});window.ayikhoData.setOnboardingComplete(true);if(realEmail&&window.updateUserEmail)window.updateUserEmail(realEmail);}try{localStorage.setItem('ayikho_profile',JSON.stringify({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream}))}catch(e){}onbDone=true;sessionStorage.setItem('ayikho_user_auth','1');if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackRegistration({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone});document.getElementById('onb-overlay').classList.add('gone');setTimeout(function(){document.getElementById('onb-overlay').style.display='none';showMoodCheck()},600)}
 /* Mood */
 function showMoodCheck(){
-  // Only show once per day — if already seen today, go straight home
-  var seenKey='ayikho_mood_seen_'+new Date().toDateString();
-  try{ if(localStorage.getItem(seenKey)){
+  var today=new Date().toDateString();
+  var seenKey='ayikho_mood_seen_'+today;
+  var answeredKey='ayikho_mood_'+today;
+  var seen=false;
+  try{seen=!!(localStorage.getItem(seenKey)||localStorage.getItem(answeredKey));}catch(e){}
+  if(seen){
     document.getElementById('home-view').classList.remove('hidden');
     document.getElementById('hero-name').innerHTML=getGreeting()+'<br>'+getUserName();
-    updateProfile(); return;
+    if(window.updateProfile)updateProfile();
+    var m=null; try{m=localStorage.getItem(answeredKey)}catch(e){}
+    if(m)document.getElementById('sc-mood').textContent={good:'😊',okay:'😐',struggling:'😔'}[m]||'😊';
+    return;
   }
-  localStorage.setItem(seenKey,'1');
-  }catch(e){}
+  try{localStorage.setItem(seenKey,'1');}catch(e){}
   document.getElementById('mood-overlay').classList.add('active');
 }
 function updateProfile(){var n=getUserName();try{var prof=JSON.parse(localStorage.getItem('ayikho_profile')||'{}');document.getElementById('pf-name').textContent=prof.name||n;document.getElementById('pf-college').textContent=(prof.college||'TVET College')+(prof.province?' · '+prof.province:'')}catch(e){}}
@@ -400,24 +405,36 @@ if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
 var hasData=!!window.ayikhoData;var done=hasData?window.ayikhoData.isOnboardingComplete():false;
 if(!done){try{done=!!localStorage.getItem('ayikho_profile')}catch(e){}}
 if(done){
-  // Check if user already authenticated this session — skip login screen
-  if(sessionStorage.getItem('ayikho_user_auth')==='1'){
-    onbDone=true;
-    document.getElementById('onb-overlay').style.display='none';
-    var todayKey='ayikho_mood_'+new Date().toDateString();
-    var logged=false; try{logged=!!localStorage.getItem(todayKey)}catch(e){}
-    if(logged){
-      document.getElementById('home-view').classList.remove('hidden');
-      document.getElementById('hero-name').innerHTML=getGreeting()+'<br>'+getUserName();
-      updateProfile();
-      var m=localStorage.getItem(todayKey);
-      document.getElementById('sc-mood').textContent={good:'😊',okay:'😐',struggling:'😔'}[m]||'😊';
-    } else {
-      showMoodCheck();
+  // Use Firebase Auth persistent state — survives refresh and mobile reload
+  (async function(){
+    try{
+      var{initializeApp,getApps}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js');
+      var{getAuth,onAuthStateChanged}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js');
+      var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG||{});
+      var auth=getAuth(app);
+      onAuthStateChanged(auth, function(user){
+        if(user){
+          // User is still logged in — go straight home
+          sessionStorage.setItem('ayikho_user_auth','1');
+          onbDone=true;
+          document.getElementById('onb-overlay').style.display='none';
+          showMoodCheck();
+        } else {
+          // No Firebase session — show login screen
+          onbNext('login');
+        }
+      });
+    }catch(e){
+      // Firebase unavailable — fall back to sessionStorage
+      if(sessionStorage.getItem('ayikho_user_auth')==='1'){
+        onbDone=true;
+        document.getElementById('onb-overlay').style.display='none';
+        showMoodCheck();
+      } else {
+        onbNext('login');
+      }
     }
-  } else {
-    onbNext('login');
-  }
+  })();
 }
 /* no data layer = first time user, onboarding shows by default */
 
