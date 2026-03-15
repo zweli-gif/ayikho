@@ -111,6 +111,12 @@
             transform: translateX(375px);
             transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
+            overflow: hidden;
+        }
+        .screen:not(.active) .landoh-video-wrap,
+        .screen:not(.active) video {
+            display: none !important;
+            visibility: hidden !important;
         }
 
         .screen.active {
@@ -2161,6 +2167,8 @@
         }
 
         function goToScreen(index) {
+            // Pause video when leaving screen 1
+            try { var mv=document.getElementById('moduleVideo'); if(mv&&!mv.paused)mv.pause(); } catch(e){}
             currentScreen = Math.max(0, Math.min(index, totalScreens - 1));
             notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: totalScreens });
             if (currentScreen === 10) notifyParent('moduleComplete', { moduleId: MODULE_ID });
