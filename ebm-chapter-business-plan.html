@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 62.5%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,273 +530,98 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Writing a Business Plan',
-                subtitle: 'Module 5 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Your Roadmap to Success</h2>
+        {
+            id: 'intro',
+            title: 'Writing a Business Plan',
+            subtitle: 'Module 5 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Your Business Plan Blueprint',
+            subtitle: 'Module 5 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>A business plan is your roadmap. It convinces funders, guides decisions, and forces you to think through every detail. If you can't write it down, you haven't thought it through.</p></div>
+<h3>Why Write a Business Plan?</h3>
+<p>Three reasons:</p>
+<p><strong>1. For yourself:</strong> It forces you to think through every aspect — market, money, operations, risks. Weaknesses show up on paper before they show up in your bank balance.</p>
+<p><strong>2. For funders:</strong> No bank, investor, or grant body will give you money without a business plan. It\'s your ticket to funding.</p>
+<p><strong>3. For direction:</strong> When things get chaotic (and they will), the plan keeps you on track. It\'s your compass.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>A business plan is a written document describing your business idea, market, finances, and operations. It's required for bank loans, investor funding, and NYDA grants.</p>
-                    </div>
+<h3>Sections of a Business Plan</h3>
+<p><strong>1. Cover page:</strong> Business name, owner, contact details, date.</p>
+<p><strong>2. Executive summary:</strong> One-page overview of the entire plan. Write it last even though it comes first.</p>
+<p><strong>3. Business description:</strong> What you sell, who you sell to, what problem you solve.</p>
+<p><strong>4. Market analysis:</strong> Target market, demand, competition, pricing (from your feasibility study).</p>
+<p><strong>5. Marketing plan:</strong> How you\'ll attract and keep customers (the 4 P\'s).</p>
+<p><strong>6. Operations plan:</strong> Where you\'ll operate, equipment needed, suppliers, daily workflow.</p>
+<p><strong>7. Financial plan:</strong> Start-up costs, cash flow projection, break-even analysis, projected income statement.</p>
+<p><strong>8. SWOT analysis:</strong> Strengths, Weaknesses, Opportunities, Threats.</p>
 
-                    <h3>Why You Need a Business Plan</h3>
-                    <p>A business plan proves to banks and investors that you've thought through your business. It shows:</p>
-                    <p>• You understand your market</p>
-                    <p>• Your finances make sense</p>
-                    <p>• You have a realistic timeline</p>
-                    <p>• You can manage operations</p>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam either asks you to identify sections of a business plan, or gives you a scenario and asks you to write specific sections. The executive summary and SWOT analysis are exam favourites. Practice writing a mini business plan for a familiar business — a car wash, food stall, or tutoring service.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'The Marketing Mix (4 P's)',
+            subtitle: 'Module 5 of 8',
+            type: 'lesson',
+            content: `
+<h3>Product</h3>
+<p>What are you selling? Features, quality, packaging, branding. What makes yours different from competitors?</p>
 
-                    <h3>The 8 Sections of a Business Plan</h3>
+<h3>Price</h3>
+<p>How much do you charge? Cost-plus pricing (add a markup to your costs), competitive pricing (match or undercut competitors), value pricing (charge based on perceived value).</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">1. Executive Summary</h3>
-                        <p style="margin: 0;">One-page overview. "I'm starting a township laundromat. Investment needed: R50,000. Expected profit: R8,000/month by month 8."</p>
-                    </div>
+<h3>Place</h3>
+<p>Where do you sell? Physical location, online, both? Is it convenient for your target market?</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">2. Company Description</h3>
-                        <p style="margin: 0;">What's your business? "Self-service laundromat with 10 washing machines, dryers, and vending snacks." Location, size, ownership structure.</p>
-                    </div>
+<h3>Promotion</h3>
+<p>How do people find out about you? Social media (free!), flyers, word-of-mouth, WhatsApp broadcasts, community events, radio ads.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">3. Market Analysis</h3>
-                        <p style="margin: 0;">Who buys? "Township residents aged 18-60. Average household spends R200/month on laundry. Market size: 10,000 households = R2M/month."</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">4. Organization & Management</h3>
-                        <p style="margin: 0;">Who runs it? Your qualifications, any employees, roles and responsibilities.</p>
-                    </div>
-
-                    <h3>Real Example: NYDA-Funded Laundromat</h3>
-                    <div class="example-box">
-                        <div class="example-title">Business Plan That Got R50,000 Grant</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>5. Marketing Plan:</strong> Advertise on WhatsApp, community posters, word-of-mouth. Target: 200 customers by month 3. Price: R50/wash.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>6. Financial Projections:</strong> Start-up R50,000 (machines R35k, setup R15k). Revenue: R10,000/month. Break-even: month 6.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>7. Funding Request:</strong> Requesting R50,000 from NYDA. Will invest personal R10,000.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Result:</strong> NYDA approved. Started month 5. Now earning R12,000/month profit.</div>
-                        </div>
-                    </div>
-
-                    <h3>The 8th Section: Operations Plan</h3>
-                    <p><strong>How will you run it daily?</strong> Opening hours 6am-10pm. One attendant per shift. Supply chain: Detergent from wholesaler weekly. Maintenance: Machines serviced monthly. Payment method: Coins and cards.</p>
-
-                    <div class="callout real-life">
-                        <h4>Mission & Vision</h4>
-                        <p><strong>Mission:</strong> What you do. "Provide affordable laundry services to township families."<br><strong>Vision:</strong> Where you want to be. "Operate 5 laundromats across Johannesburg by 2027."</p>
-                    </div>
-                `
-            },
-            {
-                id: 'planning',
-                title: 'Business Planning Tips',
-                subtitle: 'Module 5 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>How to Write Yours</h2>
-
-                    <h3>Key Principles</h3>
-                    <p><strong>1. Be realistic:</strong> Don't project R1M revenue in month 1. Use historical data and market research.</p>
-                    <p><strong>2. Be specific:</strong> Instead of "earn lots of money," write "target R8,000/month revenue by month 6."</p>
-                    <p><strong>3. Show research:</strong> Reference your market survey of 50 customers, competitor pricing, etc.</p>
-                    <p><strong>4. Acknowledge risks:</strong> "Main risk: competitor opens nearby. Mitigation: build brand loyalty early."</p>
-
-                    <h3>Business Plan Length</h3>
-                    <p>For small TVET businesses: 8-15 pages is enough.</p>
-                    <p>• Executive summary: 1 page</p>
-                    <p>• Company description: 1-2 pages</p>
-                    <p>• Market analysis: 2-3 pages</p>
-                    <p>• Marketing & operations: 2 pages each</p>
-                    <p>• Financial projections: 2-3 pages with tables</p>
-
-                    <h3>Common Mistakes to Avoid</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Too Vague</h3>
-                        <p style="margin: 0;"><strong>Bad:</strong> "We'll sell things and make money."<br><strong>Good:</strong> "Sell meal prep lunches for R35. Target 50 customers daily. Revenue: R1,750/day."</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">No Market Research</h3>
-                        <p style="margin: 0;">Don't guess. Survey 50 people. Cite numbers. "We surveyed 50 students; 38 said they'd buy our lunch."</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Unrealistic Projections</h3>
-                        <p style="margin: 0;">Month 1 profit of R100,000 is suspicious. Build gradually. Be conservative with estimates.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>Exam Tip</h4>
-                        <p>You might be asked: "Arrange these business plan sections in order: Marketing, Operations, Executive Summary, Finance." Answer: Executive Summary (first), then Market, Marketing, Operations, Finance (detailed plan last).</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the primary purpose of a business plan?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) To prove to banks and investors that you've thought through your business</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) To make your business sound complicated</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) To guarantee you'll make R1 million</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) It's not necessary; just start and learn</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which section of a business plan comes first?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) Executive Summary—a one-page overview of the entire plan</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Financial Projections</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Marketing Plan</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) The ending section</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What should the "Market Analysis" section include?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) Who your customers are, their needs, market size, and competitor analysis</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Only your competitor's weaknesses</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Your personal opinion without data</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Nothing—skip this section</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What's an example of a realistic financial projection?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) Month 1 break-even, Month 6 profit R5,000/month, based on conservative customer estimates</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) Month 1 profit of R100,000 with no supporting data</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) Revenue will be "lots" with no specific numbers</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Just guess—nobody reads the numbers anyway</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Why should you acknowledge risks in your business plan?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">A) To show you've thought through challenges and have mitigation strategies</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">B) To convince investors your business will definitely fail</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) Risks don't matter; never mention them</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) To make the plan longer</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout sa">
+<h4>🇿🇦 Bongiwe\'s Food Stall — 4 P\'s</h4>
+<p><strong>Product:</strong> Pap, chicken, rice combos. Home-style cooking. R30 per plate.</p>
+<p><strong>Price:</strong> R30 (cheaper than R40-50 competitors, but still profitable at R12 cost per plate).</p>
+<p><strong>Place:</strong> Just outside Motheo TVET College main gate. High foot traffic at lunch.</p>
+<p><strong>Promotion:</strong> WhatsApp status updates with daily specials, R5 discount for students who bring a friend, free delivery for orders of 5+ plates to nearby offices.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What is the executive summary of a business plan?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>A list of all employees</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>A one-page overview of the entire business plan</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>The financial statements</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>The marketing strategy</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> The executive summary is a concise one-page overview of the entire business plan — including the business concept, market, financial projections, and funding needs. It's written last but placed first.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which of the 4 P's refers to WHERE a business sells its products?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Product</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">B</span>Price</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">C</span>Place</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Promotion</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> Place (or distribution) refers to where and how customers access your product — physical location, online store, delivery, wholesale, etc. It should be convenient for your target market.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">In a SWOT analysis, an example of an 'Opportunity' for a new food stall near a TVET college is:</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>The owner has no cooking experience</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>A new competitor opening next door</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>The college enrolling 500 more students next semester</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Rent increasing by 20%</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> An opportunity is an external factor that could benefit the business. 500 more students = more potential customers. No experience (weakness), new competitor (threat), and rent increase (threat) are not opportunities.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Writing a Business Plan!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 5 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
