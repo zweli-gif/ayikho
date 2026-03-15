@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 12.5%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,277 +530,87 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Creativity & Idea Generation',
-                subtitle: 'Module 2 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Where Do Business Ideas Come From?</h2>
+        {
+            id: 'intro',
+            title: 'Creativity & Idea Generation',
+            subtitle: 'Module 2 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Finding Business Ideas',
+            subtitle: 'Module 2 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>Every successful business started with someone saying 'Why doesn't this exist?' or 'This could be done better.' Your next business idea is hiding in the problems you see every day.</p></div>
+<h3>Where Ideas Come From</h3>
+<p>Business ideas don\'t fall from the sky. They come from:</p>
+<p><strong>Problems:</strong> What frustrates you? Long queues, bad service, overpriced products — every frustration is a business waiting to be built.</p>
+<p><strong>Gaps:</strong> What\'s missing in your community? No affordable tutoring? No late-night food delivery? No reliable WiFi?</p>
+<p><strong>Trends:</strong> What\'s growing? Mobile money, online learning, sustainable products, vegan food — ride the wave.</p>
+<p><strong>Skills:</strong> What are you good at? Can you braid hair, fix phones, code, cook, design? Turn your skill into a service.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Creativity is the ability to think of new ideas and solutions. Entrepreneurs use brainstorming, mind mapping, and SCAMPER to generate business ideas that solve real problems.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 SA ideas that worked</h4>
+<p>• <strong>Yoco:</strong> Saw that small SA businesses couldn\'t accept card payments. Built a small card reader that plugs into a phone. Now worth billions.<br>• <strong>Sweepsouth:</strong> Saw that finding reliable cleaning services was stressful. Built an app to connect cleaners with clients. Problem solved, company built.<br>• <strong>Ayikho:</strong> Saw that TVET students had no affordable study app. You\'re using the result right now.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Brainstorming & SCAMPER',
+            subtitle: 'Module 2 of 8',
+            type: 'lesson',
+            content: `
+<h3>Brainstorming</h3>
+<p>Rules of brainstorming: quantity over quality, no judging during the session, build on others\' ideas, write everything down. Sort and evaluate AFTER the brainstorm, not during.</p>
 
-                    <h3>Innovation vs Invention</h3>
-                    <p><strong>Invention:</strong> Creating something completely new that never existed before. Example: Alexander Graham Bell inventing the telephone.</p>
+<h3>SCAMPER Method</h3>
+<p>A framework for generating ideas by modifying what already exists:</p>
+<p><strong>S — Substitute:</strong> What can you replace? Substitute plastic bags with reusable cloth bags.</p>
+<p><strong>C — Combine:</strong> What can you merge? A café + a laundromat = wash your clothes while you sip coffee.</p>
+<p><strong>A — Adapt:</strong> What can you borrow from another industry? Uber adapted the taxi model with technology.</p>
+<p><strong>M — Modify:</strong> Can you make it bigger, smaller, faster? Yoco modified a huge POS terminal into a pocket-sized device.</p>
+<p><strong>P — Put to another use:</strong> Can existing products serve new customers? Shipping containers → pop-up shops in townships.</p>
+<p><strong>E — Eliminate:</strong> What can you remove to simplify? Capitec eliminated complex banking fees — one simple structure.</p>
+<p><strong>R — Reverse:</strong> What if you did the opposite? Instead of customers going to the shop — the shop goes to customers (mobile vendors).</p>
 
-                    <p><strong>Innovation:</strong> Improving an existing product or service in a new way. Example: Moving from landline phones to smartphones. The phone wasn't invented again—it was innovated.</p>
-
-                    <p>Most entrepreneurs use innovation. They see what exists and make it better, cheaper, or faster.</p>
-
-                    <h3>Brainstorming Techniques</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">1. Brainstorming</h3>
-                        <p style="margin: 0;">Write down every idea without judgment. Wild ideas are welcome. Example: "How can we solve student food insecurity at TVET colleges?" Ideas: food stall, mobile app for discounts, meal prep partnerships.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">2. Mind Mapping</h3>
-                        <p style="margin: 0;">Start with a central problem and branch out. Draw circles connected by lines. Each branch represents a different solution. Visual and creative.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">3. SCAMPER</h3>
-                        <p style="margin: 0;"><strong>S</strong>ubstitute, <strong>C</strong>ombine, <strong>A</strong>dapt, <strong>M</strong>odify, <strong>P</strong>ut to another use, <strong>E</strong>liminate, <strong>R</strong>everse. Ask: What if we substitute paper with digital? Combine two products?</p>
-                    </div>
-
-                    <h3>From Idea to Problem-Solving</h3>
-                    <p>The best business ideas solve real problems. Ask yourself:</p>
-                    <p>• What frustrates me or my friends daily?</p>
-                    <p>• What takes too much time?</p>
-                    <p>• What is too expensive?</p>
-                    <p>• What doesn't exist but should?</p>
-
-                    <h3>Real Example: Solar Power Solution</h3>
-                    <div class="example-box">
-                        <div class="example-title">TVET Student Solves Load Shedding</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Problem:</strong> Ekurhuleni residents lose power 8 hours daily. Phone batteries die. Darkness at night.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Innovation:</strong> A TVET student built a solar charging station using recycled materials and small solar panels.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Solution:</strong> Students and residents charge phones for R5 each. The student earned R150/day. Zero electricity cost.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Growth:</strong> Now operates 3 stations in the township. Revenue: R2,700/month. Pure profit after initial R3,000 investment.</div>
-                        </div>
-                    </div>
-
-                    <div class="callout real-life">
-                        <h4>How to Start Generating Ideas</h4>
-                        <p>Pick a problem you see around you—at your college, in your township, in your family. Use brainstorming or mind mapping. Ask friends. Build a prototype. Test it. That's how the solar charging idea started.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'prototype',
-                title: 'Prototyping & Testing',
-                subtitle: 'Module 2 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>From Idea to Reality</h2>
-
-                    <h3>What is a Prototype?</h3>
-                    <p>A prototype is the first working version of your idea. It doesn't need to be perfect. It's a test model to see if your idea works and if people want it.</p>
-
-                    <p><strong>Examples:</strong></p>
-                    <p>• A food vendor makes 10 pizzas to test flavours before opening a shop.</p>
-                    <p>• A phone app developer builds a basic version (MVP) to get feedback.</p>
-                    <p>• A clothing designer sews one dress to test fit before manufacturing 100.</p>
-
-                    <h3>Why Prototyping Matters</h3>
-                    <p><strong>1. Early feedback:</strong> Show your prototype to potential customers. What do they think? Would they buy it?</p>
-                    <p><strong>2. Find problems:</strong> Discover flaws before spending big money. "This chair is uncomfortable" is feedback worth millions.</p>
-                    <p><strong>3. Reduce risk:</strong> Testing costs R5,000. Manufacturing wrong costs R500,000.</p>
-                    <p><strong>4. Iterate:</strong> Make version 2, then 3, based on feedback. Each version is better.</p>
-
-                    <h3>The Creativity Process</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Problem Identification</h3>
-                        <p style="margin: 0;">Spot a gap or frustration. "Students can't afford lunch."</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Idea Generation</h3>
-                        <p style="margin: 0;">Brainstorm solutions. Use SCAMPER. Get wild. "What if we sold food at cost?"</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Prototype</h3>
-                        <p style="margin: 0;">Build the first version with minimal resources. Sell 5 meals and get feedback.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Test & Iterate</h3>
-                        <p style="margin: 0;">Ask: Does it work? Do people want it? Make it better. Repeat.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>Key Concept: Fail Fast</h4>
-                        <p>The best entrepreneurs fail often but cheaply. Better to test an idea for R1,000 and learn it won't work than invest R100,000 and fail spectacularly.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the main difference between innovation and invention?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Invention creates something completely new; innovation improves something existing</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Innovation is more difficult than invention</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) They are exactly the same thing</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Invention only happens in big companies</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which of the following is a brainstorming principle?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) Write down every idea without judgment, even wild ones</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Only suggest ideas that are already proven to work</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Criticize ideas immediately if they seem bad</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Work alone; other people's ideas confuse the process</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is SCAMPER used for?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) A technique to generate new ideas by modifying existing products</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) A method to avoid thinking creatively</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) A way to calculate profit margins</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) A tool to manage employees</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a prototype?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) The first working version of an idea, used to test and get feedback</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) The final, perfect version ready for sale</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) A detailed mathematical equation</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Something only big corporations can make</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Why is prototyping important for entrepreneurs?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">A) To impress investors before doing any real work</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">B) To test ideas cheaply, find problems early, and get customer feedback</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) To copy what competitors are doing</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) Prototyping is not important; just launch the product</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam asks you to apply SCAMPER to a given scenario. Example: "Use the SCAMPER method to improve a local tuck shop." Practice applying each letter — one idea per letter, 7 ideas total.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does the 'S' in SCAMPER stand for?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Simplify</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>Substitute</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Sell</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>Structure</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> S stands for Substitute — asking 'What can I replace?' to generate new ideas. For example, substituting plastic packaging with biodegradable materials.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which of the following is the BEST source of business ideas?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Copying exactly what a successful business does</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>Identifying problems people face in your community</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>Waiting for inspiration to strike</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Reading business textbooks</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> The best business ideas come from real problems real people face. If you can solve a problem better, faster, or cheaper than the current solution, you have a business opportunity.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What is the key rule during a brainstorming session?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Only allow realistic ideas</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>Judge each idea immediately</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>Generate as many ideas as possible without judging</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Only the leader shares ideas</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> During brainstorming, the goal is quantity — generate as many ideas as possible without judgment. Evaluation happens AFTER the session, not during. Bad ideas often lead to great ones.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Creativity & Idea Generation!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 2 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
