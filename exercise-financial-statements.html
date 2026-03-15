@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · Build the Big Three Financial Statements</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --fa:#0284C7;--fad:#075985;--faxs:#F0F9FF;--fasm:#E0F2FE;
+  --p:#7C3AED;--gold:#F59E0B;--green:#22C55E;--greenxs:#F0FDF4;
+  --rose:#F43F5E;--ink:#1A0A3A;--mut:#6B5A8A;--bord:#DDD5F5;--surf:#F7F4FF;
+}
+body{font-family:Outfit,sans-serif;background:#F0F4FF;min-height:100vh;padding:16px}
+.wrap{max-width:520px;margin:0 auto}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--fa),var(--fad));border-radius:20px;padding:24px 20px;color:white;margin-bottom:16px}
+.hdr-eye{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.hdr h1{font-size:24px;font-weight:900;margin-bottom:4px}
+.hdr p{font-size:12px;opacity:.85;line-height:1.5}
+
+/* SCENARIO */
+.scenario{background:white;border-radius:16px;padding:18px;margin-bottom:14px;border-left:4px solid var(--fa);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.sc-label{font-size:9px;font-weight:800;color:var(--fa);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.sc-title{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.sc-sub{font-size:12px;color:var(--mut)}
+
+/* TRIAL BALANCE */
+.tb-wrap{background:white;border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.tb-head{background:var(--ink);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.tb-head-lbl{color:white;font-size:11px;font-weight:800;font-family:"JetBrains Mono",monospace;letter-spacing:.08em}
+.tb-head-amts{display:flex;gap:20px}
+.tb-head-amts span{color:rgba(255,255,255,.6);font-size:10px;font-weight:700;font-family:"JetBrains Mono",monospace;width:72px;text-align:right}
+.tb-row{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-bottom:1px solid var(--bord);cursor:pointer;transition:all .15s}
+.tb-row:last-of-type{border-bottom:none}
+.tb-row:hover{background:var(--faxs)}
+.tb-row.placed{opacity:.35;cursor:default;pointer-events:none}
+.tb-row.selected{background:var(--fasm);border-left:3px solid var(--fa)}
+.tb-acc{font-size:12px;font-weight:600;color:var(--ink)}
+.tb-amts{display:flex;gap:20px}
+.tb-amt{font-size:11px;font-family:"JetBrains Mono",monospace;color:var(--fad);width:72px;text-align:right}
+.tb-total{background:var(--surf);padding:10px 16px;display:flex;justify-content:space-between;border-top:2px solid var(--ink)}
+.tb-total-lbl{font-size:11px;font-weight:800;color:var(--ink);font-family:"JetBrains Mono",monospace}
+.tb-total-amts{display:flex;gap:20px}
+.tb-total-amts span{font-size:11px;font-weight:800;color:var(--fa);width:72px;text-align:right;font-family:"JetBrains Mono",monospace}
+
+/* HINT */
+.hint{background:var(--faxs);border:1px solid var(--fasm);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--fad);line-height:1.6}
+.hint strong{color:var(--fa)}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{flex:1;background:white;border:2px solid var(--bord);border-radius:12px;padding:10px 6px;font-family:Outfit,sans-serif;font-size:11px;font-weight:800;color:var(--mut);cursor:pointer;text-align:center;transition:all .2s}
+.tab.active{border-color:var(--fa);background:var(--fa);color:white}
+.tab .tick{display:none;margin-left:4px}
+.tab.done .tick{display:inline}
+
+/* STATEMENT PANELS */
+.panel{display:none}
+.panel.active{display:block}
+.stmt{background:white;border-radius:16px;overflow:hidden;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stmt-title{background:var(--ink);color:white;padding:12px 16px;text-align:center}
+.stmt-title-main{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.stmt-title-sub{font-size:10px;opacity:.6;margin-top:2px;font-family:"JetBrains Mono",monospace}
+.stmt-sec{border-bottom:1px solid var(--bord)}
+.stmt-sec:last-child{border-bottom:none}
+.stmt-sec-hdr{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;color:white}
+.hdr-is{background:var(--fa)}
+.hdr-cos{background:#0369A1}
+.hdr-exp{background:#075985}
+.hdr-nca{background:#0369A1}
+.hdr-ca{background:#059669}
+.hdr-eq{background:var(--p)}
+.hdr-ncl{background:#DC2626}
+.hdr-cl{background:#EA580C}
+.hdr-esc{background:var(--p)}
+.drop{min-height:52px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;background:var(--surf);transition:background .15s}
+.drop.hover{background:var(--faxs);outline:2px dashed var(--fa)}
+.drop-hint{width:100%;font-size:10px;color:var(--mut);font-style:italic;text-align:center;padding:8px 0}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--fasm);border:1px solid var(--fasm);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--fad);cursor:pointer}
+.tag:hover{background:rgba(244,63,94,.12);border-color:var(--rose);color:var(--rose)}
+.calc-row{display:flex;justify-content:space-between;padding:9px 14px;font-size:12px;font-family:"JetBrains Mono",monospace}
+.calc-row.gp{background:var(--faxs);border-top:1px solid var(--fasm)}
+.calc-row.np{background:var(--ink);border-radius:0 0 12px 12px}
+.calc-row.np span:first-child{color:white;font-weight:700}
+.calc-row.np span:last-child{color:var(--gold);font-weight:900;font-size:14px}
+.calc-row.ta{background:var(--faxs)}
+.calc-row.tel{background:var(--ink);border-radius:0 0 12px 12px}
+.calc-row.tel span:first-child{color:white;font-weight:700}
+.calc-row.tel span:last-child{color:var(--gold);font-weight:900;font-size:14px}
+.eq-row{display:flex;justify-content:space-between;padding:9px 14px;font-size:12px}
+.eq-divider{height:2px;background:var(--ink);margin:4px 14px}
+.eq-closing{display:flex;justify-content:space-between;padding:10px 14px;font-size:14px;font-weight:800;background:var(--surf)}
+
+/* CHECK BTN */
+.check-btn{width:100%;background:var(--p);color:white;border:none;border-radius:14px;padding:16px;font-family:Outfit,sans-serif;font-weight:800;font-size:15px;cursor:pointer;margin-bottom:12px;transition:all .2s}
+.check-btn:hover{background:#6D28D9;transform:translateY(-1px)}
+.result{border-radius:14px;padding:14px 16px;font-size:13px;line-height:1.7;min-height:20px;margin-bottom:16px}
+.result.ok{background:var(--greenxs);border:1.5px solid var(--green);color:#15803D}
+.result.warn{background:#FFFBEB;border:1.5px solid var(--gold);color:#92400E}
+.result.err{background:rgba(244,63,94,.07);border:1.5px solid var(--rose);color:#be123c}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="hdr-eye">Financial Accounting N4 · Interactive Exercise</div>
+  <h1>Build the Big Three</h1>
+  <p>From a trial balance, create all three financial statements: Income Statement, Balance Sheet, and Statement of Changes in Equity.</p>
+</div>
+
+<div class="scenario">
+  <div class="sc-label">The Scenario</div>
+  <div class="sc-title">Zandile's Fashion Boutique</div>
+  <div class="sc-sub">Trial Balance as at 28 February 2025 · All amounts in Rands</div>
+</div>
+
+<!-- TRIAL BALANCE -->
+<div class="tb-wrap">
+  <div class="tb-head">
+    <span class="tb-head-lbl">Account</span>
+    <div class="tb-head-amts">
+      <span>Debit</span>
+      <span>Credit</span>
+    </div>
+  </div>
+  <div id="tb-body"></div>
+  <div class="tb-total">
+    <span class="tb-total-lbl">TOTALS</span>
+    <div class="tb-total-amts">
+      <span>R 748 500</span>
+      <span>R 748 500</span>
+    </div>
+  </div>
+</div>
+
+<div class="hint">
+  <strong>How to use this exercise:</strong> Tap any account in the trial balance to select it (it highlights blue). Then tap the correct section in a statement below to place it. Tap a placed account to remove it. When done, tap <strong>Check my answers</strong>.
+</div>
+
+<!-- STATEMENT TABS -->
+<div class="tabs">
+  <button class="tab active" id="tab-is" onclick="switchTab('is')">Income Stmt <span class="tick">✓</span></button>
+  <button class="tab" id="tab-bs" onclick="switchTab('bs')">Balance Sheet <span class="tick">✓</span></button>
+  <button class="tab" id="tab-eq" onclick="switchTab('eq')">Equity Stmt <span class="tick">✓</span></button>
+</div>
+
+<!-- ── INCOME STATEMENT ── -->
+<div class="panel active" id="panel-is">
+  <div class="stmt">
+    <div class="stmt-title">
+      <div class="stmt-title-main">Income Statement</div>
+      <div class="stmt-title-sub">Year ended 28 February 2025</div>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-is">Revenue</div>
+      <div class="drop" id="drop-is-revenue" data-stmt="is" data-sec="revenue"><div class="drop-hint">Tap TB accounts then tap here</div></div>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-cos">Cost of Sales</div>
+      <div class="drop" id="drop-is-cos" data-stmt="is" data-sec="cos"><div class="drop-hint">Tap TB accounts then tap here</div></div>
+      <div class="calc-row gp" id="gp-row" style="display:none">
+        <span style="font-weight:700;color:var(--fa)">Gross Profit</span>
+        <span id="gp-val" style="font-weight:800;color:var(--fa)">R 0</span>
+      </div>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-exp">Operating Expenses</div>
+      <div class="drop" id="drop-is-exp" data-stmt="is" data-sec="expenses"><div class="drop-hint">Tap TB accounts then tap here</div></div>
+    </div>
+    <div class="calc-row np">
+      <span>Net Profit / (Loss)</span>
+      <span id="np-val">R 0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BALANCE SHEET ── -->
+<div class="panel" id="panel-bs">
+  <div class="stmt">
+    <div class="stmt-title">
+      <div class="stmt-title-main">Balance Sheet</div>
+      <div class="stmt-title-sub">As at 28 February 2025</div>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-nca">Non-Current Assets</div>
+      <div class="drop" id="drop-bs-nca" data-stmt="bs" data-sec="nca"><div class="drop-hint">Land, buildings, vehicles, equipment</div></div>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-ca">Current Assets</div>
+      <div class="drop" id="drop-bs-ca" data-stmt="bs" data-sec="ca"><div class="drop-hint">Inventory, debtors, bank, cash</div></div>
+    </div>
+    <div class="calc-row ta" id="ta-row">
+      <span style="font-weight:700;color:var(--fad)">Total Assets</span>
+      <span id="ta-val" style="font-weight:800;color:var(--fa)">R 0</span>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-eq">Owner's Equity</div>
+      <div class="drop" id="drop-bs-eq" data-stmt="bs" data-sec="equity"><div class="drop-hint">Capital account</div></div>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-ncl">Non-Current Liabilities</div>
+      <div class="drop" id="drop-bs-ncl" data-stmt="bs" data-sec="ncl"><div class="drop-hint">Long-term loans, mortgage</div></div>
+    </div>
+    <div class="stmt-sec">
+      <div class="stmt-sec-hdr hdr-cl">Current Liabilities</div>
+      <div class="drop" id="drop-bs-cl" data-stmt="bs" data-sec="cl"><div class="drop-hint">Creditors, bank overdraft</div></div>
+    </div>
+    <div class="calc-row tel">
+      <span>Total Equity + Liabilities</span>
+      <span id="tel-val">R 0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── EQUITY STATEMENT ── -->
+<div class="panel" id="panel-eq">
+  <div class="stmt">
+    <div class="stmt-title">
+      <div class="stmt-title-main">Statement of Changes in Equity</div>
+      <div class="stmt-title-sub">Year ended 28 February 2025</div>
+    </div>
+    <div style="padding:14px">
+      <div style="background:var(--surf);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:var(--mut);line-height:1.7">
+        <strong style="color:var(--p)">Formula:</strong> Opening Capital + Net Profit − Drawings = Closing Capital
+      </div>
+      <div class="eq-row">
+        <span style="color:var(--mut);font-weight:600">Opening Capital (1 March 2024)</span>
+        <span style="font-weight:700;font-family:JetBrains Mono,monospace" id="eq-open">R 0</span>
+      </div>
+      <div class="eq-row" style="color:var(--green)">
+        <span style="font-weight:600">Add: Net Profit for the year</span>
+        <span style="font-weight:700;font-family:JetBrains Mono,monospace" id="eq-np">R 0</span>
+      </div>
+      <div class="eq-row" style="color:var(--rose)">
+        <span style="font-weight:600">Less: Drawings</span>
+        <span style="font-weight:700;font-family:JetBrains Mono,monospace" id="eq-draw">(R 0)</span>
+      </div>
+      <div class="eq-divider"></div>
+      <div class="eq-closing">
+        <span style="color:var(--ink);font-weight:800">Closing Capital (28 Feb 2025)</span>
+        <span style="color:var(--p);font-family:JetBrains Mono,monospace;font-size:15px" id="eq-close">R 0</span>
+      </div>
+      <div id="eq-note" style="display:none;margin-top:12px;background:var(--greenxs);border-radius:10px;padding:10px 12px;font-size:11px;color:#15803D;line-height:1.6">
+        ✅ Auto-calculated from your Income Statement and Trial Balance. The equity statement is the link between all three statements.
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="check-btn" onclick="checkAnswers()">Check my answers ✓</button>
+<div class="result" id="result"></div>
+
+</div>
+<script>
+var TB = [
+  {n:"Capital (Zandile)",    dr:0,      cr:320000, stmt:null, sec:null, type:"equity"},
+  {n:"Drawings",             dr:55000,  cr:0,      stmt:null, sec:null, type:"equity"},
+  {n:"Land & Buildings",     dr:240000, cr:0,      stmt:null, sec:null, type:"nca"},
+  {n:"Equipment",            dr:85000,  cr:0,      stmt:null, sec:null, type:"nca"},
+  {n:"Acc. Dep — Equipment", dr:0,      cr:25500,  stmt:null, sec:null, type:"nca"},
+  {n:"Inventory / Stock",    dr:42000,  cr:0,      stmt:null, sec:null, type:"ca"},
+  {n:"Debtors Control",      dr:31500,  cr:0,      stmt:null, sec:null, type:"ca"},
+  {n:"Bank",                 dr:22000,  cr:0,      stmt:null, sec:null, type:"ca"},
+  {n:"Petty Cash",           dr:1500,   cr:0,      stmt:null, sec:null, type:"ca"},
+  {n:"Mortgage Loan",        dr:0,      cr:80000,  stmt:null, sec:null, type:"ncl"},
+  {n:"Creditors Control",    dr:0,      cr:24500,  stmt:null, sec:null, type:"cl"},
+  {n:"Sales",                dr:0,      cr:385000, stmt:null, sec:null, type:"revenue"},
+  {n:"Cost of Sales",        dr:231000, cr:0,      stmt:null, sec:null, type:"cos"},
+  {n:"Salaries & Wages",     dr:62000,  cr:0,      stmt:null, sec:null, type:"expenses"},
+  {n:"Rent Expense",         dr:42000,  cr:0,      stmt:null, sec:null, type:"expenses"},
+  {n:"Electricity & Water",  dr:18000,  cr:0,      stmt:null, sec:null, type:"expenses"},
+  {n:"Telephone",            dr:8500,   cr:0,      stmt:null, sec:null, type:"expenses"},
+  {n:"Depreciation — Equip", dr:8500,   cr:0,      stmt:null, sec:null, type:"expenses"},
+];
+
+var CORRECT = {
+  revenue:"is", cos:"is", expenses:"is",
+  nca:"bs", ca:"bs", equity:"bs", ncl:"bs", cl:"bs"
+};
+
+var SECtoSTMT = {
+  revenue:"is",cos:"is",expenses:"is",
+  nca:"bs",ca:"bs",equity:"bs",ncl:"bs",cl:"bs"
+};
+
+var selected = null;
+
+function fmtR(n){
+  if(n<0)return "(R "+Math.abs(n).toLocaleString()+")";
+  return "R "+n.toLocaleString();
+}
+
+function buildTB(){
+  var body = document.getElementById("tb-body");
+  TB.forEach(function(row,i){
+    var el = document.createElement("div");
+    el.className = "tb-row";
+    el.id = "tbr"+i;
+    el.onclick = function(){ selectRow(i); };
+    var dr = row.dr>0 ? "R "+row.dr.toLocaleString() : "";
+    var cr = row.cr>0 ? "R "+row.cr.toLocaleString() : "";
+    el.innerHTML = "<span class='tb-acc'>" + row.n + "</span>"
+      + "<div class='tb-amts'><span class='tb-amt'>" + dr + "</span><span class='tb-amt'>" + cr + "</span></div>";
+    body.appendChild(el);
+  });
+}
+
+function selectRow(i){
+  if(TB[i].stmt){ return; }
+  if(selected===i){ selected=null; clearHighlight(); return; }
+  selected=i;
+  clearHighlight();
+  document.getElementById("tbr"+i).classList.add("selected");
+  // activate all drops
+  document.querySelectorAll(".drop").forEach(function(d){
+    d.style.outline = "2px dashed var(--fa)";
+    d.style.cursor = "pointer";
+    d.onclick = function(){ placeRow(i, d.dataset.stmt, d.dataset.sec, d); };
+  });
+}
+
+function clearHighlight(){
+  document.querySelectorAll(".tb-row").forEach(function(r){ r.classList.remove("selected"); });
+  document.querySelectorAll(".drop").forEach(function(d){
+    d.style.outline = "";
+    d.style.cursor = "";
+    d.onclick = null;
+  });
+}
+
+function placeRow(i, stmt, sec, dropEl){
+  TB[i].stmt = stmt;
+  TB[i].sec = sec;
+  selected = null;
+  clearHighlight();
+  var tbRow = document.getElementById("tbr"+i);
+  tbRow.classList.add("placed");
+  var hint = dropEl.querySelector(".drop-hint");
+  if(hint) hint.remove();
+  var val = TB[i].dr>0 ? TB[i].dr : TB[i].cr;
+  var tag = document.createElement("span");
+  tag.className = "tag";
+  tag.dataset.idx = i;
+  tag.innerHTML = TB[i].n + " <b>R "+val.toLocaleString()+"</b> ×";
+  tag.onclick = function(e){ e.stopPropagation(); removeRow(i, dropEl, tag); };
+  dropEl.appendChild(tag);
+  recalc();
+}
+
+function removeRow(i, dropEl, tag){
+  TB[i].stmt = null; TB[i].sec = null;
+  dropEl.removeChild(tag);
+  document.getElementById("tbr"+i).classList.remove("placed");
+  if(!dropEl.querySelector(".tag")){
+    var h=document.createElement("div"); h.className="drop-hint"; h.textContent="Tap TB accounts then tap here";
+    dropEl.appendChild(h);
+  }
+  recalc();
+}
+
+function recalc(){
+  var t={revenue:0,cos:0,expenses:0,nca:0,ca:0,equity:0,ncl:0,cl:0};
+  TB.forEach(function(row){
+    if(!row.sec||t[row.sec]===undefined) return;
+    t[row.sec] += row.dr>0 ? row.dr : row.cr;
+  });
+  var gp = t.revenue - t.cos;
+  var np = gp - t.expenses;
+  var ta = t.nca + t.ca;
+  var tel = t.equity + t.ncl + t.cl;
+
+  // IS
+  var gpRow = document.getElementById("gp-row");
+  gpRow.style.display = (t.revenue||t.cos) ? "flex" : "none";
+  document.getElementById("gp-val").textContent = fmtR(gp);
+  var npEl = document.getElementById("np-val");
+  npEl.textContent = fmtR(np);
+  npEl.style.color = np>=0 ? "var(--gold)" : "var(--rose)";
+
+  // BS
+  document.getElementById("ta-val").textContent = fmtR(ta);
+  var telEl = document.getElementById("tel-val");
+  telEl.textContent = fmtR(tel);
+  telEl.style.color = (ta===tel&&ta>0) ? "var(--green)" : "var(--gold)";
+
+  // Equity stmt — auto calculated
+  var capital = TB.find(function(r){return r.n==="Capital (Zandile)";}); 
+  var drawings = TB.find(function(r){return r.n==="Drawings";});
+  var openCap = capital ? capital.cr : 0;
+  var draw = drawings ? drawings.dr : 0;
+  var closing = openCap + np - draw;
+  document.getElementById("eq-open").textContent = fmtR(openCap);
+  document.getElementById("eq-np").textContent = fmtR(np);
+  document.getElementById("eq-draw").textContent = "("+fmtR(draw)+")";
+  document.getElementById("eq-close").textContent = fmtR(closing);
+  document.getElementById("eq-note").style.display = np!==0 ? "block" : "none";
+
+  // Check tab completion
+  var isItems = TB.filter(function(r){return r.stmt==="is";}).length;
+  var bsItems = TB.filter(function(r){return r.stmt==="bs";}).length;
+  document.getElementById("tab-is").classList.toggle("done", isItems>=5);
+  document.getElementById("tab-bs").classList.toggle("done", bsItems>=7);
+  document.getElementById("tab-eq").classList.toggle("done", np!==0);
+}
+
+function switchTab(id){
+  ["is","bs","eq"].forEach(function(s){
+    document.getElementById("panel-"+s).classList.remove("active");
+    document.getElementById("tab-"+s).classList.remove("active");
+  });
+  document.getElementById("panel-"+id).classList.add("active");
+  document.getElementById("tab-"+id).classList.add("active");
+  if(id==="eq") recalc();
+}
+
+function checkAnswers(){
+  var wrong=[], correct=0;
+  TB.forEach(function(row){
+    if(!row.stmt){ wrong.push(row.n+" — not placed yet"); return; }
+    var expectedStmt = SECtoSTMT[row.type];
+    var expectedSec  = row.type;
+    if(row.stmt!==expectedStmt || row.sec!==expectedSec){
+      var stmtName = row.type==="is"||["revenue","cos","expenses"].indexOf(row.type)>=0 ? "Income Statement" : "Balance Sheet";
+      wrong.push(row.n+" → should be in "+stmtName);
+    } else { correct++; }
+  });
+  var res = document.getElementById("result");
+  if(wrong.length===0){
+    res.className="result ok";
+    res.innerHTML="🏆 <strong>Perfect! All "+correct+" accounts placed correctly.</strong><br>"
+      +"Net Profit = R 15 000 ✅ &nbsp;|&nbsp; Total Assets = R 396 500 = Total Equity + Liabilities ✅<br>"
+      +"Closing Capital = R 280 000 ✅ &nbsp; You are exam ready!";
+  } else if(wrong.length<=5){
+    res.className="result warn";
+    res.innerHTML="💛 <strong>"+correct+"/"+TB.length+" correct. Fix these:</strong><br>• "+wrong.slice(0,5).join("<br>• ");
+  } else {
+    res.className="result err";
+    res.innerHTML="💪 <strong>"+correct+" correct so far.</strong><br>"
+      +"Remember: Income Statement = Revenue, COS, Expenses.<br>"
+      +"Balance Sheet = Non-Current Assets, Current Assets, Equity, Liabilities.";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  buildTB();
+});
+</script>
+</body>
+</html>
