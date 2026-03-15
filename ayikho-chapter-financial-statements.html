@@ -1255,73 +1255,6 @@
                 </div>
             </div>
 
-            <!-- Screen 2: Landoh Video Player -->
-            <div class="screen">
-                <div class="landoh-video-wrap" id="landohVideo">
-                    <!-- Real video element -->
-                    <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
-                      style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
-                      <source src="assets/videos/module-9.mp4" type="video/mp4">
-                    </video>
-                    <!-- Title Card -->
-                    <div class="lv-title-card" id="lvTitle">
-                        <div class="lv-mod-num">Module 9</div>
-                        <h1>Financial<br>Statements</h1>
-                        <div class="lv-accent-line"></div>
-                        <div class="lv-mini-icon">✏️</div>
-                        <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
-                    </div>
-                    <!-- Outro Card -->
-                    <div class="lv-outro" id="lvOutro">
-                        <div class="lv-emoji">🎯</div>
-                        <h2>Now try the interactive exercise!</h2>
-                        <p>Tap to continue</p>
-                    </div>
-                    <!-- Main Content — Pen on Board -->
-                    <div class="lv-main" id="lvMain">
-                        <!-- Voice-over bar (compact, replaces avatar) -->
-                        <div class="lv-voice-bar">
-                            <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                            </div>
-                            <div class="lv-voice-text" id="lvSpeech"></div>
-                            <div class="lv-chapter-ind" id="lvChapter">0:00</div>
-                        </div>
-                        <!-- Full whiteboard -->
-                        <div class="lv-board" id="lvBoard">
-                            <div class="lv-board-title">✏️ Board</div>
-                            <div id="lvBoardContent"></div>
-                            <!-- Animated pen SVG -->
-                            <svg class="lv-pen" id="lvPen" width="28" height="28" viewBox="0 0 100 100">
-                                <g transform="rotate(-45, 50, 50)">
-                                    <!-- Pen body -->
-                                    <rect x="42" y="10" width="16" height="60" rx="2" fill="#1A1A2E"/>
-                                    <!-- Grip section -->
-                                    <rect x="42" y="45" width="16" height="15" rx="1" fill="#334155"/>
-                                    <!-- Pen tip -->
-                                    <polygon points="42,70 58,70 50,90" fill="#94a3b8"/>
-                                    <polygon points="46,82 54,82 50,90" fill="#1A1A2E"/>
-                                    <!-- Clip -->
-                                    <rect x="58" y="12" width="4" height="30" rx="2" fill="#64748b"/>
-                                    <!-- Cap ring -->
-                                    <rect x="40" y="8" width="20" height="4" rx="2" fill="#0284C7"/>
-                                </g>
-                            </svg>
-                        </div>
-                        <div class="lv-prog"><div class="lv-prog-fill" id="lvProg"></div></div>
-                        <div class="lv-ctrls">
-                            <div class="lv-btn" id="lvPrev" title="Previous">◀</div>
-                            <div class="lv-btn" id="lvPlay" title="Play/Pause">▶</div>
-                            <div class="lv-btn" id="lvNext" title="Next">▶</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Screen 3: Lesson Part 1 - Income Statement -->
             <div class="screen">
                 <div class="header">
@@ -2043,7 +1976,7 @@
 
         const MODULE_ID = 9;
         let currentScreen = 0;
-        const totalScreens = 12;
+        const totalScreens = 11;
         let videoTime = 0;
         let videoPlaying = false;
         const videoDuration = 225; // 3:45 in seconds
@@ -2176,10 +2109,7 @@
             if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(9, currentScreen);
             updateScreen();
             scrollScreenIntoView();
-            // Initialize video if on video screen
-            if (currentScreen === 1) {
-                setTimeout(initializeVideo, 50);
-            }
+            // Video screen removed
         }
 
         function nextScreen() {
