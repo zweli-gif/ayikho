@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 37.5%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,264 +530,92 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Market Feasibility Study',
-                subtitle: 'Module 3 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Is Your Idea Worth Pursuing?</h2>
+        {
+            id: 'intro',
+            title: 'Market Feasibility Study',
+            subtitle: 'Module 3 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Is There a Market for Your Idea?',
+            subtitle: 'Module 3 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>A great idea means nothing if nobody will pay for it. A market feasibility study answers one question: 'Will enough people buy this at a price that makes me money?'</p></div>
+<h3>What is Market Feasibility?</h3>
+<p>Before you spend a cent, you need to know: Is there demand? Who will buy? How much will they pay? Who\'s the competition? A market feasibility study answers all of this with actual data — not guesses.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Market feasibility studies answer: "Will people actually buy this?" Research your target market, analyze competitors, and assess demand before launching.</p>
-                    </div>
+<h3>The Four Questions</h3>
+<p><strong>1. Who is your target market?</strong> Age, gender, income level, location, needs. Be specific: "TVET students aged 18-25 in Gauteng with R20-40 daily food budget" — not "everyone."</p>
+<p><strong>2. What\'s the demand?</strong> How many potential customers exist? How often would they buy? Survey them. Ask them. Don\'t assume.</p>
+<p><strong>3. What\'s the competition?</strong> Who else offers something similar? What do they charge? What do they do well? What do they do badly? Your opportunity is in their weakness.</p>
+<p><strong>4. What will you charge?</strong> What will the market bear? Price too high — no customers. Price too low — no profit. Find the sweet spot.</p>
 
-                    <h3>What is Market Research?</h3>
-                    <p>Market research is the process of gathering information about customers, competitors, and the market. It answers crucial questions:</p>
-                    <p>• Who will buy my product?</p>
-                    <p>• How much will they pay?</p>
-                    <p>• Who is competing with me?</p>
-                    <p>• Is there enough demand?</p>
+<div class="callout sa">
+<h4>🇿🇦 Bongiwe\'s Food Stall</h4>
+<p><strong>Idea:</strong> Sell affordable lunches near Motheo TVET College.</p>
+<p><strong>Research:</strong> Surveyed 50 students. 45 said they\'d buy lunch for R25-35. Top foods: pap, chicken, rice.</p>
+<p><strong>Competition:</strong> Two other stalls nearby. They charge R40-50 and have unreliable opening times.</p>
+<p><strong>Decision:</strong> Launch at R30 with consistent hours. Day 1: sold R800 worth. Monthly revenue: R16,000.</p>
+<p>That\'s a market feasibility study in action.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Primary and Secondary Research',
+            subtitle: 'Module 3 of 8',
+            type: 'lesson',
+            content: `
+<h3>Primary Research (You collect the data)</h3>
+<p><strong>Surveys:</strong> Questionnaires — online (Google Forms) or paper. Ask 30-50 people minimum.</p>
+<p><strong>Interviews:</strong> One-on-one conversations with potential customers. Deeper insights than surveys.</p>
+<p><strong>Observation:</strong> Watch how people behave. Stand outside a competitor\'s shop and count customers.</p>
+<p><strong>Focus groups:</strong> 6-8 people discuss your idea. You listen more than you talk.</p>
 
-                    <h3>Key Market Research Methods</h3>
+<h3>Secondary Research (Someone else collected it)</h3>
+<p><strong>Stats SA:</strong> Population data, income levels, economic indicators.</p>
+<p><strong>Industry reports:</strong> What\'s happening in your sector?</p>
+<p><strong>Competitor websites:</strong> Their prices, products, reviews.</p>
+<p><strong>News articles:</strong> Market trends, new regulations.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Surveys</h3>
-                        <p style="margin: 0;">Ask customers directly. "Would you buy this? How much would you pay?" Cheap and quick. Ask 50 people with questions.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Focus Groups</h3>
-                        <p style="margin: 0;">Interview 8-10 people deeply about their needs and opinions. Expensive but rich insights.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Competitor Analysis</h3>
-                        <p style="margin: 0;">Study who else is selling similar products. What's their price? What are they doing well or poorly?</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Demographics</h3>
-                        <p style="margin: 0;">Understand your customer: age, income, location, job. "My product targets women aged 18-35 in urban SA."</p>
-                    </div>
-
-                    <h3>SWOT Analysis</h3>
-                    <p>SWOT evaluates your business idea:</p>
-                    <p><strong>Strengths:</strong> What's your advantage? "I'm the only solar charging station in this township."</p>
-                    <p><strong>Weaknesses:</strong> What's hard? "No formal training, limited capital."</p>
-                    <p><strong>Opportunities:</strong> What can help? "Load shedding is increasing. More customers will need charging."</p>
-                    <p><strong>Threats:</strong> What could hurt? "A competitor with more capital. Government regulation."</p>
-
-                    <h3>Real Example: Bongiwe's Food Stall</h3>
-                    <div class="example-box">
-                        <div class="example-title">Market Research Before Launching</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Idea:</strong> Open a food stall near Motheo TVET College selling affordable lunches.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Market Research:</strong> Bongiwe surveyed 50 students. 45 said they'd buy lunch for R25-35. Top foods: pap, chicken, rice.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Competitors:</strong> Two other stalls nearby. They sell for R40-50, unreliable opening times.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Decision:</strong> Launch at R30 with consistent hours. Day 1 sold R800 worth. Monthly revenue: R16,000.</div>
-                        </div>
-                    </div>
-
-                    <div class="callout real-life">
-                        <h4>Target Market</h4>
-                        <p>Your target market is the specific group most likely to buy. Bongiwe's target: TVET students aged 18-25, with R20-40 daily food budget, in Bloemfontein area.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'swot',
-                title: 'SWOT & Market Share',
-                subtitle: 'Module 3 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Analyzing Your Market Position</h2>
-
-                    <h3>Market Share</h3>
-                    <p>Market share is the percentage of total market sales your business captures.</p>
-                    <p><strong>Example:</strong> In Motheo's food market, there are 1,500 students. Each spends R20/day = R30,000/day market. If Bongiwe sells R800/day, she has 2.7% market share.</p>
-
-                    <h3>Building a SWOT Table</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Example: Mobile Phone Repair Shop</h3>
-                        <p style="margin: 0;"><strong>Strengths:</strong> Technical skills, low rent, fast service<br><strong>Weaknesses:</strong> Limited capital, no formal business training<br><strong>Opportunities:</strong> Smartphones breaking daily, no other repair shop nearby<br><strong>Threats:</strong> Manufacturers' official repair centers, online shopping discourages phone purchases</p>
-                    </div>
-
-                    <h3>What Makes a Market Feasible?</h3>
-                    <p><strong>1. Demand exists:</strong> People want the product. Your survey showed interest.</p>
-                    <p><strong>2. Sufficient size:</strong> Market is big enough to sustain your business.</p>
-                    <p><strong>3. Accessible:</strong> You can reach customers affordably.</p>
-                    <p><strong>4. Competitive advantage:</strong> You have something competitors don't.</p>
-                    <p><strong>5. Profitability:</strong> You can make money at sustainable prices.</p>
-
-                    <div class="callout exam">
-                        <h4>Key Concept: Market Gap</h4>
-                        <p>A market gap is an unmet customer need. Example: "Students want healthy lunches but all vendors sell fried food." The gap = healthy food market. That's your opportunity.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the primary purpose of market research?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) To gather information about customers, competitors, and demand before launching</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) To guarantee that your business will be successful</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) To avoid doing any actual work</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) To copy what larger companies do</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What does "target market" mean?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) The specific group of customers most likely to buy your product</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Everyone in the world</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Your competitors only</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Government officials</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which of these is part of a SWOT analysis?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">A) Only positive factors matter</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">B) Strengths, Weaknesses, Opportunities, and Threats</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Size, Weight, Opacity, and Tone</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Only internal factors</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a market survey most useful for?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) Asking potential customers if they would buy and what price they'd pay</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) Forcing people to buy your product</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) Replacing the need to do any actual business planning</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Determining your personal dreams</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is market share?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">A) The percentage of total market sales your business captures</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">B) How many friends you have who will buy from you</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) The price you charge for your product</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) The location of your business</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>Know the difference between primary and secondary research. Know at least 3 examples of each. The exam asks: "Sipho wants to open a car wash. Suggest TWO primary and TWO secondary research methods he could use." Surveys + observation (primary). Stats SA data + competitor analysis (secondary).</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What is the main purpose of a market feasibility study?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>To design a logo</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>To determine if there is enough demand for a product or service</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>To register a business</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>To hire employees</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> A market feasibility study determines whether enough people will buy your product/service at a price that allows you to make a profit. It's done BEFORE you start the business.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which is an example of primary research?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Reading a Stats SA report</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">B</span>Looking at a competitor's website</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">C</span>Surveying 50 potential customers yourself</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Reading a newspaper article about the industry</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> Primary research is data YOU collect directly — surveys, interviews, observations. Secondary research uses data others have already collected (Stats SA, industry reports, news articles).</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Bongiwe wants to open a food stall. Her target market should be described as:</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Everyone who eats food</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">B</span>TVET students aged 18-25 near Motheo TVET with R20-40 daily food budget</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">C</span>People in South Africa</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Anyone who is hungry</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> A target market must be specific: who they are (students), where they are (near Motheo TVET), how old (18-25), and how much they can spend (R20-40/day). 'Everyone' is not a target market.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Market Feasibility Study!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 3 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
