@@ -405,40 +405,55 @@ if(location.search.indexOf('reset')>-1){if(window.ayikhoData){window.ayikhoData.
 makeNav('nav0','home');makeNav('nav1','progress');makeNav('nav2','badges');makeNav('nav3','profile');
 genBadges();renderMolweni();renderLB();renderComm();renderMoodCal();
 if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
-var hasData=!!window.ayikhoData;var done=hasData?window.ayikhoData.isOnboardingComplete():false;
-if(!done){try{done=!!localStorage.getItem('ayikho_profile')}catch(e){}}
-if(done){
-  // Use Firebase Auth persistent state — survives refresh and mobile reload
-  (async function(){
-    try{
-      var{initializeApp,getApps}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js');
-      var{getAuth,onAuthStateChanged}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js');
-      var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG||{});
-      var auth=getAuth(app);
-      onAuthStateChanged(auth, function(user){
-        if(user){
-          // User is still logged in — go straight home
-          sessionStorage.setItem('ayikho_user_auth','1');
+// Always check Firebase Auth — single source of truth for login state
+(async function(){
+  try{
+    var{initializeApp,getApps}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js');
+    var{getAuth,onAuthStateChanged}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js');
+    var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG||{});
+    var auth=getAuth(app);
+    var authResolved=false;
+    // Timeout fallback — if Firebase takes too long, use localStorage
+    var authTimeout=setTimeout(function(){
+      if(!authResolved){
+        authResolved=true;
+        var done=false;
+        try{done=!!(localStorage.getItem('ayikho_profile')&&window.ayikhoData&&window.ayikhoData.isOnboardingComplete())}catch(e){}
+        if(done){onbDone=true;document.getElementById('onb-overlay').style.display='none';showMoodCheck();}
+        else{onbNext('login');}
+      }
+    },3000);
+    onAuthStateChanged(auth,function(user){
+      if(authResolved)return;
+      authResolved=true;
+      clearTimeout(authTimeout);
+      if(user){
+        // Logged in — check if onboarding was completed
+        var hasProfile=false;
+        try{hasProfile=!!(localStorage.getItem('ayikho_profile')||( window.ayikhoData&&window.ayikhoData.isOnboardingComplete()))}catch(e){}
+        if(hasProfile){
           onbDone=true;
           document.getElementById('onb-overlay').style.display='none';
           showMoodCheck();
         } else {
-          // No Firebase session — show login screen
-          onbNext('login');
+          // Authenticated but no profile — finish onboarding
+          onbNext(3);
         }
-      });
-    }catch(e){
-      // Firebase unavailable — fall back to sessionStorage
-      if(sessionStorage.getItem('ayikho_user_auth')==='1'){
-        onbDone=true;
-        document.getElementById('onb-overlay').style.display='none';
-        showMoodCheck();
       } else {
-        onbNext('login');
+        // Not logged in — show appropriate screen
+        var hasProfile=false;
+        try{hasProfile=!!(localStorage.getItem('ayikho_profile'))}catch(e){}
+        if(hasProfile){onbNext('login');}
+        // else: first-time user, welcome screen already showing
       }
-    }
-  })();
-}
+    });
+  }catch(e){
+    // Firebase unavailable — localStorage fallback
+    var done=false;
+    try{done=!!(localStorage.getItem('ayikho_profile'))}catch(ex){}
+    if(done){onbDone=true;document.getElementById('onb-overlay').style.display='none';showMoodCheck();}
+  }
+})();
 /* no data layer = first time user, onboarding shows by default */
 
 // ── CONNECT FIREBASE TO STUDENT DATA LAYER ──
