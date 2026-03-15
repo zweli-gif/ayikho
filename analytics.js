@@ -88,6 +88,27 @@
         if (profile.level) incCounter('level_' + profile.level);
         if (profile.college) incCounter('colleges_count');
       }
+      // Save individual user profile to users collection
+      if (ready && profile) {
+        try {
+          var userId = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+          var userDoc = {
+            name: profile.name || '',
+            gender: profile.gender || '',
+            province: profile.province || '',
+            college: profile.college || '',
+            level: profile.level || '',
+            course: profile.course || '',
+            subjects: profile.subjects || [],
+            fiveYearGoal: profile.fiveYearGoal || '',
+            dream: profile.dream || '',
+            phone: profile.phone || '',
+            registeredAt: refs.serverTimestamp(),
+            registeredDate: new Date().toISOString().slice(0,10)
+          };
+          refs.setDoc(refs.doc(db, 'users', userId), userDoc);
+        } catch(e) { console.warn('[Analytics] User save failed:', e); }
+      }
     },
 
     // Mood check-in
