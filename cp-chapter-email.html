@@ -530,202 +530,92 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Email & Digital Communication',
-                subtitle: 'Module 5 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Professional Email Etiquette</h2>
+        {
+            id: 'intro',
+            title: 'Email & Digital Communication',
+            subtitle: 'Module 5 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Professional Email Communication',
+            subtitle: 'Module 5 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>Email is the backbone of workplace communication. A bad email can lose you a job, a client, or your boss's respect. A good email is clear, professional, and gets a reply.</p></div>
+<h3>Email in the Workplace</h3>
+<p>In SA, email is the official record of business communication. A WhatsApp can be denied. An email with a timestamp and CC list? That\'s evidence. Every meeting, decision, and request should be followed up with an email.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Email is how business gets done. Know CC, BCC, attachments, signatures, and professional tone for N4.</p>
-                    </div>
+<h3>Parts of a Professional Email</h3>
+<p><strong>To:</strong> The person who needs to act. One person ideally.</p>
+<p><strong>CC:</strong> People who need to know, but don\'t need to act. Your manager, team members.</p>
+<p><strong>BCC:</strong> Hidden copy. The recipient can\'t see who else got the email. Use with care — it can feel sneaky.</p>
+<p><strong>Subject line:</strong> Clear and specific. "Meeting minutes — 15 March 2025" not "Hi" or "Important".</p>
+<p><strong>Greeting:</strong> "Dear Mr Nkosi" (formal) or "Hi Thabo" (if you know them). Never "Hey" in professional email.</p>
+<p><strong>Body:</strong> Short paragraphs. State what you need in the first 2 lines. Details below.</p>
+<p><strong>Closing:</strong> "Kind regards" is the SA standard. "Regards" is fine. "Cheers" is too casual for most workplaces.</p>
+<p><strong>Signature:</strong> Your name, title, company, phone number. Set it up once and it appears automatically.</p>
 
-                    <h3>The Email Structure</h3>
-                    <p>An email has: To, CC, BCC, Subject, Body, Signature, Attachments. Each serves a purpose.</p>
+<div class="callout sa">
+<h4>🇿🇦 Real example</h4>
+<p>Bad: "hi can u send me the thing u mentioned thanks"<br>Good: "Dear Ms Dlamini, Could you please share the Q3 budget report we discussed in Monday\'s meeting? I need it for the board presentation by Friday. Kind regards, Zandile"</p>
+<p>The second one gets a response. The first one gets ignored.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Email Etiquette & Netiquette',
+            subtitle: 'Module 5 of 8',
+            type: 'lesson',
+            content: `
+<h3>Email Etiquette Rules</h3>
+<p><strong>Reply within 24 hours.</strong> Even if you don\'t have the full answer, acknowledge receipt: "Thanks for this, I\'ll get back to you by Thursday."</p>
+<p><strong>Don\'t use ALL CAPS.</strong> IT LOOKS LIKE YOU\'RE SHOUTING.</p>
+<p><strong>Proofread before sending.</strong> Spelling errors in a professional email make you look careless. Use spell check.</p>
+<p><strong>Think before you CC everyone.</strong> "Reply All" on a company-wide email is how careers end. Only CC people who genuinely need the information.</p>
+<p><strong>Never send angry emails.</strong> Write it, save it as a draft, sleep on it. Read it fresh in the morning. 90% of the time, you\'ll rewrite it.</p>
 
-                    <p><strong>To:</strong> Primary recipient. The person you want the main response from.</p>
-                    <p><strong>CC (Carbon Copy):</strong> Send a copy to others who need to know. They can see everyone else CC'd. Use for transparency.</p>
-                    <p><strong>BCC (Blind Carbon Copy):</strong> Send a copy without others knowing. No one sees BCC addresses. Use for privacy.</p>
+<h3>Netiquette (Internet Etiquette)</h3>
+<p>The rules of polite behaviour online:</p>
+<p>• Be respectful in all digital communication<br>• Don\'t share someone else\'s private information<br>• Use proper grammar and punctuation (not text speak)<br>• Think before you post — the internet never forgets<br>• Respect intellectual property (don\'t copy without credit)</p>
 
-                    <h3>Subject Line Best Practices</h3>
-                    <p><strong>Be specific:</strong> "Project Update - Week 3" not "Hi"</p>
-                    <p><strong>Be brief:</strong> Max 50 characters. Mobile phone screens cut off long subjects.</p>
-                    <p><strong>Use keywords:</strong> Include important words so emails are easy to find later.</p>
-
-                    <h3>Email Body Tone</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Professional Greeting</h3>
-                        <p style="margin: 0;"><strong>Good:</strong> "Dear Mr. Mthembu" or "Hi Sarah". <strong>Bad:</strong> "Yo" or "Hey there"</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Clear Purpose</h3>
-                        <p style="margin: 0;">First sentence tells why you're emailing. "I'm writing to request approval for R50,000 budget."</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Short Paragraphs</h3>
-                        <p style="margin: 0;">Max 3-4 sentences per paragraph. Walls of text are hard to read on phones.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Professional Closing</h3>
-                        <p style="margin: 0;"><strong>Good:</strong> "Best regards" or "Sincerely". <strong>Bad:</strong> "YOLO" or "xoxo"</p>
-                    </div>
-
-                    <h3>Email Signature</h3>
-                    <p>Your signature appears at the end. Include:</p>
-                    <p>Full name | Job title | Company name | Phone number | Email | Company website</p>
-
-                    <div class="callout real-life">
-                        <h4>SA Example</h4>
-                        <p>You applied to Shoprite for a job. Now you need to send a professional follow-up email. Subject: "Follow-up: Customer Service Position Application." To: hr@shoprite.co.za. CC your personal email. Body: Remind them when you applied, your key skills, enthusiasm. Attach your CV. Sign with your full name, phone number, email. A professional email gets responses. An unprofessional one gets deleted.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'key-terms',
-                title: 'Email Best Practices',
-                subtitle: 'Digital Communication Rules',
-                type: 'lesson',
-                content: `
-                    <h2>Advanced Email Features</h2>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Attachments</h3>
-                        <p style="margin: 0;">Files sent with the email. Keep file size under 10MB. Acceptable formats: PDF, Word, Excel. Mention attachment in the email body.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Reply All</h3>
-                        <p style="margin: 0;">Use carefully. Only reply to all if everyone needs your response. Many accidental "Reply All" embarrassments in offices.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Calendar Invites</h3>
-                        <p style="margin: 0;">Schedule meetings. Recipients get calendar alerts. Specify date, time, location. Include Zoom link or meeting room.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Follow-up Emails</h3>
-                        <p style="margin: 0;">If no response after 1 week, send a polite follow-up. Don't be aggressive. "Just checking in..." works.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Spam and Phishing</h3>
-                        <p style="margin: 0;">Unsolicited emails asking for passwords or money. Never click suspicious links. Report and delete.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>N4 exams ask: "Write a professional email to..." or "What's wrong with this email?" Practice writing formal emails. Spot common mistakes: typos, rude tone, missing subject line, BCC misuse. Be ready to critique and improve email drafts.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the difference between CC and BCC?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) CC is visible to all; BCC is hidden from all recipients</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) BCC is for important people only</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) They mean the same thing</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) CC is faster than BCC</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What should a professional email subject line include?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) A specific, brief description of the email purpose</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Just "Hi" or "Hello"</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Your entire message in one line</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Emoji and special characters only</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What should your email signature include?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) Full name, job title, company, phone, email, website</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Just your first name</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Signature is optional and never needed</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Personal memes or jokes</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Computer Practice N4 · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam asks about CC vs BCC, email etiquette rules, and netiquette. Know the difference between To, CC, and BCC. Know at least 5 netiquette rules. Know what makes an email professional vs unprofessional.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does BCC stand for in email?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Basic Carbon Copy</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>Blind Carbon Copy</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Backup Carbon Copy</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>Business Carbon Copy</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> BCC stands for Blind Carbon Copy. Recipients in BCC can see the email but other recipients can't see that they received it.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which email closing is most appropriate for a professional email in SA?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Cheers</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>Kind regards</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>Sent from my iPhone</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>TTYL</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> 'Kind regards' is the standard professional closing in South African business email. 'Cheers' is too casual, and 'Sent from my iPhone' is an auto-signature, not a closing.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">When should you use 'Reply All' in an email?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Always, so everyone stays informed</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>Never, it's always wrong</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>Only when every recipient genuinely needs to see your response</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>When you want to look important</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> Reply All should only be used when every person on the email chain needs to see your response. Unnecessary Reply All emails clog inboxes and annoy colleagues.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Email & Digital Communication!</h2><p style="color:var(--dim);margin-bottom:24px">Computer Practice N4 · Module 5 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#8B5CF6;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
