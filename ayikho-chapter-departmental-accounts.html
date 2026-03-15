@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho N4 FA · Module 4: Departmental Accounts</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
+  --p:#7C3AED;--gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
+  --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;--bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
+}
+body{font-family:'Outfit',sans-serif;background:#05090F;color:var(--ink);overflow:hidden;overscroll-behavior:none;}
+.phone-frame{width:375px;height:812px;border-radius:50px;background:#05090F;box-shadow:0 25px 50px rgba(0,0,0,.8);margin:20px auto;display:flex;flex-direction:column;overflow:hidden;border:12px solid #05090F;position:relative;}
+.status-bar{height:44px;background:linear-gradient(135deg,var(--fa) 0%,var(--fa-d) 100%);color:white;display:flex;justify-content:space-between;align-items:center;padding:0 16px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;flex-shrink:0;}
+.progress-strip{height:3px;background:var(--bord);flex-shrink:0;}
+.progress-fill{height:100%;background:var(--fa);transition:width .4s ease;}
+.screen-container{flex:1;display:flex;position:relative;overflow:hidden;background:var(--w);}
+.screen{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;flex-direction:column;opacity:0;transform:translateX(375px);transition:all .32s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+.screen.active{opacity:1;transform:translateX(0);pointer-events:auto;}
+.screen.prev{transform:translateX(-375px);}
+.header{background:linear-gradient(135deg,var(--fa) 0%,var(--fa-d) 100%);color:white;padding:20px 16px 16px;flex-shrink:0;}
+.header h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;margin-bottom:4px;}
+.header p{font-size:12px;opacity:.9;font-weight:500;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0;}
+.content::-webkit-scrollbar{display:none;}
+.ci{padding:16px;}
+.lesson-block{margin-bottom:16px;}
+.lesson-block h3{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+.lesson-block p{font-size:13px;color:var(--mut);line-height:1.7;margin-bottom:8px;}
+.callout{background:var(--fa-xs);border-left:3px solid var(--fa);border-radius:0 12px 12px 0;padding:12px 14px;margin:12px 0;font-size:12px;color:var(--fa-d);line-height:1.6;}
+.callout strong{color:var(--fa);display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.exam-tip{background:#FFFBEB;border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:12px 14px;margin:12px 0;font-size:12px;color:#92400E;line-height:1.6;}
+.exam-tip strong{color:var(--gold);display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.formula-box{background:var(--ink);color:white;border-radius:12px;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;margin:10px 0;}
+.formula-box .label{font-size:9px;color:var(--fa-l);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;font-family:'Outfit',sans-serif;}
+.tbl{width:100%;border-collapse:collapse;font-size:11px;margin:10px 0;border-radius:10px;overflow:hidden;}
+.tbl th{background:var(--fa);color:white;padding:8px 10px;text-align:left;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:10px;}
+.tbl td{padding:7px 10px;border-bottom:1px solid var(--bord);color:var(--ink);}
+.tbl tr:nth-child(even) td{background:var(--fa-xs);}
+.tbl tr:last-child td{border-bottom:none;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--fa-xs);border:1px solid var(--fa-sm);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--fa-d);margin:3px 3px 3px 0;}
+.sec-chip{display:inline-block;background:var(--fa);color:white;border-radius:8px;padding:2px 8px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:8px;}
+/* JOURNAL TABLE */
+.jnl{width:100%;border-collapse:collapse;font-size:10px;font-family:'JetBrains Mono',monospace;margin:10px 0;}
+.jnl th{background:var(--ink);color:white;padding:6px 8px;text-align:right;font-size:9px;}
+.jnl th:first-child{text-align:left;}
+.jnl td{padding:5px 8px;border-bottom:1px solid var(--bord);text-align:right;}
+.jnl td:first-child{text-align:left;color:var(--ink);font-weight:600;}
+.jnl tr:nth-child(even) td{background:var(--fa-xs);}
+.jnl .total-row td{background:var(--fa-sm);font-weight:800;border-top:2px solid var(--fa);}
+/* QUIZ */
+.quiz-q{font-size:14px;font-weight:700;color:var(--ink);line-height:1.6;margin-bottom:20px;padding:16px;background:var(--surf);border-radius:14px;}
+.quiz-opt{background:white;border:2px solid var(--bord);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.quiz-opt:hover{border-color:var(--fa);background:var(--fa-xs);}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-xs);color:#15803D;}
+.quiz-opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.07);color:#be123c;}
+.quiz-opt .opt-badge{width:28px;height:28px;border-radius:8px;background:var(--surf);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+.quiz-feedback{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.6;display:none;}
+/* FOOTER NAV */
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 20px;border-top:1px solid var(--bord);background:white;flex-shrink:0;}
+.nav-btn{border:none;border-radius:10px;padding:10px 18px;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.nav-btn-fa{background:var(--fa);color:white;}
+.nav-btn-fa:disabled{background:var(--bord);color:var(--dim);cursor:not-allowed;}
+.nav-btn-ghost{background:var(--surf);color:var(--mut);}
+.nav-info{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);}
+/* WIN */
+.win-box{text-align:center;padding:24px 16px;}
+.win-emoji{font-size:64px;margin-bottom:12px;display:block;}
+.win-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--ink);margin-bottom:8px;}
+.win-badges{display:flex;justify-content:center;gap:12px;margin:20px 0;}
+.win-badge{background:linear-gradient(135deg,var(--fa),var(--fa-d));color:white;border-radius:16px;padding:16px;text-align:center;min-width:80px;}
+.win-badge .wn{font-size:24px;font-weight:900;display:block;}
+.win-badge .wl{font-size:10px;opacity:.8;font-weight:600;margin-top:2px;}
+/* sidebar dots */
+.sidebar-nav{width:48px;background:var(--surf);border-right:1px solid var(--bord);display:flex;flex-direction:column;padding:10px 6px;gap:6px;overflow-y:auto;}
+.nav-dot{width:22px;height:22px;border-radius:50%;background:var(--bord);border:2px solid var(--bord);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--dim);}
+.nav-dot.active{background:var(--fa);color:white;border-color:var(--fa);transform:scale(1.15);}
+.main-content{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+@keyframes ashki-pop{from{opacity:0;transform:scale(.6) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+</style>
+</head>
+<body>
+<div class="phone-frame">
+  <div class="status-bar">
+    <div>09:41</div>
+    <div>FA N4 · Module 4</div>
+    <div>4G 87%</div>
+  </div>
+  <div class="progress-strip"><div class="progress-fill" id="pbar" style="width:8%"></div></div>
+  <div style="display:flex;flex:1;overflow:hidden">
+    <div class="sidebar-nav" id="sidebarNav"></div>
+    <div class="main-content">
+      <div class="screen-container" id="screenContainer">
+
+<!-- ══════════════════════════════════════
+     SCREEN 0: INTRO
+══════════════════════════════════════ -->
+<div class="screen active">
+  <div class="header">
+    <h1>Departmental Accounts</h1>
+    <p>Module 4 · Financial Accounting N4</p>
+  </div>
+  <div class="content"><div class="ci">
+    <div style="background:linear-gradient(135deg,var(--fa),var(--fa-d));border-radius:16px;padding:20px;margin-bottom:16px;color:white;text-align:center">
+      <div style="font-size:40px;margin-bottom:8px">🏪</div>
+      <div style="font-size:18px;font-weight:800;margin-bottom:6px">Sipho's Hardware — 3 Departments</div>
+      <div style="font-size:12px;opacity:.8">Tools · Paint · Electrical</div>
+    </div>
+    <div class="lesson-block">
+      <h3>What are Departmental Accounts?</h3>
+      <p>When a business has <strong>more than one department</strong> (like a hardware store with Tools, Paint & Electrical sections), it keeps <strong>separate records</strong> for each department so the owner knows which departments are profitable and which are not.</p>
+    </div>
+    <div class="callout"><strong>💡 Real Life</strong>Shoprite tracks Bakery, Butchery, and Fresh Produce separately. If the Butchery is losing money, they know to cut it — without departmental accounts, they'd never know!</div>
+    <div class="lesson-block">
+      <h3>Why do it?</h3>
+      <p>✅ See which department makes the most profit<br>✅ Control costs per department<br>✅ Identify underperforming departments<br>✅ Make better business decisions</p>
+    </div>
+    <div class="exam-tip"><strong>⭐ Exam tip</strong>The syllabus covers the <strong>periodic inventory system</strong> — this means stock is counted at the end of the period, not continuously tracked.</div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1: COLUMNAR JOURNALS
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header">
+    <h1>Columnar Journals</h1>
+    <p>The secret weapon of departmental accounts</p>
+  </div>
+  <div class="content"><div class="ci">
+    <div class="lesson-block">
+      <h3>What makes them "columnar"?</h3>
+      <p>Normal journals have one column for amounts. Columnar journals have <strong>extra columns — one for each department</strong>. Every transaction is split across departments in the same journal entry.</p>
+    </div>
+    <div class="sec-chip">7 COLUMNAR JOURNALS</div>
+    <table class="tbl">
+      <tr><th>Journal</th><th>Records</th></tr>
+      <tr><td>📦 Purchases Journal</td><td>Goods bought on credit per dept</td></tr>
+      <tr><td>↩️ Purchases Returns</td><td>Goods returned to suppliers per dept</td></tr>
+      <tr><td>🛒 Sales Journal</td><td>Goods sold on credit per dept</td></tr>
+      <tr><td>↪️ Sales Returns</td><td>Goods returned by customers per dept</td></tr>
+      <tr><td>💵 Cash Journals</td><td>Cash receipts &amp; payments per dept</td></tr>
+      <tr><td>↔️ Interdepartmental</td><td>Transfers between departments</td></tr>
+      <tr><td>📝 General Journal</td><td>All other entries per dept</td></tr>
+    </table>
+    <div class="callout"><strong>💡 Key Point</strong>Each journal still has a <strong>total column</strong> plus individual columns for Tools, Paint, Electrical (or however many departments there are). The totals must always equal the sum of the departmental columns.</div>
+    <div class="exam-tip"><strong>⭐ Exam tip</strong>In an exam question, you'll be given transactions and told which department they belong to. Just put the amount in the right department column — and always fill in the total column too!</div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2: PURCHASES JOURNAL EXAMPLE
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header">
+    <h1>Purchases Journal</h1>
+    <p>Columnar format — worked example</p>
+  </div>
+  <div class="content"><div class="ci">
+    <div class="lesson-block">
+      <h3>Sipho's Hardware — March 2025</h3>
+      <p>Sipho bought goods on credit from three suppliers. Watch how the columnar journal splits each purchase by department.</p>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="jnl">
+      <tr>
+        <th style="text-align:left;width:120px">Date / Supplier</th>
+        <th>Doc</th>
+        <th>Creditors</th>
+        <th>Tools Dept</th>
+        <th>Paint Dept</th>
+        <th>Elec Dept</th>
+      </tr>
+      <tr>
+        <td>1 Mar · Makro</td><td>Inv 101</td><td>8 400</td><td>8 400</td><td>—</td><td>—</td>
+      </tr>
+      <tr>
+        <td>8 Mar · Builders</td><td>Inv 047</td><td>5 250</td><td>—</td><td>3 150</td><td>2 100</td>
+      </tr>
+      <tr>
+        <td>22 Mar · Voltex</td><td>Inv 312</td><td>6 720</td><td>—</td><td>—</td><td>6 720</td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="2">TOTALS</td><td>20 370</td><td>8 400</td><td>3 150</td><td>8 820</td>
+      </tr>
+    </table>
+    </div>
+    <div class="callout"><strong>💡 Check</strong>8 400 + 3 150 + 8 820 = R20 370 ✅ — the departmental columns always add up to the total column. This is how you check your work in the exam!</div>
+    <div class="lesson-block">
+      <h3>The posting rule</h3>
+      <p>At month end:<br>
+      • Creditors total (R20 370) → posted to <strong>Creditors Control account</strong><br>
+      • Tools total (R8 400) → posted to <strong>Tools Purchases account</strong><br>
+      • Paint total (R3 150) → posted to <strong>Paint Purchases account</strong><br>
+      • Electrical total (R8 820) → posted to <strong>Electrical Purchases account</strong></p>
+    </div>
+    <div class="exam-tip"><strong>⭐ Exam tip</strong>Each department has its OWN purchases account and its OWN sales account in the ledger. This is what makes departmental accounts "departmental".</div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3: INTERDEPARTMENTAL TRANSFERS
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header">
+    <h1>Interdepartmental Transfers</h1>
+    <p>When stock moves between departments</p>
+  </div>
+  <div class="content"><div class="ci">
+    <div class="lesson-block">
+      <h3>What is an interdepartmental transfer?</h3>
+      <p>Sometimes stock bought for one department is needed by another department. When this happens, you record a <strong>transfer</strong> — reducing one department's stock and increasing another's.</p>
+    </div>
+    <div class="callout"><strong>💡 Example</strong>Paint brushes ordered for the Paint Department are actually needed in the Tools Department. Sipho transfers R1 200 worth from Paint → Tools.</div>
+    <div class="lesson-block">
+      <h3>The journal entry</h3>
+      <div class="formula-box">
+        <div class="label">Interdepartmental Transfers Journal</div>
+        Tools Dept (receiving)    Dr  1 200<br>
+        Paint Dept (giving)       Cr  1 200<br>
+        <span style="color:var(--fa-l);font-size:10px">Narration: Transfer of brushes from Paint to Tools</span>
+      </div>
+    </div>
+    <div class="lesson-block">
+      <h3>The golden rule</h3>
+      <p>The department <strong>receiving</strong> stock gets DEBITED.<br>The department <strong>giving</strong> stock gets CREDITED.</p>
+      <p style="margin-top:8px">The total of the journal is always <strong>R0</strong> because one department's gain is another's loss — no new value is created, it just moves.</p>
+    </div>
+    <div class="exam-tip"><strong>⭐ Exam tip</strong>Transfers are done at <strong>cost price</strong> — not selling price. Never mark up when transferring between departments.</div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4: DEPARTMENTAL ACCOUNTS IN LEDGER
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header">
+    <h1>Departmental Ledger Accounts</h1>
+    <p>What goes in each department's accounts</p>
+  </div>
+  <div class="content"><div class="ci">
+    <div class="lesson-block">
+      <h3>Each department has 2 key accounts</h3>
+    </div>
+    <div style="background:var(--fa-xs);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div class="sec-chip">PURCHASES ACCOUNT (per dept)</div>
+      <p style="font-size:12px;color:var(--mut);line-height:1.6;margin-top:8px">
+        <strong>Dr side:</strong> Purchases from Purchases Journal<br>
+        <strong>Dr side:</strong> Transfers received from other depts<br>
+        <strong>Cr side:</strong> Purchases Returns<br>
+        <strong>Cr side:</strong> Transfers sent to other depts<br>
+        <strong>Cr side:</strong> Closing balance → to Trading Account
+      </p>
+    </div>
+    <div style="background:var(--green-xs);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div class="sec-chip" style="background:var(--green)">SALES ACCOUNT (per dept)</div>
+      <p style="font-size:12px;color:var(--mut);line-height:1.6;margin-top:8px">
+        <strong>Cr side:</strong> Sales from Sales Journal<br>
+        <strong>Cr side:</strong> Cash Sales from Cash Receipts Journal<br>
+        <strong>Dr side:</strong> Sales Returns<br>
+        <strong>Dr side:</strong> Closing balance → to Trading Account
+      </p>
+    </div>
+    <div class="callout"><strong>💡 Remember</strong>At year-end, each department's Purchases and Sales accounts are closed off to their own <strong>Departmental Trading Account</strong> — not to one combined trading account.</div>
+    <div class="exam-tip"><strong>⭐ Exam tip</strong>If asked to post a transaction, ask yourself: which department? which side? Always label accounts as "Tools Purchases" or "Paint Sales" — not just "Purchases".</div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5: TRADING STATEMENT
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header">
+    <h1>Departmental Trading Statement</h1>
+    <p>Gross profit per department</p>
+  </div>
+  <div class="content"><div class="ci">
+    <div class="lesson-block">
+      <h3>What is it?</h3>
+      <p>The Departmental Trading Statement shows <strong>gross profit for each department separately</strong>. It's basically an Income Statement — but only up to Gross Profit, and split by department.</p>
+    </div>
+    <div class="formula-box">
+      <div class="label">Structure of Departmental Trading Statement</div>
+      Sales<br>
+      Less: Sales Returns<br>
+      <span style="color:var(--fa-l)">= Net Sales</span><br>
+      Less: Cost of Sales:<br>
+      &nbsp;&nbsp;Opening Stock<br>
+      &nbsp;&nbsp;+ Purchases<br>
+      &nbsp;&nbsp;+ Transfers In<br>
+      &nbsp;&nbsp;− Purchases Returns<br>
+      &nbsp;&nbsp;− Transfers Out<br>
+      &nbsp;&nbsp;− Closing Stock<br>
+      <span style="color:var(--gold);font-weight:800">= GROSS PROFIT per dept</span>
+    </div>
+    <div class="lesson-block">
+      <h3>Sipho's Hardware — Departmental Trading Statement (extract)</h3>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="jnl">
+      <tr>
+        <th style="text-align:left">Item</th>
+        <th>Tools</th>
+        <th>Paint</th>
+        <th>Elec</th>
+        <th>TOTAL</th>
+      </tr>
+      <tr><td>Net Sales</td><td>85 000</td><td>62 000</td><td>48 000</td><td>195 000</td></tr>
+      <tr><td>Cost of Sales</td><td>(51 000)</td><td>(43 400)</td><td>(33 600)</td><td>(128 000)</td></tr>
+      <tr class="total-row"><td><strong>Gross Profit</strong></td><td>34 000</td><td>18 600</td><td>14 400</td><td>67 000</td></tr>
+      <tr><td>GP %</td><td style="color:var(--green)">40%</td><td style="color:var(--gold)">30%</td><td style="color:var(--rose)">30%</td><td>34.4%</td></tr>
+    </table>
+    </div>
+    <div class="callout"><strong>💡 Analysis</strong>Tools is the star department at 40% GP margin. This tells Sipho to invest more in his Tools department and investigate why Paint and Electrical are lower.</div>
+    <div class="exam-tip"><strong>⭐ Exam tip</strong>GP% = (Gross Profit ÷ Net Sales) × 100. You will almost certainly be asked to calculate this in the exam.</div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6: DEPARTMENTAL P&L
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header">
+    <h1>Departmental P&amp;L Statement</h1>
+    <p>Net profit per department</p>
+  </div>
+  <div class="content"><div class="ci">
+    <div class="lesson-block">
+      <h3>From Gross Profit → Net Profit</h3>
+      <p>The Departmental P&amp;L takes the Gross Profit from the Trading Statement and deducts expenses. Some expenses belong to a specific department (<strong>direct expenses</strong>) — others must be <strong>allocated</strong> across departments.</p>
+    </div>
+    <div style="background:rgba(245,158,11,.1);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div class="sec-chip" style="background:var(--gold);color:var(--ink)">DIRECT EXPENSES</div>
+      <p style="font-size:12px;color:var(--mut);line-height:1.6;margin-top:8px">Expenses you can trace directly to one department:<br>• Dept salaries, dept packaging, dept advertising</p>
+    </div>
+    <div style="background:var(--surf);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div class="sec-chip" style="background:var(--p)">ALLOCATED EXPENSES</div>
+      <p style="font-size:12px;color:var(--mut);line-height:1.6;margin-top:8px">Shared expenses split using a fair basis:<br>• Rent → floor space (m²)<br>• Insurance → value of stock<br>• Electricity → usage or floor space<br>• Admin salaries → number of staff</p>
+    </div>
+    <div class="formula-box">
+      <div class="label">Departmental P&L</div>
+      Gross Profit per dept<br>
+      Less: Direct Expenses<br>
+      Less: Allocated Expenses<br>
+      <span style="color:var(--gold);font-weight:800">= NET PROFIT per dept</span>
+    </div>
+    <div class="exam-tip"><strong>⭐ Exam tip</strong>Allocation questions are common. If Rent is R36 000 and Tools uses 60m², Paint 40m², Electrical 20m² (total 120m²) — Tools gets R18 000, Paint R12 000, Electrical R6 000.</div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 7: QUIZ 1
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header"><h1>Quick Quiz</h1><p>Question 1 of 3</p></div>
+  <div class="content"><div class="ci">
+    <div class="quiz-q">Sipho's Hardware buys R4 200 worth of paint brushes on credit from Builders Warehouse. This transaction should be recorded in which journal?</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q1')"><span class="opt-badge">A</span>General Journal</div>
+    <div class="quiz-opt" onclick="ansQ(this,true,'q1')"><span class="opt-badge">B</span>Columnar Purchases Journal — Paint Department</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q1')"><span class="opt-badge">C</span>Cash Payments Journal</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q1')"><span class="opt-badge">D</span>Interdepartmental Transfers Journal</div>
+    <div class="quiz-feedback" id="q1-fb"></div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 8: QUIZ 2
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header"><h1>Quick Quiz</h1><p>Question 2 of 3</p></div>
+  <div class="content"><div class="ci">
+    <div class="quiz-q">Rent for Sipho's store is R24 000. Floor space: Tools 50m², Paint 30m², Electrical 20m² (total 100m²). How much rent is allocated to the Paint Department?</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q2')"><span class="opt-badge">A</span>R8 000</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q2')"><span class="opt-badge">B</span>R12 000</div>
+    <div class="quiz-opt" onclick="ansQ(this,true,'q2')"><span class="opt-badge">C</span>R7 200</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q2')"><span class="opt-badge">D</span>R4 800</div>
+    <div class="quiz-feedback" id="q2-fb"></div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 9: QUIZ 3
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header"><h1>Quick Quiz</h1><p>Question 3 of 3</p></div>
+  <div class="content"><div class="ci">
+    <div class="quiz-q">The Tools Department transfers R1 500 worth of stock to the Electrical Department. In the Interdepartmental Transfers Journal, which entry is correct?</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q3')"><span class="opt-badge">A</span>Dr Tools Dept R1 500 / Cr Electrical Dept R1 500</div>
+    <div class="quiz-opt" onclick="ansQ(this,true,'q3')"><span class="opt-badge">B</span>Dr Electrical Dept R1 500 / Cr Tools Dept R1 500</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q3')"><span class="opt-badge">C</span>Dr Purchases R1 500 / Cr Bank R1 500</div>
+    <div class="quiz-opt" onclick="ansQ(this,false,'q3')"><span class="opt-badge">D</span>Dr Tools Dept R1 500 / Cr Purchases R1 500</div>
+    <div class="quiz-feedback" id="q3-fb"></div>
+  </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 10: WIN SCREEN
+══════════════════════════════════════ -->
+<div class="screen">
+  <div class="header"><h1>Chapter Complete!</h1><p>Departmental Accounts ✓</p></div>
+  <div class="content"><div class="ci">
+    <div class="win-box">
+      <span class="win-emoji">🏆</span>
+      <div class="win-title">You crushed it!</div>
+      <p style="font-size:13px;color:var(--mut);margin-bottom:20px">Departmental Accounts done. Go into that exam with confidence!</p>
+      <div class="win-badges">
+        <div class="win-badge"><span class="wn">6</span><span class="wl">Screens</span></div>
+        <div class="win-badge" style="background:linear-gradient(135deg,var(--gold),#D97706)"><span class="wn" style="color:var(--ink)">3</span><span class="wl">Quizzes</span></div>
+        <div class="win-badge" style="background:linear-gradient(135deg,var(--green),#15803D)"><span class="wn">100</span><span class="wl">XP</span></div>
+      </div>
+      <div style="background:var(--fa-xs);border-radius:14px;padding:16px;text-align:left;margin-top:8px">
+        <div style="font-size:11px;font-weight:800;color:var(--fa);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">📋 Exam Cheat Sheet</div>
+        <p style="font-size:12px;color:var(--mut);line-height:1.8">
+          ✅ 7 columnar journals — each has dept columns<br>
+          ✅ Transfers: receiver Dr, giver Cr, at cost price<br>
+          ✅ Trading stmt: up to Gross Profit per dept<br>
+          ✅ P&L: deduct direct + allocated expenses<br>
+          ✅ GP% = Gross Profit ÷ Net Sales × 100<br>
+          ✅ Allocation basis: rent→floor space, insurance→stock value
+        </p>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+      </div><!-- /screen-container -->
+
+      <!-- FOOTER NAV -->
+      <div class="footer-nav">
+        <button class="nav-btn nav-btn-ghost" id="prevBtn" onclick="prev()" disabled>← Back</button>
+        <span class="nav-info" id="screenInfo">Screen 1 of 11</span>
+        <button class="nav-btn nav-btn-fa" id="nextBtn" onclick="next()">Next →</button>
+      </div>
+    </div><!-- /main-content -->
+  </div>
+</div><!-- /phone -->
+
+<script>
+var cur=0, total=11;
+var quizAnswered={q1:false,q2:false,q3:false};
+
+function initDots(){
+  var sb=document.getElementById('sidebarNav'); sb.innerHTML='';
+  for(var i=0;i<total;i++){
+    var d=document.createElement('div'); d.className='nav-dot'+(i===0?' active':'');
+    d.textContent=i+1; d.dataset.i=i;
+    d.onclick=(function(idx){return function(){goTo(idx);};})(i);
+    sb.appendChild(d);
+  }
+}
+
+function goTo(idx){
+  var screens=document.querySelectorAll('.screen');
+  screens.forEach(function(s,i){
+    s.classList.remove('active','prev');
+    if(i===idx)s.classList.add('active');
+    else if(i<idx)s.classList.add('prev');
+  });
+  cur=idx;
+  document.querySelectorAll('.nav-dot').forEach(function(d,i){d.classList.toggle('active',i===idx);});
+  document.getElementById('screenInfo').textContent='Screen '+(idx+1)+' of '+total;
+  document.getElementById('prevBtn').disabled=idx===0;
+  document.getElementById('nextBtn').disabled=idx===total-1;
+  document.querySelector('.progress-fill').style.width=((idx+1)/total*100)+'%';
+}
+
+function next(){if(cur<total-1)goTo(cur+1);}
+function prev(){if(cur>0)goTo(cur-1);}
+
+var QUIZ_DATA={
+  q1:{correct:1,feedback:{
+    0:"❌ General Journal is for transactions that don't fit other journals. Credit purchases go in the Purchases Journal.",
+    1:"✅ Correct! Credit purchases go in the Columnar Purchases Journal, in the Paint Department column since it's paint brushes.",
+    2:"❌ Cash Payments Journal is only for cash transactions. This is a credit purchase (on account).",
+    3:"❌ Interdepartmental Transfers Journal is only when stock moves BETWEEN Sipho's own departments."
+  }},
+  q2:{correct:2,feedback:{
+    0:"❌ R8 000 would be if Paint had 33.3% of floor space. Paint has 30m² out of 100m² = 30%. R24 000 × 30% = R7 200.",
+    1:"❌ R12 000 would be 50% of floor space — that's Tools (50m²), not Paint.",
+    2:"✅ Correct! Paint has 30m² out of 100m² total = 30%. R24 000 × 30% = R7 200.",
+    3:"❌ R4 800 would be 20% — that's Electrical (20m²). Paint is 30m²."
+  }},
+  q3:{correct:1,feedback:{
+    0:"❌ This is backwards! The RECEIVER gets debited. Electrical is receiving the stock, so Electrical Dr.",
+    1:"✅ Correct! Electrical (receiver) gets Debited. Tools (giver) gets Credited. The receiver always Dr, giver always Cr.",
+    2:"❌ This looks like a cash purchase entry. Interdepartmental transfers don't involve Bank or Purchases accounts.",
+    3:"❌ Tools is GIVING the stock, so Tools must be Credited, not Debited."
+  }}
+};
+
+function ansQ(el, correct, qid){
+  var data=QUIZ_DATA[qid];
+  if(quizAnswered[qid])return;
+  quizAnswered[qid]=true;
+  var opts=el.parentElement.querySelectorAll('.quiz-opt');
+  opts.forEach(function(o){o.style.pointerEvents='none';});
+  var idx=Array.from(opts).indexOf(el);
+  el.classList.add(correct?'correct':'wrong');
+  if(!correct){opts[data.correct].classList.add('correct');}
+  var fb=document.getElementById(qid+'-fb');
+  fb.style.display='block';
+  fb.style.cssText='display:block;background:'+(correct?'var(--green-xs)':'rgba(244,63,94,.07)')+';border:1.5px solid '+(correct?'var(--green)':'var(--rose)')+';border-radius:10px;padding:10px 12px;font-size:12px;color:'+(correct?'#15803D':'#be123c')+';line-height:1.6;margin-top:8px';
+  fb.textContent=data.feedback[idx];
+  // Auto advance after correct
+  if(correct) setTimeout(function(){if(cur<total-1)goTo(cur+1);},1600);
+}
+
+document.addEventListener('DOMContentLoaded', initDots);
+</script>
+</body>
+</html>
