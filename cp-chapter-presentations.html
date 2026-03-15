@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayikho - Module 4: Presentations</title>
+    <title>Ayikho - Module 4: Presentations (MS PowerPoint)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -530,203 +530,96 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Presentations',
-                subtitle: 'Module 4 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Microsoft PowerPoint Basics</h2>
+        {
+            id: 'intro',
+            title: 'Presentations (MS PowerPoint)',
+            subtitle: 'Module 4 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Creating Effective Presentations',
+            subtitle: 'Module 4 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>PowerPoint turns ideas into visual stories. The 6×6 rule: no more than 6 words per line, 6 lines per slide. Your slides support your voice — they don't replace it.</p></div>
+<h3>What is a Presentation?</h3>
+<p>A presentation is a visual aid that supports a speaker. MS PowerPoint is the standard tool. Slides = the screens. A slide deck = the full set of slides.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>PowerPoint is for presenting ideas visually. Master slides, layouts, animations, and design principles for N4 success.</p>
-                    </div>
+<h3>When You\'ll Use PowerPoint</h3>
+<p>• Class presentations and oral assessments<br>• Job interview presentation tasks (Capitec, Standard Bank love these)<br>• Business proposals and pitches<br>• Training sessions at work<br>• Marketing and sales presentations</p>
 
-                    <h3>What is a Presentation?</h3>
-                    <p>A presentation is a visual story told slide-by-slide. PowerPoint is the tool. Every pitch, training, conference talk uses it.</p>
+<div class="callout sa">
+<h4>🇿🇦 Real talk</h4>
+<p>At Standard Bank\'s graduate programme, candidates must present a 10-minute business case using PowerPoint. If your slides are walls of text with weird transitions and clip art from 2005, you\'re done. Clean, professional slides with clear points = you\'re in the conversation.</p>
+</div>
 
-                    <p>When you present to NYDA for youth funding, pitch to investors, or train new staff—you use PowerPoint.</p>
+<h3>The 6×6 Rule</h3>
+<p><strong>Maximum 6 words per line. Maximum 6 lines per slide.</strong> This forces you to use keywords, not sentences. Your mouth does the talking. Your slides show the highlights.</p>
 
-                    <h3>The Slide Basics</h3>
-                    <p><strong>Slide:</strong> One page of your presentation. A presentation has many slides.</p>
-                    <p><strong>Slide Master:</strong> The template controlling all slides. Change it once, all slides update. Saves time.</p>
-                    <p><strong>Layout:</strong> The arrangement of content on a slide. Title slide, title and content, blank, two columns.</p>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam tests: creating slides, adding text, inserting images, applying slide transitions, setting up slide layouts, and design principles. Know how to do each one step-by-step.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Design Principles & Transitions',
+            subtitle: 'Module 4 of 8',
+            type: 'lesson',
+            content: `
+<h3>Slide Design Rules</h3>
+<p><strong>Consistency:</strong> Use one font family throughout. Same colours. Same layout style. If slide 1 has blue headings, slide 7 shouldn\'t suddenly have red ones.</p>
+<p><strong>Contrast:</strong> Dark text on light background, or light text on dark background. Never yellow text on white background. Never red text on green. If you can\'t read it from the back of the room, fix it.</p>
+<p><strong>Simplicity:</strong> One idea per slide. White space is your friend. Don\'t fill every pixel.</p>
 
-                    <h3>Key Design Elements</h3>
+<h3>Slide Layouts</h3>
+<p><strong>Title Slide:</strong> Presentation name, your name, date. Clean and professional.</p>
+<p><strong>Title and Content:</strong> Heading + bullet points. The workhorse layout.</p>
+<p><strong>Two Content:</strong> Side by side — text left, image right. Good for comparisons.</p>
+<p><strong>Blank:</strong> Full-bleed images, custom layouts. For impact slides.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Text</h3>
-                        <p style="margin: 0;">Keep it short. 1-2 sentences per slide. People read slides, not your speech.</p>
-                    </div>
+<h3>Transitions and Animations</h3>
+<p><strong>Transitions:</strong> How one slide changes to the next. Use ONE consistent transition (like Fade) for the whole deck. Not a different circus effect per slide.</p>
+<p><strong>Animations:</strong> How elements appear on a slide. "Appear" and "Fade" are professional. "Bounce", "Spin", and "Fly In" are not. Ever.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Images</h3>
-                        <p style="margin: 0;">High quality pictures. Relevant to your topic. Don't use stock photos that look fake.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Colors</h3>
-                        <p style="margin: 0;">Consistent color scheme. Max 3 colors. Good contrast between text and background.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Fonts</h3>
-                        <p style="margin: 0;">2 fonts maximum. One for titles (bold), one for body (readable). 24pt minimum for text.</p>
-                    </div>
-
-                    <h3>Animations and Transitions</h3>
-                    <p><strong>Transition:</strong> How you move from one slide to the next. Fade, slide, wipe. Keep it subtle—not distracting.</p>
-                    <p><strong>Animation:</strong> How objects appear on a slide. Text fades in, bullets appear one by one. Don't overdo it.</p>
-
-                    <h3>Speaker Notes</h3>
-                    <p><strong>Speaker Notes:</strong> Text below each slide only you see. Your talking points, statistics, reminders. Not on the slide itself.</p>
-
-                    <div class="callout real-life">
-                        <h4>SA Example</h4>
-                        <p>You're presenting a business proposal to NYDA for youth funding. Slide 1: Your business name and logo. Slide 2: Problem statement. Slide 3: Your solution. Slide 4: Financial projections (R250,000 needed). Slide 5: Team credentials. Slide 6: Timeline. Each slide has speaker notes reminding you what to say and how to answer questions.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'key-terms',
-                title: 'Presentation Skills',
-                subtitle: 'Design Best Practices',
-                type: 'lesson',
-                content: `
-                    <h2>Advanced PowerPoint Features</h2>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Tables</h3>
-                        <p style="margin: 0;">Insert data tables in slides. Show comparisons, timelines, or structured information.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Charts and Graphs</h3>
-                        <p style="margin: 0;">Visual representation of data. Bar charts for comparisons, line graphs for trends, pie charts for percentages.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Slide Sorter</h3>
-                        <p style="margin: 0;">View all slides at once. Drag to reorder. Rename slides. Plan your presentation flow.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Presenter View</h3>
-                        <p style="margin: 0;">On your screen: current slide, next slide, speaker notes, timer. Audience sees only the slides.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Themes</h3>
-                        <p style="margin: 0;">Pre-designed templates. Professional color schemes, fonts, layouts. Apply to all slides instantly.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>N4 exams test: slide design principles (what makes a good slide), layout choices, animation use (when it helps vs distracts), and creating speaker notes. Be ready to critique slides and explain why they work or don't work.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the difference between a transition and an animation in PowerPoint?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Transition moves between slides; animation moves objects within a slide</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Animation is for slides; transition is for objects</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) They are the same thing</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Only one can be used per presentation</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is Speaker Notes used for?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) Text notes below each slide that only the presenter sees</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) Comments from the audience</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Text that appears on the slide itself</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Backup slides in case you need them</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which is a good design principle for presentation slides?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) Use 2-3 colors consistently and keep text to 1-2 sentences</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Use as many colors as possible to look exciting</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Write long paragraphs on every slide</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Use fancy fonts that are hard to read</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Computer Practice N4 · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout sa">
+<h4>🇿🇦 Pro tip</h4>
+<p>The most powerful people at Investec, McKinsey, and Naspers use the simplest slides. Black text, white background, one chart per slide. The flashier your slides, the less confident you look. Let your content do the heavy lifting.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What is the 6×6 rule in PowerPoint?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>6 slides with 6 images each</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>Maximum 6 words per line, 6 lines per slide</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>6 colours and 6 fonts per deck</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>6 minutes per presentation</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> The 6×6 rule keeps slides readable: no more than 6 words per line and 6 lines per slide. This forces you to use keywords, not full sentences.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which slide transition is considered most professional?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Bounce</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">B</span>Spin</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">C</span>Fade</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Fly In from Bottom</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> Fade is clean and professional. Bounce, Spin, and Fly In are distracting and look unprofessional in a business setting.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What should you use for a presentation comparing two products side by side?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Title Slide layout</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>Blank layout</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>Two Content layout</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Section Header layout</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> The Two Content layout places two content areas side by side — perfect for comparisons. Text on one side, image on the other, or two lists compared.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Presentations (MS PowerPoint)!</h2><p style="color:var(--dim);margin-bottom:24px">Computer Practice N4 · Module 4 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#8B5CF6;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
