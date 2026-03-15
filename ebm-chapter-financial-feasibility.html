@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 50%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,266 +530,101 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Financial Feasibility Study',
-                subtitle: 'Module 4 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Can You Afford to Start?</h2>
+        {
+            id: 'intro',
+            title: 'Financial Feasibility Study',
+            subtitle: 'Module 4 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Can You Afford to Start?',
+            subtitle: 'Module 4 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>A financial feasibility study answers: How much money do you need to start? How will you fund it? When will you break even? If the numbers don't work, the idea doesn't work.</p></div>
+<h3>Start-up Costs</h3>
+<p>Everything you need to spend BEFORE you make your first sale:</p>
+<p><strong>Fixed costs:</strong> Equipment, furniture, deposit on premises, signage, registration fees. These are one-time costs.</p>
+<p><strong>Working capital:</strong> Money to cover daily expenses (rent, stock, salaries) until the business generates enough revenue. Most businesses need 3-6 months of working capital.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Financial feasibility studies prove your business can make money. Calculate start-up costs, income projections, and break-even point. No money = no business.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Sipho\'s Car Wash — Start-up costs</h4>
+<p>• Pressure washer: R3,500<br>• Hose and buckets: R800<br>• Cleaning chemicals (first batch): R600<br>• Signage: R1,200<br>• First month rent (vacant lot): R2,000<br>• Marketing flyers: R400<br><strong>Total start-up: R8,500</strong></p>
+<p>Working capital (3 months): R6,000 for supplies + R6,000 rent = R12,000</p>
+<p><strong>Total needed: R20,500</strong></p>
+</div>
 
-                    <h3>Start-up Costs</h3>
-                    <p>Start-up costs are all expenses needed to launch your business before earning a single Rand.</p>
+<h3>Sources of Funding</h3>
+<p><strong>Own savings:</strong> The safest — no debt, no giving up ownership.</p>
+<p><strong>Family and friends:</strong> Common in SA. Put it in writing even if it\'s your uncle.</p>
+<p><strong>Bank loan:</strong> Requires a business plan. Capitec, Nedbank, Standard Bank offer SME loans.</p>
+<p><strong>SEFA:</strong> Small Enterprise Finance Agency — government funding for small businesses.</p>
+<p><strong>NYDA:</strong> National Youth Development Agency — grants and loans for youth-owned businesses.</p>
 
-                    <h3>Real Example: Mamelodi Car Wash</h3>
-                    <div class="example-box">
-                        <div class="example-title">Complete Start-up Budget</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Equipment:</strong> Pressure washer (R8,000), hose & nozzles (R1,500), buckets & brushes (R800) = R10,300</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Facility:</strong> Rent deposit (R5,000), first month rent (R3,000) = R8,000</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Materials:</strong> Soap, shampoo, wax stock (R4,000) = R4,000</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Signage & permits:</strong> Sign (R2,000), business registration (R175) = R2,175</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>TOTAL START-UP COST: R24,475</strong></div>
-                        </div>
-                    </div>
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam asks you to calculate start-up costs for a given scenario. List ALL costs, divide into fixed and working capital, and total them. Also know at least 4 sources of funding and the pros/cons of each.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Break-Even Analysis',
+            subtitle: 'Module 4 of 8',
+            type: 'lesson',
+            content: `
+<h3>What is Break-Even?</h3>
+<p>The break-even point is when total revenue = total costs. Before this point, you\'re losing money. After it, you\'re making profit.</p>
+<p><strong>Formula: Break-even units = Fixed costs ÷ (Selling price per unit - Variable cost per unit)</strong></p>
 
-                    <h3>Income Projections</h3>
-                    <p>How much will you earn in your first year?</p>
-                    <p><strong>Car wash example:</strong> Price per wash: R120. Expect 5 cars daily. Daily income: R600. Monthly (25 work days): R15,000. Annual: R180,000.</p>
+<div class="callout sa">
+<h4>🇿🇦 Sipho\'s Break-Even</h4>
+<p>Sipho charges R80 per car wash. His variable cost per wash (water, chemicals, labour) = R30. His monthly fixed costs (rent, equipment) = R3,000.</p>
+<p><strong>Break-even = R3,000 ÷ (R80 - R30) = R3,000 ÷ R50 = 60 cars per month</strong></p>
+<p>That\'s 3 cars per day (20 working days). If he washes 4+ cars per day, he\'s in profit. If he does 2, he\'s losing money. The numbers tell the story.</p>
+</div>
 
-                    <h3>Operating Costs</h3>
-                    <p><strong>Recurring monthly expenses:</strong></p>
-                    <p>• Rent: R3,000</p>
-                    <p>• Salaries (1 helper): R4,000</p>
-                    <p>• Materials: R2,000</p>
-                    <p>• Utilities: R1,000</p>
-                    <p>• Total monthly cost: R10,000</p>
+<h3>Cash Flow Projection</h3>
+<p>A month-by-month forecast of money coming in vs money going out. Shows when you\'ll run out of cash (so you can plan) and when you\'ll turn profitable.</p>
+<p>Cash flow is king. Profitable businesses fail every day because they run out of cash before customers pay them. Plan for delays — especially in SA where 30-60 day payment terms are standard for B2B.</p>
 
-                    <h3>Break-even Analysis</h3>
-                    <p><strong>Break-even point:</strong> When total income equals total costs. You're not making profit yet, but you're covering expenses.</p>
-                    <p><strong>Formula:</strong> Break-even = Start-up Cost ÷ (Monthly Income - Monthly Costs)</p>
-                    <p><strong>Car wash example:</strong> R24,475 ÷ (R15,000 - R10,000) = R24,475 ÷ R5,000 = 4.9 months</p>
-                    <p>The business breaks even after approximately 5 months. After that, profit = R5,000/month.</p>
-
-                    <div class="callout real-life">
-                        <h4>Cash Flow</h4>
-                        <p>Cash flow is money coming in and going out. Even if you're profitable on paper, if customers don't pay immediately, you'll run out of cash. Always keep 3 months of operating costs as emergency buffer.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'funding',
-                title: 'Funding Sources',
-                subtitle: 'Module 4 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Where Does Start-up Money Come From?</h2>
-
-                    <h3>Funding Options</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Personal Savings</h3>
-                        <p style="margin: 0;">Most common. You save money and invest it yourself. No debt, but risky if business fails.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Family Loans</h3>
-                        <p style="margin: 0;">Borrow from family. Less formal, lower interest. But damages relationship if you default.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Bank Loans</h3>
-                        <p style="margin: 0;">Traditional bank financing. Requires collateral and good credit history. Interest rates: 8-12% annually.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">NYDA (National Youth Development Agency)</h3>
-                        <p style="margin: 0;">South African government agency grants up to R200,000 for youth entrepreneurs aged 18-35. Requires business plan, no personal collateral.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">SEFA (Small Enterprise Finance Agency)</h3>
-                        <p style="margin: 0;">Grants and loans for small businesses. Easy approval for entrepreneurs under 40 with valid business plans.</p>
-                    </div>
-
-                    <h3>Building Financial Projections</h3>
-                    <p><strong>Year 1:</strong> Most businesses lose money or barely break even. Reasonable target: cover start-up costs.</p>
-                    <p><strong>Year 2:</strong> Stable operations. Target: R50,000-100,000 net profit.</p>
-                    <p><strong>Year 3:</strong> Growth phase. Target: Double year 2 profits or expand to new location.</p>
-
-                    <div class="callout exam">
-                        <h4>Key Concept: Runway</h4>
-                        <p>Runway is how many months you can operate before running out of cash. If you have R50,000 cash and burn R10,000/month, you have 5 months runway. Always extend runway before it reaches zero.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What are start-up costs?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) All expenses needed to launch your business before earning money</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) The salary you pay yourself</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) Monthly rent only</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Optional expenses you can skip</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a break-even point?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) When total income equals total costs; no profit yet, but no loss either</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) The moment you start making a million Rand</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) When your business fails completely</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) The day you register your business</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which of these is a South African government funding option for youth entrepreneurs?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) NYDA grants up to R200,000 for ages 18-35</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Borrowing from a foreign bank</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Asking Elon Musk for money</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Government taxes</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is cash flow?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) Money coming in and going out of your business</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) The amount you profit from each sale</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) Money your customers steal from you</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Only the money you receive on Fridays</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Why is it important to calculate your break-even point?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">A) To know how many months until you cover your initial investment and start profiting</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">B) Because mathematicians love calculations</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) To impress your friends with numbers</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) It's not important; just guess when you'll be profitable</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam gives you figures and asks you to calculate break-even. Memorise the formula. Practice with different numbers. Also know what cash flow is and why a business can be profitable on paper but still fail due to cash flow problems.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What is the break-even point?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>When the business closes</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>When total revenue equals total costs</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>When the business takes out a loan</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>When the owner gets paid</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> Break-even is when your total revenue exactly equals your total costs — you're not making a profit, but you're not losing money either. Every sale after break-even is pure profit.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">If fixed costs are R5,000/month, selling price is R100, and variable cost is R40, how many units must be sold to break even?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>50 units</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>84 units</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>125 units</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>200 units</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> Break-even = Fixed costs ÷ (Selling price - Variable cost) = R5,000 ÷ (R100 - R40) = R5,000 ÷ R60 = 83.3, rounded up to 84 units. You can't sell a fraction of a unit!</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which of the following is a South African government funding source for youth entrepreneurs?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>Capitec Personal Loan</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">B</span>NYDA (National Youth Development Agency)</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">C</span>Stokvel</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Family loan</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> NYDA (National Youth Development Agency) provides grants and loans specifically for South African youth-owned businesses. Capitec personal loans, stokvels, and family loans are private funding sources.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Financial Feasibility Study!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 4 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
