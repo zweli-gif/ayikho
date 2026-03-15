@@ -1139,6 +1139,29 @@
         }
         .lv-btn:hover { background: var(--fa); transform: scale(1.1); }
         @keyframes ashki-pop { from { opacity:0; transform:translateX(-50%) scale(.7) translateY(20px); } to { opacity:1; transform:translateX(-50%) scale(1) translateY(0); } }
+
+        /* ── BIG THREE EXERCISE ── */
+        .stmt-panel { animation: fadeIn .3s ease; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+        .stmt-section { margin-bottom:8px; }
+        .stmt-sec-label { font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);background:var(--fa-xs);padding:5px 12px;border-radius:6px 6px 0 0; }
+        .stmt-drop-zone { min-height:48px;background:var(--surf);border:1.5px dashed var(--bord);border-top:none;border-radius:0 0 8px 8px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center; }
+        .drop-hint { font-size:10px;color:var(--dim);font-style:italic;width:100%;text-align:center;padding:4px 0; }
+        .stmt-calc-row { display:flex;justify-content:space-between;align-items:center;padding:8px 12px;font-size:12px;font-family:'JetBrains Mono',monospace; }
+        .tb-row { display:flex;justify-content:space-between;align-items:center;padding:7px 14px;border-bottom:1px solid var(--bord);cursor:pointer;transition:background .15s; }
+        .tb-row:hover { background:var(--fa-xs); }
+        .tb-row.placed { opacity:.4;pointer-events:none; }
+        .tb-row.selected { background:var(--fa-sm);border-left:3px solid var(--fa); }
+        .tb-acc-name { font-size:11px;color:var(--ink);font-weight:600; }
+        .tb-amounts { display:flex;gap:16px; }
+        .tb-amt { font-size:11px;color:var(--fa-d);width:60px;text-align:right; }
+        .placed-tag { display:inline-flex;align-items:center;gap:5px;background:var(--fa-sm);border:1px solid var(--fa-l);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--fa-d);cursor:pointer; }
+        .placed-tag:hover { background:rgba(244,63,94,.15);border-color:var(--rose);color:var(--rose); }
+        .eq-row { display:flex;justify-content:space-between;align-items:center;padding:8px 12px;font-size:12px; }
+        .eq-label { color:var(--mut);font-weight:600; }
+        .eq-val { font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ink); }
+        #tab-is.active-tab, #tab-bs.active-tab, #tab-eq.active-tab { background:var(--fa)!important;color:white!important;border-color:var(--fa)!important; }
+
     </style>
     <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
     <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
@@ -1578,6 +1601,173 @@
                 </div>
             </div>
 
+
+            <!-- Screen 7: Trial Balance → Big Three Exercise -->
+            <div class="screen" id="screen-bigthree">
+                <div class="header">
+                    <div class="header-title">
+                        <h1>Build the Big Three</h1>
+                        <p>From Trial Balance → Financial Statements</p>
+                    </div>
+                    <div class="header-progress">
+                        <div style="font-size:10px;opacity:.8">Exercise</div>
+                        <div style="font-weight:700">🏗️</div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="content-inner">
+
+                        <div style="background:var(--fa-xs);border:1.5px solid var(--fa-sm);border-radius:14px;padding:14px 16px;margin-bottom:16px">
+                            <div style="font-size:10px;font-weight:700;color:var(--fa);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">📋 The Scenario</div>
+                            <p style="font-size:13px;color:var(--fa-d);line-height:1.6;font-weight:600">Sipho's Hardware Store<br>Trial Balance — 28 February 2025</p>
+                            <p style="font-size:11px;color:var(--mut);margin-top:4px">Use the trial balance below to build all three financial statements. Tap each account to place it in the correct statement.</p>
+                        </div>
+
+                        <!-- TRIAL BALANCE TABLE -->
+                        <div style="background:white;border:1.5px solid var(--bord);border-radius:12px;overflow:hidden;margin-bottom:16px">
+                            <div style="background:var(--ink);padding:10px 14px;display:flex;justify-content:space-between">
+                                <span style="color:white;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace">ACCOUNT</span>
+                                <div style="display:flex;gap:16px">
+                                    <span style="color:rgba(255,255,255,.7);font-size:11px;font-family:'JetBrains Mono',monospace">DEBIT</span>
+                                    <span style="color:rgba(255,255,255,.7);font-size:11px;font-family:'JetBrains Mono',monospace">CREDIT</span>
+                                </div>
+                            </div>
+                            <div id="tb-rows" style="font-size:12px;font-family:'JetBrains Mono',monospace">
+                                <!-- rows injected by JS -->
+                            </div>
+                            <div style="background:var(--surf);padding:8px 14px;display:flex;justify-content:space-between;border-top:2px solid var(--ink)">
+                                <span style="font-size:11px;font-weight:800;color:var(--ink);font-family:'JetBrains Mono',monospace">TOTALS</span>
+                                <div style="display:flex;gap:16px">
+                                    <span style="font-size:11px;font-weight:800;color:var(--fa);font-family:'JetBrains Mono',monospace">R 621 500</span>
+                                    <span style="font-size:11px;font-weight:800;color:var(--fa);font-family:'JetBrains Mono',monospace">R 621 500</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STATEMENT TABS -->
+                        <div style="display:flex;gap:6px;margin-bottom:12px" id="stmt-tabs">
+                            <button onclick="switchStmt('is')" id="tab-is" style="flex:1;background:var(--fa);color:white;border:none;border-radius:10px;padding:8px 4px;font-family:Outfit,sans-serif;font-size:10px;font-weight:700;cursor:pointer">Income Stmt</button>
+                            <button onclick="switchStmt('bs')" id="tab-bs" style="flex:1;background:var(--surf);color:var(--mut);border:1.5px solid var(--bord);border-radius:10px;padding:8px 4px;font-family:Outfit,sans-serif;font-size:10px;font-weight:700;cursor:pointer">Balance Sheet</button>
+                            <button onclick="switchStmt('eq')" id="tab-eq" style="flex:1;background:var(--surf);color:var(--mut);border:1.5px solid var(--bord);border-radius:10px;padding:8px 4px;font-family:Outfit,sans-serif;font-size:10px;font-weight:700;cursor:pointer">Equity Stmt</button>
+                        </div>
+
+                        <!-- INCOME STATEMENT BUILDER -->
+                        <div id="stmt-is" class="stmt-panel">
+                            <div style="font-size:11px;font-weight:800;color:var(--ink);text-align:center;margin-bottom:10px;letter-spacing:.05em">INCOME STATEMENT<br><span style="font-weight:400;color:var(--mut)">Year ended 28 February 2025</span></div>
+                            <div class="stmt-section" id="is-sales">
+                                <div class="stmt-sec-label">REVENUE</div>
+                                <div class="stmt-drop-zone" data-stmt="is" data-section="revenue" id="drop-is-revenue">
+                                    <div class="drop-hint">Tap accounts from the TB above ↑</div>
+                                </div>
+                            </div>
+                            <div class="stmt-section" id="is-cos">
+                                <div class="stmt-sec-label">COST OF SALES</div>
+                                <div class="stmt-drop-zone" data-stmt="is" data-section="cos" id="drop-is-cos">
+                                    <div class="drop-hint">Tap accounts from the TB above ↑</div>
+                                </div>
+                                <div class="stmt-calc-row" id="is-gp-row" style="display:none">
+                                    <span style="font-weight:700">Gross Profit</span>
+                                    <span id="is-gp-val" style="font-weight:800;color:var(--fa)">R 0</span>
+                                </div>
+                            </div>
+                            <div class="stmt-section" id="is-exp">
+                                <div class="stmt-sec-label">OPERATING EXPENSES</div>
+                                <div class="stmt-drop-zone" data-stmt="is" data-section="expenses" id="drop-is-expenses">
+                                    <div class="drop-hint">Tap accounts from the TB above ↑</div>
+                                </div>
+                            </div>
+                            <div class="stmt-calc-row" style="background:var(--ink);border-radius:10px;padding:10px 14px;margin-top:8px" id="is-np-row">
+                                <span style="color:white;font-weight:700;font-size:13px">Net Profit / (Loss)</span>
+                                <span id="is-np-val" style="color:var(--gold);font-weight:900;font-size:14px;font-family:JetBrains Mono,monospace">R 0</span>
+                            </div>
+                            <div id="is-feedback" style="min-height:32px;margin-top:8px;font-size:12px;text-align:center;border-radius:8px;padding:6px"></div>
+                        </div>
+
+                        <!-- BALANCE SHEET BUILDER -->
+                        <div id="stmt-bs" class="stmt-panel" style="display:none">
+                            <div style="font-size:11px;font-weight:800;color:var(--ink);text-align:center;margin-bottom:10px;letter-spacing:.05em">BALANCE SHEET<br><span style="font-weight:400;color:var(--mut)">As at 28 February 2025</span></div>
+                            <div class="stmt-section">
+                                <div class="stmt-sec-label" style="background:rgba(2,132,199,.1);color:var(--fa)">NON-CURRENT ASSETS</div>
+                                <div class="stmt-drop-zone" data-stmt="bs" data-section="nca" id="drop-bs-nca">
+                                    <div class="drop-hint">Long-term assets (land, vehicles, equipment)</div>
+                                </div>
+                            </div>
+                            <div class="stmt-section">
+                                <div class="stmt-sec-label" style="background:rgba(34,197,94,.1);color:#15803D">CURRENT ASSETS</div>
+                                <div class="stmt-drop-zone" data-stmt="bs" data-section="ca" id="drop-bs-ca">
+                                    <div class="drop-hint">Short-term assets (cash, debtors, inventory)</div>
+                                </div>
+                            </div>
+                            <div class="stmt-calc-row" style="background:var(--fa-xs);border-radius:8px;padding:8px 14px;margin:6px 0" id="bs-ta-row">
+                                <span style="font-weight:700;color:var(--fa)">Total Assets</span>
+                                <span id="bs-ta-val" style="font-weight:800;color:var(--fa);font-family:JetBrains Mono,monospace">R 0</span>
+                            </div>
+                            <div class="stmt-section" style="margin-top:8px">
+                                <div class="stmt-sec-label" style="background:rgba(124,58,237,.1);color:var(--p)">EQUITY</div>
+                                <div class="stmt-drop-zone" data-stmt="bs" data-section="equity" id="drop-bs-equity">
+                                    <div class="drop-hint">Owner's equity and retained earnings</div>
+                                </div>
+                            </div>
+                            <div class="stmt-section">
+                                <div class="stmt-sec-label" style="background:rgba(244,63,94,.1);color:#be123c">NON-CURRENT LIABILITIES</div>
+                                <div class="stmt-drop-zone" data-stmt="bs" data-section="ncl" id="drop-bs-ncl">
+                                    <div class="drop-hint">Long-term loans and mortgages</div>
+                                </div>
+                            </div>
+                            <div class="stmt-section">
+                                <div class="stmt-sec-label" style="background:rgba(245,158,11,.1);color:#b45309">CURRENT LIABILITIES</div>
+                                <div class="stmt-drop-zone" data-stmt="bs" data-section="cl" id="drop-bs-cl">
+                                    <div class="drop-hint">Short-term debts (creditors, bank overdraft)</div>
+                                </div>
+                            </div>
+                            <div class="stmt-calc-row" style="background:var(--ink);border-radius:10px;padding:10px 14px;margin-top:8px">
+                                <span style="color:white;font-weight:700;font-size:13px">Total Equity + Liabilities</span>
+                                <span id="bs-tel-val" style="color:var(--gold);font-weight:900;font-size:14px;font-family:JetBrains Mono,monospace">R 0</span>
+                            </div>
+                            <div id="bs-balance-check" style="min-height:32px;margin-top:8px;font-size:12px;text-align:center;border-radius:8px;padding:6px"></div>
+                        </div>
+
+                        <!-- EQUITY STATEMENT BUILDER -->
+                        <div id="stmt-eq" class="stmt-panel" style="display:none">
+                            <div style="font-size:11px;font-weight:800;color:var(--ink);text-align:center;margin-bottom:10px;letter-spacing:.05em">STATEMENT OF CHANGES IN EQUITY<br><span style="font-weight:400;color:var(--mut)">Year ended 28 February 2025</span></div>
+                            <div style="background:var(--pxs);border:1.5px solid var(--psm);border-radius:12px;padding:14px;margin-bottom:12px">
+                                <div style="font-size:10px;font-weight:700;color:var(--p);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">💡 How it works</div>
+                                <p style="font-size:12px;color:var(--mut);line-height:1.6">Opening Capital + Net Profit − Drawings = Closing Capital</p>
+                            </div>
+                            <div class="eq-row">
+                                <span class="eq-label">Opening Capital (1 March 2024)</span>
+                                <span class="eq-val" id="eq-opening">R 0</span>
+                            </div>
+                            <div class="eq-row" style="color:var(--green)">
+                                <span class="eq-label">Add: Net Profit for the year</span>
+                                <span class="eq-val" id="eq-profit">R 0</span>
+                            </div>
+                            <div class="eq-row" style="color:var(--rose)">
+                                <span class="eq-label">Less: Drawings</span>
+                                <span class="eq-val" id="eq-drawings">(R 0)</span>
+                            </div>
+                            <div style="height:1.5px;background:var(--ink);margin:10px 0"></div>
+                            <div class="eq-row" style="font-size:14px">
+                                <span style="font-weight:800;color:var(--ink)">Closing Capital (28 Feb 2025)</span>
+                                <span style="font-weight:900;color:var(--p);font-family:JetBrains Mono,monospace" id="eq-closing">R 0</span>
+                            </div>
+                            <div id="eq-feedback" style="min-height:32px;margin-top:12px;font-size:12px;text-align:center;border-radius:8px;padding:6px"></div>
+                            <div id="eq-auto-note" style="display:none;margin-top:8px;background:var(--green-xs);border-radius:8px;padding:10px 12px;font-size:11px;color:#15803D;line-height:1.6">
+                                ✅ Auto-calculated from your Income Statement and TB data! The equity statement links all three statements together.
+                            </div>
+                        </div>
+
+                        <!-- CHECK ANSWER BUTTON -->
+                        <div style="margin-top:16px" id="check-btn-wrap">
+                            <button onclick="checkBigThree()" style="width:100%;background:var(--p);color:white;border:none;border-radius:14px;padding:14px;font-family:Outfit,sans-serif;font-weight:700;font-size:14px;cursor:pointer">Check my answers ✓</button>
+                        </div>
+                        <div id="bigthree-result" style="margin-top:12px;min-height:40px;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6"></div>
+
+                        <div style="height:20px"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Screen 7: Quiz Question 1 -->
             <div class="screen">
                 <div class="header">
@@ -1834,7 +2024,7 @@
 
         const MODULE_ID = 9;
         let currentScreen = 0;
-        const totalScreens = 11;
+        const totalScreens = 12;
         let videoTime = 0;
         let videoPlaying = false;
         const videoDuration = 225; // 3:45 in seconds
@@ -1960,7 +2150,7 @@
         function goToScreen(index) {
             currentScreen = Math.max(0, Math.min(index, totalScreens - 1));
             notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: totalScreens });
-            if (currentScreen === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            if (currentScreen === 10) notifyParent('moduleComplete', { moduleId: MODULE_ID });
             // Track screen view
             if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(9, currentScreen);
             updateScreen();
@@ -2303,6 +2493,137 @@
             });
             lvOutro.addEventListener('click', () => { nextScreen(); });
         })();
+
+        // BIG THREE EXERCISE LOGIC
+        var BT = {
+          selected: null,
+          tbData: [
+            {name:"Capital (Sipho)",         dr:0,      cr:285000, stmt:null, section:null, type:"equity"},
+            {name:"Drawings",                dr:42000,  cr:0,      stmt:null, section:null, type:"equity"},
+            {name:"Land & Buildings",        dr:180000, cr:0,      stmt:null, section:null, type:"nca"},
+            {name:"Vehicles",                dr:95000,  cr:0,      stmt:null, section:null, type:"nca"},
+            {name:"Acc. Dep - Vehicles",     dr:0,      cr:28500,  stmt:null, section:null, type:"nca"},
+            {name:"Inventory",               dr:38000,  cr:0,      stmt:null, section:null, type:"ca"},
+            {name:"Debtors Control",         dr:24500,  cr:0,      stmt:null, section:null, type:"ca"},
+            {name:"Bank",                    dr:18200,  cr:0,      stmt:null, section:null, type:"ca"},
+            {name:"Cash Float",              dr:3800,   cr:0,      stmt:null, section:null, type:"ca"},
+            {name:"Mortgage Loan",           dr:0,      cr:60000,  stmt:null, section:null, type:"ncl"},
+            {name:"Creditors Control",       dr:0,      cr:19000,  stmt:null, section:null, type:"cl"},
+            {name:"Sales",                   dr:0,      cr:320000, stmt:null, section:null, type:"revenue"},
+            {name:"Cost of Sales",           dr:192000, cr:0,      stmt:null, section:null, type:"cos"},
+            {name:"Salaries & Wages",        dr:48000,  cr:0,      stmt:null, section:null, type:"expenses"},
+            {name:"Rent Expense",            dr:36000,  cr:0,      stmt:null, section:null, type:"expenses"},
+            {name:"Electricity & Water",     dr:14400,  cr:0,      stmt:null, section:null, type:"expenses"},
+            {name:"Depreciation - Vehicles", dr:9500,   cr:0,      stmt:null, section:null, type:"expenses"},
+            {name:"Interest on Loan",        dr:6600,   cr:0,      stmt:null, section:null, type:"expenses"}
+          ],
+          correctMap:{
+            revenue:{stmt:"is",section:"revenue"},cos:{stmt:"is",section:"cos"},
+            expenses:{stmt:"is",section:"expenses"},nca:{stmt:"bs",section:"nca"},
+            ca:{stmt:"bs",section:"ca"},equity:{stmt:"bs",section:"equity"},
+            ncl:{stmt:"bs",section:"ncl"},cl:{stmt:"bs",section:"cl"}
+          }
+        };
+        function initBigThree(){
+          var tbEl=document.getElementById('tb-rows'); if(!tbEl||tbEl.children.length>0)return;
+          BT.tbData.forEach(function(row,i){
+            var el=document.createElement('div'); el.className='tb-row'; el.id='tb-'+i;
+            el.onclick=function(){selectTBRow(i);};
+            el.innerHTML='<span class="tb-acc-name">'+row.name+'</span>'
+              +'<div class="tb-amounts"><span class="tb-amt">'+(row.dr>0?'R '+row.dr.toLocaleString():'')+'</span>'
+              +'<span class="tb-amt">'+(row.cr>0?'R '+row.cr.toLocaleString():'')+'</span></div>';
+            tbEl.appendChild(el);
+          });
+        }
+        function selectTBRow(i){
+          if(BT.selected===i){BT.selected=null;clearBTHighlight();return;}
+          BT.selected=i; clearBTHighlight();
+          var el=document.getElementById('tb-'+i); if(el)el.classList.add('selected');
+          var res=document.getElementById('bigthree-result');
+          if(res){res.style.cssText='background:var(--fa-xs);border:1.5px solid var(--fa-sm);color:var(--fa-d);border-radius:10px;padding:8px 12px;font-size:12px;margin-top:12px';
+            res.textContent='"'+BT.tbData[i].name+'" selected — tap a section below to place it';}
+          document.querySelectorAll('.stmt-drop-zone').forEach(function(z){
+            z.onclick=function(){placeTBRow(i,z.dataset.stmt,z.dataset.section,z);}; z.style.borderColor='var(--fa)';z.style.cursor='pointer';
+          });
+        }
+        function clearBTHighlight(){
+          document.querySelectorAll('.tb-row').forEach(function(r){r.classList.remove('selected');});
+          document.querySelectorAll('.stmt-drop-zone').forEach(function(z){z.style.borderColor='';z.style.cursor='';z.onclick=null;});
+        }
+        function placeTBRow(i,stmt,section,zoneEl){
+          var row=BT.tbData[i]; if(row.stmt)return;
+          row.stmt=stmt; row.section=section; BT.selected=null; clearBTHighlight();
+          var tbRow=document.getElementById('tb-'+i); if(tbRow)tbRow.classList.add('placed');
+          var hint=zoneEl.querySelector('.drop-hint'); if(hint)hint.remove();
+          var tag=document.createElement('span'); tag.className='placed-tag'; tag.dataset.idx=i;
+          var amt=row.dr>0?'R '+row.dr.toLocaleString():'R '+row.cr.toLocaleString();
+          tag.innerHTML=row.name+' <b>'+amt+'</b> x';
+          tag.onclick=function(e){e.stopPropagation();removeBTRow(i,zoneEl,tag);};
+          zoneEl.appendChild(tag); recalcBT();
+          var res=document.getElementById('bigthree-result'); if(res){res.textContent='';res.style.cssText='';}
+        }
+        function removeBTRow(i,zoneEl,tag){
+          BT.tbData[i].stmt=null;BT.tbData[i].section=null;
+          zoneEl.removeChild(tag);
+          var tbRow=document.getElementById('tb-'+i); if(tbRow)tbRow.classList.remove('placed');
+          if(!zoneEl.querySelector('.placed-tag')){var h=document.createElement('div');h.className='drop-hint';h.textContent='Tap accounts from the TB above';zoneEl.appendChild(h);}
+          recalcBT();
+        }
+        function recalcBT(){
+          var t={revenue:0,cos:0,expenses:0,nca:0,ca:0,equity:0,ncl:0,cl:0};
+          BT.tbData.forEach(function(row){if(!row.section||t[row.section]===undefined)return;t[row.section]+=row.dr>0?row.dr:row.cr;});
+          var gp=t.revenue-t.cos; var np=gp-t.expenses;
+          var gpR=document.getElementById('is-gp-row'); if(gpR)gpR.style.display=(t.revenue||t.cos)?'flex':'none';
+          var gpE=document.getElementById('is-gp-val'); if(gpE)gpE.textContent=fmtR(gp);
+          var npE=document.getElementById('is-np-val'); if(npE){npE.textContent=fmtR(np);npE.style.color=np>=0?'var(--gold)':'var(--rose)';}
+          var ta=t.nca+t.ca; var tel=t.equity+t.ncl+t.cl;
+          var taE=document.getElementById('bs-ta-val'); if(taE)taE.textContent=fmtR(ta);
+          var telE=document.getElementById('bs-tel-val'); if(telE){telE.textContent=fmtR(tel);telE.style.color=(ta===tel&&ta>0)?'var(--green)':'var(--gold)';}
+          var oc=BT.tbData.find(function(r){return r.name==="Capital (Sipho)";}); oc=oc?oc.cr:0;
+          var dr=BT.tbData.find(function(r){return r.name==="Drawings";}); dr=dr?dr.dr:0;
+          var cl=oc+np-dr;
+          var eO=document.getElementById('eq-opening');if(eO)eO.textContent=fmtR(oc);
+          var eP=document.getElementById('eq-profit');if(eP)eP.textContent=fmtR(np);
+          var eD=document.getElementById('eq-drawings');if(eD)eD.textContent='('+fmtR(dr)+')';
+          var eC=document.getElementById('eq-closing');if(eC)eC.textContent=fmtR(cl);
+          var eN=document.getElementById('eq-auto-note');if(eN)eN.style.display=np!==0?'block':'none';
+        }
+        function fmtR(n){return n<0?'(R '+Math.abs(n).toLocaleString()+')':'R '+n.toLocaleString();}
+        function switchStmt(id){
+          ['is','bs','eq'].forEach(function(s){
+            var p=document.getElementById('stmt-'+s);if(p)p.style.display=s===id?'block':'none';
+            var tab=document.getElementById('tab-'+s);
+            if(tab){if(s===id){tab.style.background='var(--fa)';tab.style.color='white';tab.style.borderColor='var(--fa)';}
+            else{tab.style.background='var(--surf)';tab.style.color='var(--mut)';tab.style.borderColor='var(--bord)';}}
+          });
+          if(id==='eq')recalcBT();
+        }
+        function checkBigThree(){
+          var wrong=[],correct=0;
+          BT.tbData.forEach(function(row){
+            if(!row.stmt){wrong.push(row.name+' not placed');return;}
+            var exp=BT.correctMap[row.type];if(!exp)return;
+            if(row.stmt!==exp.stmt||row.section!==exp.section){wrong.push(row.name);}else{correct++;}
+          });
+          var res=document.getElementById('bigthree-result');
+          if(wrong.length===0){
+            res.style.cssText='background:var(--green-xs);border:1.5px solid var(--green);color:#15803D;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.6;margin-top:12px';
+            res.innerHTML='<strong>Perfect! All '+correct+' accounts correct!</strong><br>Net Profit = R 13 500. Total Assets = R 330 500 = Total Equity + Liabilities. Exam ready! 🎓';
+          }else if(wrong.length<=4){
+            res.style.cssText='background:#FFFBEB;border:1.5px solid var(--gold);color:#92400E;border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.7;margin-top:12px';
+            res.innerHTML='<strong>'+correct+'/'+BT.tbData.length+' correct. Check:</strong><br>'+wrong.slice(0,4).map(function(w){return '• '+w;}).join('<br>');
+          }else{
+            res.style.cssText='background:rgba(244,63,94,.07);border:1.5px solid var(--rose);color:#be123c;border-radius:12px;padding:12px 14px;font-size:12px;margin-top:12px';
+            res.innerHTML='<strong>'+correct+' correct so far.</strong><br>IS: Revenue, COS, Expenses. BS: Assets (NCA+CA) and Funding (Equity+Liabilities).';
+          }
+        }
+        document.addEventListener('DOMContentLoaded',function(){
+          if(typeof goToScreen!=='undefined'){
+            var _go=goToScreen;
+            goToScreen=function(idx){_go(idx);if(idx===6)setTimeout(initBigThree,120);};
+          }
+        });
+
     </script>
     <div id="ashki-reaction" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:none;z-index:9999;animation:ashki-pop .4s cubic-bezier(.34,1.56,.64,1)">
       <div style="display:flex;align-items:flex-end;gap:8px;background:white;border-radius:16px;padding:10px 14px;box-shadow:0 8px 32px rgba(0,0,0,.2)">
