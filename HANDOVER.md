@@ -39,3 +39,22 @@ Here is a comprehensive rundown of the major features and refactoring tasks we r
 To continue where you left off smoothly:
 - The updated flow mainly lives within `ayikho-prototype.html` and `ayikho-onboarding-v2.html`.
 - Check out `HANDOVER.md` directly at the root of the project to share with team members if they also lost context.
+
+## 5. Instructions for UX/UI Review (LLM)
+If you are an AI/LLM reading this document to assist with a UX/UI review, please note the following context and objectives:
+
+**Your Goal:** Uplift the overall user experience and interface (UX/UI) of the Ayikho app to make it feel premium, engaging, and highly intuitive for students learning on mobile devices (375x812px viewport).
+
+**Key Files to Review (in this GitHub Repository on the `ux-review-branch` branch):**
+- Core App: `app.html`
+- Quiz Module: `ayikho-quiz.html`
+- Onboarding: `ayikho-onboarding-v2.html`
+- Prototype Reference: `ayikho-prototype.html`
+- Quiz Banks: `mc-quiz-bank.js`, `cp-quiz-bank.js`, `ebm-quiz-bank.js`
+
+**Your Deliverables:**
+1. A comprehensive UX/UI Audit (Strengths and Areas for Improvement).
+2. A Proposed Design System (Typography, spacing, modern currated HSL/Hex palettes, etc.).
+3. A **functional, self-contained HTML prototype** demonstrating your redesign. Use modern vanilla CSS (glassmorphism, smooth gradients, animations) without external frameworks unless strictly necessary. Do not generate a PDF.
+
+Please read the code in the files listed above to understand the current state before generating your prototype.
