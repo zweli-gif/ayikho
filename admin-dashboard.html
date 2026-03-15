@@ -73,6 +73,7 @@ tr:hover td{background:rgba(124,58,237,.03)}
 <div class="tab" data-tab="business">Business</div>
 <div class="tab" data-tab="impact">Impact</div>
 <div class="tab" data-tab="system">System</div>
+<div class="tab" data-tab="masterlist">Master List</div>
 </div>
 <div class="content">
 
@@ -214,7 +215,67 @@ tr:hover td{background:rgba(124,58,237,.03)}
 </table></div>
 </div>
 
-</div></div>
+</div>
+
+<!-- MASTER LIST -->
+<div class="panel" id="p-masterlist">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+  <div>
+    <div class="sec-title" style="margin-bottom:2px">Live User Master List</div>
+    <div style="font-size:12px;color:var(--t3);font-family:'JetBrains Mono',monospace">Pulling live from Firebase · updates on load</div>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button onclick="exportXLSX()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:9px 18px;font-family:Outfit,sans-serif;font-weight:700;font-size:12px;cursor:pointer">↓ Export XLSX</button>
+    <button onclick="downloadCSV()" style="background:var(--p);color:white;border:none;border-radius:8px;padding:9px 18px;font-family:Outfit,sans-serif;font-weight:700;font-size:12px;cursor:pointer">↓ Export CSV</button>
+  </div>
+</div>
+<div class="row row-4" style="margin-bottom:20px">
+  <div class="kpi"><div class="kpi-label">Total registered</div><div class="kpi-val" id="ml-total">0</div></div>
+  <div class="kpi"><div class="kpi-label">With 5-year goal</div><div class="kpi-val" id="ml-fiveyear">0</div></div>
+  <div class="kpi"><div class="kpi-label">With life dream</div><div class="kpi-val" id="ml-dream">0</div></div>
+  <div class="kpi"><div class="kpi-label">Latest registration</div><div class="kpi-val" style="font-size:16px" id="ml-latest">—</div></div>
+</div>
+<div style="margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+  <input id="ml-search" type="text" placeholder="🔍  Search by name, college, province…"
+    style="flex:1;min-width:240px;background:white;border:1.5px solid var(--bord);border-radius:10px;padding:10px 14px;font-family:Outfit,sans-serif;font-size:13px;color:var(--t1);outline:none"
+    oninput="filterMasterList()" />
+  <select id="ml-filter-province" onchange="filterMasterList()"
+    style="background:white;border:1.5px solid var(--bord);border-radius:10px;padding:10px 14px;font-family:Outfit,sans-serif;font-size:13px;color:var(--t1);outline:none">
+    <option value="">All provinces</option>
+    <option>Gauteng</option><option>KwaZulu-Natal</option><option>Western Cape</option>
+    <option>Eastern Cape</option><option>Free State</option><option>Limpopo</option>
+    <option>Mpumalanga</option><option>North West</option><option>Northern Cape</option>
+  </select>
+  <select id="ml-filter-level" onchange="filterMasterList()"
+    style="background:white;border:1.5px solid var(--bord);border-radius:10px;padding:10px 14px;font-family:Outfit,sans-serif;font-size:13px;color:var(--t1);outline:none">
+    <option value="">All levels</option>
+    <option>N4</option><option>N5</option><option>N6</option>
+  </select>
+</div>
+<div class="table-card" style="overflow:hidden">
+  <div style="overflow-x:auto;max-height:520px;overflow-y:auto">
+    <table id="ml-table" style="min-width:1100px">
+      <tr>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">#</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Name</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Gender</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Phone</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Province</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">College</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Level</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Course</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">5-Year Goal</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Life Dream</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Registered</th>
+        <th style="position:sticky;top:0;background:#FAFAFF;z-index:1">Status</th>
+      </tr>
+      <tr id="ml-empty-row"><td colspan="12" class="zero-msg">Awaiting first registration…</td></tr>
+    </table>
+  </div>
+</div>
+<div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:8px;text-align:right" id="ml-count-label"></div>
+</div>
+</div>
 
 <script>
 var PIN='2025';var pinEl=document.getElementById('pin');
@@ -309,8 +370,9 @@ new Chart(document.getElementById('ch-moodtrend'),{type:'line',data:{labels:dayL
 new Chart(document.getElementById('ch-device'),{type:'doughnut',data:{labels:['Mobile','Desktop','Tablet'],datasets:[{data:[0,0,0],backgroundColor:['#7C3AED','#0284C7','#F59E0B'],borderWidth:0}]},options:LEG});
 new Chart(document.getElementById('ch-os'),{type:'doughnut',data:{labels:['Android','iOS','Windows','macOS','Other'],datasets:[{data:[0,0,0,0,0],backgroundColor:['#22C55E','#0284C7','#7C3AED','#6B5A8A','#9580B8'],borderWidth:0}]},options:LEG});
 
-// Render user tables
+// Render user tables + master list
 var users = window._ayikhoUsers || [];
+renderMasterList(users);
 if (users.length > 0) {
   // Users table
   var ut = '<tr><th>Name</th><th>Gender</th><th>Phone</th><th>Province</th><th>College</th><th>Level</th><th>Course</th><th>Subjects</th><th>Registered</th></tr>';
@@ -358,5 +420,72 @@ function downloadCSV() {
   a.href = url; a.download = 'ayikho-users-'+new Date().toISOString().slice(0,10)+'.csv';
   a.click(); URL.revokeObjectURL(url);
 }
+
+function renderMasterList(users) {
+  var all = users || [];
+  window._masterUsers = all;
+  var s=document.getElementById('ml-total'); if(s) s.textContent=all.length;
+  var fy=all.filter(function(u){return u.fiveYearGoal&&u.fiveYearGoal.trim()}).length;
+  var dr=all.filter(function(u){return u.dream&&u.dream.trim()}).length;
+  var ls=document.getElementById('ml-fiveyear'); if(ls) ls.textContent=fy;
+  var ld=document.getElementById('ml-dream'); if(ld) ld.textContent=dr;
+  var dates=all.map(function(u){return u.registeredDate||''}).filter(Boolean).sort();
+  var ll=document.getElementById('ml-latest'); if(ll) ll.textContent=dates.length?dates[dates.length-1]:'—';
+  _drawMasterTable(all);
+}
+
+function _drawMasterTable(users) {
+  var t=document.getElementById('ml-table'); if(!t) return;
+  var el=document.getElementById('ml-empty-row'); if(el) el.remove();
+  t.querySelectorAll('tr.ml-row').forEach(function(r){r.remove()});
+  if(users.length===0){
+    var er=t.insertRow(); er.id='ml-empty-row';
+    var ec=er.insertCell(); ec.colSpan=12; ec.className='zero-msg';
+    ec.textContent='No users match your search'; return;
+  }
+  users.forEach(function(u,i){
+    var tr=t.insertRow(); tr.className='ml-row';
+    var cols=[i+1,u.name||'—',u.gender||'—',u.phone||'—',u.province||'—',u.college||'—',u.level||'—',u.course||'—',u.fiveYearGoal||'—',u.dream||'—',u.registeredDate||'—','Active'];
+    cols.forEach(function(val,ci){
+      var td=tr.insertCell();
+      td.style.cssText='padding:10px 18px;font-size:13px;border-bottom:1px solid #F0ECF7;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+      if(ci===8||ci===9){td.style.whiteSpace='normal';td.style.fontSize='12px';td.style.color='var(--t2)';}
+      if(ci===11){td.innerHTML='<span class="pill pill-g">Active</span>';return;}
+      td.textContent=val; td.title=String(val);
+    });
+  });
+  var cl=document.getElementById('ml-count-label');
+  if(cl) cl.textContent=users.length+' user'+(users.length===1?'':'s')+' shown';
+}
+
+function filterMasterList() {
+  var q=((document.getElementById('ml-search')||{}).value||'').toLowerCase();
+  var prov=(document.getElementById('ml-filter-province')||{}).value||'';
+  var lvl=(document.getElementById('ml-filter-level')||{}).value||'';
+  var filtered=(window._masterUsers||[]).filter(function(u){
+    var match=!q||(u.name||'').toLowerCase().includes(q)||(u.college||'').toLowerCase().includes(q)||(u.province||'').toLowerCase().includes(q)||(u.phone||'').includes(q);
+    return match&&(!prov||(u.province||'')===prov)&&(!lvl||(u.level||'')===lvl);
+  });
+  _drawMasterTable(filtered);
+}
+
+function exportXLSX() {
+  var users=window._masterUsers||window._ayikhoUsers||[];
+  if(users.length===0){alert('No users to export yet — waiting for first registration!');return;}
+  var headers=['#','Name','Gender','Phone','Province','College','Level','Course','5-Year Goal','Life Dream','Registered','Status'];
+  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table>';
+  html+='<tr>'+headers.map(function(h){return '<th style="background:#14B8A6;color:white;font-weight:bold">'+h+'</th>';}).join('')+'</tr>';
+  users.forEach(function(u,i){
+    var row=[i+1,u.name||'',u.gender||'',u.phone||'',u.province||'',u.college||'',u.level||'',u.course||'',u.fiveYearGoal||'',u.dream||'',u.registeredDate||'','Active'];
+    html+='<tr>'+row.map(function(v){return '<td>'+String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</td>';}).join('')+'</tr>';
+  });
+  html+='</table></body></html>';
+  var blob=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url;
+  a.download='Ayikho_Master_List_'+new Date().toISOString().slice(0,10)+'.xls';
+  a.click(); URL.revokeObjectURL(url);
+}
 </script>
 </body></html>
+
