@@ -80,7 +80,7 @@ tr:hover td{background:rgba(124,58,237,.03)}
 <body>
 <div class="auth" id="auth"><div class="auth-title">Ayikho Admin</div><div class="auth-sub">Enter PIN to access dashboard</div><input class="auth-input" id="pin" type="password" maxlength="4" placeholder="····" autofocus><div class="auth-err" id="pin-err"></div></div>
 <div class="dash" id="dash">
-<div class="topbar"><div><div class="topbar-brand">Ayikho Admin</div><div class="topbar-meta">NATED N4–N6 · TVET Study & Employability Platform</div></div><div class="topbar-right"><div class="topbar-live">Live</div><div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace" id="dash-date"></div></div></div>
+<div class="topbar"><div><div class="topbar-brand">Ayikho Admin</div><div class="topbar-meta">NATED N4–N6 · TVET Study & Employability Platform</div></div><div class="topbar-right"><div class="topbar-live">Live</div><button onclick="manualRefresh()" style="background:rgba(124,58,237,.1);border:1px solid var(--bord);color:var(--pl);border-radius:8px;padding:6px 14px;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer">&#x21BA; Refresh</button><div style="font-size:10px;color:var(--t3);font-family:JetBrains Mono,monospace" id="last-updated"></div><div style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace" id="dash-date"></div></div></div>
 <div class="tabs">
 <div class="tab on" data-tab="overview">Overview</div>
 <div class="tab" data-tab="users">Users</div>
@@ -295,7 +295,13 @@ tr:hover td{background:rgba(124,58,237,.03)}
 
 <script>
 var PIN='2025';var pinEl=document.getElementById('pin');
-pinEl.addEventListener('input',function(){if(this.value.length===4){if(this.value===PIN){document.getElementById('auth').classList.add('gone');document.getElementById('dash').classList.add('show');loadDashboard()}else{document.getElementById('pin-err').textContent='Wrong PIN';this.value='';this.focus()}}});
+// Skip PIN if already authenticated this browser session
+if(sessionStorage.getItem('ayikho_admin_auth')==='1'){
+  document.getElementById('auth').classList.add('gone');
+  document.getElementById('dash').classList.add('show');
+  loadDashboard();
+}
+pinEl.addEventListener('input',function(){if(this.value.length===4){if(this.value===PIN){sessionStorage.setItem('ayikho_admin_auth','1');document.getElementById('auth').classList.add('gone');document.getElementById('dash').classList.add('show');loadDashboard()}else{document.getElementById('pin-err').textContent='Wrong PIN';this.value='';this.focus()}}});
 document.getElementById('dash-date').textContent=new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'});
 document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('show')});t.classList.add('on');document.getElementById('p-'+t.dataset.tab).classList.add('show')})});
 
@@ -575,6 +581,54 @@ document.addEventListener('keydown',function(e){
   </div>
 </div>
 <script>
+
+function manualRefresh(){
+  var btn = event.target;
+  btn.textContent = 'Loading...'; btn.disabled = true;
+  // Re-run the Firestore fetch manually
+  (async function(){
+    try{
+      var{initializeApp,getApps}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+      var{getFirestore,collection,getDocs}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+      var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG,'ayikho-dash');
+      var db=getFirestore(app);
+      var snap=await getDocs(collection(db,'users'));
+      var users=[];
+      snap.forEach(function(d){users.push({id:d.id,...d.data()});});
+      users.sort(function(a,b){return(b.registeredDate||'').localeCompare(a.registeredDate||'');});
+      window._ayikhoUsers=users;
+      window._masterUsers=users;
+      renderMasterList(users);
+      // Update KPIs
+      var U=users.length;
+      var ns=document.getElementById('ns-val');if(ns)ns.textContent=U;
+      var ku=document.getElementById('k-users');if(ku)ku.textContent=U+' users';
+      var ku2=document.getElementById('k-users2');if(ku2)ku2.textContent=U;
+      var tu=document.getElementById('t-users');if(tu)tu.textContent=U;
+      // Update user tables
+      if(U>0){
+        var ut='<tr><th>Name</th><th>Gender</th><th>Phone</th><th>Province</th><th>College</th><th>Level</th><th>Course</th><th>Subjects</th><th>Registered</th></tr>';
+        users.forEach(function(u){ut+='<tr><td>'+(u.name||'—')+'</td><td>'+(u.gender||'—')+'</td><td>'+(u.phone||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.level||'—')+'</td><td>'+(u.course||'—')+'</td><td>'+((u.subjects||[]).join(', ')||'—')+'</td><td>'+(u.registeredDate||'—')+'</td></tr>';});
+        document.getElementById('users-table').innerHTML=ut;
+        document.getElementById('user-count-label').textContent=U+' users';
+        var d5='<tr><th>Name</th><th>College</th><th>Province</th><th>5-year goal</th></tr>';
+        users.filter(function(u){return u.fiveYearGoal;}).forEach(function(u){d5+='<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.fiveYearGoal+'</td></tr>';});
+        document.getElementById('dreams-5yr-table').innerHTML=d5;
+        var dl='<tr><th>Name</th><th>College</th><th>Province</th><th>Life dream</th></tr>';
+        users.filter(function(u){return u.dream;}).forEach(function(u){dl+='<tr><td>'+(u.name||'—')+'</td><td>'+(u.college||'—')+'</td><td>'+(u.province||'—')+'</td><td>'+u.dream+'</td></tr>';});
+        document.getElementById('dreams-life-table').innerHTML=dl;
+      }
+      var lu=document.getElementById('last-updated');
+      if(lu)lu.textContent='Updated '+new Date().toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      btn.textContent='&#x21BA; Refresh'; btn.disabled=false;
+      console.log('[Dashboard] Manual refresh — users:', U);
+    }catch(e){
+      btn.textContent='&#x21BA; Refresh'; btn.disabled=false;
+      console.warn('[Dashboard] Manual refresh failed:', e);
+    }
+  })();
+}
+
 </script>
 </body></html>
 
