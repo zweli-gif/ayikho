@@ -109,6 +109,26 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 </div>
 <div style="padding:16px 24px 36px"><button class="onb-btn" style="background:var(--p);color:white" onclick="finishOnboarding()">Start studying →</button></div>
 </div>
+<div class="onb-screen" id="onb-login" style="background:linear-gradient(145deg,#1A0A3A,#5C2FA8,#9D5FFF)">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center">
+<div style="font-size:42px;margin-bottom:16px">&#x1F44B;</div>
+<div style="font-size:28px;font-weight:900;color:white;letter-spacing:-1px;margin-bottom:8px">Welcome back</div>
+<div style="font-size:14px;color:rgba(255,255,255,.7);margin-bottom:36px">Log in to continue your journey</div>
+<div style="width:100%;max-width:320px;text-align:left">
+<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Cellphone number</div>
+<div style="display:flex;gap:8px;margin-bottom:16px">
+<div style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:14px;padding:14px 12px;font-weight:700;font-size:15px;color:white;flex-shrink:0">+27</div>
+<input id="login-ph" type="tel" placeholder="81 234 5678" autocomplete="tel"
+  style="flex:1;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:14px;padding:14px 16px;font-size:15px;color:white;font-family:Outfit,sans-serif;outline:none" /></div>
+<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Password</div>
+<input id="login-pw" type="password" placeholder="Your password" autocomplete="current-password"
+  style="width:100%;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:14px;padding:14px 16px;font-size:15px;color:white;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
+<div id="login-err" style="font-size:12px;color:#FCA5A5;min-height:18px;margin-bottom:16px"></div>
+<button onclick="doLogin()" id="login-btn"
+  style="width:100%;background:white;color:#7C3AED;border:none;border-radius:14px;padding:16px;font-family:Outfit,sans-serif;font-weight:900;font-size:15px;cursor:pointer;margin-bottom:16px">Log in &#x2192;</button>
+<div style="text-align:center;font-size:13px;color:rgba(255,255,255,.6)">
+New here? <span onclick="onbNext(1)" style="color:white;font-weight:700;text-decoration:underline;cursor:pointer">Create account</span>
+</div></div></div></div>
 </div>
 
 <!-- MOOD -->
@@ -195,7 +215,7 @@ var curMod=null,curSubj='fa',demo=false,onbDone=false,modStart=null;
 var STRIP='html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}.shell{display:block!important;gap:0!important;height:100%!important}.sidebar{display:none!important}.phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}.shell-meta{display:none!important}.shell>div{height:100%!important}.app-container,.container{height:100%!important}body>div:first-child{height:100%!important}.phone-col{display:block!important;height:100%!important}';
 
 /* Onboarding */
-function onbNext(n){document.querySelectorAll('.onb-screen').forEach(function(s){s.classList.remove('active')});document.getElementById('onb-'+n).classList.add('active');if(n===2)setTimeout(function(){document.getElementById('onb-phone').focus()},400);if(n===3)setTimeout(function(){document.getElementById('onb-name').focus()},400)}
+function onbNext(n){document.querySelectorAll('.onb-screen').forEach(function(s){s.classList.remove('active')});document.getElementById('onb-'+n).classList.add('active');if(n===2)setTimeout(function(){document.getElementById('onb-phone').focus()},400);if(n===3)setTimeout(function(){document.getElementById('onb-name').focus()},400);if(n==='login')setTimeout(function(){var el=document.getElementById('login-ph');if(el)el.focus()},400)}
 function validateAccount(){var ph1=document.getElementById('onb-phone').value.replace(/\s/g,'');var ph2=document.getElementById('onb-phone2').value.replace(/\s/g,'');var p1=document.getElementById('onb-pass').value;var p2=document.getElementById('onb-pass2').value;var err=document.getElementById('onb-reg-error');if(ph1.length<9){err.textContent='Please enter a valid SA number (9 digits)';err.style.display='block';return}if(ph1!==ph2){err.textContent='Phone numbers don\'t match. Please check.';err.style.display='block';return}if(p1.length<6){err.textContent='Password must be at least 6 characters';err.style.display='block';return}if(p1!==p2){err.textContent='Passwords don\'t match';err.style.display='block';return}err.style.display='none';var fullPhone='+27'+ph1.replace(/^0/,'');try{localStorage.setItem('ayikho_phone',fullPhone);localStorage.setItem('ayikho_pass_set','true')}catch(e){}if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackOnboardingStep('account_created');onbNext(3)}
 function filterColleges(){var p=document.getElementById('onb-province').value;var c=document.getElementById('onb-college');c.innerHTML='<option value="">Select TVET college</option>';if(COLLEGES[p])COLLEGES[p].forEach(function(n){var o=document.createElement('option');o.textContent=n;c.appendChild(o)})}
 function finishOnboarding(){var name=document.getElementById('onb-name').value.trim()||'Student';var gender=document.getElementById('onb-gender').value;var prov=document.getElementById('onb-province').value;var col=document.getElementById('onb-college').value;var level=document.getElementById('onb-level').value;var course=document.getElementById('onb-course').value;var subjects=[];['onb-subj1','onb-subj2','onb-subj3','onb-subj4'].forEach(function(id){var v=document.getElementById(id).value;if(v)subjects.push(v)});var fiveYear=document.getElementById('onb-5year').value.trim();var dream=document.getElementById('onb-dream').value.trim();var phone='';try{phone=localStorage.getItem('ayikho_phone')||''}catch(e){}if(window.ayikhoData){window.ayikhoData.setProfile({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone});window.ayikhoData.setOnboardingComplete(true)}try{localStorage.setItem('ayikho_profile',JSON.stringify({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream}))}catch(e){}onbDone=true;if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackRegistration({name:name,gender:gender,province:prov,college:col,level:level,course:course,subjects:subjects,fiveYearGoal:fiveYear,dream:dream,phone:phone});document.getElementById('onb-overlay').classList.add('gone');setTimeout(function(){document.getElementById('onb-overlay').style.display='none';showMoodCheck()},600)}
@@ -292,15 +312,47 @@ if(location.search.indexOf('reset')>-1){if(window.ayikhoData){window.ayikhoData.
 makeNav('nav0','home');makeNav('nav1','progress');makeNav('nav2','badges');makeNav('nav3','profile');
 genBadges();renderMolweni();renderLB();renderComm();renderMoodCal();
 if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
-var hasData=!!window.ayikhoData;
-var _rawDone=hasData?window.ayikhoData.isOnboardingComplete():false;
-if(!_rawDone){try{_rawDone=!!localStorage.getItem('ayikho_profile')}catch(e){}}
-var _profile=hasData?window.ayikhoData.getProfile():{};
-var _storedProfile={}; try{_storedProfile=JSON.parse(localStorage.getItem('ayikho_profile')||'{}')}catch(e){}
-var _name=(_profile.name||_storedProfile.name||'').trim();
-var done=_rawDone&&!!(_name&&_name!=='Student');
-if(done){onbDone=true;document.getElementById('onb-overlay').style.display='none';var todayKey='ayikho_mood_'+new Date().toDateString();var logged=false;try{logged=!!localStorage.getItem(todayKey)}catch(e){}if(logged){document.getElementById('home-view').classList.remove('hidden');document.getElementById('hero-name').innerHTML=getGreeting()+'<br>'+getUserName();updateProfile();var m=localStorage.getItem(todayKey);document.getElementById('sc-mood').textContent={good:'😊',okay:'😐',struggling:'😔'}[m]||'😊'}else{showMoodCheck()}}
+var hasData=!!window.ayikhoData;var done=hasData?window.ayikhoData.isOnboardingComplete():false;
+if(!done){try{done=!!localStorage.getItem('ayikho_profile')}catch(e){}}
+if(done){onbNext('login');}
 /* no data layer = first time user, onboarding shows by default */
+
+async function doLogin(){
+  var ph=(document.getElementById('login-ph').value||'').replace(/\s/g,'').replace(/^0/,'');
+  var pw=document.getElementById('login-pw').value;
+  var err=document.getElementById('login-err');
+  var btn=document.getElementById('login-btn');
+  if(ph.length<9){err.textContent='Enter your SA cell number (9 digits)';return;}
+  if(!pw){err.textContent='Enter your password';return;}
+  err.textContent=''; btn.textContent='Logging in...'; btn.disabled=true;
+  var email='27'+ph.replace(/\D/g,'')+'@ayikho.app';
+  try{
+    var{initializeApp,getApps}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js');
+    var{getAuth,signInWithEmailAndPassword}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js');
+    var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG||{});
+    var auth=getAuth(app);
+    await signInWithEmailAndPassword(auth,email,pw);
+    btn.textContent='Welcome back!';
+    document.getElementById('onb-overlay').classList.add('gone');
+    setTimeout(function(){
+      document.getElementById('onb-overlay').style.display='none';
+      onbDone=true;
+      var todayKey='ayikho_mood_'+new Date().toDateString();
+      var logged=false; try{logged=!!localStorage.getItem(todayKey)}catch(e){}
+      if(logged){
+        document.getElementById('home-view').classList.remove('hidden');
+        document.getElementById('hero-name').innerHTML=getGreeting()+'<br>'+getUserName();
+        updateProfile();
+      } else { showMoodCheck(); }
+    },800);
+  }catch(e){
+    var msg='Incorrect number or password.';
+    if(e.code==='auth/too-many-requests')msg='Too many attempts. Try again in a minute.';
+    if(e.code==='auth/network-request-failed')msg='No internet. Check your connection.';
+    err.textContent=msg; btn.textContent='Log in'; btn.disabled=false;
+  }
+}
+
 });
 </script>
 </body>
