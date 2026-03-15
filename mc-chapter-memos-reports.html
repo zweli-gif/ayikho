@@ -5,7 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ayikho · MC N4 · Memos & Reports</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
+<script src="tracking.js" onerror="window.ayikhoTracker=null">
+function showAshkiReaction(isCorrect) {
+  const el = document.getElementById('ashki-reaction');
+  const txt = document.getElementById('ashki-reaction-text');
+  if (!el || !txt) return;
+  const CORRECT_REACTIONS = ["Yebo! You nailed it! 🎉", "Sharp sharp! That's correct! ✨", "100%! You're on fire! 🔥", "Eish, you're too clever! 💪"];
+  const WRONG_REACTIONS = ["Not quite — but that's how we learn!", "Close! Don't stress, check the explanation 🤔", "Hmm, not that one. You'll get the next one!"];
+  txt.textContent = isCorrect ? CORRECT_REACTIONS[Math.floor(Math.random() * CORRECT_REACTIONS.length)] : WRONG_REACTIONS[Math.floor(Math.random() * WRONG_REACTIONS.length)];
+  el.style.display = 'flex';
+  
+  // Basic pop-in animation using transitions
+  el.style.opacity = '0';
+  el.style.transform = 'translate(-50%, 20px) scale(0.9)';
+  el.style.transition = 'opacity 0.3s, transform 0.4s cubic-bezier(.34,1.56,.64,1)';
+  
+  // Reflow
+  el.offsetHeight;
+  
+  el.style.opacity = '1';
+  el.style.transform = 'translate(-50%, 0) scale(1)';
+  
+  clearTimeout(window._ashkiTimer);
+  window._ashkiTimer = setTimeout(() => { 
+      el.style.opacity = '0';
+      setTimeout(() => { el.style.display = 'none'; }, 300);
+  }, 2300);
+}
+
+</script>
 <script src="student-data.js" onerror="console.log('ok')"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -224,6 +252,34 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .compare-table tr:last-child td{border-bottom:none}
 .compare-table td:first-child{color:var(--ink);font-weight:600}
 .compare-table tr:nth-child(even) td{background:var(--mc-xs)}
+
+/* ===== LANDOH VIDEO PLAYER ===== */
+.landoh-video-wrap { position: relative; width: 100%; height: 100%; background: #05050A; overflow: hidden; display: flex; flex-direction: column;border-radius:12px; }
+.lv-title-card { position: absolute; inset: 0; background: linear-gradient(135deg, #0A0A15, #1A1A2E); z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; transition: opacity 0.5s, transform 0.5s; }
+.lv-mod-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mc-l); margin-bottom: 12px; }
+.lv-title-card h1 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: #FFF; line-height: 1.15; margin-bottom: 20px; }
+.lv-accent-line { width: 40px; height: 3px; background: var(--mc); border-radius: 2px; margin-bottom: 30px; }
+.lv-mini-icon { font-size: 32px; margin-bottom: 24px; }
+.lv-start-btn { background: #FFF; color: #000; border: none; border-radius: 100px; padding: 14px 32px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(255,255,255,0.15); }
+.lv-start-btn:hover { transform: translateY(-2px); }
+.lv-outro { position: absolute; inset: 0; background: rgba(5,5,10,0.95); z-index: 9; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.4s; backdrop-filter: blur(5px); }
+.lv-outro.show { opacity: 1; pointer-events: auto; }
+.lv-emoji { font-size: 48px; margin-bottom: 16px; }
+.lv-outro h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: #FFF; margin-bottom: 12px; line-height: 1.2; }
+.lv-outro p { font-size: 14px; color: rgba(255,255,255,0.6); }
+.lv-main { flex: 1; display: flex; flex-direction: column; position: relative; z-index: 1; opacity: 0; pointer-events: none; transition: opacity 0.5s; padding: 12px; }
+.lv-voice-bar { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; flex-shrink: 0; }
+.lv-voice-indicator { display: flex; align-items: center; gap: 3px; height: 16px; margin-right: 12px; flex-shrink: 0; width: 20px; }
+.lv-voice-bar-line { width: 3px; background: var(--mc-l); border-radius: 2px; transition: height 0.1s; }
+.lv-voice-indicator.lv-paused .lv-voice-bar-line { height: 4px !important; }
+.lv-voice-text { flex: 1; font-size: 13px; color: rgba(255,255,255,0.9); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 36px; }
+.lv-chapter-ind { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.4); margin-left: 12px; flex-shrink: 0; text-align: right; }
+.lv-board { flex: 1; background: #FFF; border-radius: 12px; position: relative; overflow: hidden; padding: 20px; color: #000; }
+.lv-board-title { position: absolute; top: 12px; left: 14px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(0,0,0,0.3); }
+.lv-prog { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin: 12px 0; overflow: hidden; flex-shrink: 0; }
+.lv-prog-fill { height: 100%; width: 0%; background: var(--mc-l); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.lv-ctrls { display: flex; justify-content: center; align-items: center; gap: 24px; padding-bottom: 8px; flex-shrink: 0; }
+
 </style>
 </head>
 <body>
@@ -288,55 +344,50 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 <div class="screen" id="s-video">
   <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
   <div class="gp"><div class="gp-fill" style="width:18%"></div></div>
-  <div class="vid-container">
-    <div class="vid-player-wrap">
-      <div class="vid-thumb">
-        <div class="vid-thumb-bg"></div>
-        <div class="vid-play-btn"><div class="vid-play-icon">▶</div></div>
-        <div class="vid-thumb-text">
-          <div class="vid-thumb-title">Memos & Reports Explained</div>
-          <div class="vid-thumb-sub">Management Comm N4 · Module 4 · 3:30</div>
+  
+  <div class="landoh-video-wrap" id="landohVideo">
+    <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
+      style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
+    </video>
+    <div class="lv-title-card" id="lvTitle">
+        <div class="lv-mod-num">PREVIEW</div>
+        <h1>Animated Video Lesson</h1>
+        <div class="lv-accent-line"></div>
+        <div class="lv-mini-icon">🎬</div>
+        <button class="lv-start-btn" id="lvStartBtn" onclick="document.getElementById('lvTitle').style.display='none'; document.getElementById('lvMain').style.opacity='1'; document.getElementById('lvMain').style.pointerEvents='auto';">Start lesson</button>
+    </div>
+    <div class="lv-outro" id="lvOutro">
+        <div class="lv-emoji">🎯</div>
+        <h2>Now try the interactive exercise!</h2>
+        <p>Tap to continue</p>
+    </div>
+    <div class="lv-main" id="lvMain">
+        <div class="lv-voice-bar">
+            <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
+                <div class="lv-voice-bar-line"></div>
+                <div class="lv-voice-bar-line"></div>
+                <div class="lv-voice-bar-line"></div>
+                <div class="lv-voice-bar-line"></div>
+                <div class="lv-voice-bar-line"></div>
+            </div>
+            <div class="lv-voice-text" id="lvSpeech">Video lessons are coming soon to this module. For now, continue to the interactive lesson.</div>
+            <div class="lv-chapter-ind" id="lvChapter">0:00</div>
         </div>
-        <div class="vid-synth-badge">🎬 Synthesia · AI video</div>
-      </div>
-      <div class="vid-progress"><div class="vid-progress-fill" style="width:0%"></div></div>
-      <div class="vid-controls">
-        <button class="vc-btn">▶</button>
-        <button class="vc-btn">⏪</button>
-        <button class="vc-btn">⏩</button>
-        <span class="vc-time">0:00 / 3:30</span>
-        <span class="vc-cc">CC</span>
-        <button class="vc-btn">⛶</button>
-      </div>
-    </div>
-    <div class="vid-chapters">
-      <div class="vc-label">Chapter markers</div>
-      
-    <div class="vc-chapter active">
-      <span class="vc-ch-time">0:00</span>
-      <div class="vc-ch-dot"></div>
-      <span class="vc-ch-title">What is a Memo?</span>
-    </div>
-    <div class="vc-chapter ">
-      <span class="vc-ch-time">1:10</span>
-      <div class="vc-ch-dot"></div>
-      <span class="vc-ch-title">Memo Structure</span>
-    </div>
-    <div class="vc-chapter ">
-      <span class="vc-ch-time">2:00</span>
-      <div class="vc-ch-dot"></div>
-      <span class="vc-ch-title">What is a Report?</span>
-    </div>
-    <div class="vc-chapter ">
-      <span class="vc-ch-time">2:50</span>
-      <div class="vc-ch-dot"></div>
-      <span class="vc-ch-title">Report Structure</span>
-    </div>
-    </div>
-    <div class="vid-skip">
-      <button class="vid-skip-btn" onclick="next()">Skip video → go to lesson</button>
+        <div class="lv-board" id="lvBoard">
+            <div class="lv-board-title">✏️ Board</div>
+            <div id="lvBoardContent" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:rgba(0,0,0,0.4);text-align:center;">
+                <div style="font-size:32px;margin-bottom:12px">🚧</div>
+                <div style="font-weight:700;font-size:16px;color:#1A1A2E;margin-bottom:6px">Under Construction</div>
+                <div style="font-size:13px">Animated lesson logic isn't generated for this module yet.</div>
+            </div>
+        </div>
+        <div class="lv-prog"><div class="lv-prog-fill" id="lvProg" style="width:100%"></div></div>
+        <div class="lv-ctrls" style="justify-content:center">
+            <button class="btn btn-mc" style="width:auto;padding:12px 24px;border:none;border-radius:12px;background:var(--p);color:white;font-weight:700;cursor:pointer" onclick="next()">Skip to Lesson →</button>
+        </div>
     </div>
   </div>
+
 </div>
 
 <!-- S3: LESSON PART 1 -->
@@ -614,7 +665,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
     </div>
     </div>
     <div class="ashki-bubble">
-      <div class="ashki-avatar">🎓</div>
+      <img class="ashki-avatar" src="assets/ashki/ashki_master.png" alt="Ashki">
       <div class="ashki-speech">
         <div class="ashki-name">Ashki</div>
         <div class="ashki-text">Sharp! 🔥 Memo vs Report is a classic exam trap. You now know which is which AND the full structure of both. That's serious marks in the bag.</div>
@@ -655,6 +706,7 @@ function checkAnswer(el, correct, qid) {
   opts.forEach(o => o.classList.add('dimmed'));
   el.classList.remove('dimmed');
   el.classList.add(correct ? 'correct' : 'wrong');
+  if(typeof showAshkiReaction === 'function') showAshkiReaction(correct);
   if (!correct) {
     opts.forEach(o => {
       if (o.dataset.correct === 'true') { o.classList.remove('dimmed'); o.classList.add('correct'); }
@@ -669,5 +721,16 @@ function checkAnswer(el, correct, qid) {
 // Sidebar init
 sideItems.forEach((s, i) => s.addEventListener('click', () => go(i)));
 </script>
+
+<!-- ASHKI REACTION OVERLAY -->
+<div id="ashki-reaction" style="position:fixed; bottom:90px; left:50%; transform:translateX(-50%); z-index:100; display:none; flex-direction:column; align-items:center; pointer-events:none;">
+  <div style="background:#FFF; border:2px solid var(--mc); border-radius:16px 16px 16px 4px; padding:12px 18px; margin-bottom:10px; box-shadow:0 10px 30px rgba(0,0,0,.15); position:relative;">
+    <div id="ashki-reaction-text" style="font:700 14px/1.3 'Outfit'; color:var(--ink);">Correct!</div>
+  </div>
+  <div style="width:64px; height:64px; border-radius:50%; border:3px solid var(--mc); background:#FFF; display:flex; align-items:center; justify-content:center;">
+    <img src="assets/ashki/ashki_master.png" alt="Ashki" style="width:80%; height:80%; object-fit:contain;">
+  </div>
+</div>
+
 </body>
 </html>

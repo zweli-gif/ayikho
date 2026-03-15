@@ -1,889 +1,2604 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ayikho · TVET N4 Study App</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="firebase-config.js" onerror="console.log('Firebase config not loaded — offline mode')"></script>
-<script src="tracking.js" onerror="console.log('Tracking not loaded — offline mode')"></script>
-<script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --p:#7C3AED;--pl:#9D5FFF;--pd:#4C1A99;--pxs:#F5F0FF;--psm:#EDE8FF;
-  --fa:#0284C7;--fa-l:#38BDF8;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;
-  --mc:#0D9488;--mc-l:#14B8A6;--mc-d:#0F6E48;--mc-xs:#F0FDFA;--mc-sm:#CCFBF1;
-  --cp:#0EA5E9;--cp-l:#38BDF8;--cp-d:#0284C7;--cp-xs:#F0F9FF;--cp-sm:#E0F2FE;
-  --ebm:#16A34A;--ebm-l:#22C55E;--ebm-d:#15803D;--ebm-xs:#F0FDF4;--ebm-sm:#DCFCE7;
-  --gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;
-  --ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;
-  --bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;
-}
-html,body{height:100%;background:#05090F;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;overflow:hidden;overscroll-behavior:none}
 
-/* ═══════════════════════════════════
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayikho · TVET N4 Study App</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="firebase-config.js" onerror="console.log('Firebase config not loaded — offline mode')"></script>
+  <script src="tracking.js" onerror="console.log('Tracking not loaded — offline mode')"></script>
+  <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    :root {
+      --p: #7C3AED;
+      --pl: #9D5FFF;
+      --pd: #4C1A99;
+      --pxs: #F5F0FF;
+      --psm: #EDE8FF;
+      --fa: #0284C7;
+      --fa-l: #38BDF8;
+      --fa-d: #075985;
+      --fa-xs: #F0F9FF;
+      --fa-sm: #E0F2FE;
+      --mc: #2563EB;
+      --mc-l: #3B82F6;
+      --mc-d: #1D4ED8;
+      --mc-xs: #EFF6FF;
+      --mc-sm: #DBEAFE;
+
+      --cp: #8B5CF6;
+      --cp-l: #A78BFA;
+      --cp-d: #6D28D9;
+      --cp-xs: #F5F3FF;
+      --cp-sm: #EDE9FE;
+
+      --ebm: #F59E0B;
+      --ebm-l: #FBBF24;
+      --ebm-d: #B45309;
+      --ebm-xs: #FFFBEB;
+      --ebm-sm: #FEF3C7;
+      --gold: #F59E0B;
+      --green: #22C55E;
+      --green-xs: #F0FDF4;
+      --rose: #F43F5E;
+      --ink: #1A0A3A;
+      --mut: #6B5A8A;
+      --dim: #9580B8;
+      --bord: #DDD5F5;
+      --surf: #F7F4FF;
+      --w: #FFFFFF;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: #05090F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden;
+      overscroll-behavior: none
+    }
+
+    /* ═══════════════════════════════════
    SHELL — PHONE + SIDEBAR
 ═══════════════════════════════════ */
-.shell{display:flex;gap:20px;align-items:flex-start}
+    .shell {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start
+    }
 
-/* Sidebar */
-.sidebar{display:flex;flex-direction:column;gap:4px;padding-top:60px;min-width:140px}
-@media(max-width:900px){.sidebar{display:none}}
-.si{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.18);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;padding:4px 0;white-space:nowrap}
-.si::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
-.si.active{color:var(--fa-l)}
-.si.completed{color:var(--green)}
-.si:hover{color:rgba(255,255,255,.5)}
-.si-home{color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)}
-.si-home.active{color:var(--p)}
-.si-section{font-size:7px;letter-spacing:.2em;color:rgba(255,255,255,.12);margin-top:10px;margin-bottom:2px;cursor:default}
-.si-section::before{display:none}
+    /* Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-top: 60px;
+      min-width: 140px
+    }
 
-/* Phone */
-.phone-col{display:flex;flex-direction:column;align-items:center}
-.phone{width:375px;height:812px;background:#05090F;border-radius:50px;overflow:hidden;position:relative;
-  box-shadow:0 0 0 2px #0D1117,0 0 0 4px #060A10,0 50px 120px rgba(0,0,0,.85),0 0 200px rgba(2,132,199,.08)}
+    @media(max-width:900px) {
+      .sidebar {
+        display: none
+      }
+    }
 
-/* ═══════════════════════════════════
+    .si {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .18);
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 0;
+      white-space: nowrap
+    }
+
+    .si::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0
+    }
+
+    .si.active {
+      color: var(--fa-l)
+    }
+
+    .si.completed {
+      color: var(--green)
+    }
+
+    .si:hover {
+      color: rgba(255, 255, 255, .5)
+    }
+
+    .si-home {
+      color: rgba(255, 255, 255, .35);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, .06)
+    }
+
+    .si-home.active {
+      color: var(--p)
+    }
+
+    .si-section {
+      font-size: 7px;
+      letter-spacing: .2em;
+      color: rgba(255, 255, 255, .12);
+      margin-top: 10px;
+      margin-bottom: 2px;
+      cursor: default
+    }
+
+    .si-section::before {
+      display: none
+    }
+
+    /* Phone */
+    .phone-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: #05090F;
+      border-radius: 50px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 0 2px #0D1117, 0 0 0 4px #060A10, 0 50px 120px rgba(0, 0, 0, .85), 0 0 200px rgba(2, 132, 199, .08)
+    }
+
+    /* ═══════════════════════════════════
    HOME VIEW — layered inside phone
 ═══════════════════════════════════ */
-.home-view{position:absolute;inset:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;transition:opacity .3s ease,transform .3s ease;z-index:1}
-.home-view.hidden{opacity:0;transform:scale(.96);pointer-events:none}
+    .home-view {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      transition: opacity .3s ease, transform .3s ease;
+      z-index: 1
+    }
 
-/* Chapter iframe overlay */
-.chapter-view{position:absolute;inset:0;z-index:2;opacity:0;transform:translateX(100%) scale(0.95);transition:opacity .4s cubic-bezier(.34, 1.56, .64, 1),transform .4s cubic-bezier(.34, 1.56, .64, 1);pointer-events:none;border-radius:50px;overflow:hidden;will-change:transform,opacity}
-.chapter-view.active{opacity:1;transform:translateX(0) scale(1);pointer-events:auto}
-.chapter-view iframe{width:100%;height:100%;border:none;border-radius:50px}
+    .home-view.hidden {
+      opacity: 0;
+      transform: scale(.96);
+      pointer-events: none
+    }
 
-/* Back button floating over iframe */
-.back-btn{position:absolute;top:54px;left:14px;z-index:10;width:34px;height:34px;border-radius:10px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .28s cubic-bezier(.34, 1.56, .64, 1);color:white;font-size:16px;opacity:0;pointer-events:none;will-change:transform,background,box-shadow}
-.back-btn.show{opacity:1;pointer-events:auto}
-.back-btn:hover{background:rgba(0,0,0,.85);transform:scale(1.12);box-shadow:0 4px 16px rgba(0,0,0,.5)}
-.back-btn:active{transform:scale(0.95)}
+    /* Chapter iframe overlay */
+    .chapter-view {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0;
+      transform: translateX(100%) scale(0.95);
+      transition: opacity .4s cubic-bezier(.34, 1.56, .64, 1), transform .4s cubic-bezier(.34, 1.56, .64, 1);
+      pointer-events: none;
+      border-radius: 50px;
+      overflow: hidden;
+      will-change: transform, opacity
+    }
 
-/* Loading state */
-.loading-overlay{position:absolute;inset:0;z-index:5;background:#05090F;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;border-radius:50px}
-.loading-overlay.show{opacity:1;pointer-events:auto}
-.loading-spinner{width:40px;height:40px;border:3px solid rgba(2,132,199,.15);border-top:3px solid var(--fa);border-radius:50%;animation:spin .8s cubic-bezier(.34, 1.56, .64, 1) infinite;margin-bottom:14px;box-shadow:0 0 12px rgba(2,132,199,.3);will-change:transform}
-@keyframes spin{0%{transform:rotate(0deg);box-shadow:0 0 12px rgba(2,132,199,.3)}50%{box-shadow:0 0 20px rgba(2,132,199,.5)}100%{transform:rotate(360deg);box-shadow:0 0 12px rgba(2,132,199,.3)}}
-.loading-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-.loading-module{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:white;margin-top:6px}
+    .chapter-view.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto
+    }
 
-/* ═══════════════════════════════════
+    .chapter-view iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 50px
+    }
+
+    /* Back button floating over iframe */
+    .back-btn {
+      position: absolute;
+      top: 54px;
+      left: 14px;
+      z-index: 10;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, .65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, .12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .28s cubic-bezier(.34, 1.56, .64, 1);
+      color: white;
+      font-size: 16px;
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, background, box-shadow
+    }
+
+    .back-btn.show {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 0, 0, .85);
+      transform: scale(1.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .5)
+    }
+
+    .back-btn:active {
+      transform: scale(0.95)
+    }
+
+    /* Loading state */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: #05090F;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+      border-radius: 50px
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(2, 132, 199, .15);
+      border-top: 3px solid var(--fa);
+      border-radius: 50%;
+      animation: spin .8s cubic-bezier(.34, 1.56, .64, 1) infinite;
+      margin-bottom: 14px;
+      box-shadow: 0 0 12px rgba(2, 132, 199, .3);
+      will-change: transform
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+        box-shadow: 0 0 12px rgba(2, 132, 199, .3)
+      }
+
+      50% {
+        box-shadow: 0 0 20px rgba(2, 132, 199, .5)
+      }
+
+      100% {
+        transform: rotate(360deg);
+        box-shadow: 0 0 12px rgba(2, 132, 199, .3)
+      }
+    }
+
+    .loading-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .5)
+    }
+
+    .loading-module {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: white;
+      margin-top: 6px
+    }
+
+    /* ═══════════════════════════════════
    HOME SCREEN — STATUS BAR
 ═══════════════════════════════════ */
-.sb{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;background:var(--ink);color:white}
-.sb-t{font-weight:700;font-size:15px}
-.sb-i{font-size:11px;opacity:.8}
+    .sb {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+      background: var(--ink);
+      color: white
+    }
 
-/* ═══════════════════════════════════
+    .sb-t {
+      font-weight: 700;
+      font-size: 15px
+    }
+
+    .sb-i {
+      font-size: 11px;
+      opacity: .8
+    }
+
+    /* ═══════════════════════════════════
    HOME SCREEN — HEADER
 ═══════════════════════════════════ */
-.home-header{background:var(--ink);padding:0 22px 24px;position:relative;overflow:hidden;flex-shrink:0}
-.home-header::before{content:'';position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(2,132,199,.15),transparent 70%)}
-.home-header::after{content:'';position:absolute;bottom:-30px;left:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.1),transparent 70%)}
-.hh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:1}
-.hh-greeting{font-size:12px;color:rgba(255,255,255,.5)}
-.hh-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:white}
-.hh-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--fa));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;border:2px solid rgba(255,255,255,.2)}
-.hh-xp-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
-.hh-xp-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;box-shadow:inset 0 0 4px rgba(255,255,255,.05)}
-.hh-xp-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--fa));border-radius:100px;transition:width .7s cubic-bezier(.34, 1.56, .64, 1);box-shadow:0 0 12px rgba(124,58,237,.5);will-change:width}
-.hh-xp-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fa-l);min-width:60px;text-align:right}
-.hh-stats{display:flex;gap:8px;margin-top:12px;position:relative;z-index:1}
-.hh-stat{flex:1;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;text-align:center;cursor:pointer;transition:all .28s cubic-bezier(.34, 1.56, .64, 1);will-change:transform,box-shadow}
-.hh-stat:nth-child(1){border-color:#F59E0B}
-.hh-stat:nth-child(2){border-color:#0284C7}
-.hh-stat:nth-child(3){border-color:#22C55E}
-.hh-stat:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(255,255,255,.08)}
-.hh-stat:active{transform:scale(0.94);box-shadow:0 2px 8px rgba(0,0,0,.2)}
-.hh-stat-n{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:white;line-height:1}
-.hh-stat-l{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:3px}
+    .home-header {
+      background: var(--ink);
+      padding: 0 22px 24px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0
+    }
 
-/* ═══════════════════════════════════
+    .home-header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(2, 132, 199, .15), transparent 70%)
+    }
+
+    .home-header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, .1), transparent 70%)
+    }
+
+    .hh-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hh-greeting {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .5)
+    }
+
+    .hh-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: white
+    }
+
+    .hh-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--p), var(--fa));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, .2)
+    }
+
+    .hh-xp-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hh-xp-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 100px;
+      overflow: hidden;
+      box-shadow: inset 0 0 4px rgba(255, 255, 255, .05)
+    }
+
+    .hh-xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--p), var(--fa));
+      border-radius: 100px;
+      transition: width .7s cubic-bezier(.34, 1.56, .64, 1);
+      box-shadow: 0 0 12px rgba(124, 58, 237, .5);
+      will-change: width
+    }
+
+    .hh-xp-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--fa-l);
+      min-width: 60px;
+      text-align: right
+    }
+
+    .hh-stats {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hh-stat {
+      flex: 1;
+      background: rgba(255, 255, 255, .05);
+      border: 1.5px solid rgba(255, 255, 255, .08);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .28s cubic-bezier(.34, 1.56, .64, 1);
+      will-change: transform, box-shadow
+    }
+
+    .hh-stat:nth-child(1) {
+      border-color: #F59E0B
+    }
+
+    .hh-stat:nth-child(2) {
+      border-color: #0284C7
+    }
+
+    .hh-stat:nth-child(3) {
+      border-color: #22C55E
+    }
+
+    .hh-stat:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 255, 255, .08)
+    }
+
+    .hh-stat:active {
+      transform: scale(0.94);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .2)
+    }
+
+    .hh-stat-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: white;
+      line-height: 1
+    }
+
+    .hh-stat-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .35);
+      margin-top: 3px
+    }
+
+    /* ═══════════════════════════════════
    MODULE CARDS
 ═══════════════════════════════════ */
-.modules-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 18px;background:#05090F}
-.modules-area::-webkit-scrollbar{display:none}
-.modules-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.modules-label::after{content:'';flex:1;height:1px;background:var(--bord)}
+    .modules-area {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px 18px;
+      background: #05090F
+    }
 
-.module-card{border:2px solid var(--bord);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .3s cubic-bezier(.34, 1.56, .64, 1);position:relative;overflow:hidden;background:rgba(255,255,255,.05);will-change:transform,border-color,box-shadow}
-.module-card:hover{border-color:var(--fa);transform:translateY(-3px);box-shadow:0 12px 32px rgba(2,132,199,.18)}
-.module-card:active{transform:scale(0.97)}
-.module-card.locked{opacity:.55;cursor:default;border-color:var(--bord)}
-.module-card.locked:hover{border-color:var(--bord);transform:none;box-shadow:none}
-.module-card.completed{border-color:var(--green);background:var(--green-xs);box-shadow:0 0 0 1px rgba(34,197,94,.2)}
+    .modules-area::-webkit-scrollbar {
+      display: none
+    }
 
-.prog-ring-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
-.prog-ring{transform:rotate(-90deg)}
-.prog-ring-bg{fill:none;stroke:var(--bord);stroke-width:4}
-.prog-ring-fill{fill:none;stroke:var(--fa);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
-.module-card.completed .prog-ring-fill{stroke:var(--green)}
-.module-card.locked .prog-ring-fill{stroke:var(--bord)}
-.prog-ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px}
-.prog-ring-num{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--fa)}
-.module-card.completed .prog-ring-num{color:var(--green)}
-.module-card.locked .prog-ring-num{color:var(--dim)}
+    .modules-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
 
-.mc-info{flex:1;min-width:0}
-.mc-module-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--fa);margin-bottom:2px}
-.module-card.completed .mc-module-num{color:var(--green)}
-.module-card.locked .mc-module-num{color:var(--dim)}
-.mc-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mc-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mut)}
-.mc-meta-item{display:flex;align-items:center;gap:3px}
+    .modules-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--bord)
+    }
 
-.mc-right{flex-shrink:0;text-align:right}
-.mc-xp{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--green);background:var(--green-xs);padding:3px 8px;border-radius:100px;display:inline-block}
-.mc-locked-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);border:1px solid var(--bord);padding:3px 8px;border-radius:100px}
-.mc-arrow{font-size:16px;color:var(--fa);opacity:.5}
-.module-card.completed .mc-arrow{color:var(--green)}
+    .module-card {
+      border: 2px solid var(--bord);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all .3s cubic-bezier(.34, 1.56, .64, 1);
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .05);
+      will-change: transform, border-color, box-shadow
+    }
 
-.connector{display:flex;align-items:center;justify-content:center;height:20px;position:relative}
-.connector-line{width:2px;height:100%;background:var(--bord)}
-.connector.done .connector-line{background:var(--green)}
+    .module-card:hover {
+      border-color: var(--fa);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(2, 132, 199, .18)
+    }
 
-/* ═══════════════════════════════════
+    .module-card:active {
+      transform: scale(0.97)
+    }
+
+    .module-card.locked {
+      opacity: .55;
+      cursor: default;
+      border-color: var(--bord)
+    }
+
+    .module-card.locked:hover {
+      border-color: var(--bord);
+      transform: none;
+      box-shadow: none
+    }
+
+    .module-card.completed {
+      border-color: var(--green);
+      background: var(--green-xs);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, .2)
+    }
+
+    .prog-ring-wrap {
+      position: relative;
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0
+    }
+
+    .prog-ring {
+      transform: rotate(-90deg)
+    }
+
+    .prog-ring-bg {
+      fill: none;
+      stroke: var(--bord);
+      stroke-width: 4
+    }
+
+    .prog-ring-fill {
+      fill: none;
+      stroke: var(--fa);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset .6s ease
+    }
+
+    .module-card.completed .prog-ring-fill {
+      stroke: var(--green)
+    }
+
+    .module-card.locked .prog-ring-fill {
+      stroke: var(--bord)
+    }
+
+    .prog-ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px
+    }
+
+    .prog-ring-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--fa)
+    }
+
+    .module-card.completed .prog-ring-num {
+      color: var(--green)
+    }
+
+    .module-card.locked .prog-ring-num {
+      color: var(--dim)
+    }
+
+    .mc-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .mc-module-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--fa);
+      margin-bottom: 2px
+    }
+
+    .module-card.completed .mc-module-num {
+      color: var(--green)
+    }
+
+    .module-card.locked .mc-module-num {
+      color: var(--dim)
+    }
+
+    .mc-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .mc-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--mut)
+    }
+
+    .mc-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 3px
+    }
+
+    .mc-right {
+      flex-shrink: 0;
+      text-align: right
+    }
+
+    .mc-xp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-xs);
+      padding: 3px 8px;
+      border-radius: 100px;
+      display: inline-block
+    }
+
+    .mc-locked-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--dim);
+      border: 1px solid var(--bord);
+      padding: 3px 8px;
+      border-radius: 100px
+    }
+
+    .mc-arrow {
+      font-size: 16px;
+      color: var(--fa);
+      opacity: .5
+    }
+
+    .module-card.completed .mc-arrow {
+      color: var(--green)
+    }
+
+    .connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20px;
+      position: relative
+    }
+
+    .connector-line {
+      width: 2px;
+      height: 100%;
+      background: var(--bord)
+    }
+
+    .connector.done .connector-line {
+      background: var(--green)
+    }
+
+    /* ═══════════════════════════════════
    BOTTOM NAV
 ═══════════════════════════════════ */
-.bottom-nav{display:flex;align-items:center;justify-content:space-around;padding:10px 16px 28px;border-top:1px solid var(--bord);flex-shrink:0;background:#05090F}
-.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.4;transition:opacity .2s}
-.bn-item.active{opacity:1}
-.bn-icon{font-size:22px}
-.bn-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase}
-.bn-item.active .bn-label{color:var(--fa)}
+    .bottom-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 16px 28px;
+      border-top: 1px solid var(--bord);
+      flex-shrink: 0;
+      background: #05090F
+    }
 
-/* Shell meta */
-.shell-meta{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.15);text-align:center;margin-top:10px}
+    .bn-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      opacity: .4;
+      transition: opacity .2s
+    }
 
-/* Current module indicator */
-.current-module-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--fa);transform:scaleX(0);transition:transform .3s ease;transform-origin:left;z-index:3}
-.current-module-bar.show{transform:scaleX(1)}
+    .bn-item.active {
+      opacity: 1
+    }
 
-/* ═══════════════════════════════════
+    .bn-icon {
+      font-size: 22px
+    }
+
+    .bn-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase
+    }
+
+    .bn-item.active .bn-label {
+      color: var(--fa)
+    }
+
+    /* Shell meta */
+    .shell-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .15);
+      text-align: center;
+      margin-top: 10px
+    }
+
+    /* Current module indicator */
+    .current-module-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--fa);
+      transform: scaleX(0);
+      transition: transform .3s ease;
+      transform-origin: left;
+      z-index: 3
+    }
+
+    .current-module-bar.show {
+      transform: scaleX(1)
+    }
+
+    /* ═══════════════════════════════════
    OPTION B — WARM & BOLD DESIGN
 ═══════════════════════════════════ */
 
-/* Programme Banner */
-.prog-banner{display:flex;align-items:center;gap:12px;padding:14px 16px 6px;background:#05090F}
-.prog-banner-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(2,132,199,.15));border:1px solid rgba(124,58,237,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.prog-banner-info{flex:1;min-width:0}
-.prog-banner-name{font:700 13px/1.2 'Outfit',sans-serif;color:#F8FAFC;margin-bottom:2px}
-.prog-banner-meta{font:500 10px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);letter-spacing:.05em}
-.prog-banner-progress{display:flex;gap:3px;align-items:center}
-.prog-banner-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.08);transition:background .3s ease}
-.prog-banner-dot.active{background:var(--p)}
-.prog-banner-dot.done{background:var(--green)}
+    /* Programme Banner */
+    .prog-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px 6px;
+      background: #05090F
+    }
 
-/* Subject Selector Pills */
-.subject-pills{display:flex;gap:10px;padding:8px 16px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0;background:#05090F}
-.subject-pills::-webkit-scrollbar{display:none}
-.subject-pill{padding:8px 16px;border-radius:100px;font:600 12px/1 'Outfit',sans-serif;border:none;cursor:pointer;transition:all .28s cubic-bezier(.34, 1.56, .64, 1);white-space:nowrap;flex-shrink:0;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);will-change:transform,background}
-.subject-pill:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
-.subject-pill:active{transform:scale(0.95)}
-.subject-pill.active{background:var(--fa);color:white;box-shadow:0 4px 12px rgba(2,132,199,.3)}
-.subject-pill.active.mc-subject{background:var(--mc);color:white;box-shadow:0 4px 12px rgba(13,148,136,.3)}
-.subject-pill.active.cp-subject{background:var(--cp);color:white;box-shadow:0 4px 12px rgba(14,165,233,.3)}
-.subject-pill.active.ebm-subject{background:var(--ebm);color:white;box-shadow:0 4px 12px rgba(22,163,74,.3)}
+    .prog-banner-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, .15), rgba(2, 132, 199, .15));
+      border: 1px solid rgba(124, 58, 237, .15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0
+    }
 
-/* Hero banner */
-.hero-banner{margin:8px 16px 0;padding:24px 20px 20px;background:linear-gradient(145deg,#2D1B69 0%,#1A0F3C 50%,#0C1E35 100%);border-radius:24px;position:relative;overflow:hidden;border:1px solid rgba(124,58,237,.2);transition:border-color .3s ease,background .3s ease;will-change:background;box-shadow:0 0 0 0 rgba(124,58,237,.0)}
-.hero-banner.mc-theme{border-color:rgba(13,148,136,.2)}
-.hero-banner.mc-theme::before{background:radial-gradient(circle,rgba(13,148,136,.15),transparent 70%)}
-.hero-banner.mc-theme::after{background:radial-gradient(circle,rgba(13,148,136,.15),transparent 70%)}
-.hero-banner.cp-theme{border-color:rgba(14,165,233,.2)}
-.hero-banner.cp-theme::before{background:radial-gradient(circle,rgba(14,165,233,.15),transparent 70%)}
-.hero-banner.cp-theme::after{background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%)}
-.hero-banner.ebm-theme{border-color:rgba(22,163,74,.2)}
-.hero-banner.ebm-theme::before{background:radial-gradient(circle,rgba(234,179,8,.15),transparent 70%)}
-.hero-banner.ebm-theme::after{background:radial-gradient(circle,rgba(22,163,74,.15),transparent 70%)}
-.hero-banner::before{content:'';position:absolute;top:-40px;right:-20px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.15),transparent 70%)}
-.hero-banner::after{content:'';position:absolute;bottom:-30px;left:-20px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%)}
+    .prog-banner-info {
+      flex: 1;
+      min-width: 0
+    }
 
-.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;position:relative;z-index:1}
-.hero-greeting{font:500 13px/1.4 'Outfit',sans-serif;color:rgba(255,255,255,.5);margin-bottom:2px}
-.hero-name{font:900 26px/1.15 'Playfair Display',serif;color:#F8FAFC}
+    .prog-banner-name {
+      font: 700 13px/1.2 'Outfit', sans-serif;
+      color: #F8FAFC;
+      margin-bottom: 2px
+    }
 
-.ashki-container{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(124,58,237,.2));border:2px solid rgba(245,158,11,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
-.ashki-emoji{width:100%;height:100%;object-fit:contain;animation:float 3.2s cubic-bezier(.34, 1.56, .64, 1) infinite;will-change:transform}
-@keyframes float{0%,100%{transform:translateY(0px) rotateZ(-2deg)}25%{transform:translateY(-10px) rotateZ(1deg)}75%{transform:translateY(-6px) rotateZ(-1deg)}}
+    .prog-banner-meta {
+      font: 500 10px/1 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, .3);
+      letter-spacing: .05em
+    }
 
-.ashki-speech{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);background:#F59E0B;color:#1A0A3A;font:700 8px/1 'Outfit',sans-serif;padding:3px 6px;border-radius:6px;white-space:nowrap;letter-spacing:.02em}
+    .prog-banner-progress {
+      display: flex;
+      gap: 3px;
+      align-items: center
+    }
 
-.hero-motivator{font:600 12px/1.4 'Outfit',sans-serif;color:var(--gold);margin-bottom:4px;position:relative;z-index:1}
+    .prog-banner-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .08);
+      transition: background .3s ease
+    }
 
-.streak-badge{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.2);padding:6px 12px;border-radius:100px;font:700 12px/1 'JetBrains Mono',monospace;color:#F59E0B}
+    .prog-banner-dot.active {
+      background: var(--p)
+    }
 
-.xp-badge{display:flex;align-items:center;gap:5px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);padding:6px 12px;border-radius:100px;font:700 12px/1 'JetBrains Mono',monospace;color:#A78BFA}
+    .prog-banner-dot.done {
+      background: var(--green)
+    }
 
-/* ═══════════════════════════════════
+    /* Subject Selector Pills */
+    .subject-pills {
+      display: flex;
+      gap: 10px;
+      padding: 8px 16px 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      flex-shrink: 0;
+      background: #05090F
+    }
+
+    .subject-pills::-webkit-scrollbar {
+      display: none
+    }
+
+    .subject-pill {
+      padding: 8px 16px;
+      border-radius: 100px;
+      font: 600 12px/1 'Outfit', sans-serif;
+      border: none;
+      cursor: pointer;
+      transition: all .28s cubic-bezier(.34, 1.56, .64, 1);
+      white-space: nowrap;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, .08);
+      color: rgba(255, 255, 255, .5);
+      will-change: transform, background
+    }
+
+    .subject-pill:hover {
+      background: rgba(255, 255, 255, .12);
+      transform: translateY(-2px)
+    }
+
+    .subject-pill:active {
+      transform: scale(0.95)
+    }
+
+    .subject-pill.active {
+      background: var(--fa);
+      color: white;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, .3)
+    }
+
+    .subject-pill.active.mc-subject {
+      background: var(--mc);
+      color: white;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, .3)
+    }
+
+    .subject-pill.active.cp-subject {
+      background: var(--cp);
+      color: white;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, .3)
+    }
+
+    .subject-pill.active.ebm-subject {
+      background: var(--ebm);
+      color: white;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, .3)
+    }
+
+    /* Hero banner */
+    .hero-banner {
+      margin: 8px 16px 0;
+      padding: 24px 20px 20px;
+      background: linear-gradient(145deg, #2D1B69 0%, #1A0F3C 50%, #0C1E35 100%);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(124, 58, 237, .2);
+      transition: border-color .3s ease, background .3s ease;
+      will-change: background;
+      box-shadow: 0 0 0 0 rgba(124, 58, 237, .0)
+    }
+
+    .hero-banner.mc-theme {
+      border-color: rgba(13, 148, 136, .2)
+    }
+
+    .hero-banner.mc-theme::before {
+      background: radial-gradient(circle, rgba(13, 148, 136, .15), transparent 70%)
+    }
+
+    .hero-banner.mc-theme::after {
+      background: radial-gradient(circle, rgba(13, 148, 136, .15), transparent 70%)
+    }
+
+    .hero-banner.cp-theme {
+      border-color: rgba(14, 165, 233, .2)
+    }
+
+    .hero-banner.cp-theme::before {
+      background: radial-gradient(circle, rgba(14, 165, 233, .15), transparent 70%)
+    }
+
+    .hero-banner.cp-theme::after {
+      background: radial-gradient(circle, rgba(139, 92, 246, .15), transparent 70%)
+    }
+
+    .hero-banner.ebm-theme {
+      border-color: rgba(22, 163, 74, .2)
+    }
+
+    .hero-banner.ebm-theme::before {
+      background: radial-gradient(circle, rgba(234, 179, 8, .15), transparent 70%)
+    }
+
+    .hero-banner.ebm-theme::after {
+      background: radial-gradient(circle, rgba(22, 163, 74, .15), transparent 70%)
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -20px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, .15), transparent 70%)
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, .15), transparent 70%)
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-greeting {
+      font: 500 13px/1.4 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .5);
+      margin-bottom: 2px
+    }
+
+    .hero-name {
+      font: 900 26px/1.15 'Playfair Display', serif;
+      color: #F8FAFC
+    }
+
+    .ashki-container {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, .2), rgba(124, 58, 237, .2));
+      border: 2px solid rgba(245, 158, 11, .25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative
+    }
+
+    .ashki-emoji {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      animation: float 3.2s cubic-bezier(.34, 1.56, .64, 1) infinite;
+      will-change: transform
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotateZ(-2deg)
+      }
+
+      25% {
+        transform: translateY(-10px) rotateZ(1deg)
+      }
+
+      75% {
+        transform: translateY(-6px) rotateZ(-1deg)
+      }
+    }
+
+    .ashki-speech {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #F59E0B;
+      color: #1A0A3A;
+      font: 700 8px/1 'Outfit', sans-serif;
+      padding: 3px 6px;
+      border-radius: 6px;
+      white-space: nowrap;
+      letter-spacing: .02em
+    }
+
+    .hero-motivator {
+      font: 600 12px/1.4 'Outfit', sans-serif;
+      color: var(--gold);
+      margin-bottom: 4px;
+      position: relative;
+      z-index: 1
+    }
+
+    .streak-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(245, 158, 11, .12);
+      border: 1px solid rgba(245, 158, 11, .2);
+      padding: 6px 12px;
+      border-radius: 100px;
+      font: 700 12px/1 'JetBrains Mono', monospace;
+      color: #F59E0B
+    }
+
+    .xp-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(124, 58, 237, .12);
+      border: 1px solid rgba(124, 58, 237, .2);
+      padding: 6px 12px;
+      border-radius: 100px;
+      font: 700 12px/1 'JetBrains Mono', monospace;
+      color: #A78BFA
+    }
+
+    /* ═══════════════════════════════════
    DASHBOARD STATS ROW
 ═══════════════════════════════════ */
-.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;position:relative;z-index:1}
-.dash-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .28s cubic-bezier(.34, 1.56, .64, 1)}
-.dash-stat:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.3)}
-.dash-stat:active{transform:scale(.95)}
-.ds-icon{font-size:18px;margin-bottom:4px}
-.ds-fire{animation:fireFlicker 1.5s ease-in-out infinite}
-@keyframes fireFlicker{0%,100%{transform:scale(1) rotate(0deg)}25%{transform:scale(1.15) rotate(-3deg)}50%{transform:scale(1.05) rotate(2deg)}75%{transform:scale(1.12) rotate(-1deg)}}
-.ds-value{font:900 18px/1 'Playfair Display',serif;color:white}
-.ds-label{font:500 8px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
-#ds-streak .ds-value{color:#F59E0B}
-#ds-xp .ds-value{color:#A78BFA}
-#ds-mark .ds-value{color:#22C55E}
-#ds-exam .ds-value{color:#38BDF8}
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+      position: relative;
+      z-index: 1
+    }
 
-/* ═══════════════════════════════════
+    .dash-stat {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 12px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .28s cubic-bezier(.34, 1.56, .64, 1)
+    }
+
+    .dash-stat:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .3)
+    }
+
+    .dash-stat:active {
+      transform: scale(.95)
+    }
+
+    .ds-icon {
+      font-size: 18px;
+      margin-bottom: 4px
+    }
+
+    .ds-fire {
+      animation: fireFlicker 1.5s ease-in-out infinite
+    }
+
+    @keyframes fireFlicker {
+
+      0%,
+      100% {
+        transform: scale(1) rotate(0deg)
+      }
+
+      25% {
+        transform: scale(1.15) rotate(-3deg)
+      }
+
+      50% {
+        transform: scale(1.05) rotate(2deg)
+      }
+
+      75% {
+        transform: scale(1.12) rotate(-1deg)
+      }
+    }
+
+    .ds-value {
+      font: 900 18px/1 'Playfair Display', serif;
+      color: white
+    }
+
+    .ds-label {
+      font: 500 8px/1 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, .35);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-top: 3px
+    }
+
+    #ds-streak .ds-value {
+      color: #F59E0B
+    }
+
+    #ds-xp .ds-value {
+      color: #A78BFA
+    }
+
+    #ds-mark .ds-value {
+      color: #22C55E
+    }
+
+    #ds-exam .ds-value {
+      color: #38BDF8
+    }
+
+    /* ═══════════════════════════════════
    DASHBOARD CARDS (shared)
 ═══════════════════════════════════ */
-.dash-card{margin:10px 16px 0;padding:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:20px;transition:all .28s cubic-bezier(.34, 1.56, .64, 1)}
-.dash-card:hover{border-color:rgba(255,255,255,.1)}
-.dc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.dc-title{font:700 13px/1 'Outfit',sans-serif;color:white;display:flex;align-items:center;gap:6px}
-.dc-emoji{font-size:16px}
-.dc-badge{font:700 9px/1 'JetBrains Mono',monospace;padding:4px 8px;border-radius:100px;letter-spacing:.04em}
+    .dash-card {
+      margin: 10px 16px 0;
+      padding: 18px;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 20px;
+      transition: all .28s cubic-bezier(.34, 1.56, .64, 1)
+    }
 
-/* ═══════════════════════════════════
+    .dash-card:hover {
+      border-color: rgba(255, 255, 255, .1)
+    }
+
+    .dc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px
+    }
+
+    .dc-title {
+      font: 700 13px/1 'Outfit', sans-serif;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .dc-emoji {
+      font-size: 16px
+    }
+
+    .dc-badge {
+      font: 700 9px/1 'JetBrains Mono', monospace;
+      padding: 4px 8px;
+      border-radius: 100px;
+      letter-spacing: .04em
+    }
+
+    /* ═══════════════════════════════════
    STREAK CARD
 ═══════════════════════════════════ */
-.streak-badge-pill{background:rgba(245,158,11,.12);color:#F59E0B;border:1px solid rgba(245,158,11,.2)}
-.streak-week{display:flex;justify-content:space-between;gap:4px;margin-bottom:16px}
-.streak-day{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
-.sd-dot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.08);transition:all .3s cubic-bezier(.34, 1.56, .64, 1)}
-.streak-day.done .sd-dot{background:linear-gradient(135deg,#F59E0B,#F97316);border-color:rgba(245,158,11,.4);box-shadow:0 0 12px rgba(245,158,11,.3)}
-.streak-day.today .sd-dot{background:rgba(245,158,11,.15);border:2px dashed #F59E0B;animation:todayPulse 2s ease-in-out infinite}
-@keyframes todayPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.3)}50%{box-shadow:0 0 0 6px rgba(245,158,11,.1)}}
-.sd-lbl{font:600 9px/1 'Outfit',sans-serif;color:rgba(255,255,255,.3)}
-.streak-day.done .sd-lbl{color:#F59E0B}
-.streak-day.today .sd-lbl{color:#F59E0B;font-weight:700}
+    .streak-badge-pill {
+      background: rgba(245, 158, 11, .12);
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, .2)
+    }
 
-.xp-level-row{display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
-.xp-level-info{flex-shrink:0}
-.xp-level-badge{font:800 11px/1 'Outfit',sans-serif;color:#A78BFA;background:rgba(124,58,237,.15);padding:4px 10px;border-radius:8px;display:inline-block;margin-bottom:4px}
-.xp-level-text{font:500 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.35)}
-.xp-bar-wrap{flex:1}
-.xp-bar-track{height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
-.xp-bar-fill{height:100%;background:linear-gradient(90deg,#7C3AED,#A78BFA);border-radius:100px;transition:width .8s cubic-bezier(.34, 1.56, .64, 1);box-shadow:0 0 10px rgba(124,58,237,.4)}
+    .streak-week {
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+      margin-bottom: 16px
+    }
 
-/* ═══════════════════════════════════
+    .streak-day {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1
+    }
+
+    .sd-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .06);
+      border: 2px solid rgba(255, 255, 255, .08);
+      transition: all .3s cubic-bezier(.34, 1.56, .64, 1)
+    }
+
+    .streak-day.done .sd-dot {
+      background: linear-gradient(135deg, #F59E0B, #F97316);
+      border-color: rgba(245, 158, 11, .4);
+      box-shadow: 0 0 12px rgba(245, 158, 11, .3)
+    }
+
+    .streak-day.today .sd-dot {
+      background: rgba(245, 158, 11, .15);
+      border: 2px dashed #F59E0B;
+      animation: todayPulse 2s ease-in-out infinite
+    }
+
+    @keyframes todayPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, .3)
+      }
+
+      50% {
+        box-shadow: 0 0 0 6px rgba(245, 158, 11, .1)
+      }
+    }
+
+    .sd-lbl {
+      font: 600 9px/1 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .3)
+    }
+
+    .streak-day.done .sd-lbl {
+      color: #F59E0B
+    }
+
+    .streak-day.today .sd-lbl {
+      color: #F59E0B;
+      font-weight: 700
+    }
+
+    .xp-level-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, .06)
+    }
+
+    .xp-level-info {
+      flex-shrink: 0
+    }
+
+    .xp-level-badge {
+      font: 800 11px/1 'Outfit', sans-serif;
+      color: #A78BFA;
+      background: rgba(124, 58, 237, .15);
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 4px
+    }
+
+    .xp-level-text {
+      font: 500 10px/1 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .35)
+    }
+
+    .xp-bar-wrap {
+      flex: 1
+    }
+
+    .xp-bar-track {
+      height: 8px;
+      background: rgba(255, 255, 255, .06);
+      border-radius: 100px;
+      overflow: hidden
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7C3AED, #A78BFA);
+      border-radius: 100px;
+      transition: width .8s cubic-bezier(.34, 1.56, .64, 1);
+      box-shadow: 0 0 10px rgba(124, 58, 237, .4)
+    }
+
+    /* ═══════════════════════════════════
    EXAM COUNTDOWN CARD
 ═══════════════════════════════════ */
-.exam-rows{display:flex;flex-direction:column;gap:10px}
-.exam-row-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:14px;transition:all .28s cubic-bezier(.34, 1.56, .64, 1)}
-.exam-row-item:hover{background:rgba(255,255,255,.06);transform:translateX(4px)}
-.er-color{width:4px;height:32px;border-radius:100px;flex-shrink:0}
-.er-info{flex:1;min-width:0}
-.er-name{font:600 12px/1 'Outfit',sans-serif;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.er-date{font:400 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.3);margin-top:3px}
-.er-days{text-align:right;margin-right:4px}
-.er-days-n{font:900 20px/1 'Playfair Display',serif;color:white}
-.er-days-l{font:500 8px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em}
-.er-ring{flex-shrink:0}
-.er-ring svg{display:block}
+    .exam-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
 
-/* ═══════════════════════════════════
+    .exam-row-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 255, 255, .05);
+      border-radius: 14px;
+      transition: all .28s cubic-bezier(.34, 1.56, .64, 1)
+    }
+
+    .exam-row-item:hover {
+      background: rgba(255, 255, 255, .06);
+      transform: translateX(4px)
+    }
+
+    .er-color {
+      width: 4px;
+      height: 32px;
+      border-radius: 100px;
+      flex-shrink: 0
+    }
+
+    .er-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .er-name {
+      font: 600 12px/1 'Outfit', sans-serif;
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .er-date {
+      font: 400 10px/1 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .3);
+      margin-top: 3px
+    }
+
+    .er-days {
+      text-align: right;
+      margin-right: 4px
+    }
+
+    .er-days-n {
+      font: 900 20px/1 'Playfair Display', serif;
+      color: white
+    }
+
+    .er-days-l {
+      font: 500 8px/1 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, .3);
+      text-transform: uppercase;
+      letter-spacing: .06em
+    }
+
+    .er-ring {
+      flex-shrink: 0
+    }
+
+    .er-ring svg {
+      display: block
+    }
+
+    /* ═══════════════════════════════════
    MARKS PROGRESS CARD
 ═══════════════════════════════════ */
-.marks-target-badge{background:rgba(34,197,94,.12);color:#22C55E;border:1px solid rgba(34,197,94,.2)}
-.marks-subjects{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
-.mark-subj{display:flex;flex-direction:column;gap:6px}
-.ms-info{display:flex;align-items:baseline;justify-content:space-between}
-.ms-name{font:600 12px/1 'Outfit',sans-serif;color:white}
-.ms-detail{font:500 11px/1 'JetBrains Mono',monospace}
-.ms-current{color:white;font-weight:700}
-.ms-arrow{color:rgba(255,255,255,.2);margin:0 2px}
-.ms-target{color:#22C55E}
-.ms-bar-wrap{position:relative}
-.ms-bar-track{height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:visible;position:relative}
-.ms-bar-fill{height:100%;border-radius:100px;transition:width .8s cubic-bezier(.34, 1.56, .64, 1);box-shadow:0 0 8px rgba(2,132,199,.3)}
-.ms-bar-target{position:absolute;top:-3px;width:2px;height:12px;background:#22C55E;border-radius:100px;transform:translateX(-50%);box-shadow:0 0 6px rgba(34,197,94,.5)}
+    .marks-target-badge {
+      background: rgba(34, 197, 94, .12);
+      color: #22C55E;
+      border: 1px solid rgba(34, 197, 94, .2)
+    }
 
-/* Marks Trend Mini Chart */
-.marks-trend{padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
-.mt-label{font:500 9px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
-.mt-chart{display:flex;align-items:flex-end;gap:6px;height:60px}
-.mt-bar{flex:1;background:linear-gradient(to top,rgba(34,197,94,.15),rgba(34,197,94,.3));border-radius:4px 4px 0 0;position:relative;transition:height .6s cubic-bezier(.34, 1.56, .64, 1);min-height:8px}
-.mt-bar.highlight{background:linear-gradient(to top,rgba(34,197,94,.3),rgba(34,197,94,.6))}
-.mt-bar.highlight::after{content:'';position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#22C55E;border-radius:50%;box-shadow:0 0 8px rgba(34,197,94,.6)}
-.mt-val{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font:700 8px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);white-space:nowrap}
-.mt-bar.highlight .mt-val{color:#22C55E}
+    .marks-subjects {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px
+    }
 
-/* Today's lesson section */
-.today-section{padding:20px 16px 0}
+    .mark-subj {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
 
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.section-title{font:700 11px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.3);letter-spacing:.15em;text-transform:uppercase}
-.section-see-all{font:600 11px/1 'Outfit',sans-serif;color:#7C3AED;cursor:pointer}
+    .ms-info {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between
+    }
 
-.today-card{background:linear-gradient(135deg,#0F172A,#1A1040);border:1px solid rgba(2,132,199,.2);border-radius:20px;padding:18px;cursor:pointer;transition:transform .28s cubic-bezier(.34, 1.56, .64, 1),border-color .3s ease,background .3s ease,box-shadow .4s ease;position:relative;overflow:hidden;will-change:transform,box-shadow;animation:breathingGlow 3s ease-in-out infinite}
-.today-card:hover{box-shadow:0 0 0 3px rgba(2,132,199,.15), 0 8px 24px rgba(2,132,199,.15);transform:translateY(-2px)}
-.today-card:active{transform:scale(0.96)}
-.today-card::after{content:'';position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(2,132,199,.12),transparent 70%);transition:background .3s ease;will-change:background}
+    .ms-name {
+      font: 600 12px/1 'Outfit', sans-serif;
+      color: white
+    }
 
-@keyframes breathingGlow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(2, 132, 199, .15);
-  }
-  50% {
-    box-shadow: 0 0 0 4px rgba(2, 132, 199, .08), 0 0 20px rgba(2, 132, 199, .1);
-  }
-}
-.today-card.mc-theme{border-color:rgba(13,148,136,.2);background:linear-gradient(135deg,#0F2A27,#1A2B26)}
-.today-card.mc-theme::after{background:radial-gradient(circle,rgba(13,148,136,.12),transparent 70%)}
-.today-card.cp-theme{border-color:rgba(14,165,233,.2);background:linear-gradient(135deg,#0C1929,#0F1F35)}
-.today-card.cp-theme::after{background:radial-gradient(circle,rgba(14,165,233,.12),transparent 70%)}
-.today-card.ebm-theme{border-color:rgba(22,163,74,.2);background:linear-gradient(135deg,#0C1F12,#152A18)}
-.today-card.ebm-theme::after{background:radial-gradient(circle,rgba(22,163,74,.12),transparent 70%)}
+    .ms-detail {
+      font: 500 11px/1 'JetBrains Mono', monospace
+    }
 
-.today-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-.today-module{font:700 10px/1 'JetBrains Mono',monospace;color:#0284C7;letter-spacing:.1em;text-transform:uppercase}
-.today-time{font:500 11px/1 'Outfit',sans-serif;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px}
-.today-title{font:800 18px/1.25 'Playfair Display',serif;color:#F8FAFC;margin-bottom:6px}
-.today-desc{font:400 12px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.45);margin-bottom:14px}
+    .ms-current {
+      color: white;
+      font-weight: 700
+    }
 
-.today-footer{display:flex;align-items:center;justify-content:space-between}
-.today-progress-wrap{flex:1;margin-right:14px}
-.today-prog-text{font:500 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.35);margin-bottom:4px}
-.today-prog-track{height:3px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
-.today-prog-fill{height:100%;width:25%;background:#0284C7;border-radius:100px}
+    .ms-arrow {
+      color: rgba(255, 255, 255, .2);
+      margin: 0 2px
+    }
 
-.today-btn{padding:10px 20px;background:linear-gradient(135deg,#0284C7,#0369A1);color:white;font:700 12px/1 'Outfit',sans-serif;border:none;border-radius:12px;cursor:pointer;flex-shrink:0;transition:all .28s cubic-bezier(.34, 1.56, .64, 1);will-change:transform,box-shadow;box-shadow:0 4px 12px rgba(2,132,199,.25)}
-.today-btn:hover{box-shadow:0 8px 24px rgba(2,132,199,.4);transform:translateY(-2px)}
-.today-btn:active{transform:scale(0.94);box-shadow:0 2px 8px rgba(2,132,199,.2)}
+    .ms-target {
+      color: #22C55E
+    }
 
-/* Module grid */
-.modules-section{padding:20px 16px 120px}
+    .ms-bar-wrap {
+      position: relative
+    }
 
-.module-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .ms-bar-track {
+      height: 6px;
+      background: rgba(255, 255, 255, .06);
+      border-radius: 100px;
+      overflow: visible;
+      position: relative
+    }
 
-.mg-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px 14px;cursor:pointer;transition:transform .28s cubic-bezier(.34, 1.56, .64, 1),border-color .3s ease,box-shadow .3s ease;position:relative;will-change:transform,box-shadow;overflow:hidden}
-.mg-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
-.mg-card:active{transform:scale(0.95)}
-.mg-card.completed{border-color:rgba(34,197,94,.15)}
-.mg-card.current{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
-.mg-card.mc-theme.current{border-color:rgba(13,148,136,.3);background:rgba(13,148,136,.05)}
-.mg-card.cp-theme.current{border-color:rgba(14,165,233,.3);background:rgba(14,165,233,.05)}
-.mg-card.ebm-theme.current{border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.05)}
-.mg-card.locked{opacity:.4}
+    .ms-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width .8s cubic-bezier(.34, 1.56, .64, 1);
+      box-shadow: 0 0 8px rgba(2, 132, 199, .3)
+    }
 
-.mg-num{font:800 28px/1 'JetBrains Mono',monospace;margin-bottom:8px}
-.mg-card.completed .mg-num{color:#22C55E}
-.mg-card.current .mg-num{color:#7C3AED}
-.mg-card .mg-num{color:rgba(255,255,255,.15)}
-.mg-card.locked .mg-num{color:rgba(255,255,255,.08)}
+    .ms-bar-target {
+      position: absolute;
+      top: -3px;
+      width: 2px;
+      height: 12px;
+      background: #22C55E;
+      border-radius: 100px;
+      transform: translateX(-50%);
+      box-shadow: 0 0 6px rgba(34, 197, 94, .5)
+    }
 
-.mg-name{font:600 12px/1.35 'Outfit',sans-serif;color:#F8FAFC;margin-bottom:6px}
-.mg-card.locked .mg-name{color:rgba(255,255,255,.3)}
+    /* Marks Trend Mini Chart */
+    .marks-trend {
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, .06)
+    }
 
-.mg-meta{font:500 10px/1 'Outfit',sans-serif;color:rgba(255,255,255,.3)}
+    .mt-label {
+      font: 500 9px/1 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, .25);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 10px
+    }
 
-.mg-check{position:absolute;top:12px;right:12px;width:20px;height:20px;background:#22C55E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:white;font-weight:700}
+    .mt-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 60px
+    }
 
-.mg-badge{display:inline-block;font:700 9px/1 'JetBrains Mono',monospace;padding:3px 7px;border-radius:6px;margin-top:6px}
-.mg-badge.gold{background:rgba(245,158,11,.1);color:#F59E0B}
-.mg-badge.purple{background:rgba(124,58,237,.1);color:#A78BFA}
+    .mt-bar {
+      flex: 1;
+      background: linear-gradient(to top, rgba(34, 197, 94, .15), rgba(34, 197, 94, .3));
+      border-radius: 4px 4px 0 0;
+      position: relative;
+      transition: height .6s cubic-bezier(.34, 1.56, .64, 1);
+      min-height: 8px
+    }
 
-/* Option B bottom nav with SVG icons */
-.home-view .bottom-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 20px 28px;background:linear-gradient(to top,#05090F 70%,transparent);z-index:10;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.home-view .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.35;transition:opacity .28s cubic-bezier(.34, 1.56, .64, 1);cursor:pointer;padding:6px 12px;position:relative;will-change:opacity}
-.home-view .bn-item.active{opacity:1}
-.home-view .bn-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;transition:transform .28s cubic-bezier(.34, 1.56, .64, 1);will-change:transform}
-.home-view .bn-item.active .bn-icon{transform:scale(1.1)}
-.home-view .bn-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.home-view .bn-item.active .bn-icon{color:#7C3AED}
-.home-view .bn-item .bn-icon{color:rgba(255,255,255,.5)}
-.home-view .bn-label{font:600 9px/1 'Outfit',sans-serif;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em;transition:color .28s cubic-bezier(.34, 1.56, .64, 1)}
-.home-view .bn-item.active .bn-label{color:#7C3AED}
-.home-view .bn-dot{width:4px;height:4px;border-radius:50%;background:#7C3AED;margin-top:2px;animation:dotPulse 2s ease-in-out infinite}
+    .mt-bar.highlight {
+      background: linear-gradient(to top, rgba(34, 197, 94, .3), rgba(34, 197, 94, .6))
+    }
 
-@keyframes dotPulse {
-  0%, 100% {
-    opacity: .8;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.3);
-  }
-}
+    .mt-bar.highlight::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: #22C55E;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(34, 197, 94, .6)
+    }
 
-/* Accessibility: Respect motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  .ashki-emoji {
-    animation: none;
-  }
-  .home-view .bn-dot {
-    animation: none;
-  }
-  .today-card {
-    animation: none;
-  }
-}
+    .mt-val {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font: 700 8px/1 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, .3);
+      white-space: nowrap
+    }
 
-/* Confetti burst animation */
-@keyframes confetti-burst{0%{opacity:1;transform:translate(var(--tx),0) rotateZ(0deg)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) rotateZ(360deg)}}
-.confetti-piece{position:fixed;pointer-events:none;width:10px;height:10px;animation:confetti-burst 2.5s ease-out forwards}
-</style>
+    .mt-bar.highlight .mt-val {
+      color: #22C55E
+    }
+
+    /* Today's lesson section */
+    .today-section {
+      padding: 20px 16px 0
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px
+    }
+
+    .section-title {
+      font: 700 11px/1 'JetBrains Mono', monospace;
+      color: rgba(255, 255, 255, .3);
+      letter-spacing: .15em;
+      text-transform: uppercase
+    }
+
+    .section-see-all {
+      font: 600 11px/1 'Outfit', sans-serif;
+      color: #7C3AED;
+      cursor: pointer
+    }
+
+    .today-card {
+      background: linear-gradient(135deg, #0F172A, #1A1040);
+      border: 1px solid rgba(2, 132, 199, .2);
+      border-radius: 20px;
+      padding: 18px;
+      cursor: pointer;
+      transition: transform .28s cubic-bezier(.34, 1.56, .64, 1), border-color .3s ease, background .3s ease, box-shadow .4s ease;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow;
+      animation: breathingGlow 3s ease-in-out infinite
+    }
+
+    .today-card:hover {
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, .15), 0 8px 24px rgba(2, 132, 199, .15);
+      transform: translateY(-2px)
+    }
+
+    .today-card:active {
+      transform: scale(0.96)
+    }
+
+    .today-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(2, 132, 199, .12), transparent 70%);
+      transition: background .3s ease;
+      will-change: background
+    }
+
+    @keyframes breathingGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(2, 132, 199, .15);
+      }
+
+      50% {
+        box-shadow: 0 0 0 4px rgba(2, 132, 199, .08), 0 0 20px rgba(2, 132, 199, .1);
+      }
+    }
+
+    .today-card.mc-theme {
+      border-color: rgba(13, 148, 136, .2);
+      background: linear-gradient(135deg, #0F2A27, #1A2B26)
+    }
+
+    .today-card.mc-theme::after {
+      background: radial-gradient(circle, rgba(13, 148, 136, .12), transparent 70%)
+    }
+
+    .today-card.cp-theme {
+      border-color: rgba(14, 165, 233, .2);
+      background: linear-gradient(135deg, #0C1929, #0F1F35)
+    }
+
+    .today-card.cp-theme::after {
+      background: radial-gradient(circle, rgba(14, 165, 233, .12), transparent 70%)
+    }
+
+    .today-card.ebm-theme {
+      border-color: rgba(22, 163, 74, .2);
+      background: linear-gradient(135deg, #0C1F12, #152A18)
+    }
+
+    .today-card.ebm-theme::after {
+      background: radial-gradient(circle, rgba(22, 163, 74, .12), transparent 70%)
+    }
+
+    .today-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px
+    }
+
+    .today-module {
+      font: 700 10px/1 'JetBrains Mono', monospace;
+      color: #0284C7;
+      letter-spacing: .1em;
+      text-transform: uppercase
+    }
+
+    .today-time {
+      font: 500 11px/1 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .4);
+      display: flex;
+      align-items: center;
+      gap: 4px
+    }
+
+    .today-title {
+      font: 800 18px/1.25 'Playfair Display', serif;
+      color: #F8FAFC;
+      margin-bottom: 6px
+    }
+
+    .today-desc {
+      font: 400 12px/1.5 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .45);
+      margin-bottom: 14px
+    }
+
+    .today-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .today-progress-wrap {
+      flex: 1;
+      margin-right: 14px
+    }
+
+    .today-prog-text {
+      font: 500 10px/1 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .35);
+      margin-bottom: 4px
+    }
+
+    .today-prog-track {
+      height: 3px;
+      background: rgba(255, 255, 255, .06);
+      border-radius: 100px;
+      overflow: hidden
+    }
+
+    .today-prog-fill {
+      height: 100%;
+      width: 25%;
+      background: var(--fa);
+      border-radius: 100px
+    }
+
+    .today-btn {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--fa), var(--fa-d));
+      color: white;
+      font: 700 12px/1 'Outfit', sans-serif;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all .28s cubic-bezier(.34, 1.56, .64, 1);
+      will-change: transform, box-shadow;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+      animation: pulseBtn 2s infinite;
+    }
+
+    @keyframes pulseBtn {
+      0% {
+        box-shadow: 0 0 0 0 var(--fa-sm);
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px transparent;
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 transparent;
+      }
+    }
+
+    .today-btn:hover {
+      box-shadow: 0 8px 24px var(--fa-sm);
+      transform: translateY(-2px)
+    }
+
+    .today-btn:active {
+      transform: scale(0.94);
+      box-shadow: 0 2px 8px var(--fa-sm)
+    }
+
+    /* Module grid */
+    .modules-section {
+      padding: 20px 16px 120px
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px
+    }
+
+    .mg-card {
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 16px;
+      padding: 16px 14px;
+      cursor: pointer;
+      transition: transform .28s cubic-bezier(.34, 1.56, .64, 1), border-color .3s ease, box-shadow .3s ease;
+      position: relative;
+      will-change: transform, box-shadow;
+      overflow: hidden
+    }
+
+    .mg-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, .08);
+      border-color: rgba(255, 255, 255, .12)
+    }
+
+    .mg-card:active {
+      transform: scale(0.95)
+    }
+
+    .mg-card.completed {
+      border-color: rgba(34, 197, 94, .15)
+    }
+
+    .mg-card.current {
+      border-color: rgba(124, 58, 237, .3);
+      background: rgba(124, 58, 237, .05)
+    }
+
+    .mg-card.mc-theme.current {
+      border-color: rgba(13, 148, 136, .3);
+      background: rgba(13, 148, 136, .05)
+    }
+
+    .mg-card.cp-theme.current {
+      border-color: rgba(14, 165, 233, .3);
+      background: rgba(14, 165, 233, .05)
+    }
+
+    .mg-card.ebm-theme.current {
+      border-color: rgba(22, 163, 74, .3);
+      background: rgba(22, 163, 74, .05)
+    }
+
+    .mg-card.locked {
+      opacity: .4
+    }
+
+    .mg-num {
+      font: 800 28px/1 'JetBrains Mono', monospace;
+      margin-bottom: 8px
+    }
+
+    .mg-card.completed .mg-num {
+      color: #22C55E
+    }
+
+    .mg-card.current .mg-num {
+      color: #7C3AED
+    }
+
+    .mg-card .mg-num {
+      color: rgba(255, 255, 255, .15)
+    }
+
+    .mg-card.locked .mg-num {
+      color: rgba(255, 255, 255, .08)
+    }
+
+    .mg-name {
+      font: 600 12px/1.35 'Outfit', sans-serif;
+      color: #F8FAFC;
+      margin-bottom: 6px
+    }
+
+    .mg-card.locked .mg-name {
+      color: rgba(255, 255, 255, .3)
+    }
+
+    .mg-meta {
+      font: 500 10px/1 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .3)
+    }
+
+    .mg-check {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 20px;
+      height: 20px;
+      background: #22C55E;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: white;
+      font-weight: 700
+    }
+
+    .mg-badge {
+      display: inline-block;
+      font: 700 9px/1 'JetBrains Mono', monospace;
+      padding: 3px 7px;
+      border-radius: 6px;
+      margin-top: 6px
+    }
+
+    .mg-badge.gold {
+      background: rgba(245, 158, 11, .1);
+      color: #F59E0B
+    }
+
+    .mg-badge.purple {
+      background: rgba(124, 58, 237, .1);
+      color: #A78BFA
+    }
+
+    /* Option B bottom nav with SVG icons */
+    .home-view .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 20px 28px;
+      background: linear-gradient(to top, #05090F 70%, transparent);
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px)
+    }
+
+    .home-view .bn-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      opacity: .35;
+      transition: opacity .28s cubic-bezier(.34, 1.56, .64, 1);
+      cursor: pointer;
+      padding: 6px 12px;
+      position: relative;
+      will-change: opacity
+    }
+
+    .home-view .bn-item.active {
+      opacity: 1
+    }
+
+    .home-view .bn-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .28s cubic-bezier(.34, 1.56, .64, 1);
+      will-change: transform
+    }
+
+    .home-view .bn-item.active .bn-icon {
+      transform: scale(1.1)
+    }
+
+    .home-view .bn-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .home-view .bn-item.active .bn-icon {
+      color: #7C3AED
+    }
+
+    .home-view .bn-item .bn-icon {
+      color: rgba(255, 255, 255, .5)
+    }
+
+    .home-view .bn-label {
+      font: 600 9px/1 'Outfit', sans-serif;
+      color: rgba(255, 255, 255, .4);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      transition: color .28s cubic-bezier(.34, 1.56, .64, 1)
+    }
+
+    .home-view .bn-item.active .bn-label {
+      color: #7C3AED
+    }
+
+    .home-view .bn-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #7C3AED;
+      margin-top: 2px;
+      animation: dotPulse 2s ease-in-out infinite
+    }
+
+    @keyframes dotPulse {
+
+      0%,
+      100% {
+        opacity: .8;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    /* Accessibility: Respect motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .ashki-emoji {
+        animation: none;
+      }
+
+      .home-view .bn-dot {
+        animation: none;
+      }
+
+      .today-card {
+        animation: none;
+      }
+    }
+
+    /* Confetti burst animation */
+    @keyframes confetti-burst {
+      0% {
+        opacity: 1;
+        transform: translate(var(--tx), 0) rotateZ(0deg)
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) rotateZ(360deg)
+      }
+    }
+
+    .confetti-piece {
+      position: fixed;
+      pointer-events: none;
+      width: 10px;
+      height: 10px;
+      animation: confetti-burst 2.5s ease-out forwards
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="shell">
+  <div class="shell">
 
-<!-- ═══════════ SIDEBAR ═══════════ -->
-<div class="sidebar" id="sidebar">
-  <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
-  <div class="si" data-target="dashboard" onclick="openDashboard()" style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">📊 Dashboard</div>
-  <div class="si-section">FA Chapters</div>
-  <div class="si completed fa-chapter" data-module="1" data-subject="fa" onclick="openModule(1)">M1 · Accounting Concepts</div>
-  <div class="si completed fa-chapter" data-module="2" data-subject="fa" onclick="openModule(2)">M2 · Double Entry</div>
-  <div class="si fa-chapter" data-module="3" data-subject="fa" onclick="openModule(3)">M3 · Journals & Ledgers</div>
-  <div class="si fa-chapter" data-module="4" data-subject="fa" onclick="openModule(4)">M4 · Trial Balance</div>
-  <div class="si fa-chapter" data-module="5" data-subject="fa" onclick="openModule(5)">M5 · Cash Journals</div>
-  <div class="si fa-chapter" data-module="6" data-subject="fa" onclick="openModule(6)">M6 · Debtors & Creditors</div>
-  <div class="si fa-chapter" data-module="7" data-subject="fa" onclick="openModule(7)">M7 · VAT</div>
-  <div class="si fa-chapter" data-module="8" data-subject="fa" onclick="openModule(8)">M8 · Year-End Adjustments</div>
-  <div class="si fa-chapter" data-module="9" data-subject="fa" onclick="openModule(9)">M9 · Financial Statements</div>
-  <div class="si fa-chapter" data-module="10" data-subject="fa" onclick="openModule(10)">M10 · Bank Reconciliation</div>
-  <div class="si-section">MC Chapters</div>
-  <div class="si mc-chapter" data-module="1" data-subject="mc" onclick="openModule(1)">M1 · Communication Theory</div>
-  <div class="si mc-chapter" data-module="2" data-subject="mc" onclick="openModule(2)">M2 · Meeting Procedures</div>
-  <div class="si mc-chapter" data-module="3" data-subject="mc" onclick="openModule(3)">M3 · Business Letters & Emails</div>
-  <div class="si mc-chapter" data-module="4" data-subject="mc" onclick="openModule(4)">M4 · Memos & Reports</div>
-  <div class="si mc-chapter" data-module="5" data-subject="mc" onclick="openModule(5)">M5 · Oral Communication</div>
-  <div class="si mc-chapter" data-module="6" data-subject="mc" onclick="openModule(6)">M6 · Visual Communication</div>
-  <div class="si mc-chapter" data-module="7" data-subject="mc" onclick="openModule(7)">M7 · Reading & Comprehension</div>
-  <div class="si mc-chapter" data-module="8" data-subject="mc" onclick="openModule(8)">M8 · Language & Editing</div>
-  <div class="si-section">CP Chapters</div>
-  <div class="si cp-chapter" data-module="1" data-subject="cp" onclick="openModule(1)" style="display:none">M1 · Intro to Computers</div>
-  <div class="si cp-chapter" data-module="2" data-subject="cp" onclick="openModule(2)" style="display:none">M2 · Word Processing</div>
-  <div class="si cp-chapter" data-module="3" data-subject="cp" onclick="openModule(3)" style="display:none">M3 · Spreadsheets</div>
-  <div class="si cp-chapter" data-module="4" data-subject="cp" onclick="openModule(4)" style="display:none">M4 · Presentations</div>
-  <div class="si cp-chapter" data-module="5" data-subject="cp" onclick="openModule(5)" style="display:none">M5 · Email & Communication</div>
-  <div class="si cp-chapter" data-module="6" data-subject="cp" onclick="openModule(6)" style="display:none">M6 · Data Management</div>
-  <div class="si cp-chapter" data-module="7" data-subject="cp" onclick="openModule(7)" style="display:none">M7 · Internet & Research</div>
-  <div class="si cp-chapter" data-module="8" data-subject="cp" onclick="openModule(8)" style="display:none">M8 · Computer Security</div>
-  <div class="si-section">EBM Chapters</div>
-  <div class="si ebm-chapter" data-module="1" data-subject="ebm" onclick="openModule(1)" style="display:none">M1 · Intro to Entrepreneurship</div>
-  <div class="si ebm-chapter" data-module="2" data-subject="ebm" onclick="openModule(2)" style="display:none">M2 · Creativity & Ideas</div>
-  <div class="si ebm-chapter" data-module="3" data-subject="ebm" onclick="openModule(3)" style="display:none">M3 · Market Feasibility</div>
-  <div class="si ebm-chapter" data-module="4" data-subject="ebm" onclick="openModule(4)" style="display:none">M4 · Financial Feasibility</div>
-  <div class="si ebm-chapter" data-module="5" data-subject="ebm" onclick="openModule(5)" style="display:none">M5 · Business Plan</div>
-  <div class="si ebm-chapter" data-module="6" data-subject="ebm" onclick="openModule(6)" style="display:none">M6 · Starting a Business</div>
-  <div class="si ebm-chapter" data-module="7" data-subject="ebm" onclick="openModule(7)" style="display:none">M7 · Managing a Business</div>
-  <div class="si ebm-chapter" data-module="8" data-subject="ebm" onclick="openModule(8)" style="display:none">M8 · Ethics & CSR</div>
-  <div class="si-section">Resources</div>
-  <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
-  <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
-  <div class="si" onclick="openMemosMode()">📋 Memos</div>
-  <div class="si" onclick="openCapstoneMode()">🏆 Capstone</div>
-</div>
-
-<!-- ═══════════ PHONE ═══════════ -->
-<div class="phone-col">
-<div class="phone">
-
-  <!-- LOADING OVERLAY -->
-  <div class="loading-overlay" id="loading">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading module</div>
-    <div class="loading-module" id="loading-name">...</div>
-  </div>
-
-  <!-- BACK BUTTON (floating over iframe) -->
-  <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
-
-  <!-- HOME VIEW -->
-  <div class="home-view" id="home-view">
-    <!-- Status Bar -->
-    <div class="sb">
-      <span class="sb-t">09:41</span>
-      <span class="sb-i">4G 87%</span>
+    <!-- ═══════════ SIDEBAR ═══════════ -->
+    <div class="sidebar" id="sidebar">
+      <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
+      <div class="si" data-target="dashboard" onclick="openDashboard()"
+        style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">
+        📊 Dashboard</div>
+      <div class="si-section">FA Chapters</div>
+      <div class="si completed fa-chapter" data-module="1" data-subject="fa" onclick="openModule(1)">M1 · Accounting
+        Concepts</div>
+      <div class="si completed fa-chapter" data-module="2" data-subject="fa" onclick="openModule(2)">M2 · Double Entry
+      </div>
+      <div class="si fa-chapter" data-module="3" data-subject="fa" onclick="openModule(3)">M3 · Journals & Ledgers</div>
+      <div class="si fa-chapter" data-module="4" data-subject="fa" onclick="openModule(4)">M4 · Trial Balance</div>
+      <div class="si fa-chapter" data-module="5" data-subject="fa" onclick="openModule(5)">M5 · Cash Journals</div>
+      <div class="si fa-chapter" data-module="6" data-subject="fa" onclick="openModule(6)">M6 · Debtors & Creditors
+      </div>
+      <div class="si fa-chapter" data-module="7" data-subject="fa" onclick="openModule(7)">M7 · VAT</div>
+      <div class="si fa-chapter" data-module="8" data-subject="fa" onclick="openModule(8)">M8 · Year-End Adjustments
+      </div>
+      <div class="si fa-chapter" data-module="9" data-subject="fa" onclick="openModule(9)">M9 · Financial Statements
+      </div>
+      <div class="si fa-chapter" data-module="10" data-subject="fa" onclick="openModule(10)">M10 · Bank Reconciliation
+      </div>
+      <div class="si-section">MC Chapters</div>
+      <div class="si mc-chapter" data-module="1" data-subject="mc" onclick="openModule(1)">M1 · Communication Theory
+      </div>
+      <div class="si mc-chapter" data-module="2" data-subject="mc" onclick="openModule(2)">M2 · Meeting Procedures</div>
+      <div class="si mc-chapter" data-module="3" data-subject="mc" onclick="openModule(3)">M3 · Business Letters &
+        Emails</div>
+      <div class="si mc-chapter" data-module="4" data-subject="mc" onclick="openModule(4)">M4 · Memos & Reports</div>
+      <div class="si mc-chapter" data-module="5" data-subject="mc" onclick="openModule(5)">M5 · Oral Communication</div>
+      <div class="si mc-chapter" data-module="6" data-subject="mc" onclick="openModule(6)">M6 · Visual Communication
+      </div>
+      <div class="si mc-chapter" data-module="7" data-subject="mc" onclick="openModule(7)">M7 · Reading & Comprehension
+      </div>
+      <div class="si mc-chapter" data-module="8" data-subject="mc" onclick="openModule(8)">M8 · Language & Editing</div>
+      <div class="si-section">CP Chapters</div>
+      <div class="si cp-chapter" data-module="1" data-subject="cp" onclick="openModule(1)" style="display:none">M1 ·
+        Intro to Computers</div>
+      <div class="si cp-chapter" data-module="2" data-subject="cp" onclick="openModule(2)" style="display:none">M2 ·
+        Word Processing</div>
+      <div class="si cp-chapter" data-module="3" data-subject="cp" onclick="openModule(3)" style="display:none">M3 ·
+        Spreadsheets</div>
+      <div class="si cp-chapter" data-module="4" data-subject="cp" onclick="openModule(4)" style="display:none">M4 ·
+        Presentations</div>
+      <div class="si cp-chapter" data-module="5" data-subject="cp" onclick="openModule(5)" style="display:none">M5 ·
+        Email & Communication</div>
+      <div class="si cp-chapter" data-module="6" data-subject="cp" onclick="openModule(6)" style="display:none">M6 ·
+        Data Management</div>
+      <div class="si cp-chapter" data-module="7" data-subject="cp" onclick="openModule(7)" style="display:none">M7 ·
+        Internet & Research</div>
+      <div class="si cp-chapter" data-module="8" data-subject="cp" onclick="openModule(8)" style="display:none">M8 ·
+        Computer Security</div>
+      <div class="si-section">EBM Chapters</div>
+      <div class="si ebm-chapter" data-module="1" data-subject="ebm" onclick="openModule(1)" style="display:none">M1 ·
+        Intro to Entrepreneurship</div>
+      <div class="si ebm-chapter" data-module="2" data-subject="ebm" onclick="openModule(2)" style="display:none">M2 ·
+        Creativity & Ideas</div>
+      <div class="si ebm-chapter" data-module="3" data-subject="ebm" onclick="openModule(3)" style="display:none">M3 ·
+        Market Feasibility</div>
+      <div class="si ebm-chapter" data-module="4" data-subject="ebm" onclick="openModule(4)" style="display:none">M4 ·
+        Financial Feasibility</div>
+      <div class="si ebm-chapter" data-module="5" data-subject="ebm" onclick="openModule(5)" style="display:none">M5 ·
+        Business Plan</div>
+      <div class="si ebm-chapter" data-module="6" data-subject="ebm" onclick="openModule(6)" style="display:none">M6 ·
+        Starting a Business</div>
+      <div class="si ebm-chapter" data-module="7" data-subject="ebm" onclick="openModule(7)" style="display:none">M7 ·
+        Managing a Business</div>
+      <div class="si ebm-chapter" data-module="8" data-subject="ebm" onclick="openModule(8)" style="display:none">M8 ·
+        Ethics & CSR</div>
+      <div class="si-section">Resources</div>
+      <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
+      <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
+      <div class="si" onclick="openMemosMode()">📋 Memos</div>
+      <div class="si" onclick="openCapstoneMode()">🏆 Capstone</div>
     </div>
 
-    <!-- Programme Banner -->
-    <div class="prog-banner" id="prog-banner">
-      <div class="prog-banner-icon" id="prog-icon">💼</div>
-      <div class="prog-banner-info">
-        <div class="prog-banner-name" id="prog-name">Business Management N4</div>
-        <div class="prog-banner-meta" id="prog-meta">4 subjects · N4 Diploma</div>
-      </div>
-      <div class="prog-banner-progress" id="prog-dots">
-        <div class="prog-banner-dot active" data-subj="fa"></div>
-        <div class="prog-banner-dot" data-subj="mc"></div>
-        <div class="prog-banner-dot" data-subj="cp"></div>
-        <div class="prog-banner-dot" data-subj="ebm"></div>
-      </div>
-    </div>
+    <!-- ═══════════ PHONE ═══════════ -->
+    <div class="phone-col">
+      <div class="phone">
 
-    <!-- Subject Selector -->
-    <div class="subject-pills" id="subject-pills">
-      <button class="subject-pill active" data-subject="fa" onclick="switchSubject('fa')">💰 Financial Accounting</button>
-      <button class="subject-pill mc-subject" data-subject="mc" onclick="switchSubject('mc')">🗣️ Management Communication</button>
-      <button class="subject-pill cp-subject" data-subject="cp" onclick="switchSubject('cp')">🖥️ Computer Practice</button>
-      <button class="subject-pill ebm-subject" data-subject="ebm" onclick="switchSubject('ebm')">🚀 Entrepreneurship</button>
-    </div>
+        <!-- LOADING OVERLAY -->
+        <div class="loading-overlay" id="loading">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Loading module</div>
+          <div class="loading-module" id="loading-name">...</div>
+        </div>
 
-    <!-- Dashboard Hero -->
-    <div class="hero-banner" id="hero-banner">
-      <!-- Compact greeting row -->
-      <div class="hero-top">
-        <div>
-          <div class="hero-greeting" id="hero-greeting">Sawubona</div>
-          <div class="hero-name">Zandile</div>
-        </div>
-        <div class="ashki-container">
-          <img class="ashki-emoji" src="assets/ashki/ashki_master.png" alt="Ashki mascot">
-          <div class="ashki-speech">Let's go!</div>
-        </div>
-      </div>
+        <!-- BACK BUTTON (floating over iframe) -->
+        <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
 
-      <div class="hero-motivator" id="hero-motivator">Ready to start? Just 5 minutes today.</div>
+        <!-- HOME VIEW -->
+        <div class="home-view" id="home-view">
+          <!-- Status Bar -->
+          <div class="sb">
+            <span class="sb-t">09:41</span>
+            <span class="sb-i">4G 87%</span>
+          </div>
 
-      <!-- 4-stat quick glance row -->
-      <div class="dash-stats">
-        <div class="dash-stat" id="ds-streak">
-          <div class="ds-icon ds-fire">🔥</div>
-          <div class="ds-value" id="ds-streak-val">7</div>
-          <div class="ds-label">Day streak</div>
-        </div>
-        <div class="dash-stat" id="ds-xp">
-          <div class="ds-icon ds-xp-icon">⚡</div>
-          <div class="ds-value" id="ds-xp-val">1,240</div>
-          <div class="ds-label">Total XP</div>
-        </div>
-        <div class="dash-stat" id="ds-mark">
-          <div class="ds-icon ds-mark-icon">📊</div>
-          <div class="ds-value" id="ds-mark-val">68%</div>
-          <div class="ds-label">Avg mark</div>
-        </div>
-        <div class="dash-stat" id="ds-exam">
-          <div class="ds-icon ds-exam-icon">📅</div>
-          <div class="ds-value" id="ds-exam-val">47</div>
-          <div class="ds-label">Days to exam</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Streak & XP Detail Card -->
-    <div class="dash-card streak-card">
-      <div class="dc-header">
-        <div class="dc-title">
-          <span class="dc-emoji">🔥</span>
-          <span>7-day streak</span>
-        </div>
-        <div class="dc-badge streak-badge-pill">Keep it alive!</div>
-      </div>
-      <div class="streak-week" id="streak-week">
-        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">M</div></div>
-        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">T</div></div>
-        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">W</div></div>
-        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">T</div></div>
-        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">F</div></div>
-        <div class="streak-day done"><div class="sd-dot"></div><div class="sd-lbl">S</div></div>
-        <div class="streak-day today"><div class="sd-dot"></div><div class="sd-lbl">S</div></div>
-      </div>
-      <div class="xp-level-row">
-        <div class="xp-level-info">
-          <div class="xp-level-badge">Level 4</div>
-          <div class="xp-level-text">260 XP to Level 5</div>
-        </div>
-        <div class="xp-bar-wrap">
-          <div class="xp-bar-track">
-            <div class="xp-bar-fill" style="width:74%"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Exam Countdown Card -->
-    <div class="dash-card exam-card">
-      <div class="dc-header">
-        <div class="dc-title">
-          <span class="dc-emoji">📅</span>
-          <span>Exam countdown</span>
-        </div>
-      </div>
-      <div class="exam-rows" id="exam-rows">
-        <div class="exam-row-item">
-          <div class="er-color" style="background:var(--fa)"></div>
-          <div class="er-info">
-            <div class="er-name">Financial Accounting</div>
-            <div class="er-date">10 Nov 2025</div>
-          </div>
-          <div class="er-days">
-            <div class="er-days-n">47</div>
-            <div class="er-days-l">days</div>
-          </div>
-          <div class="er-ring">
-            <svg width="36" height="36" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="3"/>
-              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--fa)" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="56.5" transform="rotate(-90 18 18)"/>
-            </svg>
-          </div>
-        </div>
-        <div class="exam-row-item">
-          <div class="er-color" style="background:var(--mc)"></div>
-          <div class="er-info">
-            <div class="er-name">Management Comms</div>
-            <div class="er-date">12 Nov 2025</div>
-          </div>
-          <div class="er-days">
-            <div class="er-days-n">49</div>
-            <div class="er-days-l">days</div>
-          </div>
-          <div class="er-ring">
-            <svg width="36" height="36" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="3"/>
-              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--mc)" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="54.6" transform="rotate(-90 18 18)"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Marks Progress Card -->
-    <div class="dash-card marks-card">
-      <div class="dc-header">
-        <div class="dc-title">
-          <span class="dc-emoji">📊</span>
-          <span>Your marks</span>
-        </div>
-        <div class="dc-badge marks-target-badge">Target: 75%</div>
-      </div>
-      <div class="marks-subjects" id="marks-subjects">
-        <div class="mark-subj">
-          <div class="ms-info">
-            <div class="ms-name">Financial Accounting</div>
-            <div class="ms-detail"><span class="ms-current">68%</span> <span class="ms-arrow">→</span> <span class="ms-target">75%</span></div>
-          </div>
-          <div class="ms-bar-wrap">
-            <div class="ms-bar-track">
-              <div class="ms-bar-fill" style="width:68%;background:var(--fa)"></div>
-              <div class="ms-bar-target" style="left:75%"></div>
+          <!-- Programme Banner -->
+          <div class="prog-banner" id="prog-banner">
+            <div class="prog-banner-icon" id="prog-icon">💼</div>
+            <div class="prog-banner-info">
+              <div class="prog-banner-name" id="prog-name">Business Management N4</div>
+              <div class="prog-banner-meta" id="prog-meta">4 subjects · N4 Diploma</div>
+            </div>
+            <div class="prog-banner-progress" id="prog-dots">
+              <div class="prog-banner-dot active" data-subj="fa"></div>
+              <div class="prog-banner-dot" data-subj="mc"></div>
+              <div class="prog-banner-dot" data-subj="cp"></div>
+              <div class="prog-banner-dot" data-subj="ebm"></div>
             </div>
           </div>
-        </div>
-        <div class="mark-subj">
-          <div class="ms-info">
-            <div class="ms-name">Management Comms</div>
-            <div class="ms-detail"><span class="ms-current">72%</span> <span class="ms-arrow">→</span> <span class="ms-target">75%</span></div>
+
+          <!-- Subject Selector -->
+          <div class="subject-pills" id="subject-pills">
+            <button class="subject-pill active" data-subject="fa" onclick="switchSubject('fa')">💰 Financial
+              Accounting</button>
+            <button class="subject-pill mc-subject" data-subject="mc" onclick="switchSubject('mc')">🗣️ Management
+              Communication</button>
+            <button class="subject-pill cp-subject" data-subject="cp" onclick="switchSubject('cp')">🖥️ Computer
+              Practice</button>
+            <button class="subject-pill ebm-subject" data-subject="ebm" onclick="switchSubject('ebm')">🚀
+              Entrepreneurship</button>
           </div>
-          <div class="ms-bar-wrap">
-            <div class="ms-bar-track">
-              <div class="ms-bar-fill" style="width:72%;background:var(--mc)"></div>
-              <div class="ms-bar-target" style="left:75%"></div>
+
+          <!-- Dashboard Hero -->
+          <div class="hero-banner" id="hero-banner">
+            <!-- Compact greeting row -->
+            <div class="hero-top">
+              <div>
+                <div class="hero-greeting" id="hero-greeting">Sawubona</div>
+                <div class="hero-name">Zandile</div>
+              </div>
+              <div class="ashki-container">
+                <img class="ashki-emoji" src="assets/ashki/ashki_master.png" alt="Ashki mascot">
+                <div class="ashki-speech">Let's go!</div>
+              </div>
+            </div>
+
+            <div class="hero-motivator" id="hero-motivator">Ready to start? Just 5 minutes today.</div>
+
+            <!-- 4-stat quick glance row -->
+            <div class="dash-stats">
+              <div class="dash-stat" id="ds-streak">
+                <div class="ds-icon ds-fire">🔥</div>
+                <div class="ds-value" id="ds-streak-val">7</div>
+                <div class="ds-label">Day streak</div>
+              </div>
+              <div class="dash-stat" id="ds-xp">
+                <div class="ds-icon ds-xp-icon">⚡</div>
+                <div class="ds-value" id="ds-xp-val">1,240</div>
+                <div class="ds-label">Total XP</div>
+              </div>
+              <div class="dash-stat" id="ds-mark">
+                <div class="ds-icon ds-mark-icon">📊</div>
+                <div class="ds-value" id="ds-mark-val">68%</div>
+                <div class="ds-label">Avg mark</div>
+              </div>
+              <div class="dash-stat" id="ds-exam">
+                <div class="ds-icon ds-exam-icon">📅</div>
+                <div class="ds-value" id="ds-exam-val">47</div>
+                <div class="ds-label">Days to exam</div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="marks-trend">
-        <div class="mt-label">Last 7 sessions</div>
-        <div class="mt-chart" id="mt-chart">
-          <div class="mt-bar" style="height:45%"><div class="mt-val">45</div></div>
-          <div class="mt-bar" style="height:52%"><div class="mt-val">52</div></div>
-          <div class="mt-bar" style="height:60%"><div class="mt-val">60</div></div>
-          <div class="mt-bar" style="height:55%"><div class="mt-val">55</div></div>
-          <div class="mt-bar" style="height:68%"><div class="mt-val">68</div></div>
-          <div class="mt-bar" style="height:72%"><div class="mt-val">72</div></div>
-          <div class="mt-bar highlight" style="height:78%"><div class="mt-val">78</div></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Today's Lesson -->
-    <div class="today-section">
-      <div class="section-header">
-        <div class="section-title">TODAY'S LESSON</div>
-      </div>
-
-      <div class="today-card">
-        <div class="today-top">
-          <div class="today-module">MODULE 3 OF 10</div>
-          <div class="today-time">⏱ 9 min</div>
-        </div>
-        <div class="today-title">Journals & Ledgers</div>
-        <div class="today-desc" id="today-desc">Every transaction tells a story. Learn to record them like a pro using the journal builder.</div>
-        <div class="today-footer">
-          <div class="today-progress-wrap">
-            <div class="today-prog-text">4 of 15 screens done</div>
-            <div class="today-prog-track">
-              <div class="today-prog-fill"></div>
+          <!-- Streak & XP Detail Card -->
+          <div class="dash-card streak-card">
+            <div class="dc-header">
+              <div class="dc-title">
+                <span class="dc-emoji">🔥</span>
+                <span>7-day streak</span>
+              </div>
+              <div class="dc-badge streak-badge-pill">Keep it alive!</div>
+            </div>
+            <div class="streak-week" id="streak-week">
+              <div class="streak-day done">
+                <div class="sd-dot"></div>
+                <div class="sd-lbl">M</div>
+              </div>
+              <div class="streak-day done">
+                <div class="sd-dot"></div>
+                <div class="sd-lbl">T</div>
+              </div>
+              <div class="streak-day done">
+                <div class="sd-dot"></div>
+                <div class="sd-lbl">W</div>
+              </div>
+              <div class="streak-day done">
+                <div class="sd-dot"></div>
+                <div class="sd-lbl">T</div>
+              </div>
+              <div class="streak-day done">
+                <div class="sd-dot"></div>
+                <div class="sd-lbl">F</div>
+              </div>
+              <div class="streak-day done">
+                <div class="sd-dot"></div>
+                <div class="sd-lbl">S</div>
+              </div>
+              <div class="streak-day today">
+                <div class="sd-dot"></div>
+                <div class="sd-lbl">S</div>
+              </div>
+            </div>
+            <div class="xp-level-row">
+              <div class="xp-level-info">
+                <div class="xp-level-badge">Level 4</div>
+                <div class="xp-level-text">260 XP to Level 5</div>
+              </div>
+              <div class="xp-bar-wrap">
+                <div class="xp-bar-track">
+                  <div class="xp-bar-fill" style="width:74%"></div>
+                </div>
+              </div>
             </div>
           </div>
-          <button class="today-btn" onclick="openModule(3)">Continue →</button>
+
+          <!-- Exam Countdown Card -->
+          <div class="dash-card exam-card">
+            <div class="dc-header">
+              <div class="dc-title">
+                <span class="dc-emoji">📅</span>
+                <span>Exam countdown</span>
+              </div>
+            </div>
+            <div class="exam-rows" id="exam-rows">
+              <div class="exam-row-item">
+                <div class="er-color" style="background:var(--fa)"></div>
+                <div class="er-info">
+                  <div class="er-name">Financial Accounting</div>
+                  <div class="er-date">10 Nov 2025</div>
+                </div>
+                <div class="er-days">
+                  <div class="er-days-n">47</div>
+                  <div class="er-days-l">days</div>
+                </div>
+                <div class="er-ring">
+                  <svg width="36" height="36" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="3" />
+                    <circle cx="18" cy="18" r="15" fill="none" stroke="var(--fa)" stroke-width="3"
+                      stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="56.5"
+                      transform="rotate(-90 18 18)" />
+                  </svg>
+                </div>
+              </div>
+              <div class="exam-row-item">
+                <div class="er-color" style="background:var(--mc)"></div>
+                <div class="er-info">
+                  <div class="er-name">Management Comms</div>
+                  <div class="er-date">12 Nov 2025</div>
+                </div>
+                <div class="er-days">
+                  <div class="er-days-n">49</div>
+                  <div class="er-days-l">days</div>
+                </div>
+                <div class="er-ring">
+                  <svg width="36" height="36" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="3" />
+                    <circle cx="18" cy="18" r="15" fill="none" stroke="var(--mc)" stroke-width="3"
+                      stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="54.6"
+                      transform="rotate(-90 18 18)" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Marks Progress Card -->
+          <div class="dash-card marks-card">
+            <div class="dc-header">
+              <div class="dc-title">
+                <span class="dc-emoji">📊</span>
+                <span>Your marks</span>
+              </div>
+              <div class="dc-badge marks-target-badge">Target: 75%</div>
+            </div>
+            <div class="marks-subjects" id="marks-subjects">
+              <div class="mark-subj">
+                <div class="ms-info">
+                  <div class="ms-name">Financial Accounting</div>
+                  <div class="ms-detail"><span class="ms-current">68%</span> <span class="ms-arrow">→</span> <span
+                      class="ms-target">75%</span></div>
+                </div>
+                <div class="ms-bar-wrap">
+                  <div class="ms-bar-track">
+                    <div class="ms-bar-fill" style="width:68%;background:var(--fa)"></div>
+                    <div class="ms-bar-target" style="left:75%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mark-subj">
+                <div class="ms-info">
+                  <div class="ms-name">Management Comms</div>
+                  <div class="ms-detail"><span class="ms-current">72%</span> <span class="ms-arrow">→</span> <span
+                      class="ms-target">75%</span></div>
+                </div>
+                <div class="ms-bar-wrap">
+                  <div class="ms-bar-track">
+                    <div class="ms-bar-fill" style="width:72%;background:var(--mc)"></div>
+                    <div class="ms-bar-target" style="left:75%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="marks-trend">
+              <div class="mt-label">Last 7 sessions</div>
+              <div class="mt-chart" id="mt-chart">
+                <div class="mt-bar" style="height:45%">
+                  <div class="mt-val">45</div>
+                </div>
+                <div class="mt-bar" style="height:52%">
+                  <div class="mt-val">52</div>
+                </div>
+                <div class="mt-bar" style="height:60%">
+                  <div class="mt-val">60</div>
+                </div>
+                <div class="mt-bar" style="height:55%">
+                  <div class="mt-val">55</div>
+                </div>
+                <div class="mt-bar" style="height:68%">
+                  <div class="mt-val">68</div>
+                </div>
+                <div class="mt-bar" style="height:72%">
+                  <div class="mt-val">72</div>
+                </div>
+                <div class="mt-bar highlight" style="height:78%">
+                  <div class="mt-val">78</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Today's Lesson -->
+          <div class="today-section">
+            <div class="section-header">
+              <div class="section-title">TODAY'S LESSON</div>
+            </div>
+
+            <div class="today-card">
+              <div class="today-top">
+                <div class="today-module">MODULE 3 OF 10</div>
+                <div class="today-time">⏱ 9 min</div>
+              </div>
+              <div class="today-title">Journals & Ledgers</div>
+              <div class="today-desc" id="today-desc">Every transaction tells a story. Learn to record them like a pro
+                using the journal builder.</div>
+              <div class="today-footer">
+                <div class="today-progress-wrap">
+                  <div class="today-prog-text">4 of 15 screens done</div>
+                  <div class="today-prog-track">
+                    <div class="today-prog-fill"></div>
+                  </div>
+                </div>
+                <button class="today-btn" onclick="openModule(3)">Continue →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- All Modules -->
+          <div class="modules-section">
+            <div class="section-header">
+              <div class="section-title">ALL MODULES</div>
+              <div class="section-see-all">See map →</div>
+            </div>
+
+            <div class="module-grid" id="module-grid">
+              <!-- Modules will be generated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Bottom Nav -->
+          <div class="bottom-nav">
+            <div class="bn-item active" onclick="goHome()">
+              <div class="bn-icon"><svg viewBox="0 0 24 24">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                </svg></div>
+              <div class="bn-label">Learn</div>
+              <div class="bn-dot"></div>
+            </div>
+            <div class="bn-item" onclick="openDashboard()">
+              <div class="bn-icon"><svg viewBox="0 0 24 24">
+                  <path d="M18 20V10" />
+                  <path d="M12 20V4" />
+                  <path d="M6 20v-6" />
+                </svg></div>
+              <div class="bn-label">Progress</div>
+            </div>
+            <div class="bn-item" onclick="showToast('Badges coming soon!')">
+              <div class="bn-icon"><svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg></div>
+              <div class="bn-label">Badges</div>
+            </div>
+            <div class="bn-item" onclick="showToast('Profile coming soon!')">
+              <div class="bn-icon"><svg viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg></div>
+              <div class="bn-label">Profile</div>
+            </div>
+          </div>
+        </div><!-- /home-view -->
+
+        <!-- CHAPTER VIEW (iframe loads here) -->
+        <div class="chapter-view" id="chapter-view">
+          <iframe id="chapter-frame" src="about:blank" allow="autoplay"></iframe>
         </div>
-      </div>
-    </div>
 
-    <!-- All Modules -->
-    <div class="modules-section">
-      <div class="section-header">
-        <div class="section-title">ALL MODULES</div>
-        <div class="section-see-all">See map →</div>
-      </div>
+      </div><!-- /phone -->
+      <div class="shell-meta" id="shell-meta">Ayikho · Financial Accounting N4 · TVET Study App</div>
+    </div><!-- /phone-col -->
+  </div><!-- /shell -->
 
-      <div class="module-grid" id="module-grid">
-        <!-- Modules will be generated by JavaScript -->
-      </div>
-    </div>
+  <script>
+    // ═══════════════════════════════════
+    //  MODULE CONFIG
+    // ═══════════════════════════════════
+    const FA_MODULES = {
+      1: { file: 'ayikho-chapter-concepts.html', name: 'Accounting Concepts & Principles' },
+      2: { file: 'ayikho-chapter-accounting.html', name: 'Double Entry & Accounting Equation' },
+      3: { file: 'ayikho-chapter-journals.html', name: 'Journals & Ledgers' },
+      4: { file: 'ayikho-chapter-trial-balance.html', name: 'Trial Balance' },
+      5: { file: 'ayikho-chapter-cash-journals.html', name: 'Cash Receipts & Payments Journals' },
+      6: { file: 'ayikho-chapter-debtors-creditors.html', name: 'Debtors & Creditors Journals' },
+      7: { file: 'ayikho-chapter-vat.html', name: 'Value Added Tax (VAT)' },
+      8: { file: 'ayikho-chapter-adjustments.html', name: 'Year-End Adjustments' },
+      9: { file: 'ayikho-chapter-financial-statements.html', name: 'Financial Statements' },
+      10: { file: 'ayikho-chapter-bank-recon.html', name: 'Bank Reconciliation' }
+    };
 
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-      <div class="bn-item active" onclick="goHome()">
-        <div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-        <div class="bn-label">Learn</div>
-        <div class="bn-dot"></div>
-      </div>
-      <div class="bn-item" onclick="openDashboard()">
-        <div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
-        <div class="bn-label">Progress</div>
-      </div>
-      <div class="bn-item" onclick="showToast('Badges coming soon!')">
-        <div class="bn-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
-        <div class="bn-label">Badges</div>
-      </div>
-      <div class="bn-item" onclick="showToast('Profile coming soon!')">
-        <div class="bn-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div class="bn-label">Profile</div>
-      </div>
-    </div>
-  </div><!-- /home-view -->
+    const MC_MODULES = {
+      1: { file: 'mc-chapter-communication-theory.html', name: 'Communication Theory' },
+      2: { file: 'mc-chapter-meeting-procedures.html', name: 'Meeting Procedures' },
+      3: { file: 'mc-chapter-business-letters.html', name: 'Business Letters & Emails' },
+      4: { file: 'mc-chapter-memos-reports.html', name: 'Memos & Reports' },
+      5: { file: 'mc-chapter-oral-communication.html', name: 'Oral Communication' },
+      6: { file: 'mc-chapter-visual-communication.html', name: 'Visual Communication' },
+      7: { file: 'mc-chapter-reading-comprehension.html', name: 'Reading & Comprehension' },
+      8: { file: 'mc-chapter-language-editing.html', name: 'Language & Editing' }
+    };
 
-  <!-- CHAPTER VIEW (iframe loads here) -->
-  <div class="chapter-view" id="chapter-view">
-    <iframe id="chapter-frame" src="about:blank" allow="autoplay"></iframe>
-  </div>
+    const CP_MODULES = {
+      1: { file: 'cp-chapter-intro-computers.html', name: 'Introduction to Computers' },
+      2: { file: 'cp-chapter-word-processing.html', name: 'Word Processing (MS Word)' },
+      3: { file: 'cp-chapter-spreadsheets.html', name: 'Spreadsheets (MS Excel)' },
+      4: { file: 'cp-chapter-presentations.html', name: 'Presentations (MS PowerPoint)' },
+      5: { file: 'cp-chapter-email.html', name: 'Email & Digital Communication' },
+      6: { file: 'cp-chapter-data-management.html', name: 'Data Management' },
+      7: { file: 'cp-chapter-internet.html', name: 'Internet & Research' },
+      8: { file: 'cp-chapter-security.html', name: 'Computer Security & POPIA' }
+    };
 
-</div><!-- /phone -->
-<div class="shell-meta" id="shell-meta">Ayikho · Financial Accounting N4 · TVET Study App</div>
-</div><!-- /phone-col -->
-</div><!-- /shell -->
+    const EBM_MODULES = {
+      1: { file: 'ebm-chapter-intro-entrepreneurship.html', name: 'Introduction to Entrepreneurship' },
+      2: { file: 'ebm-chapter-creativity.html', name: 'Creativity & Idea Generation' },
+      3: { file: 'ebm-chapter-market-feasibility.html', name: 'Market Feasibility Study' },
+      4: { file: 'ebm-chapter-financial-feasibility.html', name: 'Financial Feasibility Study' },
+      5: { file: 'ebm-chapter-business-plan.html', name: 'Writing a Business Plan' },
+      6: { file: 'ebm-chapter-starting-business.html', name: 'Starting a Business' },
+      7: { file: 'ebm-chapter-managing-business.html', name: 'Managing a Business' },
+      8: { file: 'ebm-chapter-ethics.html', name: 'Business Ethics & Social Responsibility' }
+    };
 
-<script>
-// ═══════════════════════════════════
-//  MODULE CONFIG
-// ═══════════════════════════════════
-const FA_MODULES = {
-  1: { file:'ayikho-chapter-concepts.html',        name:'Accounting Concepts & Principles' },
-  2: { file:'ayikho-chapter-accounting.html',       name:'Double Entry & Accounting Equation' },
-  3: { file:'ayikho-chapter-journals.html',         name:'Journals & Ledgers' },
-  4: { file:'ayikho-chapter-trial-balance.html',    name:'Trial Balance' },
-  5: { file:'ayikho-chapter-cash-journals.html',    name:'Cash Receipts & Payments Journals' },
-  6: { file:'ayikho-chapter-debtors-creditors.html',name:'Debtors & Creditors Journals' },
-  7: { file:'ayikho-chapter-vat.html',              name:'Value Added Tax (VAT)' },
-  8: { file:'ayikho-chapter-adjustments.html',      name:'Year-End Adjustments' },
-  9: { file:'ayikho-chapter-financial-statements.html', name:'Financial Statements' },
-  10:{ file:'ayikho-chapter-bank-recon.html',           name:'Bank Reconciliation' }
-};
+    const ALL_SUBJECTS = {
+      fa: { modules: null, name: 'Financial Accounting N4', count: 10, theme: 'fa' },
+      mc: { modules: null, name: 'Management Communication N4', count: 8, theme: 'mc' },
+      cp: { modules: null, name: 'Computer Practice N4', count: 8, theme: 'cp' },
+      ebm: { modules: null, name: 'Entrepreneurship & Business Management N4', count: 8, theme: 'ebm' }
+    };
+    // Deferred assignment (const objects are already defined above)
+    ALL_SUBJECTS.fa.modules = FA_MODULES;
+    ALL_SUBJECTS.mc.modules = MC_MODULES;
+    ALL_SUBJECTS.cp.modules = CP_MODULES;
+    ALL_SUBJECTS.ebm.modules = EBM_MODULES;
 
-const MC_MODULES = {
-  1: { file:'mc-chapter-communication-theory.html', name:'Communication Theory' },
-  2: { file:'mc-chapter-meeting-procedures.html', name:'Meeting Procedures' },
-  3: { file:'mc-chapter-business-letters.html', name:'Business Letters & Emails' },
-  4: { file:'mc-chapter-memos-reports.html', name:'Memos & Reports' },
-  5: { file:'mc-chapter-oral-communication.html', name:'Oral Communication' },
-  6: { file:'mc-chapter-visual-communication.html', name:'Visual Communication' },
-  7: { file:'mc-chapter-reading-comprehension.html', name:'Reading & Comprehension' },
-  8: { file:'mc-chapter-language-editing.html', name:'Language & Editing' }
-};
+    // For backwards compatibility, MODULES points to current subject
+    let MODULES = FA_MODULES;
 
-const CP_MODULES = {
-  1: { file:'cp-chapter-intro-computers.html',  name:'Introduction to Computers' },
-  2: { file:'cp-chapter-word-processing.html',   name:'Word Processing (MS Word)' },
-  3: { file:'cp-chapter-spreadsheets.html',      name:'Spreadsheets (MS Excel)' },
-  4: { file:'cp-chapter-presentations.html',     name:'Presentations (MS PowerPoint)' },
-  5: { file:'cp-chapter-email.html',             name:'Email & Digital Communication' },
-  6: { file:'cp-chapter-data-management.html',   name:'Data Management' },
-  7: { file:'cp-chapter-internet.html',          name:'Internet & Research' },
-  8: { file:'cp-chapter-security.html',          name:'Computer Security & POPIA' }
-};
+    let currentModule = null;
+    let currentSubject = 'fa';
+    let demoMode = false;
+    let onboardingDone = false;
+    let moduleStartTime = null;
 
-const EBM_MODULES = {
-  1: { file:'ebm-chapter-intro-entrepreneurship.html', name:'Introduction to Entrepreneurship' },
-  2: { file:'ebm-chapter-creativity.html',              name:'Creativity & Idea Generation' },
-  3: { file:'ebm-chapter-market-feasibility.html',      name:'Market Feasibility Study' },
-  4: { file:'ebm-chapter-financial-feasibility.html',   name:'Financial Feasibility Study' },
-  5: { file:'ebm-chapter-business-plan.html',           name:'Writing a Business Plan' },
-  6: { file:'ebm-chapter-starting-business.html',       name:'Starting a Business' },
-  7: { file:'ebm-chapter-managing-business.html',       name:'Managing a Business' },
-  8: { file:'ebm-chapter-ethics.html',                  name:'Business Ethics & Social Responsibility' }
-};
+    // Init Firebase tracking (fails silently if not configured)
+    try {
+      if (window.ayikhoTracker && typeof FIREBASE_CONFIG !== 'undefined') {
+        window.ayikhoTracker.initFirebase(FIREBASE_CONFIG);
+      }
+    } catch (e) { console.log('Tracking not active — offline mode'); }
 
-const ALL_SUBJECTS = {
-  fa:  { modules: null, name: 'Financial Accounting N4', count: 10, theme: 'fa' },
-  mc:  { modules: null, name: 'Management Communication N4', count: 8, theme: 'mc' },
-  cp:  { modules: null, name: 'Computer Practice N4', count: 8, theme: 'cp' },
-  ebm: { modules: null, name: 'Entrepreneurship & Business Management N4', count: 8, theme: 'ebm' }
-};
-// Deferred assignment (const objects are already defined above)
-ALL_SUBJECTS.fa.modules = FA_MODULES;
-ALL_SUBJECTS.mc.modules = MC_MODULES;
-ALL_SUBJECTS.cp.modules = CP_MODULES;
-ALL_SUBJECTS.ebm.modules = EBM_MODULES;
+    // Listen for tracking events from chapter iframes
+    window.addEventListener('message', function (e) {
+      try {
+        if (e.data && e.data.type === 'trackEvent' && window.ayikhoTracker) {
+          window.ayikhoTracker.track(e.data.eventType, e.data.data);
+        }
+      } catch (err) { }
+    });
 
-// For backwards compatibility, MODULES points to current subject
-let MODULES = FA_MODULES;
-
-let currentModule = null;
-let currentSubject = 'fa';
-let demoMode = false;
-let onboardingDone = false;
-let moduleStartTime = null;
-
-// Init Firebase tracking (fails silently if not configured)
-try {
-  if (window.ayikhoTracker && typeof FIREBASE_CONFIG !== 'undefined') {
-    window.ayikhoTracker.initFirebase(FIREBASE_CONFIG);
-  }
-} catch(e) { console.log('Tracking not active — offline mode'); }
-
-// Listen for tracking events from chapter iframes
-window.addEventListener('message', function(e) {
-  try {
-    if (e.data && e.data.type === 'trackEvent' && window.ayikhoTracker) {
-      window.ayikhoTracker.track(e.data.eventType, e.data.data);
-    }
-  } catch(err) {}
-});
-
-// Listen for progress events from chapter iframes
-window.addEventListener('message', function(e) {
-  if (e.data && e.data.type === 'moduleComplete' && window.ayikhoData) {
-    window.ayikhoData.completeModule(e.data.moduleId);
-  }
-  if (e.data && e.data.type === 'quizAnswer' && window.ayikhoData) {
-    window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType, e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic);
-  }
-  if (e.data && e.data.type === 'screenChange' && window.ayikhoData) {
-    window.ayikhoData.setModuleScreen(e.data.moduleId, e.data.screenIndex, e.data.totalScreens);
-  }
-  if (e.data && e.data.type === 'goHome') {
-    goHome();
-  }
-  if (e.data && e.data.type === 'openQuiz') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Quiz Mode';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'quiz';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
+    // Listen for progress events from chapter iframes
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'moduleComplete' && window.ayikhoData) {
+        window.ayikhoData.completeModule(e.data.moduleId);
+      }
+      if (e.data && e.data.type === 'quizAnswer' && window.ayikhoData) {
+        window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType, e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic);
+      }
+      if (e.data && e.data.type === 'screenChange' && window.ayikhoData) {
+        window.ayikhoData.setModuleScreen(e.data.moduleId, e.data.screenIndex, e.data.totalScreens);
+      }
+      if (e.data && e.data.type === 'goHome') {
+        goHome();
+      }
+      if (e.data && e.data.type === 'openQuiz') {
+        const loading = document.getElementById('loading');
+        document.getElementById('loading-name').textContent = 'Quiz Mode';
+        loading.classList.add('show');
+        setTimeout(() => {
+          const frame = document.getElementById('chapter-frame');
+          frame.onload = () => {
+            loading.classList.remove('show');
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('chapter-view').classList.add('active');
+            document.getElementById('back-btn').classList.add('show');
+            currentModule = 'quiz';
+            updateSidebar();
+            try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
             html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
@@ -894,29 +2609,29 @@ window.addEventListener('message', function(e) {
             body > div:first-child{height:100%!important}
             .phone-col{display:block!important;height:100%!important}
           `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-      frame.src = 'ayikho-quiz.html';
-    }, 300);
-  }
-  if (e.data && e.data.type === 'openPapers') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Past Papers';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'papers';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
+              iDoc.head.appendChild(style);
+            } catch (e) { }
+          };
+          frame.src = 'ayikho-quiz.html?course=' + (typeof currentSubject !== 'undefined' ? currentSubject : 'fa');
+        }, 300);
+      }
+      if (e.data && e.data.type === 'openPapers') {
+        const loading = document.getElementById('loading');
+        document.getElementById('loading-name').textContent = 'Past Papers';
+        loading.classList.add('show');
+        setTimeout(() => {
+          const frame = document.getElementById('chapter-frame');
+          frame.onload = () => {
+            loading.classList.remove('show');
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('chapter-view').classList.add('active');
+            document.getElementById('back-btn').classList.add('show');
+            currentModule = 'papers';
+            updateSidebar();
+            try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
             html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
@@ -927,29 +2642,29 @@ window.addEventListener('message', function(e) {
             body > div:first-child{height:100%!important}
             .phone-col{display:block!important;height:100%!important}
           `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-      frame.src = 'ayikho-papers.html';
-    }, 300);
-  }
-  if (e.data && e.data.type === 'openMemos') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Memos';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'memos';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
+              iDoc.head.appendChild(style);
+            } catch (e) { }
+          };
+          frame.src = 'ayikho-papers.html';
+        }, 300);
+      }
+      if (e.data && e.data.type === 'openMemos') {
+        const loading = document.getElementById('loading');
+        document.getElementById('loading-name').textContent = 'Memos';
+        loading.classList.add('show');
+        setTimeout(() => {
+          const frame = document.getElementById('chapter-frame');
+          frame.onload = () => {
+            loading.classList.remove('show');
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('chapter-view').classList.add('active');
+            document.getElementById('back-btn').classList.add('show');
+            currentModule = 'memos';
+            updateSidebar();
+            try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
             html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
@@ -960,29 +2675,29 @@ window.addEventListener('message', function(e) {
             body > div:first-child{height:100%!important}
             .phone-col{display:block!important;height:100%!important}
           `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-      frame.src = 'ayikho-memos.html';
-    }, 300);
-  }
-  if (e.data && e.data.type === 'openCapstone') {
-    const loading = document.getElementById('loading');
-    document.getElementById('loading-name').textContent = 'Capstone Exam';
-    loading.classList.add('show');
-    setTimeout(() => {
-      const frame = document.getElementById('chapter-frame');
-      frame.onload = () => {
-        loading.classList.remove('show');
-        document.getElementById('home-view').classList.add('hidden');
-        document.getElementById('chapter-view').classList.add('active');
-        document.getElementById('back-btn').classList.add('show');
-        currentModule = 'capstone';
-        updateSidebar();
-        try {
-          const iDoc = frame.contentDocument || frame.contentWindow.document;
-          const style = iDoc.createElement('style');
-          style.textContent = `
+              iDoc.head.appendChild(style);
+            } catch (e) { }
+          };
+          frame.src = 'ayikho-memos.html';
+        }, 300);
+      }
+      if (e.data && e.data.type === 'openCapstone') {
+        const loading = document.getElementById('loading');
+        document.getElementById('loading-name').textContent = 'Capstone Exam';
+        loading.classList.add('show');
+        setTimeout(() => {
+          const frame = document.getElementById('chapter-frame');
+          frame.onload = () => {
+            loading.classList.remove('show');
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('chapter-view').classList.add('active');
+            document.getElementById('back-btn').classList.add('show');
+            currentModule = 'capstone';
+            updateSidebar();
+            try {
+              const iDoc = frame.contentDocument || frame.contentWindow.document;
+              const style = iDoc.createElement('style');
+              style.textContent = `
             html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
             .shell{display:block!important;gap:0!important;height:100%!important}
             .sidebar{display:none!important}
@@ -993,292 +2708,292 @@ window.addEventListener('message', function(e) {
             body > div:first-child{height:100%!important}
             .phone-col{display:block!important;height:100%!important}
           `;
-          iDoc.head.appendChild(style);
-        } catch(e) {}
-      };
-      frame.src = 'ayikho-capstone.html';
-    }, 300);
-  }
-});
+              iDoc.head.appendChild(style);
+            } catch (e) { }
+          };
+          frame.src = 'ayikho-capstone.html';
+        }, 300);
+      }
+    });
 
-// ═══════════════════════════════════
-//  UPDATE HOME STATS FROM DATA
-// ═══════════════════════════════════
-// ═══════════════════════════════════
-//  GENERATE MODULE GRID (for Option B)
-// ═══════════════════════════════════
-function generateModuleGrid(data) {
-  const grid = document.getElementById('module-grid');
-  if (!grid) return;
+    // ═══════════════════════════════════
+    //  UPDATE HOME STATS FROM DATA
+    // ═══════════════════════════════════
+    // ═══════════════════════════════════
+    //  GENERATE MODULE GRID (for Option B)
+    // ═══════════════════════════════════
+    function generateModuleGrid(data) {
+      const grid = document.getElementById('module-grid');
+      if (!grid) return;
 
-  grid.innerHTML = '';
+      grid.innerHTML = '';
 
-  const maxModules = ALL_SUBJECTS[currentSubject].count;
-  const modules = ALL_SUBJECTS[currentSubject].modules;
+      const maxModules = ALL_SUBJECTS[currentSubject].count;
+      const modules = ALL_SUBJECTS[currentSubject].modules;
 
-  for (let i = 1; i <= maxModules; i++) {
-    const mod = modules[i];
-    if (!mod) continue;
+      for (let i = 1; i <= maxModules; i++) {
+        const mod = modules[i];
+        if (!mod) continue;
 
-    // Determine module status
-    let status = 'locked';
-    let statusClass = 'locked';
-    if (data && data.moduleStatuses && data.moduleStatuses[i]) {
-      status = data.moduleStatuses[i].status;
-      statusClass = status === 'completed' ? 'completed' : status === 'current' ? 'current' : 'locked';
-    } else {
-      // Default behavior: first 2 completed, 3 is current, rest locked
-      if (i <= 2) { status = 'completed'; statusClass = 'completed'; }
-      else if (i === 3) { status = 'current'; statusClass = 'current'; }
-    }
+        // Determine module status
+        let status = 'locked';
+        let statusClass = 'locked';
+        if (data && data.moduleStatuses && data.moduleStatuses[i]) {
+          status = data.moduleStatuses[i].status;
+          statusClass = status === 'completed' ? 'completed' : status === 'current' ? 'current' : 'locked';
+        } else {
+          // Default behavior: first 2 completed, 3 is current, rest locked
+          if (i <= 2) { status = 'completed'; statusClass = 'completed'; }
+          else if (i === 3) { status = 'current'; statusClass = 'current'; }
+        }
 
-    const card = document.createElement('div');
-    card.className = `mg-card ${statusClass}`;
-    if (currentSubject !== 'fa') card.classList.add(currentSubject + '-theme');
-    card.onclick = () => openModule(i);
+        const card = document.createElement('div');
+        card.className = `mg-card ${statusClass}`;
+        if (currentSubject !== 'fa') card.classList.add(currentSubject + '-theme');
+        card.onclick = () => openModule(i);
 
-    let numDisplay = String(i).padStart(2, '0');
-    let badgeHtml = '';
+        let numDisplay = String(i).padStart(2, '0');
+        let badgeHtml = '';
 
-    if (statusClass === 'completed') {
-      card.innerHTML = `
+        if (statusClass === 'completed') {
+          card.innerHTML = `
         <div class="mg-check">✓</div>
         <div class="mg-num">${numDisplay}</div>
         <div class="mg-name">${mod.name}</div>
         <div class="mg-meta">7-12 min · 3/3</div>
         <div class="mg-badge gold">+150 XP</div>
       `;
-    } else if (statusClass === 'current') {
-      card.innerHTML = `
+        } else if (statusClass === 'current') {
+          card.innerHTML = `
         <div class="mg-num">${numDisplay}</div>
         <div class="mg-name">${mod.name}</div>
         <div class="mg-meta">In progress</div>
         <div class="mg-badge purple">25% done</div>
       `;
-    } else {
-      card.innerHTML = `
+        } else {
+          card.innerHTML = `
         <div class="mg-num">${numDisplay}</div>
         <div class="mg-name">${mod.name}</div>
         <div class="mg-meta">7-12 min</div>
       `;
+        }
+
+        grid.appendChild(card);
+      }
     }
 
-    grid.appendChild(card);
-  }
-}
-
-function updateHomeStats() {
-  if (!window.ayikhoData) {
-    generateModuleGrid();
-    return;
-  }
-
-  const data = window.ayikhoData.getDashboardData();
-
-  // Update greeting based on time
-  const hour = new Date().getHours();
-  let greeting = 'Sawubona';
-  if (hour < 12) greeting = 'Morning';
-  else if (hour < 17) greeting = 'Afternoon';
-  else greeting = 'Evening';
-
-  const greetingEl = document.querySelector('.hero-greeting');
-  if (greetingEl) greetingEl.textContent = greeting;
-
-  // Update profile name
-  const profile = window.ayikhoData.getProfile();
-  if (profile && profile.name) {
-    const nameEl = document.querySelector('.hero-name');
-    if (nameEl) nameEl.textContent = profile.name;
-  }
-
-  // Update streak badge
-  const streakBadge = document.querySelector('.streak-badge');
-  if (streakBadge) streakBadge.textContent = `🔥 ${data.streakDays} days`;
-
-  // Update XP badge
-  const xpBadge = document.querySelector('.xp-badge');
-  if (xpBadge) xpBadge.textContent = `⚡ ${data.totalXP} XP`;
-
-  // Update progress bar based on current subject
-  const maxModules = ALL_SUBJECTS[currentSubject].count;
-  const progLabel = document.querySelector('.hero-prog-label strong');
-  if (progLabel) progLabel.textContent = `${data.completedCount} of ${maxModules} done`;
-
-  const progFill = document.querySelector('.hero-prog-fill');
-  if (progFill) progFill.style.width = `${(data.completedCount / maxModules) * 100}%`;
-
-  // Update Ashki speech based on streak
-  let ashkiSpeech = 'Let\'s go!';
-  if (data.streakDays >= 7) ashkiSpeech = 'On fire! 🔥';
-  else if (data.streakDays >= 3) ashkiSpeech = 'Great work!';
-
-  const ashkiSpeechEl = document.querySelector('.ashki-speech');
-  if (ashkiSpeechEl) ashkiSpeechEl.textContent = ashkiSpeech;
-
-  // Update motivator message based on streak
-  let motivatorMsg = 'Ready to start? Just 5 minutes today.';
-  if (data.streakDays >= 7) motivatorMsg = `${data.streakDays}-day streak — you're crushing it! 🔥`;
-  else if (data.streakDays >= 3) motivatorMsg = `${data.streakDays} days in a row. Keep going! 💪`;
-  else if (data.streakDays >= 1) motivatorMsg = 'Welcome back! Let\'s learn something new.';
-
-  const motivatorEl = document.getElementById('hero-motivator');
-  if (motivatorEl) motivatorEl.textContent = motivatorMsg;
-
-  // Update today's lesson card with current module
-  const currentMod = data.currentModule || 3;
-  const currentModData = MODULES[currentMod];
-  if (currentModData) {
-    const todayModule = document.querySelector('.today-module');
-    if (todayModule) todayModule.textContent = `MODULE ${currentMod} OF ${maxModules}`;
-
-    const todayTitle = document.querySelector('.today-title');
-    if (todayTitle) todayTitle.textContent = currentModData.name;
-  }
-
-  // Generate and update module grid
-  generateModuleGrid(data);
-
-  // Setup stat click handlers
-  const statElements = document.querySelectorAll('.hh-stat');
-  statElements.forEach((stat, i) => {
-    stat.onclick = () => {
-      if (i === 0) {
-        // Streak stat
-        showToast(`🔥 ${data.streakDays}-day streak! Keep it up for 14 days to unlock a badge.`);
-      } else if (i === 1) {
-        // Progress stat
-        const pct = Math.round((data.completedCount / maxModules) * 100);
-        showToast(`📈 ${data.completedCount} of ${maxModules} modules complete. You're ${pct}% there!`);
-      } else if (i === 2) {
-        // Score stat
-        const avgScore = data.averageScore || 85;
-        showToast(`✓ ${avgScore}% average. That's excellent — exam ready!`);
+    function updateHomeStats() {
+      if (!window.ayikhoData) {
+        generateModuleGrid();
+        return;
       }
-    };
-  });
-}
 
-// ═══════════════════════════════════
-//  ONBOARDING → HOME TRANSITION
-// ═══════════════════════════════════
-// Listen for postMessage from onboarding iframe (needed for file:// cross-origin)
-window.addEventListener('message', function(e) {
-  if (e.data === 'onboardingComplete') window.onboardingComplete();
-});
+      const data = window.ayikhoData.getDashboardData();
 
-// Called by onboarding iframe when user taps "Start studying now"
-window.onboardingComplete = function() {
-  if (onboardingDone) return; // prevent double-fire
-  onboardingDone = true;
+      // Update greeting based on time
+      const hour = new Date().getHours();
+      let greeting = 'Sawubona';
+      if (hour < 12) greeting = 'Morning';
+      else if (hour < 17) greeting = 'Afternoon';
+      else greeting = 'Evening';
 
-  // Mark onboarding as complete in persistence layer
-  if (window.ayikhoData) {
-    window.ayikhoData.setOnboardingComplete(true);
-  }
+      const greetingEl = document.querySelector('.hero-greeting');
+      if (greetingEl) greetingEl.textContent = greeting;
 
-  // Hide the chapter-view (which has onboarding loaded)
-  document.getElementById('chapter-view').classList.remove('active');
+      // Update profile name
+      const profile = window.ayikhoData.getProfile();
+      if (profile && profile.name) {
+        const nameEl = document.querySelector('.hero-name');
+        if (nameEl) nameEl.textContent = profile.name;
+      }
 
-  // Remove the onload handler so setting src=about:blank doesn't re-activate chapter-view
-  document.getElementById('chapter-frame').onload = null;
+      // Update streak badge
+      const streakBadge = document.querySelector('.streak-badge');
+      if (streakBadge) streakBadge.textContent = `🔥 ${data.streakDays} days`;
 
-  setTimeout(() => {
-    // Clear the iframe
-    document.getElementById('chapter-frame').src = 'about:blank';
-    // Reveal the home screen with a nice entrance
-    document.getElementById('home-view').classList.remove('hidden');
-    currentModule = null;
-    updateSidebar();
+      // Update XP badge
+      const xpBadge = document.querySelector('.xp-badge');
+      if (xpBadge) xpBadge.textContent = `⚡ ${data.totalXP} XP`;
 
-    // Update home stats from data
-    updateHomeStats();
+      // Update progress bar based on current subject
+      const maxModules = ALL_SUBJECTS[currentSubject].count;
+      const progLabel = document.querySelector('.hero-prog-label strong');
+      if (progLabel) progLabel.textContent = `${data.completedCount} of ${maxModules} done`;
 
-    // Trigger the card entrance animations
-    const cards = document.querySelectorAll('.mg-card');
-    cards.forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(12px)';
-      card.style.transition = 'opacity .3s ease, transform .3s ease';
-      setTimeout(() => {
-        card.style.opacity = card.classList.contains('locked') ? '.4' : '1';
-        card.style.transform = 'translateY(0)';
-      }, 100 + i * 60);
+      const progFill = document.querySelector('.hero-prog-fill');
+      if (progFill) progFill.style.width = `${(data.completedCount / maxModules) * 100}%`;
+
+      // Update Ashki speech based on streak
+      let ashkiSpeech = 'Let\'s go!';
+      if (data.streakDays >= 7) ashkiSpeech = 'On fire! 🔥';
+      else if (data.streakDays >= 3) ashkiSpeech = 'Great work!';
+
+      const ashkiSpeechEl = document.querySelector('.ashki-speech');
+      if (ashkiSpeechEl) ashkiSpeechEl.textContent = ashkiSpeech;
+
+      // Update motivator message based on streak
+      let motivatorMsg = 'Ready to start? Just 5 minutes today.';
+      if (data.streakDays >= 7) motivatorMsg = `${data.streakDays}-day streak — you're crushing it! 🔥`;
+      else if (data.streakDays >= 3) motivatorMsg = `${data.streakDays} days in a row. Keep going! 💪`;
+      else if (data.streakDays >= 1) motivatorMsg = 'Welcome back! Let\'s learn something new.';
+
+      const motivatorEl = document.getElementById('hero-motivator');
+      if (motivatorEl) motivatorEl.textContent = motivatorMsg;
+
+      // Update today's lesson card with current module
+      const currentMod = data.currentModule || 3;
+      const currentModData = MODULES[currentMod];
+      if (currentModData) {
+        const todayModule = document.querySelector('.today-module');
+        if (todayModule) todayModule.textContent = `MODULE ${currentMod} OF ${maxModules}`;
+
+        const todayTitle = document.querySelector('.today-title');
+        if (todayTitle) todayTitle.textContent = currentModData.name;
+      }
+
+      // Generate and update module grid
+      generateModuleGrid(data);
+
+      // Setup stat click handlers
+      const statElements = document.querySelectorAll('.hh-stat');
+      statElements.forEach((stat, i) => {
+        stat.onclick = () => {
+          if (i === 0) {
+            // Streak stat
+            showToast(`🔥 ${data.streakDays}-day streak! Keep it up for 14 days to unlock a badge.`);
+          } else if (i === 1) {
+            // Progress stat
+            const pct = Math.round((data.completedCount / maxModules) * 100);
+            showToast(`📈 ${data.completedCount} of ${maxModules} modules complete. You're ${pct}% there!`);
+          } else if (i === 2) {
+            // Score stat
+            const avgScore = data.averageScore || 85;
+            showToast(`✓ ${avgScore}% average. That's excellent — exam ready!`);
+          }
+        };
+      });
+    }
+
+    // ═══════════════════════════════════
+    //  ONBOARDING → HOME TRANSITION
+    // ═══════════════════════════════════
+    // Listen for postMessage from onboarding iframe (needed for file:// cross-origin)
+    window.addEventListener('message', function (e) {
+      if (e.data === 'onboardingComplete') window.onboardingComplete();
     });
 
-    showToast('Welcome to Ayikho! Press D to unlock all modules');
-  }, 350);
-};
+    // Called by onboarding iframe when user taps "Start studying now"
+    window.onboardingComplete = function () {
+      if (onboardingDone) return; // prevent double-fire
+      onboardingDone = true;
 
-// ═══════════════════════════════════
-//  OPEN MODULE
-// ═══════════════════════════════════
-function openModule(num) {
-  const modules = ALL_SUBJECTS[currentSubject].modules;
-  const mod = modules[num];
-  if (!mod) return;
-
-  // Find the card element (support both old and new grid)
-  let card = null;
-  const mgCards = document.querySelectorAll('.mg-card');
-  const moduleCards = document.querySelectorAll('.module-card');
-
-  if (mgCards.length > 0) {
-    card = mgCards[num - 1];
-  } else if (moduleCards.length > 0) {
-    card = moduleCards[num - 1];
-  }
-
-  // Card press animation
-  if (card) {
-    card.style.transform = 'scale(.96)';
-    card.style.transition = 'transform .12s ease';
-  }
-
-  // Show loading
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = mod.name;
-  loading.classList.add('show');
-
-  setTimeout(() => {
-    if (card) card.style.transform = '';
-
-    // Load iframe
-    const frame = document.getElementById('chapter-frame');
-
-    frame.onload = () => {
-      // Hide loading, show chapter
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = num;
-      moduleStartTime = Date.now();
-      updateSidebar();
-
-      // Track module start
-      if (window.ayikhoTracker) {
-        window.ayikhoTracker.trackModuleStart(num);
-        // Send tracker config to iframe
-        try {
-          frame.contentWindow.postMessage({
-            type: 'initTracker',
-            userId: window.ayikhoTracker.userId,
-            moduleId: num
-          }, '*');
-        } catch(e) {}
-      }
-
-      // Record module start in persistence layer
+      // Mark onboarding as complete in persistence layer
       if (window.ayikhoData) {
-        window.ayikhoData.startModule(num);
+        window.ayikhoData.setOnboardingComplete(true);
       }
 
-      // Inject styles into iframe to hide its shell/sidebar (show only phone innards)
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
+      // Hide the chapter-view (which has onboarding loaded)
+      document.getElementById('chapter-view').classList.remove('active');
+
+      // Remove the onload handler so setting src=about:blank doesn't re-activate chapter-view
+      document.getElementById('chapter-frame').onload = null;
+
+      setTimeout(() => {
+        // Clear the iframe
+        document.getElementById('chapter-frame').src = 'about:blank';
+        // Reveal the home screen with a nice entrance
+        document.getElementById('home-view').classList.remove('hidden');
+        currentModule = null;
+        updateSidebar();
+
+        // Update home stats from data
+        updateHomeStats();
+
+        // Trigger the card entrance animations
+        const cards = document.querySelectorAll('.mg-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
+          card.style.transition = 'opacity .3s ease, transform .3s ease';
+          setTimeout(() => {
+            card.style.opacity = card.classList.contains('locked') ? '.4' : '1';
+            card.style.transform = 'translateY(0)';
+          }, 100 + i * 60);
+        });
+
+        showToast('Welcome to Ayikho! Press D to unlock all modules');
+      }, 350);
+    };
+
+    // ═══════════════════════════════════
+    //  OPEN MODULE
+    // ═══════════════════════════════════
+    function openModule(num) {
+      const modules = ALL_SUBJECTS[currentSubject].modules;
+      const mod = modules[num];
+      if (!mod) return;
+
+      // Find the card element (support both old and new grid)
+      let card = null;
+      const mgCards = document.querySelectorAll('.mg-card');
+      const moduleCards = document.querySelectorAll('.module-card');
+
+      if (mgCards.length > 0) {
+        card = mgCards[num - 1];
+      } else if (moduleCards.length > 0) {
+        card = moduleCards[num - 1];
+      }
+
+      // Card press animation
+      if (card) {
+        card.style.transform = 'scale(.96)';
+        card.style.transition = 'transform .12s ease';
+      }
+
+      // Show loading
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = mod.name;
+      loading.classList.add('show');
+
+      setTimeout(() => {
+        if (card) card.style.transform = '';
+
+        // Load iframe
+        const frame = document.getElementById('chapter-frame');
+
+        frame.onload = () => {
+          // Hide loading, show chapter
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = num;
+          moduleStartTime = Date.now();
+          updateSidebar();
+
+          // Track module start
+          if (window.ayikhoTracker) {
+            window.ayikhoTracker.trackModuleStart(num);
+            // Send tracker config to iframe
+            try {
+              frame.contentWindow.postMessage({
+                type: 'initTracker',
+                userId: window.ayikhoTracker.userId,
+                moduleId: num
+              }, '*');
+            } catch (e) { }
+          }
+
+          // Record module start in persistence layer
+          if (window.ayikhoData) {
+            window.ayikhoData.startModule(num);
+          }
+
+          // Inject styles into iframe to hide its shell/sidebar (show only phone innards)
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1289,74 +3004,74 @@ function openModule(num) {
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-        iDoc.head.appendChild(style);
-      } catch(e) { /* cross-origin, ignore */ }
-    };
-    frame.src = mod.file;
-  }, 300);
-}
-
-// ═══════════════════════════════════
-//  GO HOME
-// ═══════════════════════════════════
-function goHome() {
-  // Check if module was just completed
-  let moduleWasCompleted = false;
-  if (currentModule && window.ayikhoData && typeof currentModule === 'number') {
-    const data = window.ayikhoData.getDashboardData();
-    if (data && data.moduleStatuses && data.moduleStatuses[currentModule]) {
-      moduleWasCompleted = data.moduleStatuses[currentModule].status === 'completed';
+            iDoc.head.appendChild(style);
+          } catch (e) { /* cross-origin, ignore */ }
+        };
+        frame.src = mod.file;
+      }, 300);
     }
-  }
 
-  // Save time spent in module
-  if (currentModule && moduleStartTime && window.ayikhoData) {
-    window.ayikhoData.addModuleTime(currentModule, Date.now() - moduleStartTime);
-  }
+    // ═══════════════════════════════════
+    //  GO HOME
+    // ═══════════════════════════════════
+    function goHome() {
+      // Check if module was just completed
+      let moduleWasCompleted = false;
+      if (currentModule && window.ayikhoData && typeof currentModule === 'number') {
+        const data = window.ayikhoData.getDashboardData();
+        if (data && data.moduleStatuses && data.moduleStatuses[currentModule]) {
+          moduleWasCompleted = data.moduleStatuses[currentModule].status === 'completed';
+        }
+      }
 
-  document.getElementById('chapter-view').classList.remove('active');
-  document.getElementById('back-btn').classList.remove('show');
+      // Save time spent in module
+      if (currentModule && moduleStartTime && window.ayikhoData) {
+        window.ayikhoData.addModuleTime(currentModule, Date.now() - moduleStartTime);
+      }
 
-  // Clear onload handler so about:blank doesnt re-activate chapter-view
-  document.getElementById('chapter-frame').onload = null;
+      document.getElementById('chapter-view').classList.remove('active');
+      document.getElementById('back-btn').classList.remove('show');
 
-  setTimeout(() => {
-    document.getElementById('home-view').classList.remove('hidden');
-    document.getElementById('chapter-frame').src = 'about:blank';
-    currentModule = null;
-    updateSidebar();
-    updateHomeStats();
+      // Clear onload handler so about:blank doesnt re-activate chapter-view
+      document.getElementById('chapter-frame').onload = null;
 
-    // Fire confetti if module was completed
-    if (moduleWasCompleted) {
-      setTimeout(() => fireConfetti(), 200);
+      setTimeout(() => {
+        document.getElementById('home-view').classList.remove('hidden');
+        document.getElementById('chapter-frame').src = 'about:blank';
+        currentModule = null;
+        updateSidebar();
+        updateHomeStats();
+
+        // Fire confetti if module was completed
+        if (moduleWasCompleted) {
+          setTimeout(() => fireConfetti(), 200);
+        }
+      }, 350);
     }
-  }, 350);
-}
 
-// ═══════════════════════════════════
-//  OPEN DASHBOARD
-// ═══════════════════════════════════
-function openDashboard() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Dashboard';
-  loading.classList.add('show');
+    // ═══════════════════════════════════
+    //  OPEN DASHBOARD
+    // ═══════════════════════════════════
+    function openDashboard() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Dashboard';
+      loading.classList.add('show');
 
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'dashboard';
-      // Highlight dashboard in sidebar
-      document.querySelectorAll('.sidebar .si').forEach(el => el.classList.remove('active'));
-      document.querySelector('[data-target="dashboard"]').classList.add('active');
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'dashboard';
+          // Highlight dashboard in sidebar
+          document.querySelectorAll('.sidebar .si').forEach(el => el.classList.remove('active'));
+          document.querySelector('[data-target="dashboard"]').classList.add('active');
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1364,405 +3079,406 @@ function openDashboard() {
           .shell-meta{display:none!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-    frame.src = 'ayikho-dashboard.html';
-  }, 300);
-}
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+        frame.src = 'ayikho-dashboard.html';
+      }, 300);
+    }
 
-// ═══════════════════════════════════
-//  OPEN QUIZ MODE
-// ═══════════════════════════════════
-function openQuizMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Quiz Mode';
-  loading.classList.add('show');
+    // ═══════════════════════════════════
+    //  OPEN QUIZ MODE
+    // ═══════════════════════════════════
+    function openQuizMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Quiz Mode';
+      loading.classList.add('show');
 
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'quiz';
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'quiz';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+        frame.src = 'ayikho-quiz.html?course=' + (typeof currentSubject !== 'undefined' ? currentSubject : 'fa');
+      }, 300);
+    }
+
+    // ═══════════════════════════════════
+    //  OPEN PAPERS MODE
+    // ═══════════════════════════════════
+    function openPapersMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Past Papers';
+      loading.classList.add('show');
+
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'papers';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+        frame.src = 'ayikho-papers.html';
+      }, 300);
+    }
+
+    // ═══════════════════════════════════
+    //  OPEN MEMOS MODE
+    // ═══════════════════════════════════
+    function openMemosMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Memos';
+      loading.classList.add('show');
+
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'memos';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+        frame.src = 'ayikho-memos.html';
+      }, 300);
+    }
+
+    // ═══════════════════════════════════
+    //  OPEN CAPSTONE MODE
+    // ═══════════════════════════════════
+    function openCapstoneMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Capstone Exam';
+      loading.classList.add('show');
+
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'capstone';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
+          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
+          .shell{display:block!important;gap:0!important;height:100%!important}
+          .sidebar{display:none!important}
+          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
+          .shell-meta{display:none!important}
+          .shell > div{height:100%!important}
+          .app-container,.container{height:100%!important}
+          body > div:first-child{height:100%!important}
+          .phone-col{display:block!important;height:100%!important}
+        `;
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+        frame.src = 'ayikho-capstone.html';
+      }, 300);
+    }
+
+    // ═══════════════════════════════════
+    //  SUBJECT SWITCHING
+    // ═══════════════════════════════════
+    function switchSubject(subj) {
+      if (currentModule !== null) return; // Don't switch while in a module
+      if (!ALL_SUBJECTS[subj]) return;
+
+      currentSubject = subj;
+      MODULES = ALL_SUBJECTS[subj].modules;
+
+      // Update active pill
+      document.querySelectorAll('.subject-pill').forEach(pill => {
+        pill.classList.remove('active');
+        if (pill.dataset.subject === subj) pill.classList.add('active');
+      });
+
+      // Update hero banner theme
+      const heroBanner = document.getElementById('hero-banner');
+      if (heroBanner) {
+        heroBanner.classList.remove('mc-theme', 'cp-theme', 'ebm-theme');
+        if (subj !== 'fa') heroBanner.classList.add(subj + '-theme');
+      }
+
+      // Update today card theme
+      const todayCard = document.querySelector('.today-card');
+      if (todayCard) {
+        todayCard.classList.remove('mc-theme', 'cp-theme', 'ebm-theme');
+        if (subj !== 'fa') todayCard.classList.add(subj + '-theme');
+      }
+
+      // Update today card content
+      const subjConfig = ALL_SUBJECTS[subj];
+      const todayModule = document.querySelector('.today-module');
+      if (todayModule) todayModule.textContent = `MODULE 1 OF ${subjConfig.count}`;
+      const todayTitle = document.querySelector('.today-title');
+      if (todayTitle && MODULES[1]) todayTitle.textContent = MODULES[1].name;
+      const todayDesc = document.getElementById('today-desc');
+      if (todayDesc) {
+        const descs = {
+          fa: 'Every transaction tells a story. Learn to record them like a pro using the journal builder.',
+          mc: 'Communication is power. Master the written and spoken tools every business professional needs.',
+          cp: 'From Word to Excel to online security — the digital skills every employer expects on day one.',
+          ebm: 'Turn your hustle into a real business. Learn to plan, register, and manage like a pro.'
+        };
+        todayDesc.textContent = descs[subj] || descs.fa;
+      }
+
+      // Update progress label
+      const progLabel = document.querySelector('.hero-prog-label strong');
+      if (progLabel) progLabel.textContent = `0 of ${subjConfig.count} done`;
+      const progFill = document.querySelector('.hero-prog-fill');
+      if (progFill) progFill.style.width = '0%';
+
+      // Update module grid
+      generateModuleGrid(null);
+
+      // Update shell-meta text
+      const shellMeta = document.getElementById('shell-meta');
+      if (shellMeta) shellMeta.textContent = `Ayikho · ${subjConfig.name} · TVET Study App`;
+
+      // Update programme dots
+      document.querySelectorAll('.prog-banner-dot').forEach(dot => {
+        dot.classList.remove('active');
+        if (dot.dataset.subj === subj) dot.classList.add('active');
+      });
+
+      // Update sidebar visibility
+      updateSidebarSubjectVisibility();
       updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important;height:100%!important}
-          .sidebar{display:none!important}
-          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-          .shell-meta{display:none!important}
-          .shell > div{height:100%!important}
-          .app-container,.container{height:100%!important}
-          body > div:first-child{height:100%!important}
-          .phone-col{display:block!important;height:100%!important}
-        `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-    frame.src = 'ayikho-quiz.html';
-  }, 300);
-}
-
-// ═══════════════════════════════════
-//  OPEN PAPERS MODE
-// ═══════════════════════════════════
-function openPapersMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Past Papers';
-  loading.classList.add('show');
-
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'papers';
-      updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important;height:100%!important}
-          .sidebar{display:none!important}
-          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-          .shell-meta{display:none!important}
-          .shell > div{height:100%!important}
-          .app-container,.container{height:100%!important}
-          body > div:first-child{height:100%!important}
-          .phone-col{display:block!important;height:100%!important}
-        `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-    frame.src = 'ayikho-papers.html';
-  }, 300);
-}
-
-// ═══════════════════════════════════
-//  OPEN MEMOS MODE
-// ═══════════════════════════════════
-function openMemosMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Memos';
-  loading.classList.add('show');
-
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'memos';
-      updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important;height:100%!important}
-          .sidebar{display:none!important}
-          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-          .shell-meta{display:none!important}
-          .shell > div{height:100%!important}
-          .app-container,.container{height:100%!important}
-          body > div:first-child{height:100%!important}
-          .phone-col{display:block!important;height:100%!important}
-        `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-    frame.src = 'ayikho-memos.html';
-  }, 300);
-}
-
-// ═══════════════════════════════════
-//  OPEN CAPSTONE MODE
-// ═══════════════════════════════════
-function openCapstoneMode() {
-  const loading = document.getElementById('loading');
-  document.getElementById('loading-name').textContent = 'Capstone Exam';
-  loading.classList.add('show');
-
-  setTimeout(() => {
-    const frame = document.getElementById('chapter-frame');
-    frame.onload = () => {
-      loading.classList.remove('show');
-      document.getElementById('home-view').classList.add('hidden');
-      document.getElementById('chapter-view').classList.add('active');
-      document.getElementById('back-btn').classList.add('show');
-      currentModule = 'capstone';
-      updateSidebar();
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
-          html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-          .shell{display:block!important;gap:0!important;height:100%!important}
-          .sidebar{display:none!important}
-          .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-          .shell-meta{display:none!important}
-          .shell > div{height:100%!important}
-          .app-container,.container{height:100%!important}
-          body > div:first-child{height:100%!important}
-          .phone-col{display:block!important;height:100%!important}
-        `;
-        iDoc.head.appendChild(style);
-      } catch(e) {}
-    };
-    frame.src = 'ayikho-capstone.html';
-  }, 300);
-}
-
-// ═══════════════════════════════════
-//  SUBJECT SWITCHING
-// ═══════════════════════════════════
-function switchSubject(subj) {
-  if (currentModule !== null) return; // Don't switch while in a module
-  if (!ALL_SUBJECTS[subj]) return;
-
-  currentSubject = subj;
-  MODULES = ALL_SUBJECTS[subj].modules;
-
-  // Update active pill
-  document.querySelectorAll('.subject-pill').forEach(pill => {
-    pill.classList.remove('active');
-    if (pill.dataset.subject === subj) pill.classList.add('active');
-  });
-
-  // Update hero banner theme
-  const heroBanner = document.getElementById('hero-banner');
-  if (heroBanner) {
-    heroBanner.classList.remove('mc-theme','cp-theme','ebm-theme');
-    if (subj !== 'fa') heroBanner.classList.add(subj + '-theme');
-  }
-
-  // Update today card theme
-  const todayCard = document.querySelector('.today-card');
-  if (todayCard) {
-    todayCard.classList.remove('mc-theme','cp-theme','ebm-theme');
-    if (subj !== 'fa') todayCard.classList.add(subj + '-theme');
-  }
-
-  // Update today card content
-  const subjConfig = ALL_SUBJECTS[subj];
-  const todayModule = document.querySelector('.today-module');
-  if (todayModule) todayModule.textContent = `MODULE 1 OF ${subjConfig.count}`;
-  const todayTitle = document.querySelector('.today-title');
-  if (todayTitle && MODULES[1]) todayTitle.textContent = MODULES[1].name;
-  const todayDesc = document.getElementById('today-desc');
-  if (todayDesc) {
-    const descs = {
-      fa: 'Every transaction tells a story. Learn to record them like a pro using the journal builder.',
-      mc: 'Communication is power. Master the written and spoken tools every business professional needs.',
-      cp: 'From Word to Excel to online security — the digital skills every employer expects on day one.',
-      ebm: 'Turn your hustle into a real business. Learn to plan, register, and manage like a pro.'
-    };
-    todayDesc.textContent = descs[subj] || descs.fa;
-  }
-
-  // Update progress label
-  const progLabel = document.querySelector('.hero-prog-label strong');
-  if (progLabel) progLabel.textContent = `0 of ${subjConfig.count} done`;
-  const progFill = document.querySelector('.hero-prog-fill');
-  if (progFill) progFill.style.width = '0%';
-
-  // Update module grid
-  generateModuleGrid(null);
-
-  // Update shell-meta text
-  const shellMeta = document.getElementById('shell-meta');
-  if (shellMeta) shellMeta.textContent = `Ayikho · ${subjConfig.name} · TVET Study App`;
-
-  // Update programme dots
-  document.querySelectorAll('.prog-banner-dot').forEach(dot => {
-    dot.classList.remove('active');
-    if (dot.dataset.subj === subj) dot.classList.add('active');
-  });
-
-  // Update sidebar visibility
-  updateSidebarSubjectVisibility();
-  updateSidebar();
-}
-
-// ═══════════════════════════════════
-//  SIDEBAR
-// ═══════════════════════════════════
-function updateSidebarSubjectVisibility() {
-  const subjectClasses = ['fa-chapter','mc-chapter','cp-chapter','ebm-chapter'];
-  subjectClasses.forEach(cls => {
-    const chapters = document.querySelectorAll('.' + cls);
-    const isActive = cls.startsWith(currentSubject + '-');
-    chapters.forEach(ch => ch.style.display = isActive ? '' : 'none');
-  });
-}
-
-function updateSidebar() {
-  document.querySelectorAll('.sidebar .si').forEach(el => {
-    el.classList.remove('active');
-    if (el.dataset.module && el.dataset.subject === currentSubject && parseInt(el.dataset.module) === currentModule) {
-      el.classList.add('active');
     }
-  });
-  const homeBtn = document.querySelector('.si-home');
-  if (homeBtn) homeBtn.classList.toggle('active', currentModule === null);
-}
 
-// ═══════════════════════════════════
-//  KEYBOARD NAV
-// ═══════════════════════════════════
-document.addEventListener('keydown', e => {
-  // Don't intercept keys during onboarding
-  if (!onboardingDone && e.key !== 'Escape') return;
-
-  // Escape: go home (or skip onboarding)
-  if (e.key === 'Escape') {
-    if (!onboardingDone) {
-      // Skip onboarding entirely
-      window.onboardingComplete();
-      return;
+    // ═══════════════════════════════════
+    //  SIDEBAR
+    // ═══════════════════════════════════
+    function updateSidebarSubjectVisibility() {
+      const subjectClasses = ['fa-chapter', 'mc-chapter', 'cp-chapter', 'ebm-chapter'];
+      subjectClasses.forEach(cls => {
+        const chapters = document.querySelectorAll('.' + cls);
+        const isActive = cls.startsWith(currentSubject + '-');
+        chapters.forEach(ch => ch.style.display = isActive ? '' : 'none');
+      });
     }
-    if (currentModule !== null) {
-      goHome();
-      return;
-    }
-    return;
-  }
 
-  // D: toggle demo mode (unlock all)
-  if (e.key === 'd' || e.key === 'D') {
-    if (currentModule !== null) return; // Don't toggle when inside a chapter
-    demoMode = !demoMode;
-    // Support both old (.module-card) and new (.mg-card) grid
-    const selector = document.querySelectorAll('.mg-card.locked').length > 0 ? '.mg-card.locked' : '.module-card.locked';
-    document.querySelectorAll(selector).forEach(card => {
-      if (demoMode) {
-        card.style.opacity = '1';
-        card.style.cursor = 'pointer';
-        card.dataset.wasLocked = 'true';
-        card.classList.remove('locked');
-      } else {
-        if (card.dataset.wasLocked) {
-          card.classList.add('locked');
-          card.style.opacity = '.4';
-          card.style.cursor = 'default';
+    function updateSidebar() {
+      document.querySelectorAll('.sidebar .si').forEach(el => {
+        el.classList.remove('active');
+        if (el.dataset.module && el.dataset.subject === currentSubject && parseInt(el.dataset.module) === currentModule) {
+          el.classList.add('active');
+        }
+      });
+      const homeBtn = document.querySelector('.si-home');
+      if (homeBtn) homeBtn.classList.toggle('active', currentModule === null);
+    }
+
+    // ═══════════════════════════════════
+    //  KEYBOARD NAV
+    // ═══════════════════════════════════
+    document.addEventListener('keydown', e => {
+      // Don't intercept keys during onboarding
+      if (!onboardingDone && e.key !== 'Escape') return;
+
+      // Escape: go home (or skip onboarding)
+      if (e.key === 'Escape') {
+        if (!onboardingDone) {
+          // Skip onboarding entirely
+          window.onboardingComplete();
+          return;
+        }
+        if (currentModule !== null) {
+          goHome();
+          return;
+        }
+        return;
+      }
+
+      // D: toggle demo mode (unlock all)
+      if (e.key === 'd' || e.key === 'D') {
+        if (currentModule !== null) return; // Don't toggle when inside a chapter
+        demoMode = !demoMode;
+        // Support both old (.module-card) and new (.mg-card) grid
+        const selector = document.querySelectorAll('.mg-card.locked').length > 0 ? '.mg-card.locked' : '.module-card.locked';
+        document.querySelectorAll(selector).forEach(card => {
+          if (demoMode) {
+            card.style.opacity = '1';
+            card.style.cursor = 'pointer';
+            card.dataset.wasLocked = 'true';
+            card.classList.remove('locked');
+          } else {
+            if (card.dataset.wasLocked) {
+              card.classList.add('locked');
+              card.style.opacity = '.4';
+              card.style.cursor = 'default';
+            }
+          }
+        });
+        showToast(demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF');
+      }
+
+      // Number keys 1-9: jump to module (from current subject)
+      const num = parseInt(e.key);
+      if (num >= 1 && num <= 9) {
+        const maxModules = ALL_SUBJECTS[currentSubject].count;
+        if (num <= maxModules) {
+          openModule(num);
         }
       }
     });
-    showToast(demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF');
-  }
 
-  // Number keys 1-9: jump to module (from current subject)
-  const num = parseInt(e.key);
-  if (num >= 1 && num <= 9) {
-    const maxModules = ALL_SUBJECTS[currentSubject].count;
-    if (num <= maxModules) {
-      openModule(num);
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,10,58,.9);color:white;padding:10px 18px;border-radius:100px;font-family:JetBrains Mono,monospace;font-size:11px;z-index:999;transition:opacity .5s;backdrop-filter:blur(8px)';
+      document.body.appendChild(t);
+      setTimeout(() => t.style.opacity = '0', 2000);
+      setTimeout(() => t.remove(), 2500);
     }
-  }
-});
 
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,10,58,.9);color:white;padding:10px 18px;border-radius:100px;font-family:JetBrains Mono,monospace;font-size:11px;z-index:999;transition:opacity .5s;backdrop-filter:blur(8px)';
-  document.body.appendChild(t);
-  setTimeout(() => t.style.opacity = '0', 2000);
-  setTimeout(() => t.remove(), 2500);
-}
+    // ═══════════════════════════════════
+    //  CONFETTI BURST
+    // ═══════════════════════════════════
+    function fireConfetti() {
+      const colors = ['#F59E0B', '#7C3AED', '#0284C7', '#22C55E', '#F43F5E'];
+      const phoneEl = document.querySelector('.phone');
+      if (!phoneEl) return;
 
-// ═══════════════════════════════════
-//  CONFETTI BURST
-// ═══════════════════════════════════
-function fireConfetti() {
-  const colors = ['#F59E0B', '#7C3AED', '#0284C7', '#22C55E', '#F43F5E'];
-  const phoneEl = document.querySelector('.phone');
-  if (!phoneEl) return;
+      const rect = phoneEl.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-  const rect = phoneEl.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
+      for (let i = 0; i < 30; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = centerX + 'px';
+        piece.style.top = centerY + 'px';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
-  for (let i = 0; i < 30; i++) {
-    const piece = document.createElement('div');
-    piece.className = 'confetti-piece';
-    piece.style.left = centerX + 'px';
-    piece.style.top = centerY + 'px';
-    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        // Random explosion direction
+        const angle = (Math.random() * Math.PI * 2);
+        const distance = 150 + Math.random() * 100;
+        const tx = Math.cos(angle) * distance;
+        const ty = -Math.sin(angle) * distance - (Math.random() * 100);
 
-    // Random explosion direction
-    const angle = (Math.random() * Math.PI * 2);
-    const distance = 150 + Math.random() * 100;
-    const tx = Math.cos(angle) * distance;
-    const ty = -Math.sin(angle) * distance - (Math.random() * 100);
+        piece.style.setProperty('--tx', tx + 'px');
+        piece.style.setProperty('--ty', ty + 'px');
 
-    piece.style.setProperty('--tx', tx + 'px');
-    piece.style.setProperty('--ty', ty + 'px');
+        document.body.appendChild(piece);
 
-    document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 2500);
+      }
+    }
 
-    setTimeout(() => piece.remove(), 2500);
-  }
-}
+    // ═══════════════════════════════════
+    //  STARTUP — CHECK ONBOARDING STATUS
+    // ═══════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user has already completed onboarding
+      const hasOnboarded = window.ayikhoData && window.ayikhoData.isOnboardingComplete();
 
-// ═══════════════════════════════════
-//  STARTUP — CHECK ONBOARDING STATUS
-// ═══════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  // Always show home screen for app launch
-  // Onboarding is available via sidebar but doesn't block the experience
-  if (false) {
-    // Show home directly (disabled — always show onboarding first)
-    onboardingDone = true;
-    document.getElementById('chapter-view').classList.remove('active');
-    document.getElementById('home-view').classList.remove('hidden');
+      if (hasOnboarded) {
+        // Show home directly (disabled — always show onboarding first)
+        onboardingDone = true;
+        document.getElementById('chapter-view').classList.remove('active');
+        document.getElementById('home-view').classList.remove('hidden');
 
-    // Initialize subject-specific sidebar visibility
-    updateSidebarSubjectVisibility();
+        // Initialize subject-specific sidebar visibility
+        updateSidebarSubjectVisibility();
 
-    // Update stats from saved data
-    updateHomeStats();
+        // Update stats from saved data
+        updateHomeStats();
 
-    // Trigger card entrance animations
-    const cards = document.querySelectorAll('.mg-card');
-    cards.forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(12px)';
-      card.style.transition = 'opacity .3s ease, transform .3s ease';
-      setTimeout(() => {
-        card.style.opacity = card.classList.contains('locked') ? '.4' : '1';
-        card.style.transform = 'translateY(0)';
-      }, 100 + i * 60);
-    });
-  } else {
-    // New student or first load — show onboarding
-    // Hide home view immediately
-    document.getElementById('home-view').classList.add('hidden');
+        // Trigger card entrance animations
+        const cards = document.querySelectorAll('.mg-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
+          card.style.transition = 'opacity .3s ease, transform .3s ease';
+          setTimeout(() => {
+            card.style.opacity = card.classList.contains('locked') ? '.4' : '1';
+            card.style.transform = 'translateY(0)';
+          }, 100 + i * 60);
+        });
+      } else {
+        // New student or first load — show onboarding
+        // Hide home view immediately
+        document.getElementById('home-view').classList.add('hidden');
 
-    // Load onboarding into the chapter iframe
-    const frame = document.getElementById('chapter-frame');
+        // Load onboarding into the chapter iframe
+        const frame = document.getElementById('chapter-frame');
 
-    frame.onload = () => {
-      // Guard: only activate for onboarding, not for about:blank
-      if (onboardingDone) return;
+        frame.onload = () => {
+          // Guard: only activate for onboarding, not for about:blank
+          if (onboardingDone) return;
 
-      // Show the chapter-view (which now has onboarding)
-      document.getElementById('chapter-view').classList.add('active');
+          // Show the chapter-view (which now has onboarding)
+          document.getElementById('chapter-view').classList.add('active');
 
-      // Inject styles to strip onboarding's shell if it has one
-      try {
-        const iDoc = frame.contentDocument || frame.contentWindow.document;
-        const style = iDoc.createElement('style');
-        style.textContent = `
+          // Inject styles to strip onboarding's shell if it has one
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1770,34 +3486,35 @@ document.addEventListener('DOMContentLoaded', () => {
           .shell-meta{display:none!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-        iDoc.head.appendChild(style);
-      } catch(e) { /* cross-origin, ignore */ }
-    };
-    frame.src = 'ayikho-onboarding-v2.html';
-  }
+            iDoc.head.appendChild(style);
+          } catch (e) { /* cross-origin, ignore */ }
+        };
+        frame.src = 'ayikho-onboarding-v2.html';
+      }
 
-  // Don't show back button during onboarding
-  // Don't show card animations yet — they'll play after onboarding completes
-});
+      // Don't show back button during onboarding
+      // Don't show card animations yet — they'll play after onboarding completes
+    });
 
-// ═══════════════════════════════════
-//  RETURN-TO-HOME ON APP RESUME
-// ═══════════════════════════════════
-// When user minimises/switches away and comes back, reset to home dashboard.
-// This prevents being stuck inside a chapter iframe after a long absence.
+    // ═══════════════════════════════════
+    //  RETURN-TO-HOME ON APP RESUME
+    // ═══════════════════════════════════
+    // When user minimises/switches away and comes back, reset to home dashboard.
+    // This prevents being stuck inside a chapter iframe after a long absence.
 
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && currentModule !== null) {
-    goHome();
-  }
-});
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && currentModule !== null) {
+        goHome();
+      }
+    });
 
-// Also handle browser back-forward cache (bfcache) restoration
-window.addEventListener('pageshow', (e) => {
-  if (e.persisted && currentModule !== null) {
-    goHome();
-  }
-});
-</script>
+    // Also handle browser back-forward cache (bfcache) restoration
+    window.addEventListener('pageshow', (e) => {
+      if (e.persisted && currentModule !== null) {
+        goHome();
+      }
+    });
+  </script>
 </body>
+
 </html>

@@ -2669,277 +2669,257 @@
             <div class="w-ashki-speech">Ready to ace your N4? Let's go!</div>
           </div>
           <div class="wcnt">
-            <<<<<<< HEAD <div class="wword">Ayikho.
+            <div class="wword">Ayikho.
+            </div>
+            <div class="wmean">"there is none like it" — isiZulu</div>
+            <div class="wtag"><strong>No more failing alone.</strong><br>Your TVET study partner — plain English, SA
+              examples, always in your pocket.</div>
+            <button class="wbtn" onclick="goTo('s-signup')">Create Account →</button>
+            <div style="text-align:center; margin-top:14px; font-size:14px; color:rgba(255,255,255,.5);">
+              Already have an account? <span style="color:var(--gold); font-weight:700; cursor:pointer;"
+                onclick="window.switchToLogin()">Log in</span>
+            </div>
+            <div class="w-free-badge"><span class="badge-dot"></span> Free for all TVET students · Works offline</div>
           </div>
-          <div class="wmean">"there is none like it" — isiZulu</div>
-          <div class="wtag"><strong>No more failing alone.</strong><br>Your TVET study partner — plain English, SA
-            examples, always in your pocket.</div>
-          <button class="wbtn" onclick="goTo('s-signup')">Create Account →</button>
-          <div style="text-align:center; margin-top:14px; font-size:14px; color:rgba(255,255,255,.5);">
-            Already have an account? <span style="color:var(--gold); font-weight:700; cursor:pointer;"
-              onclick="window.switchToLogin()">Log in</span>
-          </div>
-          <div class="w-free-badge"><span class="badge-dot"></span> Free for all TVET students · Works offline</div>
-          =======
-          <div style="position: relative;">
-            <div class="ashki-mascot"></div>
-            <div class="ashki-speech" style="animation-delay: 0.6s;">Sawubona! I'm Ashki 👋🏾</div>
-          </div>
-          <div class="wlogo">Ayikho · N4–N6 TVET Study App</div>
-          <div class="wword">Watch<br>This<br>Space.</div>
-          <div class="wmean">University said no? Prove them wrong.</div>
-          <div class="wtag"><strong>No more failing alone.</strong> Master TVET N4 Financial Accounting on your phone
-            and take control of your future.</div>
-          <button class="btn btn-google" onclick="signInWithGoogle()"> Continue with Google </button>
-          <div style="margin:16px 0;text-align:center;color:#999;"> or continue with phone </div>
-          <button class="wbtn" onclick="goTo('s-phone')">Get Started →</button>
-          <div class="hint" style="color:rgba(255,255,255,.3)">Free for all TVET students · Works offline</div>
-          >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
         </div>
-      </div>
 
-      <!-- ══════════════════════════════
+        <!-- ══════════════════════════════
    S02: SIGN UP (single page)
 ══════════════════════════════ -->
-      <div class="screen" id="s-signup">
-        <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-        <div class="gp">
-          <div class="gp-fill" style="width:8%"></div>
-        </div>
-        <div class="shd">
-          <div class="step-tag">Step 1 of 10</div>
-          <div class="h1">Create your<br>account</div>
-          <div class="sub">Your cell number + a password. That's it.</div>
-        </div>
-        <div class="scr" style="overflow-y:auto">
-          <div style="padding:16px 24px 0">
-            <!-- PHONE SECTION -->
-            <div class="field">
-              <div class="field-lbl">Country</div>
-              <select class="fi" id="country-select" onchange="window.updateCountry()"
-                style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
-                <option value="+27" data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦 South Africa (+27)</option>
-                <option value="+233" data-flag="🇬🇭" data-placeholder="24 123 4567">🇬🇭 Ghana (+233)</option>
-              </select>
-            </div>
-            <div class="field">
-              <div class="field-lbl">Cell number</div>
-              <div class="ph-row">
-                <div class="ph-pfx" id="ph-pfx">🇿🇦 +27</div>
-                <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-in" maxlength="12">
+        <div class="screen" id="s-signup">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:8%"></div>
+          </div>
+          <div class="shd">
+            <div class="step-tag">Step 1 of 10</div>
+            <div class="h1">Create your<br>account</div>
+            <div class="sub">Your cell number + a password. That's it.</div>
+          </div>
+          <div class="scr" style="overflow-y:auto">
+            <div style="padding:16px 24px 0">
+              <!-- PHONE SECTION -->
+              <div class="field">
+                <div class="field-lbl">Country</div>
+                <select class="fi" id="country-select" onchange="window.updateCountry()"
+                  style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+                  <option value="+27" data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦 South Africa (+27)</option>
+                  <option value="+233" data-flag="🇬🇭" data-placeholder="24 123 4567">🇬🇭 Ghana (+233)</option>
+                </select>
+              </div>
+              <div class="field">
+                <div class="field-lbl">Cell number</div>
+                <div class="ph-row">
+                  <div class="ph-pfx" id="ph-pfx">🇿🇦 +27</div>
+                  <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-in" maxlength="12">
+                </div>
+              </div>
+              <div class="field" style="margin-top:6px">
+                <div class="field-lbl">Confirm cell number</div>
+                <div class="ph-row">
+                  <div class="ph-pfx" id="ph-pfx2">🇿🇦 +27</div>
+                  <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-confirm-in" maxlength="12">
+                </div>
+                <div class="field-error" id="phoneMatchError"
+                  style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
+                  Phone numbers don't match — please check.
+                </div>
+              </div>
+
+              <!-- DIVIDER -->
+              <div style="height:1px;background:var(--bord);margin:20px 0;opacity:.5"></div>
+
+              <!-- PASSWORD SECTION -->
+              <div class="field">
+                <div class="field-lbl">Create password</div>
+                <input class="fi" type="password" placeholder="Min 8 chars, 1 number" id="pass-in"
+                  oninput="window.checkPassStrength()">
+                <div class="hint" id="pass-hint" style="text-align:left;margin-top:4px">Min 8 characters with 1 number.
+                </div>
+              </div>
+              <div class="field" style="margin-top:6px">
+                <div class="field-lbl">Confirm password</div>
+                <input class="fi" type="password" placeholder="Password again" id="pass-confirm-in">
+                <div class="field-error" id="passMatchError"
+                  style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
+                  Passwords don't match.
+                </div>
               </div>
             </div>
-            <<<<<<< HEAD <div class="field" style="margin-top:6px">
-              <div class="field-lbl">Confirm cell number</div>
-              <div class="ph-row">
-                <div class="ph-pfx" id="ph-pfx2">🇿🇦 +27</div>
-                <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="phone-confirm-in" maxlength="12">
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" id="register-btn" onclick="window.registerFromSinglePage()">Create Account
+              →</button>
+            <div style="text-align:center; margin-top:14px; font-size:14px; color:var(--mut);">
+              Already have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
+                onclick="window.switchToLogin()">Log in</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOGIN FLOW -->
+        <div class="screen" id="s-login-phone">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="shd">
+            <div class="h1">Welcome back</div>
+            <div class="sub">Log in to pick up where you left off.</div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Country</div>
+                <select class="fi" id="login-country-select" onchange="window.updateLoginCountry()"
+                  style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+                  <option value="+27" data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦 South Africa (+27)</option>
+                  <option value="+233" data-flag="🇬🇭" data-placeholder="24 123 4567">🇬🇭 Ghana (+233)</option>
+                </select>
+                <div class="field-lbl">Cell number</div>
+                <div class="ph-row">
+                  <div class="ph-pfx" id="login-ph-pfx">🇿🇦 +27</div>
+                  <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="login-phone-in" maxlength="12">
+                </div>
               </div>
-              <div class="field-error" id="phoneMatchError"
-                style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
-                Phone numbers don't match — please check.
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn btn-p" onclick="window.checkLoginPhoneStr()">Next →</button>
+            <div style="text-align:center; margin-top:16px; font-size:14px; color:var(--mut);">
+              Don't have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
+                onclick="window.switchToRegister()">Sign up</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen" id="s-login-password">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="shd">
+            <div class="h1">Enter password</div>
+            <div class="sub">For <strong id="login-disp-phone">your number</strong></div>
+          </div>
+          <div class="scr">
+            <div style="padding:20px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Password</div>
+                <input class="fi" type="password" placeholder="Password" id="login-pass-in">
+                <div class="hint" id="login-hint" style="text-align:left; color:var(--rose)"></div>
               </div>
-          </div>
-
-          <!-- DIVIDER -->
-          <div style="height:1px;background:var(--bord);margin:20px 0;opacity:.5"></div>
-
-          <!-- PASSWORD SECTION -->
-          <div class="field">
-            <div class="field-lbl">Create password</div>
-            <input class="fi" type="password" placeholder="Min 8 chars, 1 number" id="pass-in"
-              oninput="window.checkPassStrength()">
-            <div class="hint" id="pass-hint" style="text-align:left;margin-top:4px">Min 8 characters with 1 number.
             </div>
           </div>
-          <div class="field" style="margin-top:6px">
-            <div class="field-lbl">Confirm password</div>
-            <input class="fi" type="password" placeholder="Password again" id="pass-confirm-in">
-            <div class="field-error" id="passMatchError"
-              style="display:none; color:var(--rose); font:500 13px/1.4 Outfit; margin-top:6px;">
-              Passwords don't match.
-            </div>
+          <div class="foot">
+            <button class="btn btn-p" id="login-btn" onclick="window.loginUser()">Log in →</button>
+            <button class="btn btn-ghost" onclick="goTo('s-login-phone')">Back</button>
           </div>
         </div>
-      </div>
-      <div class="foot">
-        <button class="btn btn-p" id="register-btn" onclick="window.registerFromSinglePage()">Create Account →</button>
-        <div style="text-align:center; margin-top:14px; font-size:14px; color:var(--mut);">
-          Already have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
-            onclick="window.switchToLogin()">Log in</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- LOGIN FLOW -->
-    <div class="screen" id="s-login-phone">
-      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-      <div class="shd">
-        <div class="h1">Welcome back</div>
-        <div class="sub">Log in to pick up where you left off.</div>
-      </div>
-      <div class="scr">
-        <div style="padding:20px 24px 0">
-          <div class="field">
-            <div class="field-lbl">Country</div>
-            <select class="fi" id="login-country-select" onchange="window.updateLoginCountry()"
-              style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
-              <option value="+27" data-flag="🇿🇦" data-placeholder="81 234 5678">🇿🇦 South Africa (+27)</option>
-              <option value="+233" data-flag="🇬🇭" data-placeholder="24 123 4567">🇬🇭 Ghana (+233)</option>
-            </select>
-            <div class="field-lbl">Cell number</div>
-            <div class="ph-row">
-              <div class="ph-pfx" id="login-ph-pfx">🇿🇦 +27</div>
-              <input class="fi ph-num" type="tel" placeholder="81 234 5678" id="login-phone-in" maxlength="12">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="foot">
-        <button class="btn btn-p" onclick="window.checkLoginPhoneStr()">Next →</button>
-        <div style="text-align:center; margin-top:16px; font-size:14px; color:var(--mut);">
-          Don't have an account? <span style="color:var(--p); font-weight:700; cursor:pointer;"
-            onclick="window.switchToRegister()">Sign up</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="s-login-password">
-      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-      <div class="shd">
-        <div class="h1">Enter password</div>
-        <div class="sub">For <strong id="login-disp-phone">your number</strong></div>
-      </div>
-      <div class="scr">
-        <div style="padding:20px 24px 0">
-          <div class="field">
-            <div class="field-lbl">Password</div>
-            <input class="fi" type="password" placeholder="Password" id="login-pass-in">
-            <div class="hint" id="login-hint" style="text-align:left; color:var(--rose)"></div>
-          </div>
-        </div>
-      </div>
-      <div class="foot">
-        <button class="btn btn-p" id="login-btn" onclick="window.loginUser()">Log in →</button>
-        <button class="btn btn-ghost" onclick="goTo('s-login-phone')">Back</button>
-      </div>
-    </div>
-    <!-- ══════════════════════════════
+        <!-- ══════════════════════════════
 
    S04: NAME + AGE
 ══════════════════════════════ -->
-    <div class="screen" id="s-name">
-      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-      <div class="gp">
-        <div class="gp-fill" style="width:18%"></div>
-      </div>
-      <div class="shd">
-        <div class="step-tag">Step 3 of 13</div>
-        <div class="verified"><span>✅</span><span>Number verified — you're in!</span></div>
-        <div class="h1">Tell us about yourself</div>
-        <div class="sub" style="margin-top:4px">So Ayikho can personalise everything.</div>
-      </div>
-      <div class="scr">
-        <div style="padding:18px 24px 0">
-          <div class="field">
-            <div class="field-lbl">First name</div><input class="fi" type="text" placeholder="e.g. Zandile" id="fname"
-              oninput="window.ayikhoData && window.ayikhoData.setProfile({name: this.value})">
+        <div class="screen" id="s-name">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:18%"></div>
           </div>
-          <<<<<<< HEAD <div class="shd">
-            <div class="step-tag">Step 2 of 10</div>
+          <div class="shd">
+            <div class="step-tag">Step 3 of 13</div>
             <div class="verified"><span>✅</span><span>Number verified — you're in!</span></div>
             <div class="h1">Tell us about yourself</div>
             <div class="sub" style="margin-top:4px">So Ayikho can personalise everything.</div>
-            =======
-            <div class="field">
-              <div class="field-lbl">Surname</div><input class="fi" type="text" placeholder="e.g. Dlamini" id="sname">
-              >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
+          </div>
+          <div class="scr">
+            <div style="padding:18px 24px 0">
+              <div class="field">
+                <div class="field-lbl">First name</div><input class="fi" type="text" placeholder="e.g. Zandile"
+                  id="fname" oninput="window.ayikhoData && window.ayikhoData.setProfile({name: this.value})">
+              </div>
+              <div class="shd">
+                <div class="step-tag">Step 2 of 10</div>
+                <div class="verified"><span>✅</span><span>Number verified — you're in!</span></div>
+                <div class="h1">Tell us about yourself</div>
+                <div class="sub" style="margin-top:4px">So Ayikho can personalise everything.</div>
+              </div>
+              <div class="field">
+                <div class="field-lbl">Age</div><input class="fi" type="number" placeholder="e.g. 19" min="16" max="60"
+                  inputmode="numeric">
+              </div>
             </div>
-            <div class="field">
-              <div class="field-lbl">Age</div><input class="fi" type="number" placeholder="e.g. 19" min="16" max="60"
-                inputmode="numeric">
-            </div>
+          </div>
+          <div class="foot"><button class="btn btn-p" onclick="goTo('s-college')">Continue →</button></div>
         </div>
-      </div>
-      <div class="foot"><button class="btn btn-p" onclick="goTo('s-college')">Continue →</button></div>
-    </div>
 
-    <!-- ══════════════════════════════
+        <!-- ══════════════════════════════
    S05: COLLEGE
 ══════════════════════════════ -->
-    <div class="screen" id="s-college">
-      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-      <div class="gp">
-        <div class="gp-fill" style="width:24%"></div>
-      </div>
-      <div class="shd">
-        <div class="step-tag">Step 4 of 13</div>
-        <div class="h1">Which college<br>are you at?</div>
-        <div class="sub" style="margin-top:4px">Helps us find the right exam papers for your campus.</div>
-      </div>
-      <div class="scr">
-        <div style="padding:18px 24px 0">
-          <div class="field">
-            <div class="field-lbl">Province</div>
-            <select class="fi" id="provinceSelect" onchange="window.filterColleges()"
-              style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
-              <option value="" disabled selected>Select your province</option>
-              <option value="Eastern Cape">Eastern Cape</option>
-              <option value="Free State">Free State</option>
-              <option value="Gauteng">Gauteng</option>
-              <option value="KwaZulu-Natal">KwaZulu-Natal</option>
-              <option value="Limpopo">Limpopo</option>
-              <option value="Mpumalanga">Mpumalanga</option>
-              <option value="Northern Cape">Northern Cape</option>
-              <option value="North West">North West</option>
-              <option value="Western Cape">Western Cape</option>
-            </select>
+        <div class="screen" id="s-college">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:24%"></div>
           </div>
-          <<<<<<< HEAD <div class="shd">
-            <div class="step-tag">Step 3 of 10</div>
+          <div class="shd">
+            <div class="step-tag">Step 4 of 13</div>
             <div class="h1">Which college<br>are you at?</div>
             <div class="sub" style="margin-top:4px">Helps us find the right exam papers for your campus.</div>
-            =======
-            <div class="field" id="collegeFieldWrap"
-              style="display:none; margin-top:14px; animation: slideDown 0.3s ease;">
-              <div class="field-lbl">College</div>
-              <select class="fi" id="collegeSelect" onchange="window.enableCollegeBtn()"
-                style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
-                <option value="" disabled selected>Select your college</option>
-              </select>
-              >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
+          </div>
+          <div class="scr">
+            <div style="padding:18px 24px 0">
+              <div class="field">
+                <div class="field-lbl">Province</div>
+                <select class="fi" id="provinceSelect" onchange="window.filterColleges()"
+                  style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:12px;border:1.5px solid #DDD5F5;font-size:15px;font-family:inherit;background:#fff;cursor:pointer;appearance:none;">
+                  <option value="" disabled selected>Select your province</option>
+                  <option value="Eastern Cape">Eastern Cape</option>
+                  <option value="Free State">Free State</option>
+                  <option value="Gauteng">Gauteng</option>
+                  <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                  <option value="Limpopo">Limpopo</option>
+                  <option value="Mpumalanga">Mpumalanga</option>
+                  <option value="Northern Cape">Northern Cape</option>
+                  <option value="North West">North West</option>
+                  <option value="Western Cape">Western Cape</option>
+                </select>
+              </div>
+              <div class="shd">
+                <div class="step-tag">Step 3 of 10</div>
+                <div class="h1">Which college<br>are you at?</div>
+                <div class="sub" style="margin-top:4px">Helps us find the right exam papers for your campus.</div>
+              </div>
+              <style>
+                @keyframes slideDown {
+                  from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                  }
+
+                  to {
+                    opacity: 1;
+                    transform: translateY(0);
+                  }
+                }
+              </style>
             </div>
-            <style>
-              @keyframes slideDown {
-                from {
-                  opacity: 0;
-                  transform: translateY(-10px);
-                }
-
-                to {
-                  opacity: 1;
-                  transform: translateY(0);
-                }
-              }
-            </style>
+          </div>
+          <div class="foot"><button class="btn btn-p" id="college-btn" disabled
+              onclick="window.saveCollegeAndContinue()">Continue →</button></div>
         </div>
-      </div>
-      <div class="foot"><button class="btn btn-p" id="college-btn" disabled
-          onclick="window.saveCollegeAndContinue()">Continue →</button></div>
-    </div>
 
-    <!-- ══════════════════════════════
+        <!-- ══════════════════════════════
    S06: PROGRAMME PICKER
 ══════════════════════════════ -->
-    <<<<<<< HEAD <div class="screen" id="s-programme">
-      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-      <div class="gp">
-        <div class="gp-fill" style="width:30%"></div>
-      </div>
-      <div class="shd" style="margin-bottom:14px">
-        <div class="step-tag">Step 4 of 10</div>
-        <div class="h1">What are you<br>studying?</div>
-        <div class="sub" style="margin-top:4px">Pick your N4 programme — we'll pull the right subjects and modules.
+        <div class="screen" id="s-programme">
+          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="gp">
+            <div class="gp-fill" style="width:30%"></div>
+          </div>
+          <div class="shd" style="margin-bottom:14px">
+            <div class="step-tag">Step 4 of 10</div>
+            <div class="h1">What are you<br>studying?</div>
+            <div class="sub" style="margin-top:4px">Pick your N4 programme — we'll pull the right subjects and modules.
+            </div>
+          </div>
+          <div class="scr">
+            <div class="prog-list" id="prog-list"></div>
+          </div>
+          <div class="foot"><button class="btn btn-p" id="prog-btn" disabled onclick="goTo('s-subjects')">Choose
+              subjects →</button></div>
         </div>
       </div>
       <div class="scr">
@@ -2947,187 +2927,69 @@
       </div>
       <div class="foot"><button class="btn btn-p" id="prog-btn" disabled onclick="goTo('s-subjects')">Choose
           subjects →</button></div>
-      =======
-      <div class="screen" id="s-programme">
-        <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-        <div class="gp">
-          <div class="gp-fill" style="width:30%"></div>
-        </div>
-        <div class="shd" style="margin-bottom:14px">
-          <div class="step-tag">Step 5 of 13</div>
-          <div class="h1">What are you<br>studying?</div>
-          <div class="sub" style="margin-top:4px">Pick your N4 programme — we'll pull the right subjects and modules.
-            >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
-          </div>
-        </div>
-        <div class="scr">
-          <div class="prog-list" id="prog-list"></div>
-        </div>
-        <div class="foot"><button class="btn btn-p" id="prog-btn" disabled onclick="goTo('s-subjects')">Choose
-            subjects →</button></div>
-      </div>
+    </div>
 
-      <!-- ══════════════════════════════
+    <!-- ══════════════════════════════
    S07: SUBJECT PICKER (dynamic)
 ══════════════════════════════ -->
-      <<<<<<< HEAD <div class="screen" id="s-subjects">
-        <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-        <div class="gp">
-          <div class="gp-fill" style="width:36%"></div>
-        </div>
-        <div class="shd" style="margin-bottom:14px">
-          <div class="step-tag">Step 5 of 10</div>
-          <div id="subj-prog-badge" class="prog-badge"><span class="prog-badge-emoji"></span><span
-              class="prog-badge-name"></span></div>
-          <div class="h1">Which subjects<br>this semester?</div>
-          <div class="sub" style="margin-top:4px">Select every subject you're registered for. We need all of them to
-            build your plan.</div>
-        </div>
-        <div class="scr">
-          <div class="subj-list" id="subj-list"></div>
-        </div>
-        <div class="foot">
-          <button class="btn btn-p" id="subj-btn" disabled onclick="goTo('s-goal')">Set my goal →</button>
-          <div class="hint" id="subj-hint">Select at least one subject</div>
-        </div>
-  </div>
-  =======
-  <div class="screen" id="s-subjects">
-    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-    <div class="gp">
-      <div class="gp-fill" style="width:36%"></div>
+    <div class="screen" id="s-subjects">
+      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+      <div class="gp">
+        <div class="gp-fill" style="width:36%"></div>
+      </div>
+      <div class="shd" style="margin-bottom:14px">
+        <div class="step-tag">Step 5 of 10</div>
+        <div id="subj-prog-badge" class="prog-badge"><span class="prog-badge-emoji"></span><span
+            class="prog-badge-name"></span></div>
+        <div class="h1">Which subjects<br>this semester?</div>
+        <div class="sub" style="margin-top:4px">Select every subject you're registered for. We need all of them to
+          build your plan.</div>
+      </div>
+      <div class="scr">
+        <div class="subj-list" id="subj-list"></div>
+      </div>
+      <div class="foot">
+        <button class="btn btn-p" id="subj-btn" disabled onclick="goTo('s-goal')">Set my goal →</button>
+        <div class="hint" id="subj-hint">Select at least one subject</div>
+      </div>
     </div>
-    <div class="shd" style="margin-bottom:14px">
-      <div class="step-tag">Step 6 of 13</div>
-      <div id="subj-prog-badge" class="prog-badge"><span class="prog-badge-emoji"></span><span
-          class="prog-badge-name"></span></div>
-      <div class="h1">Which subjects<br>this semester?</div>
-      <div class="sub" style="margin-top:4px">Select every subject you're registered for. We need all of them to
-        build your plan.</div>
-    </div>
-    <div class="scr">
-      <div class="subj-list" id="subj-list"></div>
-    </div>
-    <div class="foot">
-      <button class="btn btn-p" id="subj-btn" disabled onclick="goTo('s-goal')">Set my goal →</button>
-      <div class="hint" id="subj-hint">Select at least one subject</div>
-    </div>
-  </div>
-  >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
 
-  <!-- ══════════════════════════════
+    <!-- ══════════════════════════════
    S08: MODULE MARKS (dynamic, paginated)
 ══════════════════════════════ -->
-  <div class="screen" id="s-marks">
-    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-    <div class="gp">
-      <div class="gp-fill" id="marks-prog" style="width:42%"></div>
-    </div>
-    <div class="mod-subj-header">
-      <div class="msh-top">
-        <div class="msh-emoji" id="marks-emoji"></div>
-        <div class="msh-info">
-          <div class="msh-name" id="marks-name"></div>
-          <div class="msh-meta" id="marks-meta"></div>
-        </div>
+    <div class="screen" id="s-marks">
+      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+      <div class="gp">
+        <div class="gp-fill" id="marks-prog" style="width:42%"></div>
       </div>
-      <div class="msh-progress-dots" id="marks-dots"></div>
+      <div class="mod-subj-header">
+        <div class="msh-top">
+          <div class="msh-emoji" id="marks-emoji"></div>
+          <div class="msh-info">
+            <div class="msh-name" id="marks-name"></div>
+            <div class="msh-meta" id="marks-meta"></div>
+          </div>
+        </div>
+        <div class="msh-progress-dots" id="marks-dots"></div>
+      </div>
+      <div class="mod-list" id="mod-list"></div>
+      <div class="foot" style="padding-top:10px">
+        <button class="btn btn-p" id="marks-next-btn" onclick="nextSubjectMarks()">Next subject →</button>
+      </div>
     </div>
-    <div class="mod-list" id="mod-list"></div>
-    <div class="foot" style="padding-top:10px">
-      <button class="btn btn-p" id="marks-next-btn" onclick="nextSubjectMarks()">Next subject →</button>
-    </div>
-  </div>
 
-  <!-- ══════════════════════════════
+    <!-- ══════════════════════════════
    S09: GOAL MARK
 ══════════════════════════════ -->
-  <<<<<<< HEAD <div class="screen" id="s-goal">
-    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-    <div class="gp">
-      <div class="gp-fill" style="width:54%"></div>
-    </div>
-    <div class="shd">
-      <div class="step-tag" id="goal-step">Step 6 of 10</div>
-      <div class="h1">Your target<br>for finals?</div>
-      <div class="sub" style="margin-top:4px">Ayikho works backwards from your goal to build your daily plan.
-      </div>
-    </div>
-    <div class="scr">
-      <div style="padding:0 24px">
-        <!-- Dual display: Current vs Target -->
-        <div class="goal-dual">
-          <div class="goal-box" id="gb-current-box">
-            <div class="goal-box-label">Where I am now</div>
-            <div class="goal-box-num current" id="current-num">45</div>
-            <div class="goal-box-desc" id="current-desc">Below pass</div>
-          </div>
-          <div class="goal-box active" id="gb-target-box">
-            <div class="goal-box-label">Where I want to be</div>
-            <div class="goal-box-num target" id="goal-num">75</div>
-            <div class="goal-box-desc" id="goal-desc">Distinction 🏆</div>
-          </div>
-        </div>
-
-        <!-- Gap indicator -->
-        <div class="goal-gap">
-          <div class="goal-gap-arrow">↑</div>
-          <div class="goal-gap-badge" id="goal-gap-badge">+30% improvement · Ayikho will get you there</div>
-        </div>
-
-        <!-- Current mark slider -->
-        <div class="goal-slider-section">
-          <div class="goal-slider-label">Your current average</div>
-          <input type="range" min="0" max="100" value="45" id="current-slider" oninput="updateCurrent(this)"
-            style="accent-color:var(--rose);margin-bottom:4px">
-          <div class="slider-marks"><span class="slider-mark">0%</span><span class="slider-mark">50%</span><span
-              class="slider-mark">100%</span></div>
-        </div>
-
-        <!-- Target slider -->
-        <div class="goal-slider-section">
-          <div class="goal-slider-label">Your target for finals</div>
-          <input type="range" min="40" max="100" value="75" id="goal-slider" oninput="updateGoal(this)"
-            style="accent-color:var(--p);margin-bottom:4px">
-          <div class="slider-marks"><span class="slider-mark">40%</span><span class="slider-mark">60%</span><span
-              class="slider-mark">75%</span><span class="slider-mark">100%</span></div>
-        </div>
-
-        <!-- Bands -->
-        <div class="goal-bands" id="goal-bands">
-          <div class="goal-band" id="gb-pass"><span class="gb-icon">🏁</span>
-            <div class="gb-info">
-              <div class="gb-name">Pass</div>
-              <div class="gb-desc">50–59% · proceed to N5</div>
-            </div>
-          </div>
-          <div class="goal-band" id="gb-merit"><span class="gb-icon">⭐</span>
-            <div class="gb-info">
-              <div class="gb-name">Merit</div>
-              <div class="gb-desc">60–74% · strong for employment</div>
-            </div>
-          </div>
-          <div class="goal-band lit" id="gb-dist"><span class="gb-icon">🏆</span>
-            <div class="gb-info">
-              <div class="gb-name">Distinction</div>
-              <div class="gb-desc">75%+ · top of your class</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="foot"><button class="btn btn-p" onclick="goTo('s-studytime')">Continue →</button></div>
-    =======
     <div class="screen" id="s-goal">
       <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
       <div class="gp">
         <div class="gp-fill" style="width:54%"></div>
       </div>
       <div class="shd">
-        <div class="step-tag" id="goal-step">Step 7 of 13</div>
+        <div class="step-tag" id="goal-step">Step 6 of 10</div>
         <div class="h1">Your target<br>for finals?</div>
         <div class="sub" style="margin-top:4px">Ayikho works backwards from your goal to build your daily plan.
-          >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
         </div>
       </div>
       <div class="scr">
@@ -3195,722 +3057,751 @@
       </div>
       <div class="foot"><button class="btn btn-p" onclick="goTo('s-studytime')">Continue →</button></div>
     </div>
+  </div>
+  <div class="scr">
+    <div style="padding:0 24px">
+      <!-- Dual display: Current vs Target -->
+      <div class="goal-dual">
+        <div class="goal-box" id="gb-current-box">
+          <div class="goal-box-label">Where I am now</div>
+          <div class="goal-box-num current" id="current-num">45</div>
+          <div class="goal-box-desc" id="current-desc">Below pass</div>
+        </div>
+        <div class="goal-box active" id="gb-target-box">
+          <div class="goal-box-label">Where I want to be</div>
+          <div class="goal-box-num target" id="goal-num">75</div>
+          <div class="goal-box-desc" id="goal-desc">Distinction 🏆</div>
+        </div>
+      </div>
 
-    <!-- ══════════════════════════════
-   S10: STUDY TIME
-══════════════════════════════ -->
-    <div class="screen" id="s-studytime">
-      <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-      <div class="gp">
-        <div class="gp-fill" style="width:68%"></div>
+      <!-- Gap indicator -->
+      <div class="goal-gap">
+        <div class="goal-gap-arrow">↑</div>
+        <div class="goal-gap-badge" id="goal-gap-badge">+30% improvement · Ayikho will get you there</div>
       </div>
-      <div class="shd" style="margin-bottom:14px">
-        <div class="step-tag" id="time-step">Step 8 of 13</div>
-        <div class="h1">When do you<br>study best?</div>
-        <div class="sub" style="margin-top:4px">Reminders and sessions will match your real life.</div>
+
+      <!-- Current mark slider -->
+      <div class="goal-slider-section">
+        <div class="goal-slider-label">Your current average</div>
+        <input type="range" min="0" max="100" value="45" id="current-slider" oninput="updateCurrent(this)"
+          style="accent-color:var(--rose);margin-bottom:4px">
+        <div class="slider-marks"><span class="slider-mark">0%</span><span class="slider-mark">50%</span><span
+            class="slider-mark">100%</span></div>
       </div>
-      <div class="scr">
-        <div class="time-grid">
-          <div class="time-opt" onclick="pickTime(this)">
-            <div class="time-icon">🌅</div>
-            <div class="time-name">Morning</div>
-            <div class="time-range">5am–9am</div>
+
+      <!-- Target slider -->
+      <div class="goal-slider-section">
+        <div class="goal-slider-label">Your target for finals</div>
+        <input type="range" min="40" max="100" value="75" id="goal-slider" oninput="updateGoal(this)"
+          style="accent-color:var(--p);margin-bottom:4px">
+        <div class="slider-marks"><span class="slider-mark">40%</span><span class="slider-mark">60%</span><span
+            class="slider-mark">75%</span><span class="slider-mark">100%</span></div>
+      </div>
+
+      <!-- Bands -->
+      <div class="goal-bands" id="goal-bands">
+        <div class="goal-band" id="gb-pass"><span class="gb-icon">🏁</span>
+          <div class="gb-info">
+            <div class="gb-name">Pass</div>
+            <div class="gb-desc">50–59% · proceed to N5</div>
           </div>
-          <<<<<<< HEAD <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="time-step">Step 7 of 11</div>
-            <div class="h1">When do you<br>study best?</div>
-            <div class="sub" style="margin-top:4px">Reminders and sessions will match your real life.</div>
-            =======
-            <div class="time-opt on" onclick="pickTime(this)">
-              <div class="time-icon">🌞</div>
-              <div class="time-name">Daytime</div>
-              <div class="time-range">9am–3pm</div>
-              >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
-            </div>
-            <div class="time-opt" onclick="pickTime(this)">
-              <div class="time-icon">🌆</div>
-              <div class="time-name">Afternoon</div>
-              <div class="time-range">3pm–7pm</div>
-            </div>
-            <<<<<<< HEAD <div class="foot"><button class="btn btn-p" onclick="goTo('s-quiz-intro')">One last thing
-                →</button>
-              <div class="hint">4 quick questions to understand how you study now</div>
-              =======
-              <div class="time-opt" onclick="pickTime(this)">
-                <div class="time-icon">🌙</div>
-                <div class="time-name">Night owl</div>
-                <div class="time-range">7pm–12am</div>
-                >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
-              </div>
         </div>
-        <div class="hours-sect">
-          <div class="hours-lbl">Hours available per day</div>
-          <div class="hours-center">
-            <div class="hours-n" id="hours-n">1</div>
-            <div class="hours-u">hour per day</div>
+        <div class="goal-band" id="gb-merit"><span class="gb-icon">⭐</span>
+          <div class="gb-info">
+            <div class="gb-name">Merit</div>
+            <div class="gb-desc">60–74% · strong for employment</div>
           </div>
-          <input type="range" min="0.5" max="6" step="0.5" value="1" oninput="updateHours(this)"
-            style="margin-bottom:4px">
-          <div class="slider-marks"><span class="slider-mark">30 min</span><span class="slider-mark">3
-              hrs</span><span class="slider-mark">6 hrs</span></div>
         </div>
-      </div>
-      <div class="foot"><button class="btn btn-p" onclick="goTo('s-q1')">One last thing →</button>
-        <div class="hint">4 quick questions to understand how you study now</div>
+        <div class="goal-band lit" id="gb-dist"><span class="gb-icon">🏆</span>
+          <div class="gb-info">
+            <div class="gb-name">Distinction</div>
+            <div class="gb-desc">75%+ · top of your class</div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+  <div class="foot"><button class="btn btn-p" onclick="goTo('s-studytime')">Continue →</button></div>
+  </div>
 
-    <<<<<<< HEAD <!-- ══════════════════════════════ S11: QUIZ INTRO ══════════════════════════════ -->
-      <div class="screen" id="s-quiz-intro">
-        <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+  <!-- ══════════════════════════════
+   S10: STUDY TIME
+══════════════════════════════ -->
+  <div class="screen" id="s-studytime">
+    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+    <div class="gp">
+      <div class="gp-fill" style="width:68%"></div>
+    </div>
+    <div class="shd" style="margin-bottom:14px">
+      <div class="step-tag" id="time-step">Step 8 of 13</div>
+      <div class="h1">When do you<br>study best?</div>
+      <div class="sub" style="margin-top:4px">Reminders and sessions will match your real life.</div>
+    </div>
+    <div class="scr">
+      <div class="time-grid">
+        <div class="time-opt" onclick="pickTime(this)">
+          <div class="time-icon">🌅</div>
+          <div class="time-name">Morning</div>
+          <div class="time-range">5am–9am</div>
         </div>
-        <div class="gp" style="background:rgba(255,255,255,.1)">
-          <div class="gp-fill" style="width:70%;background:var(--pl)"></div>
+        <div class="shd" style="margin-bottom:14px">
+          <div class="step-tag" id="time-step">Step 7 of 11</div>
+          <div class="h1">When do you<br>study best?</div>
+          <div class="sub" style="margin-top:4px">Reminders and sessions will match your real life.</div>
         </div>
-        <div class="scr" style="padding:28px 24px;background:var(--ink)">
-          <div style="text-align:center;margin-bottom:24px">
-            <div style="font-size:40px;margin-bottom:12px">🧠</div>
-            <div style="font:900 22px/1.2 'Playfair Display',serif;color:white">How do you<br>actually study?</div>
-            <div
-              style="font:400 13px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.55);margin-top:8px;max-width:280px;margin-inline:auto">
-              Research shows most students use methods that <em style="color:#F59E0B">feel</em> productive but don't
-              work. There are 4 common study types:</div>
-          </div>
+        <div class="time-opt" onclick="pickTime(this)">
+          <div class="time-icon">🌆</div>
+          <div class="time-name">Afternoon</div>
+          <div class="time-range">3pm–7pm</div>
+        </div>
+        <div class="foot"><button class="btn btn-p" onclick="goTo('s-quiz-intro')">One last thing
+            →</button>
+          <div class="hint">4 quick questions to understand how you study now</div>
+        </div>
+      </div>
+      <div class="hours-sect">
+        <div class="hours-lbl">Hours available per day</div>
+        <div class="hours-center">
+          <div class="hours-n" id="hours-n">1</div>
+          <div class="hours-u">hour per day</div>
+        </div>
+        <input type="range" min="0.5" max="6" step="0.5" value="1" oninput="updateHours(this)"
+          style="margin-bottom:4px">
+        <div class="slider-marks"><span class="slider-mark">30 min</span><span class="slider-mark">3
+            hrs</span><span class="slider-mark">6 hrs</span></div>
+      </div>
+    </div>
+    <div class="foot"><button class="btn btn-p" onclick="goTo('s-q1')">One last thing →</button>
+      <div class="hint">4 quick questions to understand how you study now</div>
+    </div>
+  </div>
 
-          <div class="qi-types">
-            <div class="qi-type">
-              <div class="qi-icon">🔥</div>
-              <div class="qi-info">
-                <div class="qi-name">The Sprinter</div>
-                <div class="qi-desc">Crams the night before. Intense but forgets fast.</div>
-              </div>
-            </div>
-            <div class="qi-type">
-              <div class="qi-icon">📖</div>
-              <div class="qi-info">
-                <div class="qi-name">The Re-Reader</div>
-                <div class="qi-desc">Highlights and re-reads. Feels good but low retention.</div>
-              </div>
-            </div>
-            <div class="qi-type">
-              <div class="qi-icon">🎯</div>
-              <div class="qi-info">
-                <div class="qi-name">The Spacer</div>
-                <div class="qi-desc">Plans ahead, tests themselves. The science-backed way.</div>
-              </div>
-            </div>
-            <div class="qi-type">
-              <div class="qi-icon">😬</div>
-              <div class="qi-info">
-                <div class="qi-name">The Avoider</div>
-                <div class="qi-desc">Overwhelmed, delays starting. Not lazy — just stuck.</div>
-              </div>
-            </div>
-          </div>
+  <!-- ══════════════════════════════ S11: QUIZ INTRO ══════════════════════════════ -->
+  <div class="screen" id="s-quiz-intro">
+    <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+    </div>
+    <div class="gp" style="background:rgba(255,255,255,.1)">
+      <div class="gp-fill" style="width:70%;background:var(--pl)"></div>
+    </div>
+    <div class="scr" style="padding:28px 24px;background:var(--ink)">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="font-size:40px;margin-bottom:12px">🧠</div>
+        <div style="font:900 22px/1.2 'Playfair Display',serif;color:white">How do you<br>actually study?</div>
+        <div
+          style="font:400 13px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.55);margin-top:8px;max-width:280px;margin-inline:auto">
+          Research shows most students use methods that <em style="color:#F59E0B">feel</em> productive but don't
+          work. There are 4 common study types:</div>
+      </div>
 
-          <div style="text-align:center;margin-top:20px">
-            <div style="font:500 12px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.4)">Answer 4 quick questions
-              so Ayikho can personalise your experience</div>
+      <div class="qi-types">
+        <div class="qi-type">
+          <div class="qi-icon">🔥</div>
+          <div class="qi-info">
+            <div class="qi-name">The Sprinter</div>
+            <div class="qi-desc">Crams the night before. Intense but forgets fast.</div>
           </div>
         </div>
-        <div class="foot" style="background:var(--ink);border-top:1px solid rgba(255,255,255,.06)">
-          <button class="btn btn-p" onclick="goTo('s-q1')">Find my study type →</button>
+        <div class="qi-type">
+          <div class="qi-icon">📖</div>
+          <div class="qi-info">
+            <div class="qi-name">The Re-Reader</div>
+            <div class="qi-desc">Highlights and re-reads. Feels good but low retention.</div>
+          </div>
+        </div>
+        <div class="qi-type">
+          <div class="qi-icon">🎯</div>
+          <div class="qi-info">
+            <div class="qi-name">The Spacer</div>
+            <div class="qi-desc">Plans ahead, tests themselves. The science-backed way.</div>
+          </div>
+        </div>
+        <div class="qi-type">
+          <div class="qi-icon">😬</div>
+          <div class="qi-info">
+            <div class="qi-name">The Avoider</div>
+            <div class="qi-desc">Overwhelmed, delays starting. Not lazy — just stuck.</div>
+          </div>
         </div>
       </div>
 
-      <!-- ══════════════════════════════
+      <div style="text-align:center;margin-top:20px">
+        <div style="font:500 12px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.4)">Answer 4 quick questions
+          so Ayikho can personalise your experience</div>
+      </div>
+    </div>
+    <div class="foot" style="background:var(--ink);border-top:1px solid rgba(255,255,255,.06)">
+      <button class="btn btn-p" onclick="goTo('s-q1')">Find my study type →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
    S11–S14: STUDY HABITS QUIZ (4 questions)
 ══════════════════════════════ -->
-      <div class="screen" id="s-q1">
-        <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+  <div class="screen" id="s-q1">
+    <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+    </div>
+    <div class="gp" style="background:rgba(255,255,255,.1)">
+      <div class="gp-fill" style="width:72%;background:var(--pl)"></div>
+    </div>
+    <div class="qhdr">
+      <div class="q-nav">
+        <div class="q-back" onclick="goTo('s-studytime')">‹</div>
+        <div class="q-pb">
+          <div class="q-pb-fill" style="width:25%"></div>
         </div>
-        <div class="gp" style="background:rgba(255,255,255,.1)">
-          <div class="gp-fill" style="width:72%;background:var(--pl)"></div>
-        </div>
-        <div class="qhdr">
-          <div class="q-nav">
-            <div class="q-back" onclick="goTo('s-studytime')">‹</div>
-            <div class="q-pb">
-              <div class="q-pb-fill" style="width:25%"></div>
-            </div>
-            <div class="q-cnt">1 / 4</div>
-          </div>
-          <div class="q-badge">📋 How you study now</div>
-          <div class="q-q">You have a big test next week. What do you do tonight?</div>
-        </div>
-        <div class="q-opts">
-          <div class="qopt" onclick="pickQ(this,1,'cram')">
-            <div class="ql">A</div>
-            <div class="qt">Read through my notes from start to finish until I feel ready</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,1,'retrieval')">
-            <div class="ql">B</div>
-            <div class="qt">Cover my notes and try to write down everything I remember — then check what I missed
-            </div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,1,'social')">
-            <div class="ql">C</div>
-            <div class="qt">Call a friend and talk through the work together</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,1,'passive')">
-            <div class="ql">D</div>
-            <div class="qt">Highlight the important parts and re-read those sections</div>
-          </div>
-        </div>
-        <div class="foot"><button class="btn btn-p" id="q1-next" disabled onclick="goTo('s-q2')">Next →</button>
-        </div>
-        =======
         <div class="q-cnt">1 / 4</div>
-        >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
       </div>
       <div class="q-badge">📋 How you study now</div>
       <div class="q-q">You have a big test next week. What do you do tonight?</div>
+    </div>
+    <div class="q-opts">
+      <div class="qopt" onclick="pickQ(this,1,'cram')">
+        <div class="ql">A</div>
+        <div class="qt">Read through my notes from start to finish until I feel ready</div>
       </div>
-      <div class="q-opts">
-        <div class="qopt" onclick="pickQ(this,1,'cram')">
-          <div class="ql">A</div>
-          <div class="qt">Read through my notes from start to finish until I feel ready</div>
-        </div>
-        <div class="qopt" onclick="pickQ(this,1,'retrieval')">
-          <div class="ql">B</div>
-          <div class="qt">Cover my notes and try to write down everything I remember — then check what I missed
-          </div>
-        </div>
-        <div class="qopt" onclick="pickQ(this,1,'social')">
-          <div class="ql">C</div>
-          <div class="qt">Call a friend and talk through the work together</div>
-        </div>
-        <div class="qopt" onclick="pickQ(this,1,'passive')">
-          <div class="ql">D</div>
-          <div class="qt">Highlight the important parts and re-read those sections</div>
+      <div class="qopt" onclick="pickQ(this,1,'retrieval')">
+        <div class="ql">B</div>
+        <div class="qt">Cover my notes and try to write down everything I remember — then check what I missed
         </div>
       </div>
-      <div class="foot"><button class="btn btn-p" id="q1-next" disabled onclick="goTo('s-q2')">Next →</button></div>
+      <div class="qopt" onclick="pickQ(this,1,'social')">
+        <div class="ql">C</div>
+        <div class="qt">Call a friend and talk through the work together</div>
       </div>
+      <div class="qopt" onclick="pickQ(this,1,'passive')">
+        <div class="ql">D</div>
+        <div class="qt">Highlight the important parts and re-read those sections</div>
+      </div>
+    </div>
+    <div class="foot"><button class="btn btn-p" id="q1-next" disabled onclick="goTo('s-q2')">Next →</button>
+    </div>
+  </div>
+  <div class="q-badge">📋 How you study now</div>
+  <div class="q-q">You have a big test next week. What do you do tonight?</div>
+  </div>
+  <div class="q-opts">
+    <div class="qopt" onclick="pickQ(this,1,'cram')">
+      <div class="ql">A</div>
+      <div class="qt">Read through my notes from start to finish until I feel ready</div>
+    </div>
+    <div class="qopt" onclick="pickQ(this,1,'retrieval')">
+      <div class="ql">B</div>
+      <div class="qt">Cover my notes and try to write down everything I remember — then check what I missed
+      </div>
+    </div>
+    <div class="qopt" onclick="pickQ(this,1,'social')">
+      <div class="ql">C</div>
+      <div class="qt">Call a friend and talk through the work together</div>
+    </div>
+    <div class="qopt" onclick="pickQ(this,1,'passive')">
+      <div class="ql">D</div>
+      <div class="qt">Highlight the important parts and re-read those sections</div>
+    </div>
+  </div>
+  <div class="foot"><button class="btn btn-p" id="q1-next" disabled onclick="goTo('s-q2')">Next →</button></div>
+  </div>
 
-      <div class="screen" id="s-q2">
-        <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+  <div class="screen" id="s-q2">
+    <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+    </div>
+    <div class="gp" style="background:rgba(255,255,255,.1)">
+      <div class="gp-fill" style="width:76%;background:var(--pl)"></div>
+    </div>
+    <div class="qhdr">
+      <div class="q-nav">
+        <div class="q-back" onclick="goTo('s-q1')">‹</div>
+        <div class="q-pb">
+          <div class="q-pb-fill" style="width:50%"></div>
         </div>
-        <div class="gp" style="background:rgba(255,255,255,.1)">
-          <div class="gp-fill" style="width:76%;background:var(--pl)"></div>
-        </div>
-        <div class="qhdr">
-          <div class="q-nav">
-            <div class="q-back" onclick="goTo('s-q1')">‹</div>
-            <div class="q-pb">
-              <div class="q-pb-fill" style="width:50%"></div>
-            </div>
-            <div class="q-cnt">2 / 4</div>
-          </div>
-          <div class="q-badge">📋 How you study now</div>
-          <div class="q-q">You studied a module two weeks ago. How confident are you that you still remember it?
-          </div>
-          <div class="q-scenario">Be honest — nobody else sees this.</div>
-        </div>
-        <div class="q-opts">
-          <div class="qopt" onclick="pickQ(this,2,'low')">
-            <div class="ql">A</div>
-            <div class="qt">Almost nothing — once I move to the next module, the old one fades fast</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,2,'medium')">
-            <div class="ql">B</div>
-            <div class="qt">The main ideas are there but I'd struggle on a surprise test</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,2,'high')">
-            <div class="ql">C</div>
-            <div class="qt">Pretty confident — I tested myself on it more than once</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,2,'avoidant')">
-            <div class="ql">D</div>
-            <div class="qt">I try not to think about it — what's done is done</div>
-          </div>
-        </div>
-        <div class="foot"><button class="btn btn-p" id="q2-next" disabled onclick="goTo('s-q3')">Next →</button>
-        </div>
+        <div class="q-cnt">2 / 4</div>
       </div>
-
-      <div class="screen" id="s-q3">
-        <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
-        </div>
-        <div class="gp" style="background:rgba(255,255,255,.1)">
-          <div class="gp-fill" style="width:80%;background:var(--pl)"></div>
-        </div>
-        <div class="qhdr">
-          <div class="q-nav">
-            <div class="q-back" onclick="goTo('s-q2')">‹</div>
-            <div class="q-pb">
-              <div class="q-pb-fill" style="width:75%"></div>
-            </div>
-            <div class="q-cnt">3 / 4</div>
-          </div>
-          <div class="q-badge">📋 How you study now</div>
-          <div class="q-q">What usually makes you close your textbook and stop studying?</div>
-        </div>
-        <div class="q-opts">
-          <div class="qopt" onclick="pickQ(this,3,'confused')">
-            <div class="ql">A</div>
-            <div class="qt">I don't understand something and I have no one to ask</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,3,'bored')">
-            <div class="ql">B</div>
-            <div class="qt">It starts feeling boring — same thing over and over</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,3,'time')">
-            <div class="ql">C</div>
-            <div class="qt">Life gets in the way — work, family, taxi times</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,3,'anxiety')">
-            <div class="ql">D</div>
-            <div class="qt">I start worrying that I'll never pass — what's the point?</div>
-          </div>
-        </div>
-        <div class="foot"><button class="btn btn-p" id="q3-next" disabled onclick="goTo('s-q4')">Next →</button>
-        </div>
+      <div class="q-badge">📋 How you study now</div>
+      <div class="q-q">You studied a module two weeks ago. How confident are you that you still remember it?
       </div>
-
-      <div class="screen" id="s-q4">
-        <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
-        </div>
-        <div class="gp" style="background:rgba(255,255,255,.1)">
-          <div class="gp-fill" style="width:85%;background:var(--pl)"></div>
-        </div>
-        <div class="qhdr">
-          <div class="q-nav">
-            <div class="q-back" onclick="goTo('s-q3')">‹</div>
-            <div class="q-pb">
-              <div class="q-pb-fill" style="width:100%"></div>
-            </div>
-            <div class="q-cnt">4 / 4</div>
-          </div>
-          <div class="q-badge">📋 How you study now</div>
-          <div class="q-q">Your exam is in 3 weeks. When do you usually start preparing properly?</div>
-          <div class="q-scenario">The week before, the night before, or are you already ready?</div>
-        </div>
-        <div class="q-opts">
-          <div class="qopt" onclick="pickQ(this,4,'early')">
-            <div class="ql">A</div>
-            <div class="qt">I'm already preparing — I study consistently throughout the semester</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,4,'2weeks')">
-            <div class="ql">B</div>
-            <div class="qt">About two weeks before — I do a proper revision session</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,4,'1week')">
-            <div class="ql">C</div>
-            <div class="qt">The week before — I go hard for a few nights</div>
-          </div>
-          <div class="qopt" onclick="pickQ(this,4,'lastmin')">
-            <div class="ql">D</div>
-            <div class="qt">I won't lie — it's usually the night before</div>
-          </div>
-        </div>
-        <div class="foot"><button class="btn btn-p" id="q4-next" disabled onclick="goTo('s-profile')">See my study
-            profile →</button></div>
+      <div class="q-scenario">Be honest — nobody else sees this.</div>
+    </div>
+    <div class="q-opts">
+      <div class="qopt" onclick="pickQ(this,2,'low')">
+        <div class="ql">A</div>
+        <div class="qt">Almost nothing — once I move to the next module, the old one fades fast</div>
       </div>
+      <div class="qopt" onclick="pickQ(this,2,'medium')">
+        <div class="ql">B</div>
+        <div class="qt">The main ideas are there but I'd struggle on a surprise test</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,2,'high')">
+        <div class="ql">C</div>
+        <div class="qt">Pretty confident — I tested myself on it more than once</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,2,'avoidant')">
+        <div class="ql">D</div>
+        <div class="qt">I try not to think about it — what's done is done</div>
+      </div>
+    </div>
+    <div class="foot"><button class="btn btn-p" id="q2-next" disabled onclick="goTo('s-q3')">Next →</button>
+    </div>
+  </div>
 
-      <!-- ══════════════════════════════
+  <div class="screen" id="s-q3">
+    <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+    </div>
+    <div class="gp" style="background:rgba(255,255,255,.1)">
+      <div class="gp-fill" style="width:80%;background:var(--pl)"></div>
+    </div>
+    <div class="qhdr">
+      <div class="q-nav">
+        <div class="q-back" onclick="goTo('s-q2')">‹</div>
+        <div class="q-pb">
+          <div class="q-pb-fill" style="width:75%"></div>
+        </div>
+        <div class="q-cnt">3 / 4</div>
+      </div>
+      <div class="q-badge">📋 How you study now</div>
+      <div class="q-q">What usually makes you close your textbook and stop studying?</div>
+    </div>
+    <div class="q-opts">
+      <div class="qopt" onclick="pickQ(this,3,'confused')">
+        <div class="ql">A</div>
+        <div class="qt">I don't understand something and I have no one to ask</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,3,'bored')">
+        <div class="ql">B</div>
+        <div class="qt">It starts feeling boring — same thing over and over</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,3,'time')">
+        <div class="ql">C</div>
+        <div class="qt">Life gets in the way — work, family, taxi times</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,3,'anxiety')">
+        <div class="ql">D</div>
+        <div class="qt">I start worrying that I'll never pass — what's the point?</div>
+      </div>
+    </div>
+    <div class="foot"><button class="btn btn-p" id="q3-next" disabled onclick="goTo('s-q4')">Next →</button>
+    </div>
+  </div>
+
+  <div class="screen" id="s-q4">
+    <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+    </div>
+    <div class="gp" style="background:rgba(255,255,255,.1)">
+      <div class="gp-fill" style="width:85%;background:var(--pl)"></div>
+    </div>
+    <div class="qhdr">
+      <div class="q-nav">
+        <div class="q-back" onclick="goTo('s-q3')">‹</div>
+        <div class="q-pb">
+          <div class="q-pb-fill" style="width:100%"></div>
+        </div>
+        <div class="q-cnt">4 / 4</div>
+      </div>
+      <div class="q-badge">📋 How you study now</div>
+      <div class="q-q">Your exam is in 3 weeks. When do you usually start preparing properly?</div>
+      <div class="q-scenario">The week before, the night before, or are you already ready?</div>
+    </div>
+    <div class="q-opts">
+      <div class="qopt" onclick="pickQ(this,4,'early')">
+        <div class="ql">A</div>
+        <div class="qt">I'm already preparing — I study consistently throughout the semester</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,4,'2weeks')">
+        <div class="ql">B</div>
+        <div class="qt">About two weeks before — I do a proper revision session</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,4,'1week')">
+        <div class="ql">C</div>
+        <div class="qt">The week before — I go hard for a few nights</div>
+      </div>
+      <div class="qopt" onclick="pickQ(this,4,'lastmin')">
+        <div class="ql">D</div>
+        <div class="qt">I won't lie — it's usually the night before</div>
+      </div>
+    </div>
+    <div class="foot"><button class="btn btn-p" id="q4-next" disabled onclick="goTo('s-profile')">See my study
+        profile →</button></div>
+  </div>
+
+  <!-- ══════════════════════════════
    S15: PROFILE REVEAL
 ══════════════════════════════ -->
-      <div class="screen" id="s-profile">
-        <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+  <div class="screen" id="s-profile">
+    <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span>
+    </div>
+    <div class="gp">
+      <div class="gp-fill" style="width:88%"></div>
+    </div>
+
+    <!-- LOADER OVERLAY -->
+    <div class="pr-loader" id="pr-loader">
+      <div class="pr-loader-orb">🧠</div>
+      <div class="pr-loader-title">Reading your<br>study habits…</div>
+      <div class="pr-loader-sub">Based on your 4 answers,<br>we're building your honest study profile.</div>
+      <div class="pr-scan-wrap">
+        <div class="pr-scan-lbl"><span>Analysing</span><span id="pr-pct">0%</span></div>
+        <div class="pr-scan-track">
+          <div class="pr-scan-fill" id="pr-fill"></div>
         </div>
-        <div class="gp">
-          <div class="gp-fill" style="width:88%"></div>
+        <div class="pr-splash">
+          <span class="pr-icon" id="pr-icon">🔥</span>
+          <div class="pr-badge" id="pr-badge">Last-Minute Sprinter</div>
+          <div class="pr-name" id="pr-name">You cram. It kind of works — until it doesn't.</div>
+          <div class="pr-tagline" id="pr-tagline">Here's what the research actually says about how you're
+            studying
+            right now.</div>
+        </div>
+        <div class="pr-body">
+          <div class="pr-truth">
+            <div class="pr-truth-lbl">The honest truth</div>
+            <div class="pr-truth-txt" id="pr-truth">Re-reading and highlighting feel productive but have almost no
+              impact on what you remember in the exam hall. The good news: 10 minutes of active recall beats 2
+              hours
+              of passive re-reading every time.</div>
+          </div>
+          <div class="pr-changes-lbl">What Ayikho changes for you</div>
+          <div class="pr-change">
+            <div class="pr-dot"></div>
+            <div class="pr-ct" id="pc1">Every session starts with a quick recall quiz — forces your brain to
+              retrieve
+              what it knows</div>
+          </div>
+          <div class="pr-change">
+            <div class="pr-dot"></div>
+            <div class="pr-ct" id="pc2">Modules are spaced out so you revisit old content before you forget it
+            </div>
+          </div>
+          <div class="pr-change">
+            <div class="pr-dot"></div>
+            <div class="pr-ct" id="pc3">Study sessions are short and focused — 6 minutes is enough when it's done
+              right</div>
+          </div>
+          <div class="pr-others-lbl">The other study types</div>
+          <div class="pr-others" id="pr-others"></div>
+        </div>
+        <div class="foot"><button class="btn btn-p" onclick="goTo('s-examdates')">Sounds good →</button></div>
+      </div>
+      <div class="pr-insights" id="pr-insights">
+        <div class="pr-insight" id="pi-1">
+          <div class="pr-insight-dot"></div>
+          <div class="pr-insight-txt">Looking at when you start preparing for exams…</div>
+        </div>
+        <div class="pr-insight" id="pi-2">
+          <div class="pr-insight-dot"></div>
+          <div class="pr-insight-txt">Checking your revision method against the research…</div>
+        </div>
+        <div class="pr-insight" id="pi-3">
+          <div class="pr-insight-dot"></div>
+          <div class="pr-insight-txt">Identifying what stops you from studying…</div>
+        </div>
+        <div class="pr-insight" id="pi-4">
+          <div class="pr-insight-dot"></div>
+          <div class="pr-insight-txt" id="pi-4-txt">Matching you to the right study approach…</div>
+        </div>
+      </div>
+    </div>
+    <div class="pr-splash">
+      <span class="pr-icon" id="pr-icon">🔥</span>
+      <div class="pr-badge" id="pr-badge">Last-Minute Sprinter</div>
+      <div class="pr-name" id="pr-name">You cram. It kind of works — until it doesn't.</div>
+      <div class="pr-tagline" id="pr-tagline">Here's what the research actually says about how you're studying
+        right now.</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-truth">
+        <div class="pr-truth-lbl">The honest truth</div>
+        <div class="pr-truth-txt" id="pr-truth">Re-reading and highlighting feel productive but have almost no
+          impact on what you remember in the exam hall. The good news: 10 minutes of active recall beats 2 hours
+          of passive re-reading every time.</div>
+      </div>
+      <div class="pr-changes-lbl">What Ayikho changes for you</div>
+      <div class="pr-change">
+        <div class="pr-dot"></div>
+        <div class="pr-ct" id="pc1">Every session starts with a quick recall quiz — forces your brain to retrieve
+          what it knows</div>
+      </div>
+      <div class="pr-change">
+        <div class="pr-dot"></div>
+        <div class="pr-ct" id="pc2">Modules are spaced out so you revisit old content before you forget it</div>
+      </div>
+      <div class="pr-change">
+        <div class="pr-dot"></div>
+        <div class="pr-ct" id="pc3">Study sessions are short and focused — 6 minutes is enough when it's done
+          right</div>
+      </div>
+    </div>
+    <div class="foot"><button class="btn btn-p" onclick="goTo('s-examdates')">Sounds good →</button></div>
+  </div>
+
+  <!-- ══════════════════════════════
+   S16: EXAM DATES
+══════════════════════════════ -->
+  <div class="screen" id="s-examdates">
+    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+    <div class="gp">
+      <div class="gp-fill" style="width:92%"></div>
+    </div>
+    <div class="shd" style="margin-bottom:14px">
+      <div class="step-tag" id="exam-step">Step 10 of 11</div>
+      <div class="h1">When are your<br>exams?</div>
+      <div class="sub" style="margin-top:4px">Ayikho counts down and adjusts your daily target so you're ready
+        in
+        time.</div>
+    </div>
+    <div class="scr">
+      <div class="exam-list" id="exam-list"></div>
+    </div>
+    <div class="foot"><button class="btn btn-p" onclick="goTo('s-download')">Almost done →</button></div>
+  </div>
+
+  <!-- ══════════════════════════════
+   S17: DOWNLOAD
+══════════════════════════════ -->
+  <div class="screen" id="s-download">
+    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+    <div class="gp">
+      <div class="gp-fill" style="width:96%"></div>
+    </div>
+    <div class="shd" style="margin-bottom:14px">
+      <div class="step-tag" id="dl-step">Step 11 of 11</div>
+      <div class="h1">Download for<br>offline studying</div>
+      <div class="sub" style="margin-top:4px">No WiFi later? Download your subjects now. Works on any data —
+        even
+        2G.</div>
+    </div>
+    <div class="scr">
+      <div class="dl-list" id="dl-list"></div>
+      <div class="dl-wifi">Connected to WiFi now. <strong>Best time to download.</strong></div>
+    </div>
+    <div class="foot">
+      <button class="btn btn-p" onclick="goTo('s-welcome-back')">Download & Start studying →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-welcome-back')">Skip — I'll download later</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+   S19: WELCOME BACK
+══════════════════════════════ -->
+  <div class="screen" id="s-welcome-back">
+    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+    <div class="po-body" style="background:linear-gradient(165deg,#1A0A3A 0%,#4C1A99 40%,#7C3AED 70%,#9D5FFF 100%)">
+      <div class="po-confetti" id="po-confetti"></div>
+      <div class="po-ashki-wrap">
+        <img class="po-ashki" src="assets/ashki/ashki_master.png" alt="Ashki">
+      </div>
+      <div class="po-hl" style="color:white;font:900 28px/1.15 'Playfair Display',serif;text-align:center">
+        Welcome to Ayikho,<br><span id="po-name">Zandile</span>!</div>
+      <div
+        style="font:400 14px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.7);text-align:center;margin-top:10px;max-width:260px">
+        Your personalised study plan is locked and loaded. Here's a quick tour of how everything works.
+      </div>
+      <div class="po-foot">
+        <button class="btn btn-p" onclick="goTo('s-app-tour')"
+          style="background:white;color:var(--p);box-shadow:0 4px 20px rgba(0,0,0,.2)">Show me around
+          →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+   S20: APP TOUR
+══════════════════════════════ -->
+  <div class="screen" id="s-app-tour">
+    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+    <div class="gp">
+      <div class="gp-fill" style="width:100%"></div>
+    </div>
+    <div class="shd" style="margin-bottom:8px">
+      <div class="step-tag">Quick tour</div>
+      <div class="h1">How Ayikho<br>works</div>
+    </div>
+    <div class="scr">
+      <div style="padding:0 24px 100px">
+        <div class="tour-card">
+          <div class="tour-num">1</div>
+          <div class="tour-info">
+            <div class="tour-title">6-minute chapters</div>
+            <div class="tour-desc">Each lesson is bite-sized. Learn a concept, see real SA examples, then
+              test yourself — all in 6 minutes.</div>
+          </div>
+        </div>
+        <div class="tour-card">
+          <div class="tour-num">2</div>
+          <div class="tour-info">
+            <div class="tour-title">XP & streaks</div>
+            <div class="tour-desc">Earn XP for every chapter you complete. Keep your streak alive by
+              studying daily — Ashki will cheer you on.</div>
+          </div>
+        </div>
+        <div class="tour-card">
+          <div class="tour-num">3</div>
+          <div class="tour-info">
+            <div class="tour-title">Smart revision</div>
+            <div class="tour-desc">Ayikho remembers what you struggle with and brings it back before you
+              forget. Science calls it spaced repetition.</div>
+          </div>
+        </div>
+        <div class="tour-card">
+          <div class="tour-num">4</div>
+          <div class="tour-info">
+            <div class="tour-title">Capstone exams</div>
+            <div class="tour-desc">When you're ready, take a 60-minute mock exam that mirrors the real N4
+              paper. No surprises on exam day.</div>
+          </div>
+        </div>
+        <div class="tour-card">
+          <div class="tour-num" style="background:linear-gradient(135deg,#F59E0B,#F97316);color:white">★
+          </div>
+          <div class="tour-info">
+            <div class="tour-title">Meet Ashki</div>
+            <div class="tour-desc">Your study buddy who celebrates your wins, nudges you when you slip, and
+              makes studying feel less lonely.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <button class="btn btn-p" onclick="goTo('s-your-plan')">Got it →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+   S21: YOUR PLAN
+══════════════════════════════ -->
+  <div class="screen" id="s-your-plan">
+    <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+    <div class="gp">
+      <div class="gp-fill" style="width:100%"></div>
+    </div>
+    <div class="shd" style="margin-bottom:8px">
+      <div class="step-tag">Your plan</div>
+      <div class="h1">Here's what<br>we've built</div>
+      <div class="sub" style="margin-top:4px">Based on everything you told us</div>
+    </div>
+    <div class="scr">
+      <div style="padding:0 24px 100px">
+        <div class="plan-stats">
+          <div class="plan-stat">
+            <div class="plan-stat-n" id="ps-subj">2</div>
+            <div class="plan-stat-l">Subjects</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-n" id="ps-goal">75%</div>
+            <div class="plan-stat-l">Target mark</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-n" id="ps-mods">38</div>
+            <div class="plan-stat-l">Chapters</div>
+          </div>
         </div>
 
-        <!-- LOADER OVERLAY -->
-        <div class="pr-loader" id="pr-loader">
-          <div class="pr-loader-orb">🧠</div>
-          <div class="pr-loader-title">Reading your<br>study habits…</div>
-          <div class="pr-loader-sub">Based on your 4 answers,<br>we're building your honest study profile.</div>
-          <div class="pr-scan-wrap">
-            <div class="pr-scan-lbl"><span>Analysing</span><span id="pr-pct">0%</span></div>
-            <div class="pr-scan-track">
-              <div class="pr-scan-fill" id="pr-fill"></div>
-            </div>
-            <<<<<<< HEAD <div class="pr-splash">
-              <span class="pr-icon" id="pr-icon">🔥</span>
-              <div class="pr-badge" id="pr-badge">Last-Minute Sprinter</div>
-              <div class="pr-name" id="pr-name">You cram. It kind of works — until it doesn't.</div>
-              <div class="pr-tagline" id="pr-tagline">Here's what the research actually says about how you're
-                studying
-                right now.</div>
+        <div class="plan-section-lbl">Your subjects</div>
+        <div class="plan-subjects" id="plan-subjects"></div>
+
+        <div class="plan-section-lbl" style="margin-top:20px">Your study profile</div>
+        <div class="plan-profile-card" id="plan-profile">
+          <div class="plan-profile-icon" id="plan-pr-icon">🔥</div>
+          <div class="plan-profile-info">
+            <div class="plan-profile-name" id="plan-pr-name">Last-Minute Sprinter</div>
+            <div class="plan-profile-desc">Ayikho will adapt to help you build better habits</div>
           </div>
-          <div class="pr-body">
-            <div class="pr-truth">
-              <div class="pr-truth-lbl">The honest truth</div>
-              <div class="pr-truth-txt" id="pr-truth">Re-reading and highlighting feel productive but have almost no
-                impact on what you remember in the exam hall. The good news: 10 minutes of active recall beats 2
-                hours
-                of passive re-reading every time.</div>
-            </div>
-            <div class="pr-changes-lbl">What Ayikho changes for you</div>
-            <div class="pr-change">
-              <div class="pr-dot"></div>
-              <div class="pr-ct" id="pc1">Every session starts with a quick recall quiz — forces your brain to
-                retrieve
-                what it knows</div>
-            </div>
-            <div class="pr-change">
-              <div class="pr-dot"></div>
-              <div class="pr-ct" id="pc2">Modules are spaced out so you revisit old content before you forget it
-              </div>
-            </div>
-            <div class="pr-change">
-              <div class="pr-dot"></div>
-              <div class="pr-ct" id="pc3">Study sessions are short and focused — 6 minutes is enough when it's done
-                right</div>
-            </div>
-            <div class="pr-others-lbl">The other study types</div>
-            <div class="pr-others" id="pr-others"></div>
-          </div>
-          <div class="foot"><button class="btn btn-p" onclick="goTo('s-examdates')">Sounds good →</button></div>
-          =======
-          >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
         </div>
-        <div class="pr-insights" id="pr-insights">
-          <div class="pr-insight" id="pi-1">
-            <div class="pr-insight-dot"></div>
-            <div class="pr-insight-txt">Looking at when you start preparing for exams…</div>
-          </div>
-          <div class="pr-insight" id="pi-2">
-            <div class="pr-insight-dot"></div>
-            <div class="pr-insight-txt">Checking your revision method against the research…</div>
-          </div>
-          <div class="pr-insight" id="pi-3">
-            <div class="pr-insight-dot"></div>
-            <div class="pr-insight-txt">Identifying what stops you from studying…</div>
-          </div>
-          <div class="pr-insight" id="pi-4">
-            <div class="pr-insight-dot"></div>
-            <div class="pr-insight-txt" id="pi-4-txt">Matching you to the right study approach…</div>
-          </div>
+
+        <div class="plan-section-lbl" style="margin-top:20px">Today's first lesson</div>
+        <div class="plan-first-lesson" id="plan-first-lesson">
+          <div class="plan-fl-badge">START HERE</div>
+          <div class="plan-fl-name" id="plan-fl-name">Accounting Concepts & Principles</div>
+          <div class="plan-fl-meta">6 min · Chapter 1 · FA N4</div>
         </div>
       </div>
-      <div class="pr-splash">
-        <span class="pr-icon" id="pr-icon">🔥</span>
-        <div class="pr-badge" id="pr-badge">Last-Minute Sprinter</div>
-        <div class="pr-name" id="pr-name">You cram. It kind of works — until it doesn't.</div>
-        <div class="pr-tagline" id="pr-tagline">Here's what the research actually says about how you're studying
-          right now.</div>
+    </div>
+    <div class="foot">
+      <button class="btn btn-p" onclick="goTo('s-lets-go')">Looks great →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+   S22: LET'S GO
+══════════════════════════════ -->
+  <div class="screen" id="s-lets-go">
+    <div class="sb sb-clear"><span class="sb-t" style="color:white">21:07</span><span class="sb-i"
+        style="color:white">4G 🔋</span></div>
+    <div class="lg-body">
+      <div class="lg-orb lg-orb1"></div>
+      <div class="lg-orb lg-orb2"></div>
+      <div class="lg-emoji">🚀</div>
+      <div class="lg-hl">Let's do this.</div>
+      <div class="lg-sub">Your first 6-minute lesson is ready.<br>One chapter at a time — you've got this.
       </div>
-      <div class="pr-body">
-        <div class="pr-truth">
-          <div class="pr-truth-lbl">The honest truth</div>
-          <div class="pr-truth-txt" id="pr-truth">Re-reading and highlighting feel productive but have almost no
-            impact on what you remember in the exam hall. The good news: 10 minutes of active recall beats 2 hours
-            of passive re-reading every time.</div>
-        </div>
-        <div class="pr-changes-lbl">What Ayikho changes for you</div>
-        <div class="pr-change">
-          <div class="pr-dot"></div>
-          <div class="pr-ct" id="pc1">Every session starts with a quick recall quiz — forces your brain to retrieve
-            what it knows</div>
-        </div>
-        <div class="pr-change">
-          <div class="pr-dot"></div>
-          <div class="pr-ct" id="pc2">Modules are spaced out so you revisit old content before you forget it</div>
-        </div>
-        <div class="pr-change">
-          <div class="pr-dot"></div>
-          <div class="pr-ct" id="pc3">Study sessions are short and focused — 6 minutes is enough when it's done
-            right</div>
-        </div>
+      <div class="lg-ashki-wrap">
+        <img class="lg-ashki" src="assets/ashki/ashki_master.png" alt="Ashki"
+          style="width:80px;height:80px;object-fit:contain">
+        <div class="lg-ashki-speech">I believe in you! 💪</div>
       </div>
-      <div class="foot"><button class="btn btn-p" onclick="goTo('s-examdates')">Sounds good →</button></div>
+      <div class="po-foot">
+        <button class="btn btn-p" onclick="startStudying()"
+          style="font-size:16px;padding:14px 32px;background:white;color:var(--p);box-shadow:0 4px 20px rgba(0,0,0,.3)">Start
+          my first lesson →</button>
+      </div>
+      <div class="screen" id="s-download">
+        <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+        <div class="gp">
+          <div class="gp-fill" style="width:96%"></div>
+        </div>
+        <div class="shd" style="margin-bottom:14px">
+          <div class="step-tag" id="dl-step">Step 13 of 13</div>
+          <div class="h1">Download for<br>offline studying</div>
+          <div class="sub" style="margin-top:4px">No WiFi later? Download your subjects now. Works on any
+            data — even
+            2G.</div>
+        </div>
+        <div class="scr">
+          <div class="dl-list" id="dl-list"></div>
+          <div class="dl-wifi">Connected to WiFi now. <strong>Best time to download.</strong></div>
+        </div>
+        <div class="foot">
+          <button class="btn btn-p" onclick="goTo('s-done')">Download & Start studying →</button>
+          <button class="btn btn-ghost" onclick="goTo('s-done')">Skip — I'll download later</button>
+        </div>
       </div>
 
       <!-- ══════════════════════════════
-   S16: EXAM DATES
-══════════════════════════════ -->
-      <<<<<<< HEAD <div class="screen" id="s-examdates">
-        <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-        <div class="gp">
-          <div class="gp-fill" style="width:92%"></div>
-        </div>
-        <div class="shd" style="margin-bottom:14px">
-          <div class="step-tag" id="exam-step">Step 10 of 11</div>
-          <div class="h1">When are your<br>exams?</div>
-          <div class="sub" style="margin-top:4px">Ayikho counts down and adjusts your daily target so you're ready
-            in
-            time.</div>
-        </div>
-        <div class="scr">
-          <div class="exam-list" id="exam-list"></div>
-        </div>
-        <div class="foot"><button class="btn btn-p" onclick="goTo('s-download')">Almost done →</button></div>
-        </div>
-        =======
-        <div class="screen" id="s-examdates">
-          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="gp">
-            <div class="gp-fill" style="width:92%"></div>
-          </div>
-          <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="exam-step">Step 12 of 13</div>
-            <div class="h1">When are your<br>exams?</div>
-            <div class="sub" style="margin-top:4px">Ayikho counts down and adjusts your daily target so you're ready
-              in
-              time.</div>
-          </div>
-          <div class="scr">
-            <div class="exam-list" id="exam-list"></div>
-          </div>
-          <div class="foot"><button class="btn btn-p" onclick="goTo('s-download')">Almost done →</button></div>
-        </div>
-        >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
-
-        <!-- ══════════════════════════════
-   S17: DOWNLOAD
-══════════════════════════════ -->
-        <<<<<<< HEAD <div class="screen" id="s-download">
-          <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-          <div class="gp">
-            <div class="gp-fill" style="width:96%"></div>
-          </div>
-          <div class="shd" style="margin-bottom:14px">
-            <div class="step-tag" id="dl-step">Step 11 of 11</div>
-            <div class="h1">Download for<br>offline studying</div>
-            <div class="sub" style="margin-top:4px">No WiFi later? Download your subjects now. Works on any data —
-              even
-              2G.</div>
-          </div>
-          <div class="scr">
-            <div class="dl-list" id="dl-list"></div>
-            <div class="dl-wifi">Connected to WiFi now. <strong>Best time to download.</strong></div>
-          </div>
-          <div class="foot">
-            <button class="btn btn-p" onclick="goTo('s-welcome-back')">Download & Start studying →</button>
-            <button class="btn btn-ghost" onclick="goTo('s-welcome-back')">Skip — I'll download later</button>
-          </div>
-          </div>
-
-          <!-- ══════════════════════════════
-   S19: WELCOME BACK
-══════════════════════════════ -->
-          <div class="screen" id="s-welcome-back">
-            <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-            <div class="po-body"
-              style="background:linear-gradient(165deg,#1A0A3A 0%,#4C1A99 40%,#7C3AED 70%,#9D5FFF 100%)">
-              <div class="po-confetti" id="po-confetti"></div>
-              <div class="po-ashki-wrap">
-                <img class="po-ashki" src="assets/ashki/ashki_master.png" alt="Ashki">
-              </div>
-              <div class="po-hl" style="color:white;font:900 28px/1.15 'Playfair Display',serif;text-align:center">
-                Welcome to Ayikho,<br><span id="po-name">Zandile</span>!</div>
-              <div
-                style="font:400 14px/1.5 'Outfit',sans-serif;color:rgba(255,255,255,.7);text-align:center;margin-top:10px;max-width:260px">
-                Your personalised study plan is locked and loaded. Here's a quick tour of how everything works.
-              </div>
-              <div class="po-foot">
-                <button class="btn btn-p" onclick="goTo('s-app-tour')"
-                  style="background:white;color:var(--p);box-shadow:0 4px 20px rgba(0,0,0,.2)">Show me around
-                  →</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- ══════════════════════════════
-   S20: APP TOUR
-══════════════════════════════ -->
-          <div class="screen" id="s-app-tour">
-            <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-            <div class="gp">
-              <div class="gp-fill" style="width:100%"></div>
-            </div>
-            <div class="shd" style="margin-bottom:8px">
-              <div class="step-tag">Quick tour</div>
-              <div class="h1">How Ayikho<br>works</div>
-            </div>
-            <div class="scr">
-              <div style="padding:0 24px 100px">
-                <div class="tour-card">
-                  <div class="tour-num">1</div>
-                  <div class="tour-info">
-                    <div class="tour-title">6-minute chapters</div>
-                    <div class="tour-desc">Each lesson is bite-sized. Learn a concept, see real SA examples, then
-                      test yourself — all in 6 minutes.</div>
-                  </div>
-                </div>
-                <div class="tour-card">
-                  <div class="tour-num">2</div>
-                  <div class="tour-info">
-                    <div class="tour-title">XP & streaks</div>
-                    <div class="tour-desc">Earn XP for every chapter you complete. Keep your streak alive by
-                      studying daily — Ashki will cheer you on.</div>
-                  </div>
-                </div>
-                <div class="tour-card">
-                  <div class="tour-num">3</div>
-                  <div class="tour-info">
-                    <div class="tour-title">Smart revision</div>
-                    <div class="tour-desc">Ayikho remembers what you struggle with and brings it back before you
-                      forget. Science calls it spaced repetition.</div>
-                  </div>
-                </div>
-                <div class="tour-card">
-                  <div class="tour-num">4</div>
-                  <div class="tour-info">
-                    <div class="tour-title">Capstone exams</div>
-                    <div class="tour-desc">When you're ready, take a 60-minute mock exam that mirrors the real N4
-                      paper. No surprises on exam day.</div>
-                  </div>
-                </div>
-                <div class="tour-card">
-                  <div class="tour-num" style="background:linear-gradient(135deg,#F59E0B,#F97316);color:white">★
-                  </div>
-                  <div class="tour-info">
-                    <div class="tour-title">Meet Ashki</div>
-                    <div class="tour-desc">Your study buddy who celebrates your wins, nudges you when you slip, and
-                      makes studying feel less lonely.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="foot">
-              <button class="btn btn-p" onclick="goTo('s-your-plan')">Got it →</button>
-            </div>
-          </div>
-
-          <!-- ══════════════════════════════
-   S21: YOUR PLAN
-══════════════════════════════ -->
-          <div class="screen" id="s-your-plan">
-            <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-            <div class="gp">
-              <div class="gp-fill" style="width:100%"></div>
-            </div>
-            <div class="shd" style="margin-bottom:8px">
-              <div class="step-tag">Your plan</div>
-              <div class="h1">Here's what<br>we've built</div>
-              <div class="sub" style="margin-top:4px">Based on everything you told us</div>
-            </div>
-            <div class="scr">
-              <div style="padding:0 24px 100px">
-                <div class="plan-stats">
-                  <div class="plan-stat">
-                    <div class="plan-stat-n" id="ps-subj">2</div>
-                    <div class="plan-stat-l">Subjects</div>
-                  </div>
-                  <div class="plan-stat">
-                    <div class="plan-stat-n" id="ps-goal">75%</div>
-                    <div class="plan-stat-l">Target mark</div>
-                  </div>
-                  <div class="plan-stat">
-                    <div class="plan-stat-n" id="ps-mods">38</div>
-                    <div class="plan-stat-l">Chapters</div>
-                  </div>
-                </div>
-
-                <div class="plan-section-lbl">Your subjects</div>
-                <div class="plan-subjects" id="plan-subjects"></div>
-
-                <div class="plan-section-lbl" style="margin-top:20px">Your study profile</div>
-                <div class="plan-profile-card" id="plan-profile">
-                  <div class="plan-profile-icon" id="plan-pr-icon">🔥</div>
-                  <div class="plan-profile-info">
-                    <div class="plan-profile-name" id="plan-pr-name">Last-Minute Sprinter</div>
-                    <div class="plan-profile-desc">Ayikho will adapt to help you build better habits</div>
-                  </div>
-                </div>
-
-                <div class="plan-section-lbl" style="margin-top:20px">Today's first lesson</div>
-                <div class="plan-first-lesson" id="plan-first-lesson">
-                  <div class="plan-fl-badge">START HERE</div>
-                  <div class="plan-fl-name" id="plan-fl-name">Accounting Concepts & Principles</div>
-                  <div class="plan-fl-meta">6 min · Chapter 1 · FA N4</div>
-                </div>
-              </div>
-            </div>
-            <div class="foot">
-              <button class="btn btn-p" onclick="goTo('s-lets-go')">Looks great →</button>
-            </div>
-          </div>
-
-          <!-- ══════════════════════════════
-   S22: LET'S GO
-══════════════════════════════ -->
-          <div class="screen" id="s-lets-go">
-            <div class="sb sb-clear"><span class="sb-t" style="color:white">21:07</span><span class="sb-i"
-                style="color:white">4G 🔋</span></div>
-            <div class="lg-body">
-              <div class="lg-orb lg-orb1"></div>
-              <div class="lg-orb lg-orb2"></div>
-              <div class="lg-emoji">🚀</div>
-              <div class="lg-hl">Let's do this.</div>
-              <div class="lg-sub">Your first 6-minute lesson is ready.<br>One chapter at a time — you've got this.
-              </div>
-              <div class="lg-ashki-wrap">
-                <img class="lg-ashki" src="assets/ashki/ashki_master.png" alt="Ashki"
-                  style="width:80px;height:80px;object-fit:contain">
-                <div class="lg-ashki-speech">I believe in you! 💪</div>
-              </div>
-              <div class="po-foot">
-                <button class="btn btn-p" onclick="startStudying()"
-                  style="font-size:16px;padding:14px 32px;background:white;color:var(--p);box-shadow:0 4px 20px rgba(0,0,0,.3)">Start
-                  my first lesson →</button>
-              </div>
-              <div class="screen" id="s-download">
-                <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-                <div class="gp">
-                  <div class="gp-fill" style="width:96%"></div>
-                </div>
-                <div class="shd" style="margin-bottom:14px">
-                  <div class="step-tag" id="dl-step">Step 13 of 13</div>
-                  <div class="h1">Download for<br>offline studying</div>
-                  <div class="sub" style="margin-top:4px">No WiFi later? Download your subjects now. Works on any
-                    data — even
-                    2G.</div>
-                </div>
-                <div class="scr">
-                  <div class="dl-list" id="dl-list"></div>
-                  <div class="dl-wifi">Connected to WiFi now. <strong>Best time to download.</strong></div>
-                </div>
-                <div class="foot">
-                  <button class="btn btn-p" onclick="goTo('s-done')">Download & Start studying →</button>
-                  <button class="btn btn-ghost" onclick="goTo('s-done')">Skip — I'll download later</button>
-                </div>
-              </div>
-
-              <!-- ══════════════════════════════
    S18: DONE
 ══════════════════════════════ -->
-              <div class="screen" id="s-done">
-                <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-                <div class="done-body">
-                  <div class="done-icon">🎉</div>
-                  <div class="done-hl">You're all set,<br><span id="done-name">Student</span>!</div>
-                  <div class="done-sub">Your personalised study plan is ready. First lesson is waiting — it's only 6
-                    minutes.
-                  </div>
-                  <div class="done-stats">
-                    <div class="done-stat">
-                      <div class="done-stat-n" id="ds-subj">2</div>
-                      <div class="done-stat-l">Subjects</div>
-                    </div>
-                    <div class="done-stat">
-                      <div class="done-stat-n">75%</div>
-                      <div class="done-stat-l">Your goal</div>
-                    </div>
-                    <div class="done-stat">
-                      <div class="done-stat-n">38</div>
-                      <div class="done-stat-l">Modules</div>
-                    </div>
-                  </div>
-                  <div class="done-foot">
-                    <button class="btn btn-p" onclick="startStudying()" style="border-radius:14px">Start studying
-                      now
-                      →</button>
-                  </div>
-                </div>
-              </div>
+      <div class="screen" id="s-done">
+        <div class="sb sb-light"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+        <div class="done-body">
+          <div class="done-icon">🎉</div>
+          <div class="done-hl">You're all set,<br><span id="done-name">Student</span>!</div>
+          <div class="done-sub">Your personalised study plan is ready. First lesson is waiting — it's only 6
+            minutes.
+          </div>
+          <div class="done-stats">
+            <div class="done-stat">
+              <div class="done-stat-n" id="ds-subj">2</div>
+              <div class="done-stat-l">Subjects</div>
+            </div>
+            <div class="done-stat">
+              <div class="done-stat-n">75%</div>
+              <div class="done-stat-l">Your goal</div>
+            </div>
+            <div class="done-stat">
+              <div class="done-stat-n">38</div>
+              <div class="done-stat-l">Modules</div>
+            </div>
+          </div>
+          <div class="done-foot">
+            <button class="btn btn-p" onclick="startStudying()" style="border-radius:14px">Start studying
+              now
+              →</button>
+          </div>
+        </div>
+      </div>
 
-            </div><!-- /stack -->
-          </div><!-- /phone -->
-          <div class="shell-lbl" style="color:rgba(255,255,255,.12)">Tap through · ← → keys · or use sidebar</div>
-          </div><!-- /shell -->
+    </div><!-- /stack -->
+  </div><!-- /phone -->
+  <div class="shell-lbl" style="color:rgba(255,255,255,.12)">Tap through · ← → keys · or use sidebar</div>
+  </div><!-- /shell -->
 
-          <script>
+  <script>
             // ═══════════════════════════════════════════════
             // DATA — Full TVET N4 Programme → Subject → Module map
             // ═══════════════════════════════════════════════
@@ -4940,7 +4831,7 @@
                 // Also try direct call as fallback
                 try { if (window.parent.onboardingComplete) window.parent.onboardingComplete(); } catch (e) { }
               } else {
-                window.location.href = 'ayikho-prototype.html';
+                window.location.href = 'app.html';
               }
             }
 
@@ -4951,21 +4842,21 @@
             if (window.location.hash === '#login') {
               setTimeout(() => goTo('s-login-phone'), 50);
             }
-          </script>
+  </script>
 
-          <script>
-            window.FIREBASE_CONFIG = {
-              apiKey: "AIzaSyD89f-i_3zvhICBMw2E7nQRjjLGyyLGDkU",
-              authDomain: "ayikho-tvet.firebaseapp.com",
-              projectId: "ayikho-tvet",
-              storageBucket: "ayikho-tvet.firebasestorage.app",
-              messagingSenderId: "1079346801243",
-              appId: "1:1079346801243:web:a209ebcdfc5cf94b342d7e",
-              measurementId: "G-6CT6LLSZ12"
-            };
-          </script>
+  <script>
+    window.FIREBASE_CONFIG = {
+      apiKey: "AIzaSyD89f-i_3zvhICBMw2E7nQRjjLGyyLGDkU",
+      authDomain: "ayikho-tvet.firebaseapp.com",
+      projectId: "ayikho-tvet",
+      storageBucket: "ayikho-tvet.firebasestorage.app",
+      messagingSenderId: "1079346801243",
+      appId: "1:1079346801243:web:a209ebcdfc5cf94b342d7e",
+      measurementId: "G-6CT6LLSZ12"
+    };
+  </script>
 
-          <script type="module" src="auth.js"></script>
+  <script type="module" src="auth.js"></script>
 
 </body>
 

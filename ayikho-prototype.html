@@ -751,810 +751,486 @@
 
   <div class="shell">
 
-    <<<<<<< HEAD <!-- ═══════════ SIDEBAR ═══════════ -->
-      <div class="sidebar" id="sidebar">
-        <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
-        <div class="si" data-target="dashboard" onclick="openDashboard()"
-          style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">
-          📊 Dashboard</div>
-        <div class="si-section">Chapters</div>
-        <div class="si completed" data-module="1" onclick="openModule(1)">M1 · Accounting Concepts</div>
-        <div class="si completed" data-module="2" onclick="openModule(2)">M2 · Double Entry</div>
-        <div class="si" data-module="3" onclick="openModule(3)">M3 · Journals & Ledgers</div>
-        <div class="si" data-module="4" onclick="openModule(4)">M4 · Trial Balance</div>
-        <div class="si" data-module="5" onclick="openModule(5)">M5 · Cash Journals</div>
-        <div class="si" data-module="6" onclick="openModule(6)">M6 · Debtors & Creditors</div>
-        <div class="si" data-module="7" onclick="openModule(7)">M7 · VAT</div>
-        <div class="si" data-module="8" onclick="openModule(8)">M8 · Year-End Adjustments</div>
-        <div class="si" data-module="9" onclick="openModule(9)">M9 · Financial Statements</div>
-        <div class="si" data-module="10" onclick="openModule(10)">M10 · Bank Reconciliation</div>
-        <div class="si-section">Resources</div>
-        <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
-        <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
-        <div class="si" onclick="openMemosMode()">📋 Memos</div>
-        <div class="si" onclick="openCapstoneMode()">🏆 Capstone</div>
-      </div>
+    <!-- ═══════════ SIDEBAR ═══════════ -->
+    <div class="sidebar" id="sidebar">
+      <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
+      <div class="si" data-target="dashboard" onclick="openDashboard()"
+        style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">
+        📊 Dashboard</div>
+      <div class="si-section">Chapters</div>
+      <div class="si completed" data-module="1" onclick="openChapter(1)">M1 · Accounting Concepts</div>
+      <div class="si completed" data-module="2" onclick="openChapter(2)">M2 · Double Entry</div>
+      <div class="si" data-module="3" onclick="openChapter(3)">M3 · Journals & Ledgers</div>
+      <div class="si" data-module="4" onclick="openChapter(4)">M4 · Trial Balance</div>
+      <div class="si" data-module="5" onclick="openChapter(5)">M5 · Cash Journals</div>
+      <div class="si" data-module="6" onclick="openChapter(6)">M6 · Debtors & Creditors</div>
+      <div class="si" data-module="7" onclick="openChapter(7)">M7 · VAT</div>
+      <div class="si" data-module="8" onclick="openChapter(8)">M8 · Year-End Adjustments</div>
+      <div class="si" data-module="9" onclick="openChapter(9)">M9 · Financial Statements</div>
+      <div class="si" data-module="10" onclick="openChapter(10)">M10 · Bank Reconciliation</div>
+      <div class="si-section">Resources</div>
+      <div class="si" onclick="openQuizMode()">📝 Quiz Mode</div>
+      <div class="si" onclick="openPapersMode()">📄 Past Papers</div>
+      <div class="si" onclick="openMemosMode()">📋 Memos</div>
+      <div class="si" onclick="openCapstoneMode()">🏆 Capstone</div>
+    </div>
 
-      <!-- ═══════════ PHONE ═══════════ -->
-      <div class="phone-col">
-        <div class="phone">
 
-          <!-- LOADING OVERLAY -->
-          <div class="loading-overlay" id="loading">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">Loading module</div>
-            <div class="loading-module" id="loading-name">...</div>
+    <!-- ═══════════ PHONE ═══════════ -->
+    <div class="phone-col">
+      <div class="phone">
+
+        <!-- LOADING OVERLAY -->
+        <div class="loading-overlay" id="loading">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Loading module</div>
+          <div class="loading-module" id="loading-name">...</div>
+        </div>
+
+        <!-- BACK BUTTON (floating over iframe) -->
+        <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
+
+        <!-- HOME VIEW -->
+        <div class="home-view" id="home-view">
+          <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="home-header">
+            <div class="hh-top">
+              <div>
+                <div class="hh-greeting">Sawubona 👋</div>
+                <div class="hh-name">Student</div>
+              </div>
+              <div class="hh-avatar">Z</div>
+            </div>
+            <div class="hh-xp-row">
+              <div class="hh-xp-bar">
+                <div class="hh-xp-fill" style="width:38%"></div>
+              </div>
+              <div class="hh-xp-text">⚡ 325 XP</div>
+            </div>
+            <div class="hh-stats">
+              <div class="hh-stat">
+                <div class="hh-stat-n">🔥9</div>
+                <div class="hh-stat-l">Day streak</div>
+              </div>
+              <div class="hh-stat">
+                <div class="hh-stat-n">2/10</div>
+                <div class="hh-stat-l">Modules done</div>
+              </div>
+              <div class="hh-stat">
+                <div class="hh-stat-n">85%</div>
+                <div class="hh-stat-l">Avg. score</div>
+              </div>
+            </div>
           </div>
 
-          <!-- BACK BUTTON (floating over iframe) -->
-          <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
+          <div class="modules-area">
+            <div class="modules-label">Financial Accounting N4 · 4 Modules</div>
+            <div id="modules-list"></div>
+            <div style="height:16px"></div>
+          </div>
 
-          <!-- HOME VIEW -->
-          <div class="home-view" id="home-view">
-            <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-            <div class="home-header">
-              <div class="hh-top">
-                <div>
-                  <div class="hh-greeting">Sawubona 👋</div>
-                  <div class="hh-name">Zandile</div>
-                </div>
-                <div class="hh-avatar">Z</div>
+          <div class="bottom-nav">
+            <div class="bn-item active">
+              <div class="bn-icon">📚</div>
+              <div class="bn-label">Learn</div>
+            </div>
+            <div class="bn-item">
+              <div class="bn-icon">📊</div>
+              <div class="bn-label">Progress</div>
+            </div>
+            <div class="bn-item">
+              <div class="bn-icon">🏆</div>
+              <div class="bn-label">Badges</div>
+            </div>
+            <div class="bn-item">
+              <div class="bn-icon">👤</div>
+              <div class="bn-label">Profile</div>
+            </div>
+          </div>
+        </div><!-- /home-view -->
+
+        <!-- MODULE VIEW (Intermediate step showing Chapters) -->
+        <div class="module-view hidden" id="module-view">
+          <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
+          <div class="home-header">
+            <div class="hh-top">
+              <div>
+                <div class="hh-greeting" id="mv-module-num"
+                  style="font-size:14px; color:rgba(255,255,255,0.7); margin-bottom:4px;">Module 1</div>
+                <div class="hh-name" id="mv-module-name">Module Name</div>
               </div>
-              <div class="hh-xp-row">
-                <div class="hh-xp-bar">
-                  <div class="hh-xp-fill" style="width:38%"></div>
-                </div>
-                <div class="hh-xp-text">⚡ 325 XP</div>
+            </div>
+            <div class="hh-stats" style="margin-top:24px;">
+              <div class="hh-stat">
+                <div class="hh-stat-n" id="mv-chapters-count">2</div>
+                <div class="hh-stat-l">Chapters</div>
               </div>
-              <div class="hh-stats">
-                <div class="hh-stat">
-                  <div class="hh-stat-n">🔥9</div>
-                  <div class="hh-stat-l">Day streak</div>
-                </div>
-                <div class="hh-stat">
-                  <div class="hh-stat-n">2/10</div>
-                  <div class="hh-stat-l">Modules done</div>
-                </div>
-                <div class="hh-stat">
-                  <div class="hh-stat-n">85%</div>
-                  <div class="hh-stat-l">Avg. score</div>
-                </div>
+              <div class="hh-stat">
+                <div class="hh-stat-n">0%</div>
+                <div class="hh-stat-l">Progress</div>
               </div>
-              =======
-              <!-- ═══════════ SIDEBAR ═══════════ -->
-              <div class="sidebar" id="sidebar">
-                <div class="si si-home active" data-target="home" onclick="goHome()">🏠 Module Home</div>
-                <div class="si" data-target="dashboard" onclick="openDashboard()"
-                  style="color:rgba(255,255,255,.35);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)">
-                  📊 Dashboard</div>
-                <div class="si-section">Chapters</div>
-                <div class="si completed" data-module="1" onclick="openModule(1)">M1 · Accounting Concepts</div>
-                <div class="si completed" data-module="2" onclick="openModule(2)">M2 · Double Entry</div>
-                <div class="si" data-module="3" onclick="openModule(3)">M3 · Journals & Ledgers</div>
-                <div class="si" data-module="4" onclick="openModule(4)">M4 · Trial Balance</div>
-                <div class="si" data-module="5" onclick="openModule(5)">M5 · Cash Journals</div>
-                <div class="si" data-module="6" onclick="openModule(6)">M6 · Debtors & Creditors</div>
-                <div class="si" data-module="7" onclick="openModule(7)">M7 · VAT</div>
-                <div class="si" data-module="8" onclick="openModule(8)">M8 · Year-End Adjustments</div>
-                <div class="si" data-module="9" onclick="openModule(9)">M9 · Financial Statements</div>
-                <div class="si" data-module="10" onclick="openModule(10)">M10 · Bank Reconciliation</div>
-                >>>>>>> 63e1eb1 (fix: name persistence, course navigation, and session routing)
-              </div>
+            </div>
+          </div>
+          <div class="modules-area">
+            <div class="modules-label">Chapters</div>
+            <div id="chapters-list"></div>
+            <div style="height:16px"></div>
+          </div>
+        </div><!-- /module-view -->
 
-              <!-- ═══════════ PHONE ═══════════ -->
-              <div class="phone-col">
-                <div class="phone">
+        <!-- CHAPTER VIEW (iframe loads here) -->
+        <div class="chapter-view" id="chapter-view">
+          <iframe id="chapter-frame" src="about:blank" allow="autoplay"></iframe>
+        </div>
 
-                  <!-- LOADING OVERLAY -->
-                  <div class="loading-overlay" id="loading">
-                    <div class="loading-spinner"></div>
-                    <div class="loading-text">Loading module</div>
-                    <div class="loading-module" id="loading-name">...</div>
-                  </div>
+      </div><!-- /phone -->
+      <div class="shell-meta">Starts with onboarding → Press D to unlock all · Esc to go home · 1-9 to jump
+      </div>
+    </div><!-- /phone-col -->
+  </div><!-- /shell -->
+  <script>
+    // ═══════════════════════════════════
+    //  MODULE CONFIG
+    // ═══════════════════════════════════
+    const CHAPTERS = {
+      1: { file: 'ayikho-chapter-concepts.html', name: 'Accounting Concepts & Principles', duration: '7 min', meta: '3/3 correct' },
+      2: { file: 'ayikho-chapter-accounting.html', name: 'Double Entry & Accounting Equation', duration: '8 min', meta: '3/3 correct' },
+      3: { file: 'ayikho-chapter-journals.html', name: 'Journals & Ledgers', duration: '9 min', meta: '🛠️ Journal builder' },
+      4: { file: 'ayikho-chapter-trial-balance.html', name: 'Trial Balance', duration: '8 min', meta: '🛠️ TB Builder' },
+      5: { file: 'ayikho-chapter-cash-journals.html', name: 'Cash Receipts & Payments Journals', duration: '10 min', meta: '🛠️ Transaction sorter' },
+      6: { file: 'ayikho-chapter-debtors-creditors.html', name: 'Debtors & Creditors Journals', duration: '10 min', meta: '🛠️ Invoice builder' },
+      7: { file: 'ayikho-chapter-vat.html', name: 'Value Added Tax (VAT)', duration: '8 min', meta: '🛠️ VAT calculator' },
+      8: { file: 'ayikho-chapter-adjustments.html', name: 'Year-End Adjustments', duration: '11 min', meta: '🛠️ Depreciation calc' },
+      9: { file: 'ayikho-chapter-financial-statements.html', name: 'Financial Statements', duration: '12 min', meta: '🛠️ Drag builder' },
+      10: { file: 'ayikho-chapter-bank-recon.html', name: 'Bank Reconciliation', duration: '9 min', meta: '🛠️ Transaction classifier' }
+    };
 
-                  <!-- BACK BUTTON (floating over iframe) -->
-                  <div class="back-btn" id="back-btn" onclick="goHome()">‹</div>
+    const COURSE_MODULES = [
+      { id: 1, name: 'Foundations', chapters: [1, 2] },
+      { id: 2, name: 'Books of First Entry', chapters: [3, 5, 6, 7] },
+      { id: 3, name: 'Adjustments', chapters: [8, 4, 10] },
+      { id: 4, name: 'Financial Statements', chapters: [9] }
+    ];
 
-                  <!-- HOME VIEW -->
-                  <div class="home-view" id="home-view">
-                    <div class="sb"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
-                    <div class="home-header">
-                      <div class="hh-top">
-                        <div>
-                          <div class="hh-greeting">Sawubona 👋</div>
-                          <div class="hh-name">Student</div>
-                        </div>
-                        <div class="hh-avatar">Z</div>
-                      </div>
-                      <div class="hh-xp-row">
-                        <div class="hh-xp-bar">
-                          <div class="hh-xp-fill" style="width:38%"></div>
-                        </div>
-                        <div class="hh-xp-text">⚡ 325 XP</div>
-                      </div>
-                      <div class="hh-stats">
-                        <div class="hh-stat">
-                          <div class="hh-stat-n">🔥9</div>
-                          <div class="hh-stat-l">Day streak</div>
-                        </div>
-                        <div class="hh-stat">
-                          <div class="hh-stat-n">2/10</div>
-                          <div class="hh-stat-l">Modules done</div>
-                        </div>
-                        <div class="hh-stat">
-                          <div class="hh-stat-n">85%</div>
-                          <div class="hh-stat-l">Avg. score</div>
-                        </div>
+    let currentModule = null;
+    let demoMode = false;
+    let onboardingDone = false;
+    let moduleStartTime = null;
+
+    // Init Firebase tracking (fails silently if not configured)
+    try {
+      if (window.ayikhoTracker && typeof FIREBASE_CONFIG !== 'undefined') {
+        window.ayikhoTracker.initFirebase(FIREBASE_CONFIG);
+      }
+    } catch (e) { console.log('Tracking not active — prototype mode'); }
+
+    // Listen for tracking events from chapter iframes
+    window.addEventListener('message', function (e) {
+      try {
+        if (e.data && e.data.type === 'trackEvent' && window.ayikhoTracker) {
+          window.ayikhoTracker.track(e.data.eventType, e.data.data);
+        }
+      } catch (err) { }
+    });
+
+    // Listen for progress events from chapter iframes
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'moduleComplete' && window.ayikhoData) {
+        window.ayikhoData.completeModule(e.data.moduleId);
+      }
+      if (e.data && e.data.type === 'quizAnswer' && window.ayikhoData) {
+        window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType, e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic);
+      }
+      if (e.data && e.data.type === 'screenChange' && window.ayikhoData) {
+        window.ayikhoData.setModuleScreen(e.data.moduleId, e.data.screenIndex, e.data.totalScreens);
+      }
+      if (e.data && e.data.type === 'goHome') {
+        goHome();
+      }
+      if (e.data && e.data.type === 'nextModule') {
+        const nextId = e.data.currentModuleId + 1;
+        if (MODULES[nextId]) {
+          openModule(nextId);
+        } else {
+          goHome();
+        }
+      }
+    });
+
+    // ═══════════════════════════════════
+    //  UPDATE HOME STATS FROM DATA
+    // ═══════════════════════════════════
+    function updateHomeStats() {
+      if (!window.ayikhoData) return;
+
+      const data = window.ayikhoData.getDashboardData();
+
+      // Update XP display and bar
+      const xpText = document.querySelector('.hh-xp-text');
+      if (xpText) xpText.textContent = `⚡ ${data.totalXP} XP`;
+
+      const xpFill = document.querySelector('.hh-xp-fill');
+      if (xpFill) xpFill.style.width = `${Math.min((data.totalXP / 1500) * 100, 100)}%`;
+
+      // Update stats
+      const statNs = document.querySelectorAll('.hh-stat-n');
+      if (statNs[0]) statNs[0].textContent = `🔥${data.streakDays}`;
+      if (statNs[1]) statNs[1].textContent = `${data.completedCount}/10`;
+      if (statNs[2]) statNs[2].textContent = `${data.avgScore}%`;
+
+      // Update profile name and avatar if available
+      const profile = window.ayikhoData.getProfile();
+      if (profile && profile.name) {
+        const nameParts = profile.name.split(' ');
+        const firstName = nameParts[0];
+        const hhName = document.querySelector('.hh-name');
+        if (hhName) hhName.textContent = firstName;
+
+        const hhAvatar = document.querySelector('.hh-avatar');
+        if (hhAvatar) {
+          hhAvatar.textContent = firstName.charAt(0).toUpperCase();
+          hhAvatar.style.visibility = 'visible';
+        }
+      }
+
+      // Generates dynamic module groups
+      renderCourseModules(data);
+    }
+
+    // ═══════════════════════════════════
+    //  RENDER COURSE MODULES
+    // ═══════════════════════════════════
+    function renderCourseModules(data) {
+      const list = document.getElementById('modules-list');
+      if (!list) return;
+      list.innerHTML = '';
+
+      COURSE_MODULES.forEach((mod, idx) => {
+        let completedCount = 0;
+        mod.chapters.forEach(chapId => {
+          if (data && data.moduleStatuses[chapId] && data.moduleStatuses[chapId].status === 'completed') {
+            completedCount++;
+          }
+        });
+        const progressPerc = Math.round((completedCount / mod.chapters.length) * 100) || 0;
+        const isCompleted = progressPerc === 100;
+
+        const card = document.createElement('div');
+        card.className = 'module-card ' + (isCompleted ? 'completed' : '');
+        card.onclick = () => openCourseModule(mod.id, data);
+
+        card.innerHTML = `
+                    <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                        <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                          stroke-dashoffset="${138.23 - (138.23 * progressPerc / 100)}" />
+                      </svg>
+                      <div class="prog-ring-center"><span class="prog-ring-num">${isCompleted ? '✓' : idx + 1}</span></div>
+                    </div>
+                    <div class="mc-info">
+                      <div class="mc-module-num">Module ${mod.id}</div>
+                      <div class="mc-title">${mod.name}</div>
+                      <div class="mc-meta">
+                        <div class="mc-meta-item">${mod.chapters.length} Chapters</div>
+                        <div class="mc-meta-item">·</div>
+                        <div class="mc-meta-item">${progressPerc}% Complete</div>
                       </div>
                     </div>
-
-                    <div class="modules-area">
-                      <div class="modules-label">Financial Accounting N4 · 10 Modules</div>
-
-                      <!-- M1 -->
-                      <div class="module-card completed" onclick="openModule(1)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="0" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">✓</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 1</div>
-                          <div class="mc-title">Accounting Concepts & Principles</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 7 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">3/3 correct</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-xp">+150 XP</div>
-                        </div>
-                      </div>
-                      <div class="connector done">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M2 -->
-                      <div class="module-card completed" onclick="openModule(2)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="0" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">✓</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 2</div>
-                          <div class="mc-title">Double Entry & Accounting Equation</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 8 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">3/3 correct</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-xp">+150 XP</div>
-                        </div>
-                      </div>
-                      <div class="connector done">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M3 — CURRENT -->
-                      <div class="module-card" onclick="openModule(3)"
-                        style="border-color:var(--fa);box-shadow:0 0 0 1px var(--fa),0 4px 16px rgba(2,132,199,.12)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">3</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num" style="color:var(--fa)">Module 3 · Up Next</div>
-                          <div class="mc-title">Journals & Ledgers</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 9 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ Journal builder</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-                      <div class="connector">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M4 -->
-                      <div class="module-card" onclick="openModule(4)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">4</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 4</div>
-                          <div class="mc-title">Trial Balance</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 8 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ TB Builder</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-                      <div class="connector">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M5 -->
-                      <div class="module-card" onclick="openModule(5)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">5</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 5</div>
-                          <div class="mc-title">Cash Receipts & Payments Journals</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 10 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ Transaction sorter</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-                      <div class="connector">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M6 -->
-                      <div class="module-card" onclick="openModule(6)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">6</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 6</div>
-                          <div class="mc-title">Debtors & Creditors Journals</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 10 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ Invoice builder</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-                      <div class="connector">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M7 -->
-                      <div class="module-card" onclick="openModule(7)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">7</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 7</div>
-                          <div class="mc-title">Value Added Tax (VAT)</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 8 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ VAT calculator</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-                      <div class="connector">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M8 -->
-                      <div class="module-card" onclick="openModule(8)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">8</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 8</div>
-                          <div class="mc-title">Year-End Adjustments</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 11 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ Depreciation calc</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-                      <div class="connector">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M9 -->
-                      <div class="module-card" onclick="openModule(9)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">9</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 9</div>
-                          <div class="mc-title">Financial Statements</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 12 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ Drag-and-drop builder</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-                      <div class="connector">
-                        <div class="connector-line"></div>
-                      </div>
-
-                      <!-- M10 -->
-                      <div class="module-card" onclick="openModule(10)">
-                        <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
-                            <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
-                            <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
-                              stroke-dashoffset="138.23" />
-                          </svg>
-                          <div class="prog-ring-center"><span class="prog-ring-num">10</span></div>
-                        </div>
-                        <div class="mc-info">
-                          <div class="mc-module-num">Module 10</div>
-                          <div class="mc-title">Bank Reconciliation</div>
-                          <div class="mc-meta">
-                            <div class="mc-meta-item">⏱ 9 min</div>
-                            <div class="mc-meta-item">·</div>
-                            <div class="mc-meta-item">🛠️ Transaction classifier</div>
-                          </div>
-                        </div>
-                        <div class="mc-right">
-                          <div class="mc-arrow">→</div>
-                        </div>
-                      </div>
-
-                      <div style="height:16px"></div>
+                    <div class="mc-right">
+                      <div class="mc-arrow">→</div>
                     </div>
+                  `;
+        list.appendChild(card);
+        const connector = document.createElement('div');
+        connector.className = 'connector ' + (isCompleted ? 'done' : '');
+        connector.innerHTML = '<div class="connector-line"></div>';
+        if (idx < COURSE_MODULES.length - 1) list.appendChild(connector);
+      });
+    }
 
-                    <div class="bottom-nav">
-                      <div class="bn-item active">
-                        <div class="bn-icon">📚</div>
-                        <div class="bn-label">Learn</div>
-                      </div>
-                      <div class="bn-item">
-                        <div class="bn-icon">📊</div>
-                        <div class="bn-label">Progress</div>
-                      </div>
-                      <div class="bn-item">
-                        <div class="bn-icon">🏆</div>
-                        <div class="bn-label">Badges</div>
-                      </div>
-                      <div class="bn-item">
-                        <div class="bn-icon">👤</div>
-                        <div class="bn-label">Profile</div>
+    // ═══════════════════════════════════
+    //  OPEN COURSE MODULE
+    // ═══════════════════════════════════
+    function openCourseModule(id, data = null) {
+      if (!data && window.ayikhoData) data = window.ayikhoData.getDashboardData();
+      const mod = COURSE_MODULES.find(m => m.id === id);
+      if (!mod) return;
+
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('module-view').classList.remove('hidden');
+
+      // set header
+      document.getElementById('mv-module-num').innerHTML = `<span style="cursor:pointer; display:inline-block; margin-right:8px;" onclick="closeCourseModule()">‹ Back</span> Module ${mod.id}`;
+      document.getElementById('mv-module-name').textContent = mod.name;
+      document.getElementById('mv-chapters-count').textContent = mod.chapters.length;
+
+      const list = document.getElementById('chapters-list');
+      list.innerHTML = '';
+
+      mod.chapters.forEach((chapId, idx) => {
+        const chap = CHAPTERS[chapId];
+        if (!chap) return;
+        let isCompleted = false;
+        let isLocked = false;
+        if (data && data.moduleStatuses[chapId]) {
+          isCompleted = data.moduleStatuses[chapId].status === 'completed';
+          isLocked = data.moduleStatuses[chapId].status === 'locked';
+        }
+
+        const card = document.createElement('div');
+        card.className = 'module-card ' + (isCompleted ? 'completed' : '') + (isLocked ? ' locked' : '');
+        card.onclick = () => openChapter(chapId);
+
+        card.innerHTML = `
+                    <div class="prog-ring-wrap"><svg class="prog-ring" viewBox="0 0 52 52">
+                        <circle class="prog-ring-bg" cx="26" cy="26" r="22" />
+                        <circle class="prog-ring-fill" cx="26" cy="26" r="22" stroke-dasharray="138.23"
+                          stroke-dashoffset="${isCompleted ? '0' : '138.23'}" />
+                      </svg>
+                      <div class="prog-ring-center"><span class="prog-ring-num">${isCompleted ? '✓' : chapId}</span></div>
+                    </div>
+                    <div class="mc-info">
+                      <div class="mc-module-num">Chapter ${chapId}</div>
+                      <div class="mc-title">${chap.name}</div>
+                      <div class="mc-meta">
+                        <div class="mc-meta-item">⏱ ${chap.duration}</div>
+                        <div class="mc-meta-item">·</div>
+                        <div class="mc-meta-item">${chap.meta}</div>
                       </div>
                     </div>
-                  </div><!-- /home-view -->
+                    <div class="mc-right">
+                      ${isCompleted ? '<div class="mc-xp">+150 XP</div>' : '<div class="mc-arrow">→</div>'}
+                    </div>
+                  `;
+        list.appendChild(card);
+        const connector = document.createElement('div');
+        connector.className = 'connector ' + (isCompleted ? 'done' : '');
+        connector.innerHTML = '<div class="connector-line"></div>';
+        if (idx < mod.chapters.length - 1) list.appendChild(connector);
+      });
 
-                  <!-- CHAPTER VIEW (iframe loads here) -->
-                  <div class="chapter-view" id="chapter-view">
-                    <iframe id="chapter-frame" src="about:blank" allow="autoplay"></iframe>
-                  </div>
+      setTimeout(() => {
+        const cards = document.querySelectorAll('#chapters-list .module-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        });
+        document.querySelectorAll('#chapters-list .connector').forEach(c => c.style.opacity = '1');
+      }, 50);
+    }
 
-                </div><!-- /phone -->
-                <div class="shell-meta">Starts with onboarding → Press D to unlock all · Esc to go home · 1-9 to jump
-                </div>
-              </div><!-- /phone-col -->
-            </div><!-- /shell -->
+    function closeCourseModule() {
+      document.getElementById('module-view').classList.add('hidden');
+      document.getElementById('home-view').classList.remove('hidden');
+      updateHomeStats();
+    }
 
-            <<<<<<< HEAD // Listen for progress events from chapter iframes window.addEventListener('message',
-              function(e) { if (e.data && e.data.type==='moduleComplete' && window.ayikhoData) {
-              window.ayikhoData.completeModule(e.data.moduleId); } if (e.data && e.data.type==='quizAnswer' &&
-              window.ayikhoData) { window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType,
-              e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic); } if (e.data &&
-              e.data.type==='screenChange' && window.ayikhoData) { window.ayikhoData.setModuleScreen(e.data.moduleId,
-              e.data.screenIndex, e.data.totalScreens); } if (e.data && e.data.type==='goHome' ) { goHome(); } if
-              (e.data && e.data.type==='openQuiz' ) { const loading=document.getElementById('loading');
-              document.getElementById('loading-name').textContent='Quiz Mode' ; loading.classList.add('show');
-              setTimeout(()=> {
-              const frame = document.getElementById('chapter-frame');
-              frame.src = 'ayikho-quiz.html';
-              frame.onload = () => {
-              loading.classList.remove('show');
-              document.getElementById('home-view').classList.add('hidden');
-              document.getElementById('chapter-view').classList.add('active');
-              document.getElementById('back-btn').classList.add('show');
-              currentModule = 'quiz';
-              updateSidebar();
-              try {
-              const iDoc = frame.contentDocument || frame.contentWindow.document;
-              const style = iDoc.createElement('style');
-              style.textContent = `
-              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-              .shell{display:block!important;gap:0!important;height:100%!important}
-              .sidebar{display:none!important}
-              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-              .shell-meta{display:none!important}
-              .shell > div{height:100%!important}
-              .app-container,.container{height:100%!important}
-              body > div:first-child{height:100%!important}
-              .phone-col{display:block!important;height:100%!important}
-              `;
-              iDoc.head.appendChild(style);
-              } catch(e) {}
-              };
-              }, 300);
-              }
-              if (e.data && e.data.type === 'openPapers') {
-              const loading = document.getElementById('loading');
-              document.getElementById('loading-name').textContent = 'Past Papers';
-              loading.classList.add('show');
-              setTimeout(() => {
-              const frame = document.getElementById('chapter-frame');
-              frame.src = 'ayikho-papers.html';
-              frame.onload = () => {
-              loading.classList.remove('show');
-              document.getElementById('home-view').classList.add('hidden');
-              document.getElementById('chapter-view').classList.add('active');
-              document.getElementById('back-btn').classList.add('show');
-              currentModule = 'papers';
-              updateSidebar();
-              try {
-              const iDoc = frame.contentDocument || frame.contentWindow.document;
-              const style = iDoc.createElement('style');
-              style.textContent = `
-              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-              .shell{display:block!important;gap:0!important;height:100%!important}
-              .sidebar{display:none!important}
-              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-              .shell-meta{display:none!important}
-              .shell > div{height:100%!important}
-              .app-container,.container{height:100%!important}
-              body > div:first-child{height:100%!important}
-              .phone-col{display:block!important;height:100%!important}
-              `;
-              iDoc.head.appendChild(style);
-              } catch(e) {}
-              };
-              }, 300);
-              }
-              if (e.data && e.data.type === 'openMemos') {
-              const loading = document.getElementById('loading');
-              document.getElementById('loading-name').textContent = 'Memos';
-              loading.classList.add('show');
-              setTimeout(() => {
-              const frame = document.getElementById('chapter-frame');
-              frame.src = 'ayikho-memos.html';
-              frame.onload = () => {
-              loading.classList.remove('show');
-              document.getElementById('home-view').classList.add('hidden');
-              document.getElementById('chapter-view').classList.add('active');
-              document.getElementById('back-btn').classList.add('show');
-              currentModule = 'memos';
-              updateSidebar();
-              try {
-              const iDoc = frame.contentDocument || frame.contentWindow.document;
-              const style = iDoc.createElement('style');
-              style.textContent = `
-              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-              .shell{display:block!important;gap:0!important;height:100%!important}
-              .sidebar{display:none!important}
-              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-              .shell-meta{display:none!important}
-              .shell > div{height:100%!important}
-              .app-container,.container{height:100%!important}
-              body > div:first-child{height:100%!important}
-              .phone-col{display:block!important;height:100%!important}
-              `;
-              iDoc.head.appendChild(style);
-              } catch(e) {}
-              };
-              }, 300);
-              }
-              if (e.data && e.data.type === 'openCapstone') {
-              const loading = document.getElementById('loading');
-              document.getElementById('loading-name').textContent = 'Capstone Exam';
-              loading.classList.add('show');
-              setTimeout(() => {
-              const frame = document.getElementById('chapter-frame');
-              frame.src = 'ayikho-capstone.html';
-              frame.onload = () => {
-              loading.classList.remove('show');
-              document.getElementById('home-view').classList.add('hidden');
-              document.getElementById('chapter-view').classList.add('active');
-              document.getElementById('back-btn').classList.add('show');
-              currentModule = 'capstone';
-              updateSidebar();
-              try {
-              const iDoc = frame.contentDocument || frame.contentWindow.document;
-              const style = iDoc.createElement('style');
-              style.textContent = `
-              html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
-              .shell{display:block!important;gap:0!important;height:100%!important}
-              .sidebar{display:none!important}
-              .phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
-              .shell-meta{display:none!important}
-              .shell > div{height:100%!important}
-              .app-container,.container{height:100%!important}
-              body > div:first-child{height:100%!important}
-              .phone-col{display:block!important;height:100%!important}
-              `;
-              iDoc.head.appendChild(style);
-              } catch(e) {}
-              };
-              }, 300);
-              }
-              });
-              =======
-              <script>
-                // ═══════════════════════════════════
-                //  MODULE CONFIG
-                // ═══════════════════════════════════
-                const MODULES = {
-                  1: { file: 'ayikho-chapter-concepts.html', name: 'Accounting Concepts & Principles' },
-                  2: { file: 'ayikho-chapter-accounting.html', name: 'Double Entry & Accounting Equation' },
-                  3: { file: 'ayikho-chapter-journals.html', name: 'Journals & Ledgers' },
-                  4: { file: 'ayikho-chapter-trial-balance.html', name: 'Trial Balance' },
-                  5: { file: 'ayikho-chapter-cash-journals.html', name: 'Cash Receipts & Payments Journals' },
-                  6: { file: 'ayikho-chapter-debtors-creditors.html', name: 'Debtors & Creditors Journals' },
-                  7: { file: 'ayikho-chapter-vat.html', name: 'Value Added Tax (VAT)' },
-                  8: { file: 'ayikho-chapter-adjustments.html', name: 'Year-End Adjustments' },
-                  9: { file: 'ayikho-chapter-financial-statements.html', name: 'Financial Statements' },
-                  10: { file: 'ayikho-chapter-bank-recon.html', name: 'Bank Reconciliation' }
-                };
+    // ═══════════════════════════════════
+    //  ONBOARDING → HOME TRANSITION
+    // ═══════════════════════════════════
+    // Listen for postMessage from onboarding iframe (needed for file:// cross-origin)
+    window.addEventListener('message', function (e) {
+      if (e.data === 'onboardingComplete') window.onboardingComplete();
+    });
 
-                let currentModule = null;
-                let demoMode = false;
-                let onboardingDone = false;
-                let moduleStartTime = null;
+    // Called by onboarding iframe when user taps "Start studying now"
+    window.onboardingComplete = function () {
+      if (onboardingDone) return; // prevent double-fire
+      onboardingDone = true;
 
-                // Init Firebase tracking (fails silently if not configured)
-                try {
-                  if (window.ayikhoTracker && typeof FIREBASE_CONFIG !== 'undefined') {
-                    window.ayikhoTracker.initFirebase(FIREBASE_CONFIG);
-                  }
-                } catch (e) { console.log('Tracking not active — prototype mode'); }
+      // Mark onboarding as complete in persistence layer
+      if (window.ayikhoData) {
+        window.ayikhoData.setOnboardingComplete(true);
+      }
 
-                // Listen for tracking events from chapter iframes
-                window.addEventListener('message', function (e) {
-                  try {
-                    if (e.data && e.data.type === 'trackEvent' && window.ayikhoTracker) {
-                      window.ayikhoTracker.track(e.data.eventType, e.data.data);
-                    }
-                  } catch (err) { }
-                });
+      // Hide the chapter-view (which has onboarding loaded)
+      document.getElementById('chapter-view').classList.remove('active');
 
-                // Listen for progress events from chapter iframes
-                window.addEventListener('message', function (e) {
-                  if (e.data && e.data.type === 'moduleComplete' && window.ayikhoData) {
-                    window.ayikhoData.completeModule(e.data.moduleId);
-                  }
-                  if (e.data && e.data.type === 'quizAnswer' && window.ayikhoData) {
-                    window.ayikhoData.recordQuizAnswer(e.data.moduleId, e.data.quizType, e.data.questionNum, e.data.isCorrect, e.data.questionText, e.data.topic);
-                  }
-                  if (e.data && e.data.type === 'screenChange' && window.ayikhoData) {
-                    window.ayikhoData.setModuleScreen(e.data.moduleId, e.data.screenIndex, e.data.totalScreens);
-                  }
-                  if (e.data && e.data.type === 'goHome') {
-                    goHome();
-                  }
-                  if (e.data && e.data.type === 'nextModule') {
-                    const nextId = e.data.currentModuleId + 1;
-                    if (MODULES[nextId]) {
-                      openModule(nextId);
-                    } else {
-                      goHome();
-                    }
-                  }
-                });
+      // Remove the onload handler so setting src=about:blank doesn't re-activate chapter-view
+      document.getElementById('chapter-frame').onload = null;
 
-                // ═══════════════════════════════════
-                //  UPDATE HOME STATS FROM DATA
-                // ═══════════════════════════════════
-                function updateHomeStats() {
-                  if (!window.ayikhoData) return;
+      setTimeout(() => {
+        // Clear the iframe
+        document.getElementById('chapter-frame').src = 'about:blank';
+        // Reveal the home screen with a nice entrance
+        document.getElementById('home-view').classList.remove('hidden');
+        currentModule = null;
+        updateSidebar();
 
-                  const data = window.ayikhoData.getDashboardData();
+        // Update home stats from data
+        updateHomeStats();
 
-                  // Update XP display and bar
-                  const xpText = document.querySelector('.hh-xp-text');
-                  if (xpText) xpText.textContent = `⚡ ${data.totalXP} XP`;
+        // Trigger the card entrance animations
+        const cards = document.querySelectorAll('.module-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
+          card.style.transition = 'opacity .3s ease, transform .3s ease';
+          setTimeout(() => {
+            card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
+            card.style.transform = 'translateY(0)';
+          }, 100 + i * 60);
+        });
+        document.querySelectorAll('.connector').forEach((c, i) => {
+          c.style.opacity = '0';
+          setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
+        });
 
-                  const xpFill = document.querySelector('.hh-xp-fill');
-                  if (xpFill) xpFill.style.width = `${Math.min((data.totalXP / 1500) * 100, 100)}% `;
+        showToast('Welcome to Ayikho! Press D to unlock all modules');
+      }, 350);
+    };
 
-                  // Update stats
-                  // Update stats
-                  const statNs = document.querySelectorAll('.hh-stat-n');
-                  if (statNs[0]) statNs[0].textContent = `🔥${data.streakDays} `;
-                  if (statNs[1]) statNs[1].textContent = `${data.completedCount}/10`;
-                  if (statNs[2]) statNs[2].textContent = `${data.avgScore}%`;
+    // ═══════════════════════════════════
+    //  OPEN CHAPTER
+    // ═══════════════════════════════════
+    function openChapter(num) {
+      const mod = CHAPTERS[num];
+      if (!mod) return;
 
-                  // Update profile name and avatar if available
-                  const profile = window.ayikhoData.getProfile();
-                  if (profile && profile.name) {
-                    const nameParts = profile.name.split(' ');
-                    const firstName = nameParts[0];
-                    const hhName = document.querySelector('.hh-name');
-                    if (hhName) hhName.textContent = firstName;
+      // Show loading
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = mod.name;
+      loading.classList.add('show');
 
-                    const hhAvatar = document.querySelector('.hh-avatar');
-                    if (hhAvatar) hhAvatar.textContent = firstName.charAt(0).toUpperCase();
-                  }
+      setTimeout(() => {
+        // Load iframe
+        const frame = document.getElementById('chapter-frame');
+        frame.src = mod.file;
 
-                  // Update module card statuses
-                  const cards = document.querySelectorAll('.module-card');
-                  cards.forEach((card, idx) => {
-                    const moduleNum = idx + 1;
-                    const moduleStatus = data.moduleStatuses[moduleNum];
+        frame.onload = () => {
+          // Hide loading, show chapter
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('module-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = num;
+          moduleStartTime = Date.now();
+          updateSidebar();
 
-                    if (moduleStatus) {
-                      // Remove old status classes
-                      card.classList.remove('completed', 'locked');
+          // Track module start
+          if (window.ayikhoTracker) {
+            window.ayikhoTracker.trackModuleStart(num);
+            // Send tracker config to iframe
+            try {
+              frame.contentWindow.postMessage({
+                type: 'initTracker',
+                userId: window.ayikhoTracker.userId,
+                moduleId: num
+              }, '*');
+            } catch (e) { }
+          }
 
-                      // Add new status class
-                      if (moduleStatus.status === 'completed') {
-                        card.classList.add('completed');
-                      } else if (moduleStatus.status === 'locked') {
-                        card.classList.add('locked');
-                      }
-                    }
-                  });
-                }
+          // Record module start in persistence layer
+          if (window.ayikhoData) {
+            window.ayikhoData.startModule(num);
+          }
 
-                // ═══════════════════════════════════
-                //  ONBOARDING → HOME TRANSITION
-                // ═══════════════════════════════════
-                // Listen for postMessage from onboarding iframe (needed for file:// cross-origin)
-                window.addEventListener('message', function (e) {
-                  if (e.data === 'onboardingComplete') window.onboardingComplete();
-                });
-
-                // Called by onboarding iframe when user taps "Start studying now"
-                window.onboardingComplete = function () {
-                  if (onboardingDone) return; // prevent double-fire
-                  onboardingDone = true;
-
-                  // Mark onboarding as complete in persistence layer
-                  if (window.ayikhoData) {
-                    window.ayikhoData.setOnboardingComplete(true);
-                  }
-
-                  // Hide the chapter-view (which has onboarding loaded)
-                  document.getElementById('chapter-view').classList.remove('active');
-
-                  // Remove the onload handler so setting src=about:blank doesn't re-activate chapter-view
-                  document.getElementById('chapter-frame').onload = null;
-
-                  setTimeout(() => {
-                    // Clear the iframe
-                    document.getElementById('chapter-frame').src = 'about:blank';
-                    // Reveal the home screen with a nice entrance
-                    document.getElementById('home-view').classList.remove('hidden');
-                    currentModule = null;
-                    updateSidebar();
-
-                    // Update home stats from data
-                    updateHomeStats();
-
-                    // Trigger the card entrance animations
-                    const cards = document.querySelectorAll('.module-card');
-                    cards.forEach((card, i) => {
-                      card.style.opacity = '0';
-                      card.style.transform = 'translateY(12px)';
-                      card.style.transition = 'opacity .3s ease, transform .3s ease';
-                      setTimeout(() => {
-                        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
-                        card.style.transform = 'translateY(0)';
-                      }, 100 + i * 60);
-                    });
-                    document.querySelectorAll('.connector').forEach((c, i) => {
-                      c.style.opacity = '0';
-                      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
-                    });
-
-                    showToast('Welcome to Ayikho! Press D to unlock all modules');
-                  }, 350);
-                };
-
-                // ═══════════════════════════════════
-                //  OPEN MODULE
-                // ═══════════════════════════════════
-                function openModule(num) {
-                  const mod = MODULES[num];
-                  if (!mod) return;
-
-                  // All modules unlocked for prototype demo
-                  const cards = document.querySelectorAll('.module-card');
-                  const card = cards[num - 1];
-
-                  // Card press animation
-                  if (card) {
-                    card.style.transform = 'scale(.96)';
-                    card.style.transition = 'transform .12s ease';
-                  }
-
-                  // Show loading
-                  const loading = document.getElementById('loading');
-                  document.getElementById('loading-name').textContent = mod.name;
-                  loading.classList.add('show');
-
-                  setTimeout(() => {
-                    if (card) card.style.transform = '';
-
-                    // Load iframe
-                    const frame = document.getElementById('chapter-frame');
-                    frame.src = mod.file;
-
-                    frame.onload = () => {
-                      // Hide loading, show chapter
-                      loading.classList.remove('show');
-                      document.getElementById('home-view').classList.add('hidden');
-                      document.getElementById('chapter-view').classList.add('active');
-                      document.getElementById('back-btn').classList.add('show');
-                      currentModule = num;
-                      moduleStartTime = Date.now();
-                      updateSidebar();
-
-                      // Track module start
-                      if (window.ayikhoTracker) {
-                        window.ayikhoTracker.trackModuleStart(num);
-                        // Send tracker config to iframe
-                        try {
-                          frame.contentWindow.postMessage({
-                            type: 'initTracker',
-                            userId: window.ayikhoTracker.userId,
-                            moduleId: num
-                          }, '*');
-                        } catch (e) { }
-                      }
-
-                      // Record module start in persistence layer
-                      if (window.ayikhoData) {
-                        window.ayikhoData.startModule(num);
-                      }
-
-                      // Inject styles into iframe to hide its shell/sidebar (show only phone innards)
-                      try {
-                        const iDoc = frame.contentDocument || frame.contentWindow.document;
-                        const style = iDoc.createElement('style');
-                        style.textContent = `
+          // Inject styles into iframe to hide its shell/sidebar (show only phone innards)
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1565,60 +1241,71 @@
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-                        iDoc.head.appendChild(style);
-                      } catch (e) { /* cross-origin, ignore */ }
-                    };
-                  }, 300);
-                }
+            iDoc.head.appendChild(style);
+          } catch (e) { /* cross-origin, ignore */ }
+        };
+      }, 300);
+    }
 
-                // ═══════════════════════════════════
-                //  GO HOME
-                // ═══════════════════════════════════
-                function goHome() {
-                  // Save time spent in module
-                  if (currentModule && moduleStartTime && window.ayikhoData) {
-                    window.ayikhoData.addModuleTime(currentModule, Date.now() - moduleStartTime);
-                  }
 
-                  document.getElementById('chapter-view').classList.remove('active');
-                  document.getElementById('back-btn').classList.remove('show');
+    // ═══════════════════════════════════
+    //  GO HOME (OR BACK TO MODULE VIEW)
+    // ═══════════════════════════════════
+    function goHome() {
+      // Save time spent in module
+      if (currentModule && moduleStartTime && window.ayikhoData) {
+        window.ayikhoData.addModuleTime(currentModule, Date.now() - moduleStartTime);
+      }
 
-                  // Clear onload handler so about:blank doesnt re-activate chapter-view
-                  document.getElementById('chapter-frame').onload = null;
+      document.getElementById('chapter-view').classList.remove('active');
+      document.getElementById('back-btn').classList.remove('show');
 
-                  setTimeout(() => {
-                    document.getElementById('home-view').classList.remove('hidden');
-                    document.getElementById('chapter-frame').src = 'about:blank';
-                    currentModule = null;
-                    updateSidebar();
-                    updateHomeStats();
-                  }, 350);
-                }
+      // Clear onload handler so about:blank doesnt re-activate chapter-view
+      document.getElementById('chapter-frame').onload = null;
 
-                // ═══════════════════════════════════
-                //  OPEN DASHBOARD
-                // ═══════════════════════════════════
-                function openDashboard() {
-                  const loading = document.getElementById('loading');
-                  document.getElementById('loading-name').textContent = 'Dashboard';
-                  loading.classList.add('show');
+      setTimeout(() => {
+        document.getElementById('chapter-frame').src = 'about:blank';
 
-                  setTimeout(() => {
-                    const frame = document.getElementById('chapter-frame');
-                    frame.src = 'ayikho-dashboard.html';
-                    frame.onload = () => {
-                      loading.classList.remove('show');
-                      document.getElementById('home-view').classList.add('hidden');
-                      document.getElementById('chapter-view').classList.add('active');
-                      document.getElementById('back-btn').classList.add('show');
-                      currentModule = 'dashboard';
-                      // Highlight dashboard in sidebar
-                      document.querySelectorAll('.sidebar .si').forEach(el => el.classList.remove('active'));
-                      document.querySelector('[data-target="dashboard"]').classList.add('active');
-                      try {
-                        const iDoc = frame.contentDocument || frame.contentWindow.document;
-                        const style = iDoc.createElement('style');
-                        style.textContent = `
+        // Return to specific module view if we were inside a valid chapter
+        const activeCourseModuleId = COURSE_MODULES.find(m => m.chapters.includes(currentModule))?.id;
+
+        currentModule = null;
+        updateSidebar();
+        updateHomeStats();
+
+        if (activeCourseModuleId && !document.getElementById('module-view').classList.contains('hidden')) {
+          // Re-render the module-view for fresh progress
+          openCourseModule(activeCourseModuleId);
+        } else {
+          document.getElementById('home-view').classList.remove('hidden');
+        }
+      }, 350);
+    }
+
+    // ═══════════════════════════════════
+    //  OPEN DASHBOARD
+    // ═══════════════════════════════════
+    function openDashboard() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Dashboard';
+      loading.classList.add('show');
+
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.src = 'ayikho-dashboard.html';
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'dashboard';
+          // Highlight dashboard in sidebar
+          document.querySelectorAll('.sidebar .si').forEach(el => el.classList.remove('active'));
+          document.querySelector('[data-target="dashboard"]').classList.add('active');
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1626,34 +1313,34 @@
           .shell-meta{display:none!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-                        iDoc.head.appendChild(style);
-                      } catch (e) { }
-                    };
-                  }, 300);
-                }
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+      }, 300);
+    }
 
-                // ═══════════════════════════════════
-                //  OPEN QUIZ MODE
-                // ═══════════════════════════════════
-                function openQuizMode() {
-                  const loading = document.getElementById('loading');
-                  document.getElementById('loading-name').textContent = 'Quiz Mode';
-                  loading.classList.add('show');
+    // ═══════════════════════════════════
+    //  OPEN QUIZ MODE
+    // ═══════════════════════════════════
+    function openQuizMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Quiz Mode';
+      loading.classList.add('show');
 
-                  setTimeout(() => {
-                    const frame = document.getElementById('chapter-frame');
-                    frame.src = 'ayikho-quiz.html';
-                    frame.onload = () => {
-                      loading.classList.remove('show');
-                      document.getElementById('home-view').classList.add('hidden');
-                      document.getElementById('chapter-view').classList.add('active');
-                      document.getElementById('back-btn').classList.add('show');
-                      currentModule = 'quiz';
-                      updateSidebar();
-                      try {
-                        const iDoc = frame.contentDocument || frame.contentWindow.document;
-                        const style = iDoc.createElement('style');
-                        style.textContent = `
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.src = 'ayikho-quiz.html';
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'quiz';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1664,34 +1351,34 @@
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-                        iDoc.head.appendChild(style);
-                      } catch (e) { }
-                    };
-                  }, 300);
-                }
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+      }, 300);
+    }
 
-                // ═══════════════════════════════════
-                //  OPEN PAPERS MODE
-                // ═══════════════════════════════════
-                function openPapersMode() {
-                  const loading = document.getElementById('loading');
-                  document.getElementById('loading-name').textContent = 'Past Papers';
-                  loading.classList.add('show');
+    // ═══════════════════════════════════
+    //  OPEN PAPERS MODE
+    // ═══════════════════════════════════
+    function openPapersMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Past Papers';
+      loading.classList.add('show');
 
-                  setTimeout(() => {
-                    const frame = document.getElementById('chapter-frame');
-                    frame.src = 'ayikho-papers.html';
-                    frame.onload = () => {
-                      loading.classList.remove('show');
-                      document.getElementById('home-view').classList.add('hidden');
-                      document.getElementById('chapter-view').classList.add('active');
-                      document.getElementById('back-btn').classList.add('show');
-                      currentModule = 'papers';
-                      updateSidebar();
-                      try {
-                        const iDoc = frame.contentDocument || frame.contentWindow.document;
-                        const style = iDoc.createElement('style');
-                        style.textContent = `
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.src = 'ayikho-papers.html';
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'papers';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1702,34 +1389,34 @@
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-                        iDoc.head.appendChild(style);
-                      } catch (e) { }
-                    };
-                  }, 300);
-                }
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+      }, 300);
+    }
 
-                // ═══════════════════════════════════
-                //  OPEN MEMOS MODE
-                // ═══════════════════════════════════
-                function openMemosMode() {
-                  const loading = document.getElementById('loading');
-                  document.getElementById('loading-name').textContent = 'Memos';
-                  loading.classList.add('show');
+    // ═══════════════════════════════════
+    //  OPEN MEMOS MODE
+    // ═══════════════════════════════════
+    function openMemosMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Memos';
+      loading.classList.add('show');
 
-                  setTimeout(() => {
-                    const frame = document.getElementById('chapter-frame');
-                    frame.src = 'ayikho-memos.html';
-                    frame.onload = () => {
-                      loading.classList.remove('show');
-                      document.getElementById('home-view').classList.add('hidden');
-                      document.getElementById('chapter-view').classList.add('active');
-                      document.getElementById('back-btn').classList.add('show');
-                      currentModule = 'memos';
-                      updateSidebar();
-                      try {
-                        const iDoc = frame.contentDocument || frame.contentWindow.document;
-                        const style = iDoc.createElement('style');
-                        style.textContent = `
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.src = 'ayikho-memos.html';
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'memos';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1740,34 +1427,34 @@
           body > div:first-child{height:100%!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-                        iDoc.head.appendChild(style);
-                      } catch (e) { }
-                    };
-                  }, 300);
-                }
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+      }, 300);
+    }
 
-                // ═══════════════════════════════════
-                //  OPEN CAPSTONE MODE
-                // ═══════════════════════════════════
-                function openCapstoneMode() {
-                  const loading = document.getElementById('loading');
-                  document.getElementById('loading-name').textContent = 'Capstone Exam';
-                  loading.classList.add('show');
+    // ═══════════════════════════════════
+    //  OPEN CAPSTONE MODE
+    // ═══════════════════════════════════
+    function openCapstoneMode() {
+      const loading = document.getElementById('loading');
+      document.getElementById('loading-name').textContent = 'Capstone Exam';
+      loading.classList.add('show');
 
-                  setTimeout(() => {
-                    const frame = document.getElementById('chapter-frame');
-                    frame.src = 'ayikho-capstone.html';
-                    frame.onload = () => {
-                      loading.classList.remove('show');
-                      document.getElementById('home-view').classList.add('hidden');
-                      document.getElementById('chapter-view').classList.add('active');
-                      document.getElementById('back-btn').classList.add('show');
-                      currentModule = 'capstone';
-                      updateSidebar();
-                      try {
-                        const iDoc = frame.contentDocument || frame.contentWindow.document;
-                        const style = iDoc.createElement('style');
-                        style.textContent = `
+      setTimeout(() => {
+        const frame = document.getElementById('chapter-frame');
+        frame.src = 'ayikho-capstone.html';
+        frame.onload = () => {
+          loading.classList.remove('show');
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('chapter-view').classList.add('active');
+          document.getElementById('back-btn').classList.add('show');
+          currentModule = 'capstone';
+          updateSidebar();
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
                           html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}
                           .shell{display:block!important;gap:0!important;height:100%!important}
                           .sidebar{display:none!important}
@@ -1777,161 +1464,161 @@
                           body > div:first-child{height:100%!important}
                           .phone-col{display:block!important;height:100%!important}
                         `;
-                        iDoc.head.appendChild(style);
-                      } catch (e) { }
-                    };
-                  }, 300);
-                }
+            iDoc.head.appendChild(style);
+          } catch (e) { }
+        };
+      }, 300);
+    }
 
-                // ═══════════════════════════════════
-                //  SIDEBAR
-                // ═══════════════════════════════════
-                function updateSidebar() {
-                  document.querySelectorAll('.sidebar .si').forEach(el => {
-                    el.classList.remove('active');
-                    if (el.dataset.module && parseInt(el.dataset.module) === currentModule) {
-                      el.classList.add('active');
-                    }
-                  });
-                  const homeBtn = document.querySelector('.si-home');
-                  if (homeBtn) homeBtn.classList.toggle('active', currentModule === null);
-                }
+    // ═══════════════════════════════════
+    //  SIDEBAR
+    // ═══════════════════════════════════
+    function updateSidebar() {
+      document.querySelectorAll('.sidebar .si').forEach(el => {
+        el.classList.remove('active');
+        if (el.dataset.module && parseInt(el.dataset.module) === currentModule) {
+          el.classList.add('active');
+        }
+      });
+      const homeBtn = document.querySelector('.si-home');
+      if (homeBtn) homeBtn.classList.toggle('active', currentModule === null);
+    }
 
-                // ═══════════════════════════════════
-                //  KEYBOARD NAV
-                // ═══════════════════════════════════
-                document.addEventListener('keydown', e => {
-                  // Don't intercept keys during onboarding
-                  if (!onboardingDone && e.key !== 'Escape') return;
+    // ═══════════════════════════════════
+    //  KEYBOARD NAV
+    // ═══════════════════════════════════
+    document.addEventListener('keydown', e => {
+      // Don't intercept keys during onboarding
+      if (!onboardingDone && e.key !== 'Escape') return;
 
-                  // Escape: go home (or skip onboarding)
-                  if (e.key === 'Escape') {
-                    if (!onboardingDone) {
-                      // Skip onboarding entirely
-                      window.onboardingComplete();
-                      return;
-                    }
-                    if (currentModule !== null) {
-                      goHome();
-                      return;
-                    }
-                    return;
-                  }
+      // Escape: go home (or skip onboarding)
+      if (e.key === 'Escape') {
+        if (!onboardingDone) {
+          // Skip onboarding entirely
+          window.onboardingComplete();
+          return;
+        }
+        if (currentModule !== null) {
+          goHome();
+          return;
+        }
+        return;
+      }
 
-                  // D: toggle demo mode (unlock all)
-                  if (e.key === 'd' || e.key === 'D') {
-                    if (currentModule !== null) return; // Don't toggle when inside a chapter
-                    demoMode = !demoMode;
-                    document.querySelectorAll('.module-card.locked').forEach(card => {
-                      if (demoMode) {
-                        card.style.opacity = '1';
-                        card.style.cursor = 'pointer';
-                        card.dataset.wasLocked = 'true';
-                        card.classList.remove('locked');
-                      } else {
-                        if (card.dataset.wasLocked) {
-                          card.classList.add('locked');
-                          card.style.opacity = '.55';
-                          card.style.cursor = 'default';
-                        }
-                      }
-                    });
-                    showToast(demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF');
-                  }
+      // D: toggle demo mode (unlock all)
+      if (e.key === 'd' || e.key === 'D') {
+        if (currentModule !== null) return; // Don't toggle when inside a chapter
+        demoMode = !demoMode;
+        document.querySelectorAll('.module-card.locked').forEach(card => {
+          if (demoMode) {
+            card.style.opacity = '1';
+            card.style.cursor = 'pointer';
+            card.dataset.wasLocked = 'true';
+            card.classList.remove('locked');
+          } else {
+            if (card.dataset.wasLocked) {
+              card.classList.add('locked');
+              card.style.opacity = '.55';
+              card.style.cursor = 'default';
+            }
+          }
+        });
+        showToast(demoMode ? '🔓 Demo mode ON — all modules unlocked' : '🔒 Demo mode OFF');
+      }
 
-                  // Number keys 1-9: jump to module
-                  const num = parseInt(e.key);
-                  if (num >= 1 && num <= 9) {
-                    openModule(num);
-                  }
-                });
+      // Number keys 1-9: jump to module
+      const num = parseInt(e.key);
+      if (num >= 1 && num <= 9) {
+        openModule(num);
+      }
+    });
 
-                function showToast(msg) {
-                  const t = document.createElement('div');
-                  t.textContent = msg;
-                  t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,10,58,.9);color:white;padding:10px 18px;border-radius:100px;font-family:JetBrains Mono,monospace;font-size:11px;z-index:999;transition:opacity .5s;backdrop-filter:blur(8px)';
-                  document.body.appendChild(t);
-                  setTimeout(() => t.style.opacity = '0', 2000);
-                  setTimeout(() => t.remove(), 2500);
-                }
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,10,58,.9);color:white;padding:10px 18px;border-radius:100px;font-family:JetBrains Mono,monospace;font-size:11px;z-index:999;transition:opacity .5s;backdrop-filter:blur(8px)';
+      document.body.appendChild(t);
+      setTimeout(() => t.style.opacity = '0', 2000);
+      setTimeout(() => t.remove(), 2500);
+    }
 
-                // ═══════════════════════════════════
-                //  STARTUP — CHECK ONBOARDING & AUTH STATUS
-                // ═══════════════════════════════════
-                document.addEventListener('DOMContentLoaded', () => {
-                  // 1. Initialize Firebase Auth
-                  initAuth();
+    // ═══════════════════════════════════
+    //  STARTUP — CHECK ONBOARDING & AUTH STATUS
+    // ═══════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize Firebase Auth
+      initAuth();
 
-                  // 2. We use onAuthStateChanged to delay the final redirect
-                  // so we definitely know if they are logged in or not.
-                  if (auth) {
-                    onAuthStateChanged(auth, (user) => {
-                      if (user && window.ayikhoData && window.ayikhoData.isOnboardingComplete()) {
-                        // Returning AND logged in student — skip onboarding and show home directly
-                        onboardingDone = true;
-                        showHomeView();
-                      } else {
-                        // Not logged in or no onboarding complete -> show onboarding
-                        // If they completed onboarding but aren't logged in, they are a returning user who needs to log in.
-                        const needsLogin = window.ayikhoData && window.ayikhoData.isOnboardingComplete();
-                        showOnboardingView(needsLogin);
-                      }
-                    });
-                  } else {
-                    // Fallback for prototype mode without Firebase
-                    if (window.ayikhoData && window.ayikhoData.isOnboardingComplete()) {
-                      onboardingDone = true;
-                      showHomeView();
-                    } else {
-                      showOnboardingView(false);
-                    }
-                  }
+      // 2. We use onAuthStateChanged to delay the final redirect
+      // so we definitely know if they are logged in or not.
+      if (auth) {
+        onAuthStateChanged(auth, (user) => {
+          if (user && window.ayikhoData && window.ayikhoData.isOnboardingComplete()) {
+            // Returning AND logged in student — skip onboarding and show home directly
+            onboardingDone = true;
+            showHomeView();
+          } else {
+            // Not logged in or no onboarding complete -> show onboarding
+            // If they completed onboarding but aren't logged in, they are a returning user who needs to log in.
+            const needsLogin = window.ayikhoData && window.ayikhoData.isOnboardingComplete();
+            showOnboardingView(needsLogin);
+          }
+        });
+      } else {
+        // Fallback for prototype mode without Firebase
+        if (window.ayikhoData && window.ayikhoData.isOnboardingComplete()) {
+          onboardingDone = true;
+          showHomeView();
+        } else {
+          showOnboardingView(false);
+        }
+      }
 
-                  function showHomeView() {
-                    document.getElementById('chapter-view').classList.remove('active');
-                    document.getElementById('home-view').classList.remove('hidden');
+      function showHomeView() {
+        document.getElementById('chapter-view').classList.remove('active');
+        document.getElementById('home-view').classList.remove('hidden');
 
-                    // Update stats from saved data
-                    updateHomeStats();
+        // Update stats from saved data
+        updateHomeStats();
 
-                    // Trigger card entrance animations
-                    const cards = document.querySelectorAll('.module-card');
-                    cards.forEach((card, i) => {
-                      card.style.opacity = '0';
-                      card.style.transform = 'translateY(12px)';
-                      card.style.transition = 'opacity .3s ease, transform .3s ease';
-                      setTimeout(() => {
-                        card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
-                        card.style.transform = 'translateY(0)';
-                      }, 100 + i * 60);
-                    });
-                    document.querySelectorAll('.connector').forEach((c, i) => {
-                      c.style.opacity = '0';
-                      setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
-                    });
-                  }
+        // Trigger card entrance animations
+        const cards = document.querySelectorAll('.module-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
+          card.style.transition = 'opacity .3s ease, transform .3s ease';
+          setTimeout(() => {
+            card.style.opacity = card.classList.contains('locked') ? '.55' : '1';
+            card.style.transform = 'translateY(0)';
+          }, 100 + i * 60);
+        });
+        document.querySelectorAll('.connector').forEach((c, i) => {
+          c.style.opacity = '0';
+          setTimeout(() => { c.style.opacity = '1'; c.style.transition = 'opacity .2s'; }, 150 + i * 60);
+        });
+      }
 
-                  function showOnboardingView(needsLogin) {
-                    // New student, logged out, or first load — show onboarding
-                    // Hide home view immediately
-                    document.getElementById('home-view').classList.add('hidden');
+      function showOnboardingView(needsLogin) {
+        // New student, logged out, or first load — show onboarding
+        // Hide home view immediately
+        document.getElementById('home-view').classList.add('hidden');
 
-                    // Load onboarding into the chapter iframe
-                    const frame = document.getElementById('chapter-frame');
-                    frame.src = needsLogin ? 'ayikho-onboarding-v2.html#login' : 'ayikho-onboarding-v2.html';
+        // Load onboarding into the chapter iframe
+        const frame = document.getElementById('chapter-frame');
+        frame.src = needsLogin ? 'ayikho-onboarding-v2.html#login' : 'ayikho-onboarding-v2.html';
 
-                    frame.onload = () => {
-                      // Guard: only activate for onboarding, not for about:blank
-                      if (onboardingDone) return;
+        frame.onload = () => {
+          // Guard: only activate for onboarding, not for about:blank
+          if (onboardingDone) return;
 
-                      // Show the chapter-view (which now has onboarding)
-                      document.getElementById('chapter-view').classList.add('active');
+          // Show the chapter-view (which now has onboarding)
+          document.getElementById('chapter-view').classList.add('active');
 
-                      // Inject styles to strip onboarding's shell if it has one
-                      try {
-                        const iDoc = frame.contentDocument || frame.contentWindow.document;
-                        const style = iDoc.createElement('style');
-                        style.textContent = `
+          // Inject styles to strip onboarding's shell if it has one
+          try {
+            const iDoc = frame.contentDocument || frame.contentWindow.document;
+            const style = iDoc.createElement('style');
+            style.textContent = `
               html,body{background:white!important;overflow:auto!important;height:100%!important;display:block!important}
           .shell{display:block!important;gap:0!important;height:100%!important}
           .sidebar{display:none!important}
@@ -1939,15 +1626,15 @@
           .shell-meta{display:none!important}
           .phone-col{display:block!important;height:100%!important}
         `;
-                        iDoc.head.appendChild(style);
-                      } catch (e) { /* cross-origin, ignore */ }
-                    };
-                  }
+            iDoc.head.appendChild(style);
+          } catch (e) { /* cross-origin, ignore */ }
+        };
+      }
 
-                  // Don't show back button during onboarding
-                  // Don't show card animations yet — they'll play after onboarding completes
-                });
-              </script>
+      // Don't show back button during onboarding
+      // Don't show card animations yet — they'll play after onboarding completes
+    });
+  </script>
 </body>
 
 </html>
