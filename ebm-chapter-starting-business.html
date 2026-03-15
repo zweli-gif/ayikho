@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 75%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,269 +530,83 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Starting a Business',
-                subtitle: 'Module 6 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Registering Your Business</h2>
+        {
+            id: 'intro',
+            title: 'Starting a Business',
+            subtitle: 'Module 6 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'From Plan to Launch',
+            subtitle: 'Module 6 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>You've got the plan. Now it's time to make it real. Register, set up, stock up, and open. The gap between 'planning' and 'doing' is where most people give up. Don't.</p></div>
+<h3>Legal Requirements in SA</h3>
+<p><strong>CIPC Registration:</strong> Register your company name and structure at cipc.co.za. A Pty Ltd costs about R175 to register online.</p>
+<p><strong>SARS Registration:</strong> Get a tax number. If your turnover exceeds R1 million, register for VAT. All businesses need an income tax number.</p>
+<p><strong>UIF Registration:</strong> If you hire employees, register for the Unemployment Insurance Fund with the Department of Labour.</p>
+<p><strong>Municipal licenses:</strong> Depending on your business type — food requires a health certificate, a salon needs a business license from your local municipality.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Register your business with CIPC (Companies Office), get a tax number from SARS, obtain BEE compliance, and secure all necessary licenses. This legalizes your business.</p>
-                    </div>
+<div class="callout sa">
+<h4>🇿🇦 Step-by-step: Starting a car wash in Tembisa</h4>
+<p>1. Register business name at CIPC (R175, 3 days online)<br>2. Open business bank account at Capitec (free for sole proprietors)<br>3. Register with SARS (free, same day online)<br>4. Get permission from property owner/municipality for the site<br>5. Buy equipment (pressure washer, chemicals, signage)<br>6. Hire 1-2 helpers, register for UIF<br>7. Print flyers, create WhatsApp broadcast list<br>8. Open for business</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Location, Suppliers & First Customers',
+            subtitle: 'Module 6 of 8',
+            type: 'lesson',
+            content: `
+<h3>Choosing a Location</h3>
+<p>For retail/food: foot traffic is everything. Near a taxi rank, train station, college, or shopping centre. Count the people walking past at lunchtime — if it\'s busy, it\'s good.</p>
+<p>For services (cleaning, tutoring, IT support): location matters less. You go to the customer, or work online.</p>
 
-                    <h3>Why Registration Matters</h3>
-                    <p>Registering protects you legally. An unregistered business owner bears unlimited liability. If your business owes R100,000, creditors can take your personal house, car, and bank account.</p>
+<h3>Finding Suppliers</h3>
+<p>Get at least 3 quotes for everything. Negotiate. Build relationships — loyal suppliers give you better prices and credit terms over time. In SA, Makro, Jumbo Cash & Carry, and local wholesalers are common starting points.</p>
 
-                    <h3>The 6-Step Registration Process</h3>
+<h3>Getting Your First Customers</h3>
+<p>• Tell everyone you know (WhatsApp status, Facebook, word of mouth)<br>• Offer a launch special (first wash free, 20% off first order)<br>• Be visible — signage, flyers, branded t-shirt<br>• Over-deliver on quality for the first 10 customers — they become your marketing team</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Step 1: Choose Business Structure</h3>
-                        <p style="margin: 0;">Sole trader (easiest, unregistered), Close Corporation (CC), or Private Company. For CC: provides limited liability. Cost: R175.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Step 2: CIPC Registration</h3>
-                        <p style="margin: 0;">Register your business with Companies and Intellectual Property Commission. Apply online at www.cipc.co.za. Get your CK number (registration number).</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Step 3: SARS Tax Registration</h3>
-                        <p style="margin: 0;">Register with South African Revenue Service for tax purposes. Get your tax number (TIN). Required if income exceeds R1M/year or if you hire employees.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Step 4: BEE Compliance</h3>
-                        <p style="margin: 0;">Broad-Based Black Economic Empowerment. Required to bid for government contracts or supply big companies. Free certificate for small businesses under 20 employees.</p>
-                    </div>
-
-                    <h3>Real Example: Catering Company Registration</h3>
-                    <div class="example-box">
-                        <div class="example-title">Step-by-Step Registration Journey</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Week 1:</strong> Decided on Close Corporation structure. More professional than sole trader, limited liability protection.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Week 2:</strong> CIPC registration online. Cost: R175. Received CK number: CK21/123456.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Week 3:</strong> SARS tax registration. TIN: 9876 543 210. Now can invoice as registered business.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Week 4:</strong> BEE Certificate obtained. Can now bid for government school catering contracts.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Week 5:</strong> Municipal business license R500. Health permit for food R300. Operational.</div>
-                        </div>
-                    </div>
-
-                    <h3>Licenses & Permits</h3>
-                    <p><strong>Municipal License:</strong> Proof you can operate in that area. Cost: R300-1,000. Varies by municipality.</p>
-                    <p><strong>Health Permit (Food):</strong> If selling food/drinks. Department of Health inspection. Cost: R200-500.</p>
-                    <p><strong>Environmental Clearance:</strong> If your business pollutes or uses chemicals. Cost: R1,000-5,000.</p>
-                    <p><strong>Professional License:</strong> If offering professional services (accounting, legal). Regulated bodies set requirements.</p>
-
-                    <div class="callout real-life">
-                        <h4>Tax Clearance</h4>
-                        <p>Before selling to big companies or government, you may need a Tax Clearance Certificate from SARS. Proves you're not owing back taxes. Apply via SARS website.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'compliance',
-                title: 'Ongoing Compliance',
-                subtitle: 'Module 6 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Staying Legal</h2>
-
-                    <h3>Annual Requirements</h3>
-                    <p><strong>Filing tax returns:</strong> Annual obligation if registered. Deadline: end of month after year-end (usually Feb 28).</p>
-                    <p><strong>Updating CIPC records:</strong> If your address or directors change, update CIPC within 20 days.</p>
-                    <p><strong>Renewing licenses:</strong> Municipal license, health permit—typically yearly. Keep paid receipts.</p>
-
-                    <h3>Employee Compliance</h3>
-                    <p>If you hire staff, you must:</p>
-                    <p>• Register with SARS for PAYE (payroll taxes)</p>
-                    <p>• Register with UIF (Unemployment Insurance Fund)</p>
-                    <p>• Contribute to workman's compensation (COIDA)</p>
-                    <p>• Keep employment contracts</p>
-                    <p>• Pay minimum wage (currently R28/hour)</p>
-
-                    <h3>Record Keeping</h3>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Financial Records</h3>
-                        <p style="margin: 0;">Keep invoices, receipts, bank statements for 6 years. SARS can audit anytime. Poor records = fines.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Licenses & Certificates</h3>
-                        <p style="margin: 0;">Keep copies of CIPC certificate, tax number, health permit, municipal license. Show proof if inspected.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>Exam Tip</h4>
-                        <p>You might be asked: "List 3 documents needed to legally operate a food business." Answer: CIPC registration certificate, SARS tax number, municipal business license, health permit from Department of Health.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What does CIPC stand for?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Companies and Intellectual Property Commission</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Central Internet Provider of Companies</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) Commercial Investment Planning Corporation</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) A political party</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Why is BEE compliance important for small businesses?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) It allows you to bid for government contracts and supply larger companies</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) It's a tax you must pay to the government</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) It's not necessary; only big companies need it</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) It changes your business structure automatically</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a CK number?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) Your CIPC registration number for your business</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Your personal ID number</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Your bank account number</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) A password for SARS</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which government agency handles tax registration for businesses?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) SARS (South African Revenue Service)</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) CIPC (only CIPC, not SARS)</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) The local municipality only</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Your bank</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a municipal business license?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">A) Proof from your municipality that you can legally operate a business in that area</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">B) Permission to hire employees</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) A tax that guarantees you'll make profit</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) Only needed if you're a large corporation</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam asks about legal requirements for starting a business in SA. Know: CIPC registration, SARS registration, UIF, municipal licenses. Also know factors to consider when choosing a business location (foot traffic, rent, accessibility, proximity to target market, competition nearby).</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Where do you register a new company in South Africa?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>SARS</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">B</span>CIPC (Companies and Intellectual Property Commission)</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>The local municipality</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>The Department of Labour</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> CIPC (cipc.co.za) handles company registration in SA. SARS handles tax registration. The municipality handles local business licenses. The Department of Labour handles UIF.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">When choosing a location for a food business, the MOST important factor is:</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Cheap rent</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">B</span>Foot traffic near your target market</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">C</span>Beautiful décor</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Large premises</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> For food businesses, being where your customers ARE is more important than anything else. Foot traffic near your target market (taxi rank, college, office park) drives sales. Cheap rent in a dead area means no customers.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Why should you get at least 3 quotes from suppliers?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>It's a legal requirement</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">B</span>To compare prices and negotiate the best deal</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">C</span>To confuse the suppliers</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>Because the exam says so</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> Getting multiple quotes lets you compare prices, quality, and delivery terms. It gives you leverage to negotiate better deals. Never accept the first quote — there's almost always a better option.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Starting a Business!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 6 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
