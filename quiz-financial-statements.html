@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · Financial Statements Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--fa:#0284C7;--fa-d:#075985;--fa-xs:#F0F9FF;--fa-sm:#E0F2FE;--p:#7C3AED;--gold:#F59E0B;--green:#22C55E;--green-xs:#F0FDF4;--rose:#F43F5E;--ink:#1A0A3A;--mut:#6B5A8A;--dim:#9580B8;--bord:#DDD5F5;--surf:#F7F4FF;--w:#FFFFFF;}
+body{font-family:'Outfit',sans-serif;background:#05090F;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.phone{width:375px;min-height:812px;background:white;border-radius:50px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.85);position:relative;}
+.hdr{background:linear-gradient(135deg,var(--fa),var(--fa-d));padding:24px 20px 20px;color:white;}
+.hdr-tag{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;opacity:.7;margin-bottom:6px;}
+.hdr h1{font-size:24px;font-weight:900;margin-bottom:4px;}
+.hdr p{font-size:12px;opacity:.8;}
+.progress-wrap{padding:16px 20px 0;background:var(--fa-xs);}
+.progress-bar{height:6px;background:var(--bord);border-radius:10px;overflow:hidden;margin-bottom:12px;}
+.progress-fill{height:100%;background:var(--fa);border-radius:10px;transition:width .4s ease;}
+.progress-txt{font-size:11px;color:var(--fa);font-weight:700;font-family:"JetBrains Mono",monospace;padding-bottom:12px;}
+.body{padding:20px;}
+.q-card{background:var(--surf);border-radius:16px;padding:18px;margin-bottom:16px;border-left:4px solid var(--fa);}
+.q-num{font-size:9px;font-weight:800;color:var(--fa);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;}
+.q-text{font-size:14px;font-weight:700;color:var(--ink);line-height:1.6;}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.opt{background:white;border:2px solid var(--bord);border-radius:12px;padding:14px 16px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;text-align:left;}
+.opt-badge{width:28px;height:28px;border-radius:8px;background:var(--surf);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:var(--mut);flex-shrink:0;font-family:"JetBrains Mono",monospace;}
+.opt:hover{border-color:var(--fa);background:var(--fa-xs);}
+.opt.correct{border-color:var(--green);background:var(--green-xs);color:#15803D;}
+.opt.correct .opt-badge{background:var(--green);color:white;}
+.opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.07);color:#be123c;}
+.opt.wrong .opt-badge{background:var(--rose);color:white;}
+.opt.disabled{pointer-events:none;}
+.feedback{border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.6;margin-bottom:16px;display:none;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--green-xs);border:1.5px solid var(--green);color:#15803D;}
+.feedback.wrong{background:rgba(244,63,94,.07);border:1.5px solid var(--rose);color:#be123c;}
+.nav-row{display:flex;gap:10px;margin-top:4px;}
+.btn{flex:1;border:none;border-radius:12px;padding:14px;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;}
+.btn-fa{background:var(--fa);color:white;}
+.btn-ghost{background:var(--surf);color:var(--mut);border:1.5px solid var(--bord);}
+.screen{display:none;} .screen.active{display:block;}
+.win{text-align:center;padding:32px 20px;}
+.win-emoji{font-size:64px;margin-bottom:16px;display:block;}
+.score-ring{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--fa),var(--fa-d));display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;color:white;}
+.score-ring .big{font-size:36px;font-weight:900;line-height:1;}
+.score-ring .lbl{font-size:11px;font-weight:700;opacity:.8;}
+.summary{background:var(--surf);border-radius:14px;padding:16px;text-align:left;margin-bottom:20px;}
+.sum-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bord);font-size:13px;}
+.sum-row:last-child{border:none;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="hdr">
+    <div class="hdr-tag">Financial Accounting N4</div>
+    <h1>Financial Statements</h1>
+    <p>10 exam-style questions · Test your knowledge</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pbar" style="width:0%"></div></div>
+    <div class="progress-txt" id="ptxt">Question 1 of 10</div>
+  </div>
+  <div class="body" id="quiz-body">
+    <!-- screens injected by JS -->
+  </div>
+</div>
+
+<script>
+var QS = [
+  {q:"What does an Income Statement show?",
+   opts:["The assets and liabilities of a business","The profit or loss of a business over a period of time","The cash flowing in and out of a business","The owner's equity at a specific date"],
+   ans:1, exp:"The Income Statement shows profit or loss over a period (e.g. a year). It starts with Sales, deducts Cost of Sales to get Gross Profit, then deducts expenses to get Net Profit."},
+  {q:"Sipho's spaza shop had Sales of R85 000, Cost of Sales of R51 000 and Operating Expenses of R20 000. What is the Net Profit?",
+   opts:["R34 000","R14 000","R65 000","R51 000"],
+   ans:1, exp:"Gross Profit = R85 000 − R51 000 = R34 000. Net Profit = R34 000 − R20 000 = R14 000."},
+  {q:"Which of these appears on the Balance Sheet — NOT the Income Statement?",
+   opts:["Rent expense","Salaries","Debtors Control","Cost of Sales"],
+   ans:2, exp:"Debtors Control is an asset — it appears on the Balance Sheet. Rent, Salaries and Cost of Sales are all expenses on the Income Statement."},
+  {q:"The Balance Sheet shows the financial position of a business:",
+   opts:["Over a period of time","At a specific date","Over the past 12 months","Only at year-end"],
+   ans:1, exp:"The Balance Sheet (Statement of Financial Position) shows what the business OWNS and OWES at one specific date — like a photograph, not a video."},
+  {q:"Assets = Liabilities + Owner's Equity. If Total Assets = R420 000 and Liabilities = R180 000, what is Owner's Equity?",
+   opts:["R600 000","R240 000","R180 000","R420 000"],
+   ans:1, exp:"Owner's Equity = Total Assets − Liabilities = R420 000 − R180 000 = R240 000. The accounting equation must always balance."},
+  {q:"Which statement shows the Opening Capital, Net Profit, Drawings and Closing Capital?",
+   opts:["Income Statement","Balance Sheet","Statement of Changes in Equity","Cash Flow Statement"],
+   ans:2, exp:"The Statement of Changes in Equity shows: Opening Capital + Net Profit − Drawings = Closing Capital. It links the Income Statement to the Balance Sheet."},
+  {q:"Closing Capital = R185 000. Opening Capital = R150 000. Drawings = R25 000. What was the Net Profit?",
+   opts:["R35 000","R60 000","R10 000","R25 000"],
+   ans:1, exp:"Net Profit = Closing Capital − Opening Capital + Drawings = R185 000 − R150 000 + R25 000 = R60 000."},
+  {q:"Accumulated Depreciation on the Balance Sheet is shown as:",
+   opts:["An addition to the asset","A current liability","A deduction from the asset","An operating expense only"],
+   ans:2, exp:"Accumulated Depreciation is deducted from the cost of the asset on the Balance Sheet to show the carrying value (book value) of the asset."},
+  {q:"Which of these is a NON-CURRENT ASSET on the Balance Sheet?",
+   opts:["Cash and Cash Equivalents","Debtors Control","Land and Buildings","Creditors Control"],
+   ans:2, exp:"Land and Buildings is a long-term (non-current) asset. Cash and Debtors are current assets. Creditors Control is a current liability."},
+  {q:"Net Profit is R42 000. Drawings are R18 000. Opening Capital is R210 000. What is Closing Capital?",
+   opts:["R234 000","R252 000","R270 000","R192 000"],
+   ans:0, exp:"Closing Capital = Opening Capital + Net Profit − Drawings = R210 000 + R42 000 − R18 000 = R234 000."}
+];
+
+var cur=0, score=0, answered=Array(QS.length).fill(false);
+
+function build(){
+  var body=document.getElementById('quiz-body');
+  body.innerHTML='';
+  QS.forEach(function(q,i){
+    var div=document.createElement('div');
+    div.className='screen'+(i===0?' active':'');
+    div.id='q'+i;
+    var optsHtml=q.opts.map(function(o,j){
+      return '<div class="opt" id="opt-'+i+'-'+j+'" onclick="pick('+i+','+j+')">'
+        +'<div class="opt-badge">'+String.fromCharCode(65+j)+'</div>'
+        +'<span>'+o+'</span></div>';
+    }).join('');
+    div.innerHTML='<div class="q-card"><div class="q-num">Question '+(i+1)+' of '+QS.length+'</div><div class="q-text">'+q.q+'</div></div>'
+      +'<div class="opts">'+optsHtml+'</div>'
+      +'<div class="feedback" id="fb-'+i+'"></div>'
+      +'<div class="nav-row">'
+      +(i>0?'<button class="btn btn-ghost" onclick="go('+(i-1)+')">← Back</button>':'')
+      +(i<QS.length-1?'<button class="btn btn-fa" id="nb-'+i+'" onclick="go('+(i+1)+')" style="display:none">Next →</button>':'')
+      +(i===QS.length-1?'<button class="btn btn-fa" id="nb-'+i+'" onclick="showWin()" style="display:none">See Results 🏆</button>':'')
+      +'</div>';
+    body.appendChild(div);
+  });
+  // Win screen
+  var win=document.createElement('div');
+  win.className='screen'; win.id='win';
+  win.innerHTML='<div class="win"><span class="win-emoji">🏆</span>'
+    +'<div class="score-ring"><div class="big" id="win-score">0</div><div class="lbl">/ '+QS.length+'</div></div>'
+    +'<div class="summary">'
+    +'<div class="sum-row"><span>Correct answers</span><span id="w-correct">0</span></div>'
+    +'<div class="sum-row"><span>Wrong answers</span><span id="w-wrong">0</span></div>'
+    +'<div class="sum-row"><span>Your score</span><span id="w-pct">0%</span></div>'
+    +'</div>'
+    +'<div id="w-msg" style="font-size:14px;color:var(--mut);margin-bottom:20px;line-height:1.6"></div>'
+    +'<button class="btn btn-fa" style="max-width:280px;margin:0 auto;display:block" onclick="restart()">Try Again 🔄</button>'
+    +'</div>';
+  body.appendChild(win);
+}
+
+function go(idx){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('q'+idx).classList.add('active');
+  cur=idx;
+  var pct=((idx)/QS.length*100);
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('ptxt').textContent='Question '+(idx+1)+' of '+QS.length;
+}
+
+function pick(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;
+  var q=QS[qi];
+  var correct=oi===q.ans;
+  if(correct)score++;
+  // Style options
+  for(var j=0;j<q.opts.length;j++){
+    var el=document.getElementById('opt-'+qi+'-'+j);
+    el.classList.add('disabled');
+    if(j===q.ans)el.classList.add('correct');
+    else if(j===oi&&!correct)el.classList.add('wrong');
+  }
+  // Feedback
+  var fb=document.getElementById('fb-'+qi);
+  fb.className='feedback show '+(correct?'correct':'wrong');
+  fb.innerHTML=(correct?'✅ <strong>Correct!</strong> ':'❌ <strong>Not quite.</strong> ')+q.exp;
+  // Show next button
+  var nb=document.getElementById('nb-'+qi);
+  if(nb)nb.style.display='flex';
+}
+
+function showWin(){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('win').classList.add('active');
+  document.getElementById('win-score').textContent=score;
+  document.getElementById('w-correct').textContent=score;
+  document.getElementById('w-wrong').textContent=QS.length-score;
+  var pct=Math.round(score/QS.length*100);
+  document.getElementById('w-pct').textContent=pct+'%';
+  document.getElementById('pbar').style.width='100%';
+  document.getElementById('ptxt').textContent='Complete!';
+  var msg=pct>=80?'🔥 Excellent! You're ready for the exam.':pct>=60?'💪 Good effort! Review the questions you missed.':'📖 Keep studying — go back through the chapter and try again.';
+  document.getElementById('w-msg').textContent=msg;
+}
+
+function restart(){
+  cur=0; score=0; answered=Array(QS.length).fill(false);
+  build(); 
+  document.getElementById('pbar').style.width='0%';
+  document.getElementById('ptxt').textContent='Question 1 of '+QS.length;
+}
+
+build();
+</script>
+</body>
+</html>
