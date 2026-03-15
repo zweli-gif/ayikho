@@ -530,200 +530,88 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Internet & Research',
-                subtitle: 'Module 7 of 8',
-                type: 'lesson',
-                content: `
-                    <h2>Using the Internet Safely and Effectively</h2>
+        {
+            id: 'intro',
+            title: 'Internet & Research',
+            subtitle: 'Module 7 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Using the Internet Effectively',
+            subtitle: 'Module 7 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>The internet is the world's library — but most of it is unreliable. Knowing how to search, evaluate sources, and avoid misinformation is a skill that separates professionals from amateurs.</p></div>
+<h3>What is the Internet?</h3>
+<p>A global network of connected computers. The World Wide Web (WWW) is the part you see in a browser — websites, pages, links. The internet also carries email, file transfers, video calls, and messaging.</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Know web browsers, search engines, evaluating sources, and online safety for N4 success.</p>
-                    </div>
+<h3>Web Browsers</h3>
+<p>A browser is the software you use to access the web: Google Chrome, Microsoft Edge, Firefox, Safari. The browser reads website code (HTML) and displays it as the pages you see.</p>
 
-                    <h3>The Web Basics</h3>
-                    <p><strong>URL:</strong> The web address. https://www.bbc.com/news. Tells you which website.</p>
-                    <p><strong>Browser:</strong> Software to view websites. Chrome, Firefox, Safari, Edge. You type a URL, the browser loads the page.</p>
-                    <p><strong>Website:</strong> A collection of pages. Google is a website. BBC News is a website.</p>
+<h3>Search Engines</h3>
+<p>Google, Bing, DuckDuckGo. They index billions of web pages and find what you\'re looking for. But they\'re only as good as your search terms.</p>
+<p><strong>Search smarter:</strong></p>
+<p>• Use specific terms: "TVET N4 Financial Accounting past papers 2024" not "accounting papers"<br>• Use quotes for exact phrases: "trial balance" finds that exact phrase<br>• Use minus to exclude: "python -snake" finds the programming language, not the reptile<br>• Use site: to search within a site: "site:gov.za NATED results"</p>
 
-                    <h3>Search Engines</h3>
-                    <p><strong>Google:</strong> The biggest. 90% of searches happen on Google. Type keywords, get results.</p>
-                    <p><strong>Bing:</strong> Microsoft's search engine. Similar to Google.</p>
-                    <p><strong>DuckDuckGo:</strong> Smaller, more private. Doesn't track your searches.</p>
+<div class="callout sa">
+<h4>🇿🇦 SA Research Sources</h4>
+<p>Trusted SA sources: gov.za (government), statssa.gov.za (Stats SA), sars.gov.za (tax), dhet.gov.za (education), news24.com, dailymaverick.co.za. For academic research: Google Scholar (scholar.google.com) filters for academic papers and journal articles.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Evaluating Online Sources',
+            subtitle: 'Module 7 of 8',
+            type: 'lesson',
+            content: `
+<h3>Not Everything Online is True</h3>
+<p>Anyone can publish anything on the internet. Your job is to evaluate what\'s reliable and what\'s not.</p>
 
-                    <h3>Smart Searching</h3>
+<h3>The CRAAP Test</h3>
+<p><strong>Currency:</strong> When was it published? Is it recent enough? Health info from 2005 may be outdated.</p>
+<p><strong>Relevance:</strong> Does it actually answer your question? Don\'t use a source just because it\'s long.</p>
+<p><strong>Authority:</strong> Who wrote it? A professor, a journalist, or a random blog? Check credentials.</p>
+<p><strong>Accuracy:</strong> Is it supported by evidence? Are there references? Can you verify the facts elsewhere?</p>
+<p><strong>Purpose:</strong> Why was it written? To inform, to sell, to persuade, to entertain? A Shoprite ad about "the best prices" is marketing, not research.</p>
 
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Use Specific Keywords</h3>
-                        <p style="margin: 0;"><strong>Good:</strong> "BBBEE requirements South Africa" <strong>Bad:</strong> "stuff about business"</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Use Quotes for Exact Phrases</h3>
-                        <p style="margin: 0;">"climate change impact" searches for that exact phrase.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Check the Source</h3>
-                        <p style="margin: 0;">Wikipedia is helpful for overview, but not authoritative. Academic papers and government sites are reliable.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Evaluate Information</h3>
-                        <p style="margin: 0;">Is the author an expert? When was it written? Does it match other sources? Be critical.</p>
-                    </div>
-
-                    <h3>Citations</h3>
-                    <p>When you use someone else's information, cite the source. Three common styles: APA, MLA, Harvard.</p>
-                    <p><strong>Basic citation:</strong> Author Name. Title. Website. Date. Retrieved from URL.</p>
-
-                    <div class="callout real-life">
-                        <h4>SA Example</h4>
-                        <p>You're writing a college assignment about BBBEE requirements. You search "BBBEE compliance 2026 South Africa". You find an official government PDF. You check it's from an .gov.za domain. You cite it properly. You don't use random Wikipedia or blog posts as your only source.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'key-terms',
-                title: 'Online Safety',
-                subtitle: 'Internet Best Practices',
-                type: 'lesson',
-                content: `
-                    <h2>Internet Security</h2>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Bookmarks</h3>
-                        <p style="margin: 0;">Save websites you use often. Click the star icon or Ctrl+D to bookmark. Speeds up access.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Cookies</h3>
-                        <p style="margin: 0;">Small files websites store on your computer. Remember your login, preferences. Helpful but can track you.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Secure Websites</h3>
-                        <p style="margin: 0;">Look for "https://" (not just "http://") and a padlock icon. Means data is encrypted.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Never Share Personal Data</h3>
-                        <p style="margin: 0;">Don't give passwords, ID numbers, or financial details to unknown websites.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bold: 0;">Fake News and Misinformation</h3>
-                        <p style="margin: 0;">Check multiple sources. Look for author credentials. Be suspicious of sensational headlines. Verify before sharing.</p>
-                    </div>
-
-                    <div class="callout exam">
-                        <h4>📝 Exam Tip</h4>
-                        <p>N4 exams ask: "Find information on topic X and cite your sources" or "Evaluate these three websites—which is most reliable?" Practice evaluating sources. Know the difference between a blog, Wikipedia, academic paper, and official government site.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What does HTTPS in a URL indicate?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) The website uses encrypted, secure connection</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) The website is run by the government</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) It's faster than HTTP</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) It means there are no viruses</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which is the most reliable source for academic research?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) Peer-reviewed academic journal or official government publication</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) A random blog with no author listed</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) Wikipedia</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) Social media posts</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 3',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 3</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is a citation used for in academic writing?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) To credit the source of information you used</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) To make your writing longer</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) To avoid using your own words</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Citations are not needed</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>Computer Practice N4 · ${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam gives you a website or source and asks you to evaluate it. Apply the CRAAP test. Also know: what is a URL, what is a hyperlink, what is a domain (.co.za, .com, .org, .gov.za), and how to tell if a website is secure (https:// and padlock icon).</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does the 'A' in the CRAAP test stand for?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">A</span>Availability</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">B</span>Authority</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Accuracy</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">D</span>Both Authority and Accuracy</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> CRAAP stands for Currency, Relevance, Authority, Accuracy, and Purpose. There are actually TWO A's — Authority (who wrote it) and Accuracy (is it true and supported by evidence).</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which is the most reliable source for South African government statistics?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Wikipedia</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">B</span>A random blog</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">C</span>statssa.gov.za</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>A Facebook post</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> statssa.gov.za is Statistics South Africa — the official government source for SA statistics. Wikipedia can be edited by anyone, and blogs/Facebook are not verified sources.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does https:// at the start of a URL indicate?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>The website is fast</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">B</span>The website is free</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">C</span>The connection is encrypted and secure</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>The website is South African</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> HTTPS (HyperText Transfer Protocol Secure) means the connection between your browser and the website is encrypted. Look for the padlock icon. This is essential for banking, shopping, and any site where you enter personal information.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Internet & Research!</h2><p style="color:var(--dim);margin-bottom:24px">Computer Practice N4 · Module 7 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#8B5CF6;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
