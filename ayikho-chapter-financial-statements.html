@@ -1747,7 +1747,7 @@
 
         <div class="footer-nav">
             <button class="nav-button" id="prevBtn" onclick="previousScreen()" disabled style="opacity:.5">←</button>
-            <span class="nav-info" id="screenInfo">1 / 11</span>
+            <span class="nav-info" id="screenInfo">1 / 10</span>
             <button class="nav-button" id="nextBtn" onclick="nextScreen()" style="border-color:var(--fa);color:var(--fa)">Next →</button>
         </div>
 
@@ -1770,10 +1770,7 @@
 
         const MODULE_ID = 9;
         let currentScreen = 0;
-        const totalScreens = 11;
-        let videoTime = 0;
-        let videoPlaying = false;
-        const videoDuration = 225; // 3:45 in seconds
+        const totalScreens = 10;
 
         const CORRECT_REACTIONS = [
           "Yebo! You nailed it! 🎉",
@@ -1931,184 +1928,7 @@
 
         // ===== LANDOH VIDEO PLAYER (Module 9) =====
         (function() {
-            const lvSlides = [
-                { speech: "The Income Statement and Balance Sheet are the two main financial statements. They're the final products of all the accounting work you've done.", chapter: "0:00 — INTRO", board: '<div class="lv-bi"><h3>MODULE 9</h3><p style="font-size:14px;font-weight:700;color:#1A1A2E;">Financial Statements The final products of accounting!</p></div>', point: false },
-                { speech: "First -- the Income Statement, also called the Statement of Comprehensive Income. It tells you: did the business make money or lose money this period?", chapter: "0:00 — INCOME STATEMENT", board: '<div class="lv-bi"><h3>INCOME STATEMENT</h3><div class="lv-formula">Revenue - Cost of Sales = Gross Profit</div><div class="lv-formula" style="margin-top:5px">Gross Profit - Expenses = Net Profit (or Loss)</div></div>', point: true },
-                { speech: "You start with revenue -- all the money from sales. Subtract cost of sales to get gross profit. Then subtract all other expenses like rent, salaries, depreciation. What's left is your net profit.", chapter: "1:15 — FORMULA", board: '<div class="lv-bi"><h3><span class="lv-key">Structure:</span></h3><p>Sales xxx</p><p>- Cost of Sales (xxx) = Gross Profit xxx</p><p>- Operating Expenses (xxx)</p><div class="lv-formula" style="margin-top:8px">= Net Profit/Loss xxx</div></div>', point: true },
-                { speech: "Second -- the Balance Sheet, also called the Statement of Financial Position. It's a snapshot of what the business owns and owes on a specific date.", chapter: "2:30 — BALANCE SHEET", board: '<div class="lv-bi"><h3>BALANCE SHEET</h3><div class="lv-formula">Assets = Liabilities + Owner\'s Equity</div><p style="margin-top:6px;font-size:12px">Snapshot at a SPECIFIC date</p></div>', point: false },
-                { speech: "The balance sheet has three sections: Assets at the top -- split into non-current and current. Then liabilities -- also split into non-current and current. And finally, owner's equity.", chapter: "2:30 — STRUCTURE", board: '<div class="lv-bi"><h3>Balance Sheet Structure</h3><ol class="lv-num-list"><li data-num="1">ASSETS (Non-current + Current)</li><li data-num="2">LIABILITIES (Non-current + Current)</li><li data-num="3">OWNER\'S EQUITY (Capital + Retained income)</li></ol></div>', point: false, stagger: true },
-                { speech: "Key difference: the Income Statement covers a PERIOD, like January to December. The Balance Sheet is a SNAPSHOT on ONE date, like 31 December. Don't mix them up!", chapter: "3:30 — KEY DIFFERENCE", board: '<div class="lv-bi"><h3><span class="lv-key">Key Difference:</span></h3><p>Income Statement = Period (Jan–Dec)</p><p style="margin-top:5px">Balance Sheet = Date (31 Dec)</p><div class="lv-hl"><p style="font-size:10px;margin-top:6px">Don\'t mix them up!</p></div></div>', point: false },
-                { speech: "Exam tip: financial statements are worth the most marks in the exam. Know the format by heart! Practice building them from a trial balance. The builder exercise next will give you exactly that.", chapter: "3:30 — RECAP", board: '<div class="lv-bi"><div class="lv-tip"><div class="lv-tip-label">🎯 Exam Tip</div><p style="font-size:12px;font-weight:600;color:#1A1A2E">Worth the MOST marks!</p><p style="font-size:11px;color:var(--fa);font-weight:700;margin-top:3px">Know the format perfectly<br>Practice from Trial Balance data</p></div></div>', point: false }
-            ];
-
-            let lvCurrent = -1, lvPlaying = false, lvTimer = null;
-            const lvSpeech = document.getElementById('lvSpeech');
-            const lvBoardContent = document.getElementById('lvBoardContent');
-            const lvProg = document.getElementById('lvProg');
-            const lvChapter = document.getElementById('lvChapter');
-            const lvTitle = document.getElementById('lvTitle');
-            const lvOutro = document.getElementById('lvOutro');
-            const lvMain = document.getElementById('lvMain');
-            const lvPlayBtn = document.getElementById('lvPlay');
-            const lvPen = document.getElementById('lvPen');
-            const lvVoiceInd = document.getElementById('lvVoiceInd');
-
-            const audioPath = 'assets/audio/';
-            let currentAudio = null;
-
-            function lvPlaySlideAudio(idx, onEnd) {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-                const slideNumber = (idx + 1).toString().padStart(2, '0');
-                const audioUrl = `${audioPath}module-9-slide-${slideNumber}.mp3`;
-                currentAudio = new Audio(audioUrl);
-
-                lvStartTalk();
-                currentAudio.onended = () => {
-                    lvStopTalk();
-                    if (onEnd) onEnd();
-                };
-                currentAudio.onerror = () => {
-                    console.warn(`Could not load ${audioUrl}, falling back to timer.`);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                };
-                currentAudio.play().catch(e => {
-                    console.log("Audio play prevented:", e);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                });
-            }
-
-            function lvSpeechCancel() {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-            }
-
-            function lvStartTalk() {
-                lvVoiceInd.classList.remove('lv-paused');
-            }
-            function lvStopTalk() {
-                lvVoiceInd.classList.add('lv-paused');
-            }
-
-            function lvMovePen(target) {
-                if (!target) return;
-                const board = document.getElementById('lvBoard');
-                const boardRect = board.getBoundingClientRect();
-                const targetRect = target.getBoundingClientRect();
-                const x = targetRect.left - boardRect.left + targetRect.width - 10;
-                const y = targetRect.top - boardRect.top + targetRect.height / 2 - 14;
-                lvPen.style.left = Math.min(x, boardRect.width - 30) + 'px';
-                lvPen.style.top = Math.max(0, y) + 'px';
-                lvPen.classList.add('lv-vis');
-            }
-
-            function lvShowSlide(idx) {
-                if (idx < 0 || idx >= lvSlides.length) return;
-                lvCurrent = idx;
-                const s = lvSlides[idx];
-                lvSpeech.textContent = s.speech;
-                lvSpeech.classList.add('lv-vis');
-
-                lvChapter.textContent = s.chapter;
-                const div = document.createElement('div');
-                div.innerHTML = s.board;
-                const newItem = div.firstElementChild;
-                lvBoardContent.appendChild(newItem);
-                requestAnimationFrame(() => {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    const last = items[items.length - 1];
-                    last.classList.add('lv-vis');
-                    last.classList.add('lv-writing');
-                    setTimeout(() => last.classList.remove('lv-writing'), 1200);
-                    setTimeout(() => lvMovePen(last), 100);
-                    setTimeout(() => lvPen.classList.remove('lv-vis'), 1500);
-                    document.getElementById('lvBoard').scrollTo({ top: 99999, behavior: 'smooth' });
-                });
-                if (s.stagger) {
-                    setTimeout(() => {
-                        document.querySelectorAll('ol.lv-num-list li').forEach((li, i) => { setTimeout(() => li.classList.add('lv-pop'), i * 300); });
-                    }, 400);
-                }
-                lvProg.style.width = ((idx + 1) / lvSlides.length * 100) + '%';
-            }
-
-            function lvAutoAdv() {
-                const s = lvSlides[lvCurrent];
-                function advanceNext() {
-                    if (!lvPlaying) return;
-                    if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
-                    else {
-                        lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
-                        lvSpeech.classList.remove('lv-vis');
-                        setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
-                    }
-                }
-                lvPlaySlideAudio(lvCurrent, advanceNext);
-            }
-
-            function lvTogglePlay() {
-                if (lvPlaying) {
-                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
-                } else {
-                    lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                    if (lvCurrent === -1) {
-                        lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                        setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-                    } else if (lvCurrent >= lvSlides.length - 1) {
-                        lvRestart();
-                    } else { lvAutoAdv(); }
-                }
-            }
-
-            function lvRestart() {
-                lvSpeechCancel();
-                lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProg.style.width = '0%';
-                lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
-                lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
-                lvPen.classList.remove('lv-vis');
-                lvStopTalk(); lvPlaying = false; lvPlayBtn.textContent = '▶';
-            }
-
-            lvPlayBtn.addEventListener('click', lvTogglePlay);
-            document.getElementById('lvStartBtn').addEventListener('click', () => {
-                lvPlaying = true; lvPlayBtn.textContent = '\u23F8';
-                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-            });
-            document.getElementById('lvNext').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent === -1) {
-                    lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                    setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
-                } else if (lvCurrent < lvSlides.length - 1) {
-                    lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-                else { nextScreen(); }
-            });
-            document.getElementById('lvPrev').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent > 0) {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    if (items.length > 0) items[items.length - 1].remove();
-                    lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-            });
-            lvOutro.addEventListener('click', () => { nextScreen(); });
-        })();
+            // Video JS removed
 
         // BIG THREE EXERCISE LOGIC
         var BT = {
@@ -2236,7 +2056,7 @@
         document.addEventListener('DOMContentLoaded',function(){
           if(typeof goToScreen!=='undefined'){
             var _go=goToScreen;
-            goToScreen=function(idx){_go(idx);if(idx===6)setTimeout(initBigThree,120);};
+            goToScreen=function(idx){_go(idx);if(idx===6)setTimeout(initBigThree,120);if(idx===8){try{parent.postMessage({type:'moduleComplete',moduleId:9},'*')}catch(e){}}};
           }
         });
 
