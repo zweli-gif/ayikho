@@ -16,27 +16,27 @@
         }
 
         :root {
-            --p: #16A34A;
-            --pl: #22C55E;
-            --pd: #15803D;
-            --pxs: #F0FDF4;
-            --psm: #DCFCE7;
-            --fa: #EAB308;
-            --fa-l: #FACC15;
-            --fa-d: #CA8A04;
-            --fa-xs: #FEFCE8;
-            --fa-sm: #FEF9C3;
-            --gold: #F59E0B;
+            --p: #0EA5E9;
+            --pl: #38BDF8;
+            --pd: #0284C7;
+            --pxs: #F0F9FF;
+            --psm: #E0F2FE;
+            --fa: #8B5CF6;
+            --fa-l: #A78BFA;
+            --fa-d: #7C3AED;
+            --fa-xs: #F5F3FF;
+            --fa-sm: #EDE9FE;
+            --gold: #FBBF24;
             --green: #22C55E;
             --green-xs: #F0FDF4;
             --rose: #F43F5E;
-            --ink: #0A1A0E;
-            --mut: #4B5C52;
-            --dim: #8FA898;
-            --bord: #BBF7D0;
-            --surf: #F0FDF4;
+            --ink: #0C1222;
+            --mut: #475569;
+            --dim: #94A3B8;
+            --bord: #BAE6FD;
+            --surf: #F0F9FF;
             --w: #FFFFFF;
-            --bg-dark: #050F08;
+            --bg-dark: #050A15;
         }
 
         body {
@@ -96,7 +96,7 @@
         .progress-bar {
             height: 100%;
             background: var(--fa);
-            width: 87.5%;
+            width: 20%;
             transition: width 0.3s ease;
         }
 
@@ -280,7 +280,6 @@
 
         .btn-secondary {
             background: var(--fa);
-            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -322,7 +321,7 @@
         .example-step {
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .example-step:last-child {
@@ -495,7 +494,7 @@ function showAshkiReaction(isCorrect) {
         <div style="color: var(--w); font-size: 20px; font-weight: 700;">A</div>
         <div class="sidebar-nav" id="sidebarNav"></div>
         <div style="color: var(--mut); font-size: 12px; text-align: center; width: 100%; padding: 0 8px;">
-            <div id="currentScreen">1/8</div>
+            <div id="currentScreen">1/5</div>
         </div>
     </div>
 
@@ -531,262 +530,86 @@ function showAshkiReaction(isCorrect) {
         let currentScreen = 0;
         let quizAnswers = {};
 
+
         const screens = [
-            {
-                id: 'intro',
-                title: 'Managing a Business',
-                subtitle: 'Module 7 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>The Four Functions of Management</h2>
+        {
+            id: 'intro',
+            title: 'Managing a Business',
+            subtitle: 'Module 7 of 8',
+            type: 'intro'
+        },
+        {
+            id: 's1',
+            title: 'Running the Day-to-Day',
+            subtitle: 'Module 7 of 8',
+            type: 'lesson',
+            content: `<div class="callout tldr"><h4>💬 TL;DR</h4><p>Starting is exciting. Managing is the real work. Stock control, cash management, customer service, and people management — these daily habits separate businesses that survive from those that don't.</p></div>
+<h3>The Four Pillars of Management</h3>
+<p><strong>Planning:</strong> Set goals, create budgets, forecast sales. Where do you want to be in 6 months?</p>
+<p><strong>Organising:</strong> Assign tasks, create systems, structure your day. Who does what, and when?</p>
+<p><strong>Leading:</strong> Motivate your team, communicate clearly, make decisions. Your team reflects your energy.</p>
+<p><strong>Controlling:</strong> Monitor performance, track expenses, check quality. Are you on target?</p>
 
-                    <div class="callout exam">
-                        <h4>TL;DR</h4>
-                        <p>Managers Plan, Organise, Lead, and Control. These 4 functions keep your business running smoothly. Poor management = chaos and failure.</p>
-                    </div>
+<h3>Stock Control</h3>
+<p>Too much stock = money sitting on shelves. Too little = lost sales. Track what sells fast, what sits, and reorder based on data, not feelings.</p>
+<p><strong>FIFO:</strong> First In, First Out. Sell the oldest stock first. Essential for perishables (food, drinks). The bread that arrived Monday must sell before the bread that arrived Wednesday.</p>
 
-                    <h3>Planning</h3>
-                    <p>Set goals and decide how to achieve them.</p>
-                    <p><strong>Example:</strong> "This month we'll sell 200 meals. To do this, we need 40kg chicken, 80kg maize meal, and R4,000 capital."</p>
-                    <p>Without planning, you waste money and miss opportunities.</p>
+<div class="callout sa">
+<h4>🇿🇦 Mama Nkosi\'s stock mistake</h4>
+<p>Mama Nkosi bought 200 packets of chips because the supplier offered a bulk discount. Problem: the chips expired before she could sell them. She lost R1,800. Lesson: bulk discounts only work if you can sell the stock before it expires. Track your turnover rate before bulk-buying.</p>
+</div>
+`
+        },
+        {
+            id: 's2',
+            title: 'Customer Service & Cash Management',
+            subtitle: 'Module 7 of 8',
+            type: 'lesson',
+            content: `
+<h3>Customer Service in SA</h3>
+<p>In SA, bad customer service is everywhere. This is your competitive advantage. If you smile, greet customers by name, and solve problems quickly — you win. People drive past 3 competitors to go to the place where they feel welcome.</p>
 
-                    <h3>Organising</h3>
-                    <p>Structure your resources—people, money, materials—to execute the plan.</p>
-                    <p><strong>Example:</strong> Assign roles: Thabo buys stock Monday, Lindiwe cooks Tuesday-Thursday, Mpho sells Friday-Sunday.</p>
+<h3>Handling Complaints</h3>
+<p><strong>LISTEN:</strong> Let them finish talking. Don\'t interrupt.<br><strong>ACKNOWLEDGE:</strong> "I understand that\'s frustrating."<br><strong>SOLVE:</strong> Fix the problem, or offer an alternative.<br><strong>FOLLOW UP:</strong> Check if they\'re satisfied. This turns complainers into loyal customers.</p>
 
-                    <h3>Leading</h3>
-                    <p>Motivate and guide your team to work toward goals.</p>
-                    <p><strong>Example:</strong> "If we sell 200 meals this month, bonuses for everyone. You're doing great work."</p>
+<h3>Cash Management</h3>
+<p>• Separate business money from personal money. Open a business bank account.<br>• Record every transaction — every rand in, every rand out.<br>• Pay yourself a salary. Don\'t dip into business cash for personal expenses.<br>• Keep a cash reserve for emergencies (at least 1 month of expenses).</p>
 
-                    <h3>Controlling</h3>
-                    <p>Monitor progress and fix problems.</p>
-                    <p><strong>Example:</strong> Daily cash count. If Friday's sales are down, investigate why (weather? poor location? bad food quality?).</p>
-
-                    <h3>Real Example: Chicken Licken Franchise Management</h3>
-                    <div class="example-box">
-                        <div class="example-title">Managing a Fast-Food Outlet</div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Planning:</strong> Monthly target: 1,000 chicken meals. Need 300kg chicken, 50L cooking oil, 200 team hours.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Organising:</strong> 5 staff in roster: 2 cooks, 2 cashiers, 1 manager. Orders placed Wed for Fri delivery. Inventory checked daily.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Leading:</strong> Staff briefing daily. Performance incentives (top cashier gets R100). Address issues respectfully.</div>
-                        </div>
-                        <div class="example-step">
-                            <div class="step-label"><strong>Controlling:</strong> Daily sales report. If sales drop 20%, audit food quality, check customer feedback, adjust marketing.</div>
-                        </div>
-                    </div>
-
-                    <h3>Stock Management (Inventory)</h3>
-                    <p><strong>Inventory control:</strong> Track what you have, order before you run out, prevent waste.</p>
-                    <p><strong>Too much stock:</strong> Money tied up, products expire, storage costs.</p>
-                    <p><strong>Too little stock:</strong> Can't fulfill orders, lose customers, miss sales.</p>
-
-                    <div class="callout real-life">
-                        <h4>Stock Control Example</h4>
-                        <p>A food vendor: "I use 30kg maize meal weekly. I order 60kg on Monday (2-week supply). If it sells slowly, I adjust orders down. If it runs out, I lose customers. Balance is key."</p>
-                    </div>
-                `
-            },
-            {
-                id: 'cash',
-                title: 'Cash & Delegation',
-                subtitle: 'Module 7 of 8 · Entrepreneurship N4',
-                type: 'lesson',
-                content: `
-                    <h2>Managing Money & People</h2>
-
-                    <h3>Cash Management</h3>
-                    <p>Cash is the lifeblood of business. Without it, you can't pay rent or buy stock.</p>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Daily Cash-Ups</h3>
-                        <p style="margin: 0;">Count money at end of shift. Record it. Match to sales. Find discrepancies immediately.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Separate Personal & Business Money</h3>
-                        <p style="margin: 0;">Use a business bank account. Personal money confuses accounting and taxes. Transfers only for salary/dividends.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3 style="margin-top: 0; margin-bottom: 12px;">Emergency Buffer</h3>
-                        <p style="margin: 0;">Keep 3 months operating costs in reserve. If sales drop or emergencies arise, you survive.</p>
-                    </div>
-
-                    <h3>Delegation</h3>
-                    <p>Trust others with tasks. You can't do everything alone.</p>
-                    <p><strong>Good delegation:</strong> "Thabo, order stock every Tuesday. Here's the supplier list, budget (R2,000), and quality standards. Report back weekly."</p>
-                    <p><strong>Bad delegation:</strong> "Just do it" with no clarity = wasted money and poor results.</p>
-
-                    <h3>Customer Service</h3>
-                    <p>Customers who feel valued return. Repeat customers are more profitable than constantly finding new ones.</p>
-                    <p>• Greet warmly</p>
-                    <p>• Deliver quality consistently</p>
-                    <p>• Handle complaints quickly</p>
-                    <p>• Show appreciation (loyalty rewards)</p>
-
-                    <div class="callout exam">
-                        <h4>Exam Tip</h4>
-                        <p>You might be asked: "A manager notices sales dropped 30%. What should she do?" Answer: Use the control function—investigate root cause (customer feedback, competitor analysis, staff performance), adjust strategy, monitor results.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz1',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 1 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 1 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Which management function involves setting goals and deciding how to achieve them?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">A) Planning</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B) Organising</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">C) Leading</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D) Controlling</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q1" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q1"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q1" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz2',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 2 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 2 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is the purpose of the "controlling" function?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">A) To monitor progress and fix problems if things go wrong</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">B) To dominate employees and punish mistakes</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C) To eliminate planning, organising, and leading</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D) To ignore results and hope for the best</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q2" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q2"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q2" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz3',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 3 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 3 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is inventory (stock) management?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">A) Tracking products, ordering before running out, preventing waste</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B) Throwing away extra stock to save space</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">C) Only ordering when you've completely sold out</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D) Buying as much as possible regardless of demand</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q3" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q3"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q3" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz4',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 4 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 4 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>Why is it important to keep personal and business money separate?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">A) To make accounting and tax reporting accurate and legal</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">B) To confuse the accountant</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C) It doesn't matter; mixing them is fine</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D) Personal money is always business money</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q4" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q4"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q4" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            },
-            {
-                id: 'quiz5',
-                title: 'Check Your Understanding',
-                subtitle: 'Quiz - Question 5 of 5',
-                type: 'quiz',
-                content: `
-                    <h2>Question 5 of 5</h2>
-
-                    <div class="quiz-question">
-                        <h4>What is delegation?</h4>
-                        <div class="quiz-options">
-                            <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">A) Entrusting tasks to employees with clear instructions and authority</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">B) Doing all work yourself because you don't trust anyone</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C) Giving tasks without explanation and blaming staff for failures</div>
-                            <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D) Avoiding responsibility by never making decisions</div>
-                        </div>
-                    </div>
-
-                    <div id="feedback-q5" style="display: none; margin-top: 20px; padding: 16px; border-radius: 8px;">
-                        <p id="feedback-text-q5"></p>
-                    </div>
-
-                    <div class="nav-buttons" id="nav-q5" style="display: none;">
-                        <button class="btn-secondary" onclick="nextQuestion()">Next Question</button>
-                    </div>
-                `
-            }
-        ];
-
-        function renderScreen(index) {
-            const screen = screens[index];
-            let html = `
-                <div class="screen ${index === currentScreen ? 'active' : ''}" id="screen-${index}">
-                    <div class="header">
-                        <h1>${screen.title}</h1>
-                        <p>${screen.subtitle}</p>
-                    </div>
-                    <div class="body">
-                        ${screen.content}
-                    </div>
-                </div>
-            `;
-            return html;
+<div class="callout exam">
+<h4>⭐ Exam tip</h4>
+<p>The exam asks about the four management functions (planning, organising, leading, controlling), FIFO stock method, customer service principles, and why you should separate business and personal finances. These are guaranteed marks if you know them.</p>
+</div>
+`
+        },
+        {
+            id: 'q1',
+            title: 'Quick Quiz — Question 1',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">What does FIFO stand for in stock management?</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q1')"><span class="quiz-letter">A</span>First In, First Out</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">B</span>Final Inventory, First Order</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">C</span>Free Items For Owners</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q1')"><span class="quiz-letter">D</span>Fast Inventory Fulfilment Order</div><div class="quiz-explain" id="explain-q1" style="display:none"><strong>Explanation:</strong> FIFO means First In, First Out — the oldest stock gets sold first. This is critical for perishable goods to prevent expiry and waste.</div></div>`
+        },
+        {
+            id: 'q2',
+            title: 'Quick Quiz — Question 2',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Which is NOT one of the four management functions?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">A</span>Planning</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">B</span>Organising</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q2')"><span class="quiz-letter">C</span>Advertising</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q2')"><span class="quiz-letter">D</span>Controlling</div><div class="quiz-explain" id="explain-q2" style="display:none"><strong>Explanation:</strong> The four management functions are: Planning, Organising, Leading, and Controlling. Advertising is a marketing activity, not a management function.</div></div>`
+        },
+        {
+            id: 'q3',
+            title: 'Quick Quiz — Question 3',
+            subtitle: 'Quiz',
+            type: 'quiz',
+            content: `<div class="quiz-box"><div class="quiz-q">Why should you separate business and personal bank accounts?</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">A</span>It's cheaper</div><div class="quiz-option" onclick="checkAnswer(this, 1, 'q3')"><span class="quiz-letter">B</span>To track business income and expenses accurately</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">C</span>Banks require it</div><div class="quiz-option" onclick="checkAnswer(this, 0, 'q3')"><span class="quiz-letter">D</span>To hide money from SARS</div><div class="quiz-explain" id="explain-q3" style="display:none"><strong>Explanation:</strong> Separating accounts lets you track exactly how much the business earns and spends. It prevents mixing personal and business expenses, makes tax filing easier, and gives you a clear picture of business health.</div></div>`
+        },
+        {
+            id: 'win',
+            title: 'Module Complete! 🎉',
+            subtitle: 'Well done!',
+            type: 'win',
+            content: `<div style="text-align:center;padding:40px 20px"><div style="font-size:64px;margin-bottom:16px">🎉</div><h2 style="margin-bottom:8px">You finished Managing a Business!</h2><p style="color:var(--dim);margin-bottom:24px">Entrepreneurship & Business Management N4 · Module 7 of 8</p><div style="background:var(--green-xs,#F0FDF4);border:1.5px solid #86EFAC;border-radius:14px;padding:14px;margin-bottom:20px"><strong style="color:#166534">+150 XP earned</strong></div><button class="btn" style="background:#D97706;color:white" onclick="parent.postMessage({type:'goHome'},'*')">Back to Course →</button></div>`
         }
-
+        ];
         function initScreens() {
             const container = document.getElementById('screenContainer');
             screens.forEach((screen, index) => {
