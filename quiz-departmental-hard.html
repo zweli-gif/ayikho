@@ -3,74 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ayikho · Departmental Accounts — Hard Quiz</title>
+<title>Ayikho - Departmental Accounts Hard Quiz</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Outfit',sans-serif;background:#0A0F1E;min-height:100vh;padding:16px;}
-.wrap{max-width:480px;margin:0 auto;}
-.hdr{background:linear-gradient(135deg,#059669,#047857);border-radius:20px;padding:24px 20px;color:white;margin-bottom:14px;}
-.hdr-eyebrow{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:6px;}
-.hdr h1{font-size:26px;font-weight:900;margin-bottom:4px;}
-.hdr-sub{font-size:12px;opacity:.8;}
-.meta-bar{background:#111827;border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
-.pbar{flex:1;height:8px;background:#1F2937;border-radius:10px;overflow:hidden;}
-.pbar-fill{height:100%;background:#059669;border-radius:10px;transition:width .5s ease;width:0%;}
-.meta-txt{font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#9CA3AF;white-space:nowrap;}
-.score-pill{background:#059669;color:white;font-size:11px;font-weight:800;padding:4px 10px;border-radius:100px;font-family:'JetBrains Mono',monospace;}
-.card{background:#111827;border-radius:18px;padding:20px;margin-bottom:12px;border:1px solid #1F2937;}
-.q-tag{font-size:9px;font-weight:800;color:#059669;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;}
-.q-text{font-size:14px;font-weight:700;color:#F9FAFB;line-height:1.7;}
-.opts{display:flex;flex-direction:column;gap:8px;margin:16px 0 0;}
-.opt{background:#1F2937;border:1.5px solid #374151;border-radius:12px;padding:13px 15px;font-size:13px;font-weight:600;color:#D1D5DB;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;}
-.opt:hover{border-color:#059669;background:#064E3B;color:white;}
-.opt-ltr{width:26px;height:26px;border-radius:7px;background:#374151;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#9CA3AF;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
-.opt.correct{border-color:#22C55E;background:#052e16;color:#86EFAC;}
-.opt.correct .opt-ltr{background:#22C55E;color:white;}
-.opt.wrong{border-color:#F43F5E;background:#1c0010;color:#FDA4AF;}
-.opt.wrong .opt-ltr{background:#F43F5E;color:white;}
-.opt.off{pointer-events:none;}
-.fb{border-radius:12px;padding:13px 15px;font-size:12px;line-height:1.7;margin-top:10px;display:none;}
-.fb.on{display:block;}
-.fb.ok{background:#052e16;border:1px solid #22C55E;color:#86EFAC;}
-.fb.no{background:#1c0010;border:1px solid #F43F5E;color:#FDA4AF;}
-.nav{display:flex;gap:10px;margin-top:12px;}
-.btn{flex:1;border:none;border-radius:12px;padding:14px;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;display:none;}
-.btn.show{display:block;}
-.btn-go{background:#059669;color:white;}
-.btn-back{background:#1F2937;color:#9CA3AF;border:1px solid #374151;}
-.screen{display:none;}
-.screen.on{display:block;}
-.win{background:#111827;border-radius:20px;padding:32px 20px;text-align:center;border:1px solid #1F2937;}
-.win-e{font-size:56px;margin-bottom:16px;display:block;}
-.ring{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#059669,#047857);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;color:white;}
-.ring-big{font-size:44px;font-weight:900;line-height:1;}
-.ring-lbl{font-size:11px;font-weight:700;opacity:.8;}
-.sum{background:#1F2937;border-radius:14px;padding:16px;text-align:left;margin-bottom:16px;}
-.sr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #374151;font-size:13px;color:#9CA3AF;}
-.sr:last-child{border:none;font-weight:800;color:#F9FAFB;}
-.wmsg{font-size:14px;color:#9CA3AF;line-height:1.7;margin-bottom:20px;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Outfit,sans-serif;background:#0A0F1E;min-height:100vh;padding:16px}
+.wrap{max-width:480px;margin:0 auto}
+.hdr{background:linear-gradient(135deg,#059669,#047857);border-radius:20px;padding:24px 20px;color:white;margin-bottom:14px}
+.hdr-eye{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.hdr h1{font-size:26px;font-weight:900;margin-bottom:4px}
+.hdr-sub{font-size:12px;opacity:.8}
+.meta{background:#111827;border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.pb{flex:1;height:8px;background:#1F2937;border-radius:10px;overflow:hidden}
+.pbf{height:100%;background:#059669;border-radius:10px;transition:width .5s ease;width:0}
+.mt{font-size:11px;font-weight:700;font-family:JetBrains Mono,monospace;color:#9CA3AF;white-space:nowrap}
+.sp{background:#059669;color:white;font-size:11px;font-weight:800;padding:4px 10px;border-radius:100px;font-family:JetBrains Mono,monospace}
+.card{background:#111827;border-radius:18px;padding:20px;margin-bottom:12px;border:1px solid #1F2937}
+.qtag{font-size:9px;font-weight:800;color:#059669;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+.qtext{font-size:14px;font-weight:700;color:#F9FAFB;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:8px;margin:16px 0 0}
+.opt{background:#1F2937;border:1.5px solid #374151;border-radius:12px;padding:13px 15px;font-size:13px;font-weight:600;color:#D1D5DB;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.opt:hover{border-color:#059669;background:#064E3B;color:white}
+.oltr{width:26px;height:26px;border-radius:7px;background:#374151;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#9CA3AF;flex-shrink:0}
+.opt.correct{border-color:#22C55E;background:#052e16;color:#86EFAC}
+.opt.correct .oltr{background:#22C55E;color:white}
+.opt.wrong{border-color:#F43F5E;background:#1c0010;color:#FDA4AF}
+.opt.wrong .oltr{background:#F43F5E;color:white}
+.opt.off{pointer-events:none}
+.fb{border-radius:12px;padding:13px 15px;font-size:12px;line-height:1.7;margin-top:10px;display:none}
+.fb.on{display:block}
+.fb.ok{background:#052e16;border:1px solid #22C55E;color:#86EFAC}
+.fb.no{background:#1c0010;border:1px solid #F43F5E;color:#FDA4AF}
+.nav{display:flex;gap:10px;margin-top:12px}
+.btn{flex:1;border:none;border-radius:12px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;cursor:pointer}
+.bg{background:#059669;color:white}
+.bk{background:#1F2937;color:#9CA3AF;border:1px solid #374151}
+.screen{display:none}
+.screen.on{display:block}
+.win{background:#111827;border-radius:20px;padding:32px 20px;text-align:center;border:1px solid #1F2937}
+.we{font-size:56px;margin-bottom:16px;display:block}
+.ring{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#059669,#047857);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;color:white}
+.rb{font-size:44px;font-weight:900;line-height:1}
+.rl{font-size:11px;font-weight:700;opacity:.8}
+.sum{background:#1F2937;border-radius:14px;padding:16px;text-align:left;margin-bottom:16px}
+.sr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #374151;font-size:13px;color:#9CA3AF}
+.sr:last-child{border:none;font-weight:800;color:#F9FAFB}
+.wmsg{font-size:14px;color:#9CA3AF;line-height:1.7;margin-bottom:20px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="hdr">
-    <div class="hdr-eyebrow">Financial Accounting N4 · Advanced</div>
-    <h1>Departmental Accounts</h1>
-    <div class="hdr-sub">30 exam-style questions · Journals · Transfers · Trading Stmt · P&L · Allocation</div>
-  </div>
-  <div class="meta-bar">
-    <div class="pbar"><div class="pbar-fill" id="pfill"></div></div>
-    <div class="meta-txt" id="ptxt">1 / 30</div>
-    <div class="score-pill" id="spill">0 / 30</div>
-  </div>
-  <div id="qwrap"></div>
+<div class="hdr">
+<div class="hdr-eye">Financial Accounting N4 · Advanced</div>
+<h1>Departmental Accounts</h1>
+<div class="hdr-sub">30 exam-style questions · Journals · Transfers · Trading Stmt · P&L · Allocation</div>
+</div>
+<div class="meta">
+<div class="pb"><div class="pbf" id="pbf"></div></div>
+<div class="mt" id="mt">1 / 30</div>
+<div class="sp" id="sp">0 / 30</div>
+</div>
+<div id="qw"></div>
 </div>
 <script>
-var QS=[["Sipho's Hardware made the following credit purchases in March: Tools R8 400, Paint R3 150, Electrical R8 820. What is the total Creditors Control entry?", ["R8 400", "R12 000", "R20 370", "R11 970"], 2, "Total Creditors Control = R8 400 + R3 150 + R8 820 = R20 370. The Creditors Control column always equals the sum of all departmental columns."], ["A customer returns paint worth R1 260 that was bought on credit. Which journal records this and which column is affected?", ["Sales Journal \u2014 Paint column", "Purchases Returns Journal \u2014 Paint column", "Sales Returns Journal \u2014 Paint column", "General Journal \u2014 Paint column"], 2, "Goods returned BY a customer = Sales Returns Journal (also called Returns Inward Journal). The Paint Department column is credited."], ["Mama Nkosi's store has 3 departments. The Cash Receipts Journal for March shows: Clothing R42 000, Shoes R28 500, Accessories R14 700. What is the total Sales column?", ["R70 500", "R85 200", "R56 700", "R42 000"], 1, "Total = R42 000 + R28 500 + R14 700 = R85 200. Always add all departmental columns to get the total \u2014 then post the total to the Sales account."], ["In a columnar purchases journal, the entry for buying R5 600 stock for the Clothing Dept and R3 200 for the Shoes Dept from one supplier on one invoice would show:", ["Two separate journal entries", "One entry with R8 800 in Creditors Control, R5 600 in Clothing, R3 200 in Shoes", "One entry with R8 800 in each column", "Two entries with R4 400 each"], 1, "One invoice = one journal line. The Creditors Control column shows the total (R8 800) and each departmental column shows its portion. This is the whole point of columnar journals."], ["Cash sales for the week: Tools R6 300, Paint R2 100, Electrical R4 200. In the Cash Receipts Journal, the Bank column shows:", ["R6 300", "R2 100", "R12 600", "R4 200"], 2, "Bank column = total cash received = R6 300 + R2 100 + R4 200 = R12 600. Bank Dr, and each Sales column Cr for their portion."], ["The Tools Department transfers R3 500 of hammers to the Electrical Department. The Electrical Department later transfers R1 200 back. What is the NET position of the Electrical Department after both transfers?", ["Dr R3 500", "Dr R2 300", "Cr R2 300", "Dr R4 700"], 1, "Electrical received R3 500 (Dr R3 500) then gave back R1 200 (Cr R1 200). Net = Dr R2 300 \u2014 meaning Electrical has R2 300 more stock than it started with."], ["Three interdepartmental transfers occur: Clothing gives Shoes R800, Shoes gives Accessories R500, Accessories gives Clothing R300. What is the total of the Interdepartmental Transfers Journal?", ["R1 600", "R0", "R1 300", "R300"], 1, "The total of the Interdepartmental Transfers Journal is ALWAYS R0. Every debit has an equal credit \u2014 no new value is created, stock just moves between departments."], ["The Paint Department transferred R4 200 of stock to Tools at cost. Later it was discovered the transfer should have been R2 400. The correction entry is:", ["Dr Tools R1 800 / Cr Paint R1 800", "Dr Paint R1 800 / Cr Tools R1 800", "Dr Tools R4 200 / Cr Paint R4 200 and reverse", "Dr Paint R4 200 / Cr Tools R4 200"], 1, "The original entry was Dr Tools R4 200 / Cr Paint R4 200 \u2014 which is R1 800 too much. To correct: Dr Paint R1 800 / Cr Tools R1 800 (reversing the excess)."], ["The Clothing Department's Purchases account shows: Purchases Journal R85 000, Transfers In R12 000, Purchases Returns R8 500, Transfers Out R4 200, Closing Stock R18 300. What is the Cost of Sales?", ["R66 000", "R85 000", "R66 000", "R84 500"], 0, "COS = Opening Stock + Purchases + Transfers In \u2212 Purchases Returns \u2212 Transfers Out \u2212 Closing Stock. Assuming Opening Stock = 0: R85 000 + R12 000 \u2212 R8 500 \u2212 R4 200 \u2212 R18 300 = R66 000."], ["In the departmental ledger, when the Purchases account is closed off at year-end, the entry is:", ["Dr Purchases / Cr Bank", "Dr Trading Account / Cr Purchases", "Dr Purchases / Cr Trading Account", "Dr Capital / Cr Purchases"], 1, "At year-end, the Purchases account is closed to the Departmental Trading Account: Dr Trading Account / Cr Purchases. This transfers the cost figure into the trading account."], ["Zandile's Boutique \u2014 Clothing Dept: Opening Stock R28 000, Purchases R142 000, Purchases Returns R6 300, Transfers In R8 400, Transfers Out R3 500, Closing Stock R32 200. What is Cost of Sales?", ["R136 400", "R142 400", "R168 400", "R110 200"], 0, "COS = R28 000 + R142 000 \u2212 R6 300 + R8 400 \u2212 R3 500 \u2212 R32 200 = R136 400."], ["The Shoes Department had Net Sales of R185 000 and Cost of Sales of R111 000. The Clothing Dept had Net Sales of R240 000 and COS of R156 000. Which department has the better GP%?", ["Shoes \u2014 40%", "Clothing \u2014 35%", "Shoes \u2014 35%", "Both the same \u2014 40%"], 0, "Shoes GP% = (R185 000 \u2212 R111 000) / R185 000 \u00d7 100 = R74 000 / R185 000 \u00d7 100 = 40%. Clothing GP% = R84 000 / R240 000 \u00d7 100 = 35%. Shoes is better."], ["Sales Returns for the Paint Department were R4 200. Sales were R98 000. What figure appears as 'Net Sales' on the Departmental Trading Statement?", ["R102 200", "R93 800", "R98 000", "R4 200"], 1, "Net Sales = Sales \u2212 Sales Returns = R98 000 \u2212 R4 200 = R93 800. Always deduct returns before calculating Gross Profit."], ["A department has GP% of 42%. Net Sales are R320 000. What is the Cost of Sales?", ["R134 400", "R185 600", "R224 000", "R96 000"], 1, "GP = 42% \u00d7 R320 000 = R134 400. COS = Net Sales \u2212 GP = R320 000 \u2212 R134 400 = R185 600."], ["Opening Stock R45 000, Closing Stock R52 000. Purchases R280 000, Returns R14 000, Transfers In R8 000, Transfers Out R6 000. Net Sales R380 000. What is Gross Profit?", ["R119 000", "R261 000", "R380 000", "R99 000"], 0, "COS = R45 000 + R280 000 \u2212 R14 000 + R8 000 \u2212 R6 000 \u2212 R52 000 = R261 000. GP = R380 000 \u2212 R261 000 = R119 000."], ["Insurance of R36 000 must be allocated based on stock values: Tools R180 000, Paint R120 000, Electrical R60 000 (total R360 000). How much does the Electrical Department pay?", ["R18 000", "R12 000", "R6 000", "R9 000"], 2, "Electrical = R60 000/R360 000 \u00d7 R36 000 = 1/6 \u00d7 R36 000 = R6 000."], ["Salaries R120 000 are split by number of staff: Tools 8 staff, Paint 5 staff, Electrical 3 staff (total 16). How much is allocated to Paint?", ["R60 000", "R37 500", "R22 500", "R45 000"], 1, "Paint = 5/16 \u00d7 R120 000 = R37 500."], ["Electricity R28 800 is split equally between 3 departments. Rent R54 000 is split by floor space: Tools 400m\u00b2, Paint 250m\u00b2, Electrical 150m\u00b2 (total 800m\u00b2). Total expenses for Tools Dept:", ["R36 600", "R34 500", "R9 600", "R27 000"], 0, "Electricity per dept = R28 800/3 = R9 600. Rent for Tools = 400/800 \u00d7 R54 000 = R27 000. Total Tools = R9 600 + R27 000 = R36 600."], ["Depreciation on equipment R24 000 is allocated based on equipment values: Clothing R80 000, Shoes R60 000, Accessories R40 000 (total R180 000). How much does Shoes pay?", ["R8 000", "R9 333", "R6 667", "R10 667"], 0, "Shoes = R60 000/R180 000 \u00d7 R24 000 = 1/3 \u00d7 R24 000 = R8 000."], ["Which of these is classified as a DIRECT expense for the Paint Department specifically?", ["Rent for the whole building", "Salary of the general store manager", "Packaging materials used only by Paint Dept", "Insurance on all stock"], 2, "Direct expenses can be traced to ONE specific department. Packaging used only by Paint = direct. Rent, GM salary and all-stock insurance are shared/allocated expenses."], ["The Tools Department: Gross Profit R85 000, Direct expenses R18 000, Allocated rent R21 000, Allocated electricity R7 200, Allocated admin R12 000. What is the Net Profit?", ["R85 000", "R26 800", "R67 000", "R58 200"], 1, "Net Profit = R85 000 \u2212 R18 000 \u2212 R21 000 \u2212 R7 200 \u2212 R12 000 = R26 800."], ["The Electrical Department shows a Net Loss of R8 400. The owner wants to close it. What financial information would BEST support this decision?", ["The department's sales figures only", "Gross Profit % and Net Profit trend over 3 years", "The number of staff in the department", "The opening stock value"], 1, "One year's net loss isn't enough \u2014 a trend over 3 years shows whether it's consistently losing money. GP% shows whether pricing is sustainable. Both together justify closing."], ["Gross Profit R68 000. Direct Expenses R15 200. Rent (allocated) R18 000. Electricity (allocated) R6 400. Manager's salary (direct) R24 000. Net Profit/Loss?", ["Net Profit R4 400", "Net Loss R4 400", "Net Profit R52 800", "Net Loss R15 200"], 0, "Total expenses = R15 200 + R18 000 + R6 400 + R24 000 = R63 600. Net Profit = R68 000 \u2212 R63 600 = R4 400."], ["Department A: GP% = 38%, Net Profit % = 8%. Department B: GP% = 35%, Net Profit % = 14%. What does this tell you?", ["Dept A has better pricing", "Dept B controls expenses better despite lower gross margin", "Dept A is always more profitable", "Dept B has higher sales"], 1, "Dept A has higher GP% but lower Net Profit % \u2014 meaning its expenses are much higher (eating into profit). Dept B has tighter expense control, turning 35% gross into 14% net. Better managed."], ["A department's GP% drops from 42% to 31% in one year. Sales are the same. What is the MOST likely cause?", ["Expenses increased", "Cost of Sales increased (e.g. supplier price increase)", "The manager resigned", "Sales returns increased"], 1, "GP% = GP/Net Sales. If Sales are unchanged but GP% dropped, Cost of Sales must have increased \u2014 possibly due to supplier price increases or theft/wastage."], ["The Periodic Inventory System means stock is:", ["Counted every day using a computer", "Only valued at the beginning of the year", "Counted physically at the END of the accounting period", "Updated after every sale automatically"], 2, "Periodic = stock is counted (stocktake) at the END of the period. This gives you Closing Stock. Contrast with perpetual inventory which updates continuously."], ["Cost of Sales was R156 000. Opening Stock was R22 000. Closing Stock was R18 000. Purchases Returns were R8 000. Transfers Out were R3 000. What were the Purchases (gross)?", ["R163 000", "R159 000", "R147 000", "R155 000"], 0, "COS = Opening + Purchases \u2212 Returns + Transfers In \u2212 Transfers Out \u2212 Closing. R156 000 = R22 000 + P \u2212 R8 000 + 0 \u2212 R3 000 \u2212 R18 000. P = R156 000 \u2212 R22 000 + R8 000 + R3 000 + R18 000 = R163 000."], ["Net Sales R420 000, COS R252 000, Total Expenses R134 400. What are GP% and Net Profit%?", ["GP% 30%, NP% 8%", "GP% 40%, NP% 8%", "GP% 40%, NP% 2%", "GP% 60%, NP% 8%"], 1, "GP = R420 000 \u2212 R252 000 = R168 000. GP% = R168 000/R420 000 = 40%. NP = R168 000 \u2212 R134 400 = R33 600. NP% = R33 600/R420 000 = 8%."], ["A department made a Gross Profit of R94 500 on Net Sales of R270 000. Target GP% is 40%. Is the department on target?", ["Yes \u2014 GP% is exactly 40%", "No \u2014 GP% is 35%, below target", "Yes \u2014 GP% is 42%", "No \u2014 GP% is 30%, well below target"], 1, "GP% = R94 500/R270 000 \u00d7 100 = 35%. Target is 40%. The department is 5 percentage points BELOW target. Management needs to investigate pricing or cost of sales."], ["Two departments share a storeroom. Dept X uses it 60% of the time, Dept Y 40%. Storage costs for the year are R45 000. Dept X's allocation is:", ["R22 500", "R27 000", "R18 000", "R30 000"], 1, "Dept X = 60% \u00d7 R45 000 = R27 000. Usage rate is a fair basis for allocating storage costs \u2014 more usage means more cost."], ["At year end, the Sales account for the Clothing Department shows a credit balance of R385 000. The correct closing entry is:", ["Dr Sales R385 000 / Cr Trading Account R385 000", "Dr Trading Account R385 000 / Cr Sales R385 000", "Dr Sales R385 000 / Cr Capital R385 000", "Dr Revenue R385 000 / Cr Sales R385 000"], 0, "Sales has a credit balance. To close it, you Debit Sales and Credit the Departmental Trading Account. This transfers revenue into the trading account to calculate Gross Profit."]];
-var score=0,done=Array(QS.length).fill(false);
+var QS=[["Sipho's Hardware made credit purchases: Tools R8 400, Paint R3 150, Electrical R8 820. What is the Creditors Control total?", ["R8 400", "R12 000", "R20 370", "R11 970"], 2, "Total = R8 400 + R3 150 + R8 820 = R20 370. Creditors Control always equals the sum of all department columns."], ["A customer returns paint worth R1 260 bought on credit. Which journal and column?", ["Sales Journal \u2014 Paint", "Purchases Returns \u2014 Paint", "Sales Returns Journal \u2014 Paint", "General Journal \u2014 Paint"], 2, "Goods returned BY a customer = Sales Returns Journal (Returns Inward). The Paint column is credited."], ["Cash Receipts Journal: Clothing R42 000, Shoes R28 500, Accessories R14 700. Total Sales column?", ["R70 500", "R85 200", "R56 700", "R42 000"], 1, "R42 000 + R28 500 + R14 700 = R85 200. Always add all dept columns to get the total."], ["One invoice covers R5 600 for Clothing and R3 200 for Shoes. How is it recorded?", ["Two separate lines", "One line: Creditors R8 800, Clothing R5 600, Shoes R3 200", "One line: R8 800 in every column", "Two lines of R4 400 each"], 1, "One invoice = one line. Creditors Control shows the total; each dept column shows its share."], ["Cash sales: Tools R6 300, Paint R2 100, Electrical R4 200. What does the Bank column show?", ["R6 300", "R2 100", "R12 600", "R4 200"], 2, "Bank = total cash received = R6 300 + R2 100 + R4 200 = R12 600."], ["Tools transfers R3 500 to Electrical. Electrical later transfers R1 200 back to Tools. Net position of Electrical?", ["Dr R3 500", "Dr R2 300", "Cr R2 300", "Dr R4 700"], 1, "Electrical: received R3 500 (Dr), gave back R1 200 (Cr). Net = Dr R2 300 \u2014 R2 300 more stock."], ["What is the total of any Interdepartmental Transfers Journal?", ["The largest transfer amount", "R0 always", "The sum of all debits only", "Depends on number of departments"], 1, "The total is ALWAYS R0. Every debit has an equal credit \u2014 no new value is created, stock just moves."], ["Paint Dept transferred R4 200 to Tools but the correct amount was R2 400. Correction entry?", ["Dr Tools R1 800 / Cr Paint R1 800", "Dr Paint R1 800 / Cr Tools R1 800", "Reverse everything and repost", "Dr Tools R4 200 / Cr Paint R4 200"], 1, "Original entry was R1 800 too much. To correct: Dr Paint R1 800 / Cr Tools R1 800 \u2014 reversing the excess."], ["Clothing Dept Purchases account: Purchases R85 000, Transfers In R12 000, Returns R8 500, Transfers Out R4 200, Closing Stock R18 300 (no opening stock). Cost of Sales?", ["R66 000", "R85 000", "R84 500", "R62 000"], 0, "COS = R85 000 + R12 000 - R8 500 - R4 200 - R18 300 = R66 000."], ["At year-end, the Purchases account is closed by:", ["Dr Purchases / Cr Bank", "Dr Trading Account / Cr Purchases", "Dr Purchases / Cr Trading Account", "Dr Capital / Cr Purchases"], 1, "Purchases is closed to the Departmental Trading Account: Dr Trading Acc / Cr Purchases."], ["Clothing Dept: Opening Stock R28 000, Purchases R142 000, Returns R6 300, Transfers In R8 400, Transfers Out R3 500, Closing Stock R32 200. COS?", ["R136 400", "R142 400", "R168 400", "R110 200"], 0, "COS = R28 000 + R142 000 - R6 300 + R8 400 - R3 500 - R32 200 = R136 400."], ["Shoes: Net Sales R185 000, COS R111 000. Clothing: Net Sales R240 000, COS R156 000. Which has better GP%?", ["Shoes 40%", "Clothing 35%", "Shoes 35%", "Both 40%"], 0, "Shoes GP% = R74 000 / R185 000 = 40%. Clothing GP% = R84 000 / R240 000 = 35%. Shoes wins."], ["Paint Dept Sales R98 000, Sales Returns R4 200. What is Net Sales on the Trading Statement?", ["R102 200", "R93 800", "R98 000", "R4 200"], 1, "Net Sales = Sales - Returns = R98 000 - R4 200 = R93 800. Always deduct returns first."], ["A department has GP% of 42% and Net Sales of R320 000. What is Cost of Sales?", ["R134 400", "R185 600", "R224 000", "R96 000"], 1, "GP = 42% x R320 000 = R134 400. COS = R320 000 - R134 400 = R185 600."], ["Opening Stock R45 000, Purchases R280 000, Returns R14 000, Transfers In R8 000, Transfers Out R6 000, Closing Stock R52 000, Net Sales R380 000. Gross Profit?", ["R119 000", "R261 000", "R99 000", "R109 000"], 0, "COS = R45 000 + R280 000 - R14 000 + R8 000 - R6 000 - R52 000 = R261 000. GP = R380 000 - R261 000 = R119 000."], ["Insurance R36 000 allocated by stock value: Tools R180 000, Paint R120 000, Electrical R60 000. Electrical's share?", ["R18 000", "R12 000", "R6 000", "R9 000"], 2, "Electrical = R60 000 / R360 000 x R36 000 = 1/6 x R36 000 = R6 000."], ["Salaries R120 000 split by staff: Tools 8, Paint 5, Electrical 3 (total 16). Paint's share?", ["R60 000", "R37 500", "R22 500", "R45 000"], 1, "Paint = 5/16 x R120 000 = R37 500."], ["Electricity R28 800 split equally (3 depts). Rent R54 000 by floor space: Tools 400m2, Paint 250m2, Electrical 150m2. Total expenses for Tools?", ["R36 600", "R34 500", "R9 600", "R27 000"], 0, "Electricity per dept = R9 600. Rent Tools = 400/800 x R54 000 = R27 000. Total = R36 600."], ["Depreciation R24 000 by equipment value: Clothing R80 000, Shoes R60 000, Accessories R40 000. Shoes' share?", ["R8 000", "R9 333", "R6 667", "R10 667"], 0, "Shoes = R60 000 / R180 000 x R24 000 = R8 000."], ["Which is a DIRECT expense for the Paint Department?", ["Rent for whole building", "General manager's salary", "Packaging used only by Paint", "Insurance on all stock"], 2, "Direct = traceable to ONE dept. Paint-only packaging is direct. Rent, GM salary, all-stock insurance are shared."], ["Tools: GP R85 000, Direct expenses R18 000, Rent R21 000, Electricity R7 200, Admin R12 000. Net Profit?", ["R85 000", "R26 800", "R67 000", "R58 200"], 1, "Net Profit = R85 000 - R18 000 - R21 000 - R7 200 - R12 000 = R26 800."], ["Electrical Dept shows a Net Loss for 1 year. What BEST supports a decision to close it?", ["Sales figures only", "GP% and Net Profit trend over 3 years", "Number of staff", "Opening stock value"], 1, "One year is not enough. A 3-year trend plus GP% shows whether it is consistently unprofitable."], ["GP R68 000. Direct expenses R15 200. Rent R18 000. Electricity R6 400. Manager salary R24 000. Net Profit/Loss?", ["Net Profit R4 400", "Net Loss R4 400", "Net Profit R52 800", "Net Loss R15 200"], 0, "Total expenses = R63 600. Net Profit = R68 000 - R63 600 = R4 400."], ["Dept A: GP% 38%, NP% 8%. Dept B: GP% 35%, NP% 14%. What does this show?", ["Dept A has better pricing", "Dept B controls expenses better", "Dept A is always more profitable", "Dept B has higher sales"], 1, "Dept A has higher gross margin but lower net \u2014 expenses eat into profit. Dept B is better managed."], ["GP% drops from 42% to 31%. Sales unchanged. Most likely cause?", ["Expenses increased", "Cost of Sales increased", "Manager resigned", "Sales returns increased"], 1, "GP% = GP/Sales. If sales are same but GP% fell, COS must have risen \u2014 supplier price increases or theft."], ["The Periodic Inventory System means stock is:", ["Counted daily by computer", "Only valued at year start", "Counted at END of accounting period", "Updated after every sale"], 2, "Periodic = physical stocktake at END of period to find Closing Stock. Not continuously updated."], ["COS was R156 000. Opening Stock R22 000. Closing Stock R18 000. Returns R8 000. Transfers Out R3 000. What were gross Purchases?", ["R163 000", "R159 000", "R147 000", "R155 000"], 0, "R156 000 = R22 000 + P - R8 000 - R3 000 - R18 000. P = R156 000 - R22 000 + R8 000 + R3 000 + R18 000 = R163 000."], ["Net Sales R420 000, COS R252 000, Total Expenses R134 400. GP% and NP%?", ["GP 30%, NP 8%", "GP 40%, NP 8%", "GP 40%, NP 2%", "GP 60%, NP 8%"], 1, "GP = R168 000. GP% = 40%. NP = R33 600. NP% = 8%."], ["Dept GP R94 500 on Net Sales R270 000. Target GP% is 40%. On target?", ["Yes \u2014 exactly 40%", "No \u2014 35%, below target", "Yes \u2014 42%", "No \u2014 30%, well below"], 1, "GP% = R94 500 / R270 000 = 35%. Below the 40% target by 5 percentage points."], ["Dept X uses storeroom 60%, Dept Y 40%. Storage costs R45 000. Dept X allocation?", ["R22 500", "R27 000", "R18 000", "R30 000"], 1, "Dept X = 60% x R45 000 = R27 000."], ["Clothing Dept Sales account has credit balance R385 000. Year-end closing entry?", ["Dr Sales R385 000 / Cr Trading Account R385 000", "Dr Trading Account / Cr Sales", "Dr Sales / Cr Capital", "Dr Revenue / Cr Sales"], 0, "Sales has a Cr balance. Close by Dr Sales R385 000 / Cr Trading Account R385 000."]];
+var score=0,done=[];
 function init(){
-  var w=document.getElementById('qwrap');
+  done=QS.map(function(){return false;});
+  var w=document.getElementById('qw');
   w.innerHTML='';
   QS.forEach(function(item,i){
     var q=item[0],opts=item[1],ans=item[2],exp=item[3];
@@ -79,46 +79,47 @@ function init(){
     s.id='s'+i;
     var oh=opts.map(function(o,j){
       return '<div class="opt" id="o'+i+'_'+j+'" onclick="pick('+i+','+j+','+ans+')">'
-        +'<div class="opt-ltr">'+String.fromCharCode(65+j)+'</div><span>'+o+'</span></div>';
+        +'<div class="oltr">'+String.fromCharCode(65+j)+'</div><span>'+o+'</span></div>';
     }).join('');
-    s.innerHTML='<div class="card"><div class="q-tag">Question '+(i+1)+' of '+QS.length+'</div>'
-      +'<div class="q-text">'+q+'</div>'
+    var back=i>0?'<button class="btn bk" onclick="go('+(i-1)+')">Back</button>':'';
+    var nxt=i<QS.length-1
+      ?'<button class="btn bg" id="nb'+i+'" onclick="go('+(i+1)+')" style="display:none">Next</button>'
+      :'<button class="btn bg" id="nb'+i+'" onclick="winScreen()" style="display:none">Results</button>';
+    s.innerHTML='<div class="card"><div class="qtag">Question '+(i+1)+' of '+QS.length+'</div>'
+      +'<div class="qtext">'+q+'</div>'
       +'<div class="opts">'+oh+'</div>'
       +'<div class="fb" id="fb'+i+'"></div></div>'
-      +'<div class="nav">'
-      +(i>0?'<button class="btn btn-back show" onclick="go('+(i-1)+')">← Back</button>':'')
-      +(i<QS.length-1?'<button class="btn btn-go" id="nb'+i+'" onclick="go('+(i+1)+')">Next →</button>':'')
-      +(i===QS.length-1?'<button class="btn btn-go" id="nb'+i+'" onclick="winScreen()">Results 🏆</button>':'')
-      +'</div>';
+      +'<div class="nav">'+back+nxt+'</div>';
     w.appendChild(s);
   });
   var ws=document.createElement('div');
-  ws.className='screen';ws.id='swin';
-  ws.innerHTML='<div class="win"><span class="win-e">🏆</span>'
-    +'<div class="ring"><div class="ring-big" id="wscore">0</div><div class="ring-lbl">out of 30</div></div>'
+  ws.className='screen';ws.id='sw';
+  ws.innerHTML='<div class="win"><span class="we">🏆</span>'
+    +'<div class="ring"><div class="rb" id="ws">0</div><div class="rl">out of 30</div></div>'
     +'<div class="sum">'
     +'<div class="sr"><span>Correct</span><span id="wc">0</span></div>'
     +'<div class="sr"><span>Wrong</span><span id="ww">0</span></div>'
     +'<div class="sr"><span>Score</span><span id="wp">0%</span></div>'
     +'</div>'
-    +'<div class="wmsg" id="wmsg"></div>'
-    +'<button class="btn btn-go show" style="max-width:260px;margin:0 auto" onclick="restart()">Try Again 🔄</button>'
+    +'<div class="wmsg" id="wm"></div>'
+    +'<button class="btn bg" style="max-width:240px;margin:0 auto" onclick="restart()">Try Again</button>'
     +'</div>';
   w.appendChild(ws);
 }
 function go(i){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on');});
   document.getElementById('s'+i).classList.add('on');
-  document.getElementById('ptxt').textContent=(i+1)+' / '+QS.length;
-  document.getElementById('pfill').style.width=(i/QS.length*100)+'%';
+  document.getElementById('mt').textContent=(i+1)+' / '+QS.length;
+  document.getElementById('pbf').style.width=(i/QS.length*100)+'%';
   window.scrollTo(0,0);
 }
 function pick(qi,oi,ans){
   if(done[qi])return;
   done[qi]=true;
   var ok=oi===ans;
-  if(ok){score++;document.getElementById('spill').textContent=score+' / '+QS.length;}
-  for(var j=0;j<QS[qi][1].length;j++){
+  if(ok){score++;document.getElementById('sp').textContent=score+' / '+QS.length;}
+  var n=QS[qi][1].length;
+  for(var j=0;j<n;j++){
     var el=document.getElementById('o'+qi+'_'+j);
     el.classList.add('off');
     if(j===ans)el.classList.add('correct');
@@ -128,27 +129,27 @@ function pick(qi,oi,ans){
   fb.className='fb on '+(ok?'ok':'no');
   fb.innerHTML=(ok?'✅ <strong>Correct!</strong> ':'❌ <strong>Not quite.</strong> ')+QS[qi][3];
   var nb=document.getElementById('nb'+qi);
-  if(nb)nb.classList.add('show');
+  if(nb)nb.style.display='block';
 }
 function winScreen(){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on');});
-  document.getElementById('swin').classList.add('on');
+  document.getElementById('sw').classList.add('on');
   var pct=Math.round(score/QS.length*100);
-  document.getElementById('wscore').textContent=score;
+  document.getElementById('ws').textContent=score;
   document.getElementById('wc').textContent=score;
   document.getElementById('ww').textContent=QS.length-score;
   document.getElementById('wp').textContent=pct+'%';
-  document.getElementById('pfill').style.width='100%';
-  document.getElementById('ptxt').textContent='Done!';
-  document.getElementById('wmsg').textContent=pct>=80?'🔥 Exam ready! You know this topic cold.':pct>=60?'💪 Strong effort. Review the ones you got wrong.':pct>=40?'📖 Good start. Go through the explanations and try again.':'🤝 Don't stress — read the study card then retry. You've got this.';
+  document.getElementById('pbf').style.width='100%';
+  document.getElementById('mt').textContent='Done!';
+  document.getElementById('wm').textContent=pct>=80?'Exam ready! You know this cold.':pct>=60?'Good effort. Review the ones you missed.':pct>=40?'Getting there. Read the explanations and retry.':'Keep going. Read the study card then try again.';
   window.scrollTo(0,0);
 }
 function restart(){
-  score=0;done=Array(QS.length).fill(false);
-  document.getElementById('spill').textContent='0 / '+QS.length;
+  score=0;
+  document.getElementById('sp').textContent='0 / '+QS.length;
   init();go(0);
 }
-document.addEventListener("DOMContentLoaded",init);
+document.addEventListener('DOMContentLoaded',function(){init();});
 </script>
 </body>
 </html>
