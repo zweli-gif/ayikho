@@ -719,7 +719,12 @@
     </div>
   </div>
 
+  
   <script src="quiz-bank.js" onerror="console.warn('quiz-bank.js not loaded')"></script>
+  <script src="mc-quiz-bank.js" onerror="console.warn('mc-quiz-bank.js not loaded')"></script>
+  <script src="ebm-quiz-bank.js" onerror="console.warn('ebm-quiz-bank.js not loaded')"></script>
+  <script src="cp-quiz-bank.js" onerror="console.warn('cp-quiz-bank.js not loaded')"></script>
+
   <script src="student-data.js" onerror="console.warn('student-data.js not loaded')"></script>
 
   <script>
@@ -727,18 +732,62 @@
     // QUIZ MODE APP — Complete Implementation
     // ═════════════════════════════════════════════════════════
 
-    const MODULES = [
-      'Accounting Concepts & Principles',
-      'Double Entry & Accounting Equation',
-      'Journals & Ledgers',
-      'Trial Balance',
-      'Cash Receipts & Payments Journals',
-      'Debtors & Creditors Journals',
-      'Value Added Tax (VAT)',
-      'Year-End Adjustments',
-      'Financial Statements',
-      'Bank Reconciliation'
-    ];
+    
+    const COURSE_MODULES = {
+      'fa': [
+        'Accounting Concepts & Principles',
+        'Double Entry & Accounting Equation',
+        'Journals & Ledgers',
+        'Trial Balance',
+        'Cash Receipts & Payments Journals',
+        'Debtors & Creditors Journals',
+        'Value Added Tax (VAT)',
+        'Year-End Adjustments'
+      ],
+      'mc': [
+        'Communication Theory',
+        'Meeting Procedures',
+        'Business Letters',
+        'Memos and Reports',
+        'Oral Communication',
+        'Visual Communication',
+        'Reading & Comprehension',
+        'Language & Editing'
+      ],
+      'cp': [
+        'Intro to Computers',
+        'Data Management',
+        'Word Processing',
+        'Spreadsheets',
+        'Presentations',
+        'Internet & Email',
+        'Cyber Security',
+        'Final Project'
+      ],
+      'ebm': [
+        'Intro to Entrepreneurship',
+        'Creativity & Innovation',
+        'Market Feasibility',
+        'Financial Feasibility',
+        'The Business Plan',
+        'Starting the Business',
+        'Managing the Business',
+        'Ethics & Social Responsibility'
+      ]
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const course = urlParams.get('course') || 'fa';
+    let MODULES = COURSE_MODULES[course] || COURSE_MODULES['fa'];
+
+    function getQuizBank() {
+      if (course === 'fa') return window.AYIKHO_QUIZ_BANK;
+      if (course === 'mc') return window.MC_QUIZ_BANK;
+      if (course === 'cp') return window.CP_QUIZ_BANK;
+      if (course === 'ebm') return window.EBM_QUIZ_BANK;
+      return window.AYIKHO_QUIZ_BANK;
+    }
+
 
     const CORRECT_RESPONSES = [
       'Yebo! You nailed it!',
@@ -808,8 +857,8 @@
       quizAnswers = [];
 
       // Load quiz data from quiz-bank.js if available
-      if (typeof window.AYIKHO_QUIZ_BANK !== 'undefined' && window.AYIKHO_QUIZ_BANK[moduleId]) {
-        const bankModule = window.AYIKHO_QUIZ_BANK[moduleId];
+      if (getQuizBank() && getQuizBank()[moduleId]) {
+        const bankModule = getQuizBank()[moduleId];
         // Map bank format {q, options, correct} → quiz format {question, options, correctIndex, explanation}
         const allQuestions = bankModule.questions.map((item, idx) => ({
           id: idx + 1,
@@ -1051,5 +1100,33 @@
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const qs = new URLSearchParams(window.location.search);
+      const c = qs.get('course') || 'fa';
+      const root = document.documentElement;
+      if (c === 'mc') {
+        root.style.setProperty('--fa', '#2563EB');
+        root.style.setProperty('--fa-l', '#60A5FA');
+        root.style.setProperty('--fa-d', '#1E3A8A');
+        root.style.setProperty('--fa-xs', '#EFF6FF');
+        root.style.setProperty('--fa-sm', '#DBEAFE');
+      } else if (c === 'cp') {
+        root.style.setProperty('--fa', '#8B5CF6');
+        root.style.setProperty('--fa-l', '#A78BFA');
+        root.style.setProperty('--fa-d', '#4C1D95');
+        root.style.setProperty('--fa-xs', '#F5F3FF');
+        root.style.setProperty('--fa-sm', '#EDE9FE');
+      } else if (c === 'ebm') {
+        root.style.setProperty('--fa', '#F59E0B');
+        root.style.setProperty('--fa-l', '#FCD34D');
+        root.style.setProperty('--fa-d', '#78350F');
+        root.style.setProperty('--fa-xs', '#FFFBEB');
+        root.style.setProperty('--fa-sm', '#FEF3C7');
+      }
+    });
+  </script>
+
 </body>
 </html>

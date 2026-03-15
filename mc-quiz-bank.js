@@ -514,3 +514,15 @@ const mcQuizBank = {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = mcQuizBank;
 }
+
+// Map format for the app
+window.MC_QUIZ_BANK = {
+    1: { questions: mcQuizBank.module1 },
+    2: { questions: mcQuizBank.module2 },
+    3: { questions: mcQuizBank.module3 },
+    4: { questions: mcQuizBank.module4 },
+    5: { questions: mcQuizBank.module5 },
+    6: { questions: mcQuizBank.module6 },
+    7: { questions: mcQuizBank.module7 },
+    8: { questions: mcQuizBank.module8 }
+};

@@ -279,7 +279,7 @@ window.loginUser = async function () {
       window.parent.postMessage('onboardingComplete', '*');
       try { if (window.parent.onboardingComplete) window.parent.onboardingComplete(); } catch (e) { }
     } else {
-      window.location.href = 'ayikho-prototype.html';
+      window.location.href = 'app.html';
     }
   } catch (err) {
     console.error("Login err:", err);
