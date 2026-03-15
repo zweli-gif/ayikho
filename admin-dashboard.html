@@ -326,9 +326,10 @@ console.log('[Dashboard] Firestore loaded:',C);
 
 // Load individual user profiles
 // ── LIVE LISTENER — updates dashboard the moment any user registers ──
-onSnapshot(collection(db,'users'), function(snap) {
-  var allUsers = [];
-  snap.forEach(function(d){ allUsers.push({id:d.id,...d.data()}); });
+onSnapshot(collection(db,'users'), function(usersSnap) {
+  // Also pull progress/ for users who registered before the users/ write was wired up
+  getDocs(collection(db,'progress')).then(function(progressSnap) {
+  var allUsers = _mergeUserDocs(usersSnap, progressSnap);
   allUsers.sort(function(a,b){ return (b.registeredDate||'').localeCompare(a.registeredDate||''); });
   window._ayikhoUsers = allUsers;
   console.log('[Dashboard] Live update — users:', allUsers.length);
@@ -366,6 +367,7 @@ onSnapshot(collection(db,'users'), function(snap) {
   // Flash the north star to signal a live update
   var nsEl=document.getElementById('ns-val');
   if(nsEl){ nsEl.style.transition='color .3s'; nsEl.style.color='#22C55E'; setTimeout(function(){ nsEl.style.color=''; },1200); }
+  }).catch(function(){});
 });
 console.log('[Dashboard] Live listener attached to users/ collection');
 }catch(e){console.warn('[Dashboard] Firestore failed, zeros:',e);for(var i=0;i<30;i++){var d=new Date();d.setDate(d.getDate()-(29-i));daily.push({date:d.toISOString().slice(0,10)})}}
@@ -592,9 +594,11 @@ function manualRefresh(){
       var{getFirestore,collection,getDocs}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
       var app=getApps().length?getApps()[0]:initializeApp(window.FIREBASE_CONFIG,'ayikho-dash');
       var db=getFirestore(app);
-      var snap=await getDocs(collection(db,'users'));
-      var users=[];
-      snap.forEach(function(d){users.push({id:d.id,...d.data()});});
+      var [usersSnap, progressSnap] = await Promise.all([
+        getDocs(collection(db,'users')),
+        getDocs(collection(db,'progress'))
+      ]);
+      var users = _mergeUserDocs(usersSnap, progressSnap);
       users.sort(function(a,b){return(b.registeredDate||'').localeCompare(a.registeredDate||'');});
       window._ayikhoUsers=users;
       window._masterUsers=users;
@@ -627,6 +631,38 @@ function manualRefresh(){
       console.warn('[Dashboard] Manual refresh failed:', e);
     }
   })();
+}
+
+
+function _mergeUserDocs(usersSnap, progressSnap) {
+  var map = {};
+  // First pass: progress/ collection (older registrations)
+  progressSnap.forEach(function(d) {
+    var data = d.data();
+    var p = data.profile || {};
+    if (!p.name && !p.phone) return; // skip empty
+    map[d.id] = {
+      id: d.id,
+      name: p.name || '',
+      gender: p.gender || '',
+      phone: p.phone || '',
+      province: p.province || '',
+      college: p.college || '',
+      level: p.level || '',
+      course: p.course || '',
+      subjects: p.subjects || [],
+      fiveYearGoal: p.fiveYearGoal || '',
+      dream: p.dream || '',
+      registeredDate: p.registeredDate || (data.stats && data.stats.lastActiveDate) || ''
+    };
+  });
+  // Second pass: users/ collection (newer registrations — overwrite if exists)
+  usersSnap.forEach(function(d) {
+    var data = d.data();
+    if (!data.name && !data.phone) return;
+    map[d.id] = { id: d.id, ...data };
+  });
+  return Object.values(map);
 }
 
 </script>
