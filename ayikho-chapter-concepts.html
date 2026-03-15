@@ -900,6 +900,19 @@
         .ashki-text { font:400 14px/1.5 'Outfit'; color:var(--ink); }
         @keyframes ashkiSlideIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         @keyframes ashki-pop { from { opacity:0; transform:translateX(-50%) scale(.7) translateY(20px); } to { opacity:1; transform:translateX(-50%) scale(1) translateY(0); } }
+
+        /* ── IFRAME OVERRIDE — removes dark bg when loaded inside app ── */
+        html { background: white !important; }
+        body { background: white !important; overflow: auto !important; }
+        .phone-frame {
+            width: 100% !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
     </style>
     <script src="tracking.js" onerror="window.ayikhoTracker=null"></script>
     <script src="student-data.js" onerror="console.log('Student data not loaded')"></script>
