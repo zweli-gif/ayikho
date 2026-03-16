@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · Entrepreneurship N4 Capstone</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--c1:#059669;--c2:#047857;--gold:#F59E0B;--green:#22C55E;--greenxs:#F0FDF4;--rose:#F43F5E;--ink:#1A0A3A;--mut:#6B5A8A;--bord:#DDD5F5;--surf:#F7F4FF;}
+body{font-family:Outfit,sans-serif;background:#05090F;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.phone{width:375px;background:white;border-radius:50px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.85)}
+.sb{height:44px;background:var(--c2);color:white;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-family:"JetBrains Mono",monospace;font-size:11px}
+.intro{min-height:812px;display:flex;flex-direction:column}
+.intro-hero{background:linear-gradient(145deg,var(--c2),var(--c1));padding:48px 24px 36px;color:white;text-align:center}
+.badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:5px 16px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
+.intro-hero h1{font-family:"Playfair Display",serif;font-size:30px;font-weight:900;margin-bottom:10px;line-height:1.2}
+.intro-hero p{font-size:13px;opacity:.8;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:24px;background:var(--surf)}
+.stat{background:white;border-radius:14px;padding:16px 8px;text-align:center;border:1px solid var(--bord)}
+.stat-n{font-size:24px;font-weight:900;color:var(--c1)}
+.stat-l{font-size:10px;color:var(--mut);font-weight:600;margin-top:2px}
+.info{padding:0 24px 16px;background:var(--surf)}
+.ir{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bord);font-size:13px;color:var(--mut)}
+.ir:last-child{border:none}
+.start-btn{margin:20px 24px 40px;background:var(--c1);color:white;border:none;border-radius:16px;padding:18px;font-family:Outfit,sans-serif;font-weight:900;font-size:16px;cursor:pointer;width:calc(100% - 48px)}
+.exam{display:none;flex-direction:column;min-height:812px}
+.ehdr{background:var(--c2);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.epw{flex:1;margin:0 12px}
+.ep{height:6px;background:rgba(255,255,255,.2);border-radius:10px;overflow:hidden}
+.epf{height:100%;background:var(--gold);border-radius:10px;transition:width .4s;width:0}
+.qn{font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;color:white;white-space:nowrap}
+.es{font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;color:rgba(255,255,255,.7);white-space:nowrap}
+.ebody{flex:1;padding:20px;overflow-y:auto}
+.qcard{background:var(--surf);border-radius:16px;padding:18px;margin-bottom:16px;border-left:4px solid var(--c1)}
+.qtag{font-size:9px;font-weight:800;color:var(--c1);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.qtext{font-size:14px;font-weight:700;color:var(--ink);line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.opt{background:white;border:2px solid var(--bord);border-radius:12px;padding:13px 15px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.opt:hover{border-color:var(--c1);background:var(--surf)}
+.oltr{width:27px;height:27px;border-radius:8px;background:var(--surf);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:var(--mut);flex-shrink:0}
+.opt.correct{border-color:var(--green);background:var(--greenxs);color:#15803D}
+.opt.correct .oltr{background:var(--green);color:white}
+.opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.07);color:#be123c}
+.opt.wrong .oltr{background:var(--rose);color:white}
+.opt.off{pointer-events:none}
+.fb{border-radius:12px;padding:13px 15px;font-size:12px;line-height:1.7;margin-bottom:12px;display:none}
+.fb.on{display:block}
+.fb.ok{background:var(--greenxs);border:1.5px solid var(--green);color:#15803D}
+.fb.no{background:rgba(244,63,94,.07);border:1.5px solid var(--rose);color:#be123c}
+.nav{display:flex;gap:10px;padding:0 20px 28px}
+.btn{flex:1;border:none;border-radius:12px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;cursor:pointer}
+.bp{background:var(--c1);color:white}
+.bg{background:var(--surf);color:var(--mut);border:1.5px solid var(--bord)}
+.dn{display:none}
+.win{display:none;flex-direction:column;min-height:812px}
+.wb{flex:1;padding:24px;overflow-y:auto}
+.whero{background:linear-gradient(145deg,var(--c2),var(--c1));border-radius:20px;padding:32px 20px;text-align:center;color:white;margin-bottom:20px}
+.we{font-size:64px;display:block;margin-bottom:16px}
+.ring{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#D97706);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--ink)}
+.rb{font-size:44px;font-weight:900;line-height:1}
+.rl{font-size:11px;font-weight:700;opacity:.8}
+.wt{font-family:"Playfair Display",serif;font-size:24px;font-weight:900;margin-bottom:8px}
+.ws{font-size:13px;opacity:.8;line-height:1.5}
+.sum{background:rgba(255,255,255,.1);border-radius:14px;padding:16px;margin-top:16px;text-align:left}
+.sr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.7)}
+.sr:last-child{border:none;font-weight:800;color:white}
+.retry{background:var(--c1);color:white;border:none;border-radius:14px;padding:16px;font-family:Outfit,sans-serif;font-weight:800;font-size:15px;cursor:pointer;width:100%;margin-bottom:24px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="sb"><span>09:41</span><span>EBM N4</span><span>4G 🔋</span></div>
+  <div class="intro" id="intro">
+    <div class="intro-hero">
+      <div class="badge">EBM N4 · Final Exam</div>
+      <h1>Capstone Exam</h1>
+      <p>Test your knowledge across all 8 modules of Entrepreneurship N4</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">16</div><div class="stat-l">Questions</div></div>
+      <div class="stat"><div class="stat-n">8</div><div class="stat-l">Modules</div></div>
+      <div class="stat"><div class="stat-n">60%</div><div class="stat-l">To pass</div></div>
+    </div>
+    <div class="info">
+      <div class="ir">📚 <span>Covers <strong>all 8 modules</strong></span></div>
+      <div class="ir">✅ <span>Instant feedback on <strong>every answer</strong></span></div>
+      <div class="ir">🎯 <span>Pass mark: <strong>60% (10/16 correct)</strong></span></div>
+    </div>
+    <button class="start-btn" onclick="startExam()">Begin Exam →</button>
+  </div>
+  <div class="exam" id="exam">
+    <div class="ehdr">
+      <div class="qn" id="qn">Q1 / 16</div>
+      <div class="epw"><div class="ep"><div class="epf" id="epf"></div></div></div>
+      <div class="es" id="es">0 correct</div>
+    </div>
+    <div class="ebody" id="ebody"></div>
+    <div class="nav">
+      <button class="btn bg dn" id="bb" onclick="goQ(cur-1)">← Back</button>
+      <button class="btn bp dn" id="nb" onclick="goNext()">Next →</button>
+    </div>
+  </div>
+  <div class="win" id="win">
+    <div class="wb">
+      <div class="whero">
+        <span class="we" id="we">🎓</span>
+        <div class="ring"><div class="rb" id="ws">0</div><div class="rl">out of 16</div></div>
+        <div class="wt" id="wt">Results</div>
+        <div class="ws" id="wsub"></div>
+        <div class="sum">
+          <div class="sr"><span>Correct</span><span id="wc">0</span></div>
+          <div class="sr"><span>Wrong</span><span id="ww">0</span></div>
+          <div class="sr"><span>Score</span><span id="wpct">0%</span></div>
+          <div class="sr"><span>Result</span><span id="wres">-</span></div>
+        </div>
+      </div>
+      <button class="retry" onclick="retry()">Try Again 🔄</button>
+    </div>
+  </div>
+</div>
+<script>
+var MODS=["M1 Intro to Entrepreneurship", "M2 Creativity & Ideas", "M3 Market Feasibility", "M4 Financial Feasibility", "M5 Business Plan", "M6 Starting a Business", "M7 Managing a Business", "M8 Business Ethics"];
+var MOD_MAP=[0, 0, 1, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+var QS=[["What best describes an entrepreneur?", ["A person who works for a salary", "A person who identifies opportunities and takes risks to start a business", "A government official who manages state resources", "A person who invests in the stock market only"], 1, "An entrepreneur identifies a gap in the market, takes calculated risks, and creates a business to fill that gap. They are both innovators and risk-takers."], ["Which of the following is a characteristic of a successful entrepreneur?", ["Avoids all risk", "Relies entirely on others for decisions", "Shows initiative and is self-motivated", "Prefers routine and stability"], 2, "Key entrepreneurial traits: initiative, self-motivation, calculated risk-taking, creativity, resilience, and the ability to solve problems."], ["Brainstorming is a creativity technique where:", ["Only the manager contributes ideas", "All ideas are immediately evaluated and rejected if weak", "As many ideas as possible are generated without immediate criticism", "Only written ideas are accepted"], 2, "Brainstorming = generate as many ideas as possible first, evaluate later. No idea is too crazy. Criticism during brainstorming kills creativity."], ["A SWOT analysis examines:", ["Sales, Workers, Operations, Technology", "Strengths, Weaknesses, Opportunities, Threats", "Strategy, Workflow, Output, Timing", "Skills, Wages, Organisation, Training"], 1, "SWOT = Strengths (internal positive), Weaknesses (internal negative), Opportunities (external positive), Threats (external negative)."], ["A market feasibility study is done to:", ["Calculate the profit of the business", "Determine if there is enough demand for the product or service", "Register the business with CIPC", "Set the salary of employees"], 1, "Market feasibility = is there a market? Who are the customers? What do they want? How big is the market? What does the competition look like?"], ["The target market refers to:", ["All people in the country", "The specific group of customers the business aims to serve", "The market where you buy raw materials", "The stock exchange"], 1, "Target market = the specific segment of people most likely to buy your product. Defined by age, income, location, interests, needs etc."], ["Break-even point is when:", ["The business makes maximum profit", "Total Revenue equals Total Costs \u2014 neither profit nor loss", "The business closes down", "Fixed costs equal variable costs"], 1, "Break-even = the point where you've covered ALL costs. Sales above break-even = profit. Sales below = loss. Critical for financial planning."], ["Fixed costs are costs that:", ["Change directly with the level of production", "Stay the same regardless of how much is produced", "Only occur once when the business starts", "Are paid to the government"], 1, "Fixed costs don't change with output \u2014 rent, insurance, manager salaries. Variable costs change with output \u2014 materials, electricity, packaging."], ["If a product costs R80 to make and is sold for R120, what is the mark-up percentage?", ["33%", "40%", "50%", "25%"], 2, "Mark-up % = (Selling Price \u2212 Cost) / Cost \u00d7 100 = (R120 \u2212 R80) / R80 \u00d7 100 = R40/R80 \u00d7 100 = 50%."], ["A business plan is important because:", ["It guarantees the business will succeed", "It is required by law for all businesses", "It guides the entrepreneur and is needed to apply for funding", "It replaces the need for market research"], 2, "A business plan is a roadmap \u2014 it guides decisions and is essential when applying for a loan or investment. It doesn't guarantee success."], ["The executive summary of a business plan should:", ["Be 20 pages long", "Appear at the end of the plan", "Provide a brief overview of the entire plan and appear first", "Only include financial projections"], 2, "Executive summary = concise overview of the whole plan. Goes FIRST. It's what investors read first \u2014 if it doesn't impress, they stop reading."], ["CIPC stands for:", ["Companies and Intellectual Property Commission", "Central Investment and Property Council", "Commercial Industry and Private Companies", "Cape Investment and Property Corporation"], 0, "CIPC = Companies and Intellectual Property Commission. This is where South African businesses register their company names and structures."], ["A sole proprietor is:", ["A business owned by 2\u201320 people", "A business owned and run by one person", "A listed company on the stock exchange", "A non-profit organisation"], 1, "Sole proprietor = one owner, full control, full personal liability. Simplest business structure. No separation between owner and business legally."], ["Cash flow management means:", ["Maximising profit at all costs", "Ensuring enough cash is available to pay expenses when they fall due", "Investing all surplus cash in property", "Avoiding paying suppliers"], 1, "Cash flow = timing of money in vs money out. A profitable business can still fail if it runs out of cash. Managing cash flow keeps the business alive."], ["Corporate Social Responsibility (CSR) means:", ["Paying dividends to shareholders", "A business contributing positively to society and the environment", "Avoiding taxes legally", "Marketing the business on social media"], 1, "CSR = businesses taking responsibility for their impact on society and the environment. Includes community projects, ethical sourcing, environmental care."], ["Which of the following is an example of UNETHICAL business behaviour?", ["Paying employees on time", "Advertising products honestly", "Offering a bribe to win a tender", "Keeping accurate financial records"], 2, "Bribing officials to win contracts is illegal and unethical. Ethical businesses compete fairly, are honest, and comply with laws."]];
+var cur=0,score=0,done=[],rendered=[];
+function startExam(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("exam").style.display="flex";
+  done=QS.map(function(){return false;});
+  rendered=QS.map(function(){return false;});
+  score=0;cur=0;renderQ(0);
+}
+function renderQ(i){
+  var body=document.getElementById("ebody");
+  if(!rendered[i]){
+    rendered[i]=true;
+    var q=QS[i];
+    var div=document.createElement("div");
+    div.id="qb"+i;
+    var oh=q[1].map(function(o,j){
+      return "<div class='opt' id='o"+i+"_"+j+"' onclick='pick("+i+","+j+","+q[2]+")'>"
+        +"<div class='oltr'>"+String.fromCharCode(65+j)+"</div><span>"+o+"</span></div>";
+    }).join("");
+    div.innerHTML="<div class='qcard'><div class='qtag'>"+MODS[MOD_MAP[i]]+"</div><div class='qtext'>"+q[0]+"</div></div>"
+      +"<div class='opts'>"+oh+"</div><div class='fb' id='fb"+i+"'></div>";
+    body.appendChild(div);
+  }
+  document.querySelectorAll("[id^='qb']").forEach(function(b){b.style.display="none";});
+  var bl=document.getElementById("qb"+i); if(bl)bl.style.display="block";
+  document.getElementById("qn").textContent="Q"+(i+1)+" / "+QS.length;
+  document.getElementById("epf").style.width=(i/QS.length*100)+"%";
+  document.getElementById("bb").className="btn bg"+(i===0?" dn":"");
+  if(done[i]){
+    document.getElementById("nb").className="btn bp";
+    document.getElementById("nb").textContent=i<QS.length-1?"Next →":"See Results 🏆";
+  }else{document.getElementById("nb").className="btn bp dn";}
+  document.getElementById("ebody").scrollTop=0;
+}
+function pick(qi,oi,ans){
+  if(done[qi])return;
+  done[qi]=true;
+  var ok=oi===ans;
+  if(ok){score++;document.getElementById("es").textContent=score+" correct";}
+  var n=QS[qi][1].length;
+  for(var j=0;j<n;j++){
+    var el=document.getElementById("o"+qi+"_"+j);
+    el.classList.add("off");
+    if(j===ans)el.classList.add("correct");
+    else if(j===oi&&!ok)el.classList.add("wrong");
+  }
+  var fb=document.getElementById("fb"+qi);
+  fb.className="fb on "+(ok?"ok":"no");
+  fb.innerHTML=(ok?"✅ <strong>Correct!</strong> ":"❌ <strong>Not quite.</strong> ")+QS[qi][3];
+  document.getElementById("nb").className="btn bp";
+  document.getElementById("nb").textContent=qi<QS.length-1?"Next →":"See Results 🏆";
+}
+function goQ(i){cur=i;renderQ(i);}
+function goNext(){if(cur<QS.length-1){cur++;renderQ(cur);}else{showWin();}}
+function showWin(){
+  document.getElementById("exam").style.display="none";
+  document.getElementById("win").style.display="flex";
+  var pct=Math.round(score/QS.length*100);
+  var pass=score>=10;
+  document.getElementById("ws").textContent=score;
+  document.getElementById("wc").textContent=score;
+  document.getElementById("ww").textContent=QS.length-score;
+  document.getElementById("wpct").textContent=pct+"%";
+  document.getElementById("wres").textContent=pass?"✅ PASS":"❌ Not yet";
+  document.getElementById("wt").textContent=pass?"You passed!":"Keep studying";
+  document.getElementById("we").textContent=pct>=80?"🎓":pct>=60?"💪":"📖";
+  document.getElementById("wsub").textContent=pct>=80?"Excellent! You are exam ready.":pass?"Good work! Review the modules you struggled with.":"Go back to weak modules and retry.";
+}
+function retry(){
+  document.getElementById("win").style.display="none";
+  document.getElementById("ebody").innerHTML="";
+  startExam();
+}
+</script>
+</body>
+</html>
