@@ -330,15 +330,7 @@ function demoChapter(num,label){
 var s=SUBJ[curSubj];var m=s.m[num]||{n:label,t:'8 min'};
 var col=s.c;var cd=s.cd;
 return '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Outfit,sans-serif;background:#fff;color:#1A0A3A;height:100vh;display:flex;flex-direction:column;overflow:hidden}.scr{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}.hero{background:linear-gradient(135deg,'+col+','+cd+');color:white;padding:60px 24px 28px;position:relative;overflow:hidden}.hero::after{content:"";position:absolute;bottom:0;left:0;right:0;height:20px;background:white;border-radius:20px 20px 0 0}.hero-num{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-bottom:6px}.hero-title{font-size:24px;font-weight:900;letter-spacing:-.5px;margin-bottom:6px}.hero-meta{font-size:12px;opacity:.7;display:flex;gap:12px}.pad{padding:24px}.tldr{background:#F5F0FF;border-left:3px solid #7C3AED;border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:20px}.tldr-tag{font-size:10px;font-weight:700;color:#7C3AED;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}.tldr-text{font-size:13px;color:#4C1A99;line-height:1.6}h2{font-size:18px;font-weight:800;margin-bottom:8px}p{font-size:14px;color:#6B5A8A;line-height:1.7;margin-bottom:16px}.example{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:14px;padding:14px 16px;margin-bottom:20px}.example-tag{font-size:10px;font-weight:700;color:#B45309;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}.example-text{font-size:13px;color:#92400E;line-height:1.6}.exam-tip{background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:14px;padding:14px 16px;margin-bottom:20px}.exam-tag{font-size:10px;font-weight:700;color:#15803D;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}.exam-text{font-size:13px;color:#166534;line-height:1.6}.foot{padding:16px 24px 40px;flex-shrink:0;display:flex;gap:10px}.btn{flex:1;border:none;border-radius:14px;padding:16px;font-family:Outfit;font-weight:800;font-size:14px;cursor:pointer}.btn-back{background:#F7F4FF;color:#7C3AED}.btn-next{background:'+col+';color:white}</style></head><body><div class="scr"><div class="hero"><div class="hero-num">'+s.personality+' · Module '+num+' of '+s.cnt+'</div><div class="hero-title">'+m.n+'</div><div class="hero-meta"><span>⏱ '+m.t+'</span><span>🎬 Video lesson</span><span>❓ 3 questions</span></div></div><div class="pad"><div class="tldr"><div class="tldr-tag">💬 TL;DR</div><div class="tldr-text">This is a demo chapter running in standalone mode. In the real app, this loads the full interactive lesson with video, examples, quizzes, and the win screen.</div></div><h2>How this chapter works</h2><p>When deployed to the repo, tapping this module loads the real chapter file (<code>'+m.f+'</code>) with the full screen-stack navigation: intro → video player → lesson screens → SA examples → quiz questions → win screen.</p><p>Each chapter follows the same structure: Module tag → Title → TL;DR → Explainer in plain English → South African example → Key terms → Exam callout.</p><div class="example"><div class="example-tag">🇿🇦 SA Example</div><div class="example-text">Every chapter uses local context to explain concepts. Sipho\'s Car Wash for double entry. Mama Nkosi\'s spaza shop for journals. SARS for VAT. The taxi rank for cash flows.</div></div><div class="exam-tip"><div class="exam-tag">⭐ Exam callout</div><div class="exam-text">Every chapter ends with "This is how it appears in the FA N4 exam" — so students know exactly what format to expect.</div></div></div></div><div class="foot"><button class="btn btn-back" onclick="parent.postMessage({type:\'goHome\'},\'*\')">← Back home</button><button class="btn btn-next" onclick="parent.postMessage({type:\'moduleComplete\',moduleId:'+num+'},\'*\');parent.postMessage({type:\'goHome\'},\'*\')">Complete ✓</button></div>
-<script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('/sw.js').then(function(reg){
-      console.log('[PWA] Service worker registered:', reg.scope);
-    }).catch(function(e){ console.log('[PWA] SW failed:', e); });
-  });
-}
-</script>
+
 </body></html>';}
 function loadIframe(src,label,num){
 var ld=document.getElementById('loading');document.getElementById('ld-name').textContent=label||'';ld.classList.add('show');
@@ -525,6 +517,15 @@ window.doLogin = async function(){
     err.textContent=msg; btn.textContent='Log in'; btn.disabled=false;
   }
 };
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(r){console.log('[PWA]',r.scope);})
+      .catch(function(e){console.log('[PWA] fail',e);});
+  });
+}
 </script>
 </body>
 </html>
