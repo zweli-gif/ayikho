@@ -389,6 +389,8 @@ document.addEventListener('DOMContentLoaded',function(){
 /* ?reset in URL = full wipe, shows onboarding */
 if(location.search.indexOf('reset')>-1){if(window.ayikhoData){window.ayikhoData.data.onboardingComplete=false;window.ayikhoData.data.profile={name:'',province:'',college:'',phone:'',currentMark:0,targetMark:70,createdAt:Date.now()};window.ayikhoData._save()}localStorage.clear();history.replaceState(null,'',location.pathname);location.reload();return}
 makeNav('nav0','home');makeNav('nav1','progress');makeNav('nav2','badges');makeNav('nav3','profile');
+// Make overlay interactive immediately so welcome screen buttons work
+document.getElementById('onb-overlay').classList.add('interactive');
 genBadges();renderMolweni();renderLB();renderComm();renderMoodCal();
 if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
 // Always check Firebase Auth — single source of truth for login state
@@ -405,7 +407,7 @@ if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
         authResolved=true;
         var done=false;
         try{done=!!(localStorage.getItem('ayikho_profile')&&window.ayikhoData&&window.ayikhoData.isOnboardingComplete())}catch(e){}
-        if(done){onbDone=true;document.getElementById('onb-overlay').style.display='none';showMoodCheck();}
+        if(done){onbDone=true;document.getElementById('onb-overlay').classList.remove('interactive');document.getElementById('onb-overlay').style.display='none';showMoodCheck();}
         else{onbNext('login');}
       }
     },800);
@@ -437,7 +439,7 @@ if(window.ayikhoAnalytics)window.ayikhoAnalytics.trackSession();
     // Firebase unavailable — localStorage fallback
     var done=false;
     try{done=!!(localStorage.getItem('ayikho_profile'))}catch(ex){}
-    if(done){onbDone=true;document.getElementById('onb-overlay').style.display='none';showMoodCheck();}
+    if(done){onbDone=true;document.getElementById('onb-overlay').classList.remove('interactive');document.getElementById('onb-overlay').style.display='none';showMoodCheck();}
   }
 })();
 /* no data layer = first time user, onboarding shows by default */
