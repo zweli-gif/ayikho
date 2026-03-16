@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · Computer Practice N4 Capstone</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--c1:#0284C7;--c2:#075985;--gold:#F59E0B;--green:#22C55E;--greenxs:#F0FDF4;--rose:#F43F5E;--ink:#1A0A3A;--mut:#6B5A8A;--bord:#DDD5F5;--surf:#F7F4FF;}
+body{font-family:Outfit,sans-serif;background:#05090F;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.phone{width:375px;background:white;border-radius:50px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.85)}
+.sb{height:44px;background:var(--c2);color:white;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-family:"JetBrains Mono",monospace;font-size:11px}
+.intro{min-height:812px;display:flex;flex-direction:column}
+.intro-hero{background:linear-gradient(145deg,var(--c2),var(--c1));padding:48px 24px 36px;color:white;text-align:center}
+.badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:5px 16px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
+.intro-hero h1{font-family:"Playfair Display",serif;font-size:30px;font-weight:900;margin-bottom:10px;line-height:1.2}
+.intro-hero p{font-size:13px;opacity:.8;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:24px;background:var(--surf)}
+.stat{background:white;border-radius:14px;padding:16px 8px;text-align:center;border:1px solid var(--bord)}
+.stat-n{font-size:24px;font-weight:900;color:var(--c1)}
+.stat-l{font-size:10px;color:var(--mut);font-weight:600;margin-top:2px}
+.info{padding:0 24px 16px;background:var(--surf)}
+.ir{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bord);font-size:13px;color:var(--mut)}
+.ir:last-child{border:none}
+.start-btn{margin:20px 24px 40px;background:var(--c1);color:white;border:none;border-radius:16px;padding:18px;font-family:Outfit,sans-serif;font-weight:900;font-size:16px;cursor:pointer;width:calc(100% - 48px)}
+.exam{display:none;flex-direction:column;min-height:812px}
+.ehdr{background:var(--c2);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.epw{flex:1;margin:0 12px}
+.ep{height:6px;background:rgba(255,255,255,.2);border-radius:10px;overflow:hidden}
+.epf{height:100%;background:var(--gold);border-radius:10px;transition:width .4s;width:0}
+.qn{font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;color:white;white-space:nowrap}
+.es{font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;color:rgba(255,255,255,.7);white-space:nowrap}
+.ebody{flex:1;padding:20px;overflow-y:auto}
+.qcard{background:var(--surf);border-radius:16px;padding:18px;margin-bottom:16px;border-left:4px solid var(--c1)}
+.qtag{font-size:9px;font-weight:800;color:var(--c1);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.qtext{font-size:14px;font-weight:700;color:var(--ink);line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.opt{background:white;border:2px solid var(--bord);border-radius:12px;padding:13px 15px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.opt:hover{border-color:var(--c1);background:var(--surf)}
+.oltr{width:27px;height:27px;border-radius:8px;background:var(--surf);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:var(--mut);flex-shrink:0}
+.opt.correct{border-color:var(--green);background:var(--greenxs);color:#15803D}
+.opt.correct .oltr{background:var(--green);color:white}
+.opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.07);color:#be123c}
+.opt.wrong .oltr{background:var(--rose);color:white}
+.opt.off{pointer-events:none}
+.fb{border-radius:12px;padding:13px 15px;font-size:12px;line-height:1.7;margin-bottom:12px;display:none}
+.fb.on{display:block}
+.fb.ok{background:var(--greenxs);border:1.5px solid var(--green);color:#15803D}
+.fb.no{background:rgba(244,63,94,.07);border:1.5px solid var(--rose);color:#be123c}
+.nav{display:flex;gap:10px;padding:0 20px 28px}
+.btn{flex:1;border:none;border-radius:12px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;cursor:pointer}
+.bp{background:var(--c1);color:white}
+.bg{background:var(--surf);color:var(--mut);border:1.5px solid var(--bord)}
+.dn{display:none}
+.win{display:none;flex-direction:column;min-height:812px}
+.wb{flex:1;padding:24px;overflow-y:auto}
+.whero{background:linear-gradient(145deg,var(--c2),var(--c1));border-radius:20px;padding:32px 20px;text-align:center;color:white;margin-bottom:20px}
+.we{font-size:64px;display:block;margin-bottom:16px}
+.ring{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#D97706);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--ink)}
+.rb{font-size:44px;font-weight:900;line-height:1}
+.rl{font-size:11px;font-weight:700;opacity:.8}
+.wt{font-family:"Playfair Display",serif;font-size:24px;font-weight:900;margin-bottom:8px}
+.ws{font-size:13px;opacity:.8;line-height:1.5}
+.sum{background:rgba(255,255,255,.1);border-radius:14px;padding:16px;margin-top:16px;text-align:left}
+.sr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.7)}
+.sr:last-child{border:none;font-weight:800;color:white}
+.retry{background:var(--c1);color:white;border:none;border-radius:14px;padding:16px;font-family:Outfit,sans-serif;font-weight:800;font-size:15px;cursor:pointer;width:100%;margin-bottom:24px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="sb"><span>09:41</span><span>CP N4</span><span>4G 🔋</span></div>
+  <div class="intro" id="intro">
+    <div class="intro-hero">
+      <div class="badge">CP N4 · Final Exam</div>
+      <h1>Capstone Exam</h1>
+      <p>Test your knowledge across all 8 modules of Computer Practice N4</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">16</div><div class="stat-l">Questions</div></div>
+      <div class="stat"><div class="stat-n">8</div><div class="stat-l">Modules</div></div>
+      <div class="stat"><div class="stat-n">60%</div><div class="stat-l">To pass</div></div>
+    </div>
+    <div class="info">
+      <div class="ir">📚 <span>Covers <strong>all 8 modules</strong></span></div>
+      <div class="ir">✅ <span>Instant feedback on <strong>every answer</strong></span></div>
+      <div class="ir">🎯 <span>Pass mark: <strong>60% (10/16 correct)</strong></span></div>
+    </div>
+    <button class="start-btn" onclick="startExam()">Begin Exam →</button>
+  </div>
+  <div class="exam" id="exam">
+    <div class="ehdr">
+      <div class="qn" id="qn">Q1 / 16</div>
+      <div class="epw"><div class="ep"><div class="epf" id="epf"></div></div></div>
+      <div class="es" id="es">0 correct</div>
+    </div>
+    <div class="ebody" id="ebody"></div>
+    <div class="nav">
+      <button class="btn bg dn" id="bb" onclick="goQ(cur-1)">← Back</button>
+      <button class="btn bp dn" id="nb" onclick="goNext()">Next →</button>
+    </div>
+  </div>
+  <div class="win" id="win">
+    <div class="wb">
+      <div class="whero">
+        <span class="we" id="we">🎓</span>
+        <div class="ring"><div class="rb" id="ws">0</div><div class="rl">out of 16</div></div>
+        <div class="wt" id="wt">Results</div>
+        <div class="ws" id="wsub"></div>
+        <div class="sum">
+          <div class="sr"><span>Correct</span><span id="wc">0</span></div>
+          <div class="sr"><span>Wrong</span><span id="ww">0</span></div>
+          <div class="sr"><span>Score</span><span id="wpct">0%</span></div>
+          <div class="sr"><span>Result</span><span id="wres">-</span></div>
+        </div>
+      </div>
+      <button class="retry" onclick="retry()">Try Again 🔄</button>
+    </div>
+  </div>
+</div>
+<script>
+var MODS=["M1 Intro to Computers", "M2 Word Processing", "M3 Spreadsheets", "M4 Presentations", "M5 Email & Digital Comms", "M6 Data Management", "M7 Internet & Research", "M8 Security & POPIA"];
+var MOD_MAP=[0, 0, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+var QS=[["The CPU (Central Processing Unit) is best described as:", ["The screen of the computer", "The brain of the computer that processes instructions", "The device that stores data permanently", "The keyboard and mouse"], 1, "The CPU processes all instructions \u2014 it performs calculations and controls other components. It's the brain."], ["RAM (Random Access Memory) is:", ["Permanent storage that keeps data when power is off", "Temporary memory used while the computer is running", "The hard drive", "The graphics card"], 1, "RAM is temporary working memory. When you switch off the computer, everything in RAM is lost. It's where active programs run."], ["In Microsoft Word, which feature automatically corrects common spelling mistakes as you type?", ["Spell Check", "AutoCorrect", "Find and Replace", "Track Changes"], 1, "AutoCorrect fixes common typos automatically as you type. Spell Check is a manual check you run."], ["To create a table of contents in Word that updates automatically, you must first:", ["Type it manually", "Use Format > Table", "Apply Heading styles to the section titles", "Save the document as PDF"], 2, "Automatic tables of contents are built from Heading styles (H1, H2, H3). Without headings applied, Word can't generate one."], ["In Excel, the formula =SUM(B2:B10) will:", ["Multiply all values from B2 to B10", "Add all values from B2 to B10", "Count the cells from B2 to B10", "Find the average of B2 to B10"], 1, "=SUM adds all values in the specified range. =AVERAGE for average, =COUNT for counting, =PRODUCT for multiplication."], ["In Excel, what does the formula =IF(A1>50,\"Pass\",\"Fail\") do?", ["Always returns Pass", "Returns Pass if A1 is greater than 50, otherwise Fail", "Returns Fail if A1 equals 50", "Deletes the value in A1"], 1, "IF formula: =IF(condition, value_if_true, value_if_false). If A1>50 is true \u2192 Pass. If false \u2192 Fail."], ["A relative cell reference in Excel (e.g. B3) means:", ["The reference stays fixed when copied", "The reference adjusts when the formula is copied", "The cell is locked", "The cell contains text only"], 1, "Relative references adjust automatically when copied. B3 becomes C3 if copied one column right. Use $ to make absolute: $B$3."], ["In PowerPoint, the Slide Master is used to:", ["Delete all slides", "Set the consistent design, fonts and layout for all slides", "Add animations to one slide", "Convert the presentation to PDF"], 1, "The Slide Master controls the design for ALL slides at once \u2014 fonts, colours, backgrounds, placeholders. Change it once, it updates everywhere."], ["The 7\u00d77 rule in presentations means:", ["7 slides maximum", "No more than 7 lines per slide and 7 words per line", "7 animations per slide", "7 minutes per presentation"], 1, "The 7\u00d77 rule: maximum 7 bullet points per slide, maximum 7 words per bullet. Keeps slides clean and readable."], ["CC in an email stands for:", ["Confidential Copy", "Carbon Copy \u2014 sends a visible copy to additional recipients", "Computer Copy", "Confirmed Copy"], 1, "CC = Carbon Copy. Everyone in the To and CC fields can see each other's addresses. BCC = Blind Carbon Copy \u2014 recipients can't see each other."], ["Which email feature allows you to send a message to someone who is not on the original recipient list, without others knowing?", ["Reply All", "Forward", "BCC (Blind Carbon Copy)", "CC"], 2, "BCC hides the recipient's address from all other recipients. Useful for mass emails where privacy is important."], ["A database PRIMARY KEY is:", ["Any field in the table", "A unique identifier for each record \u2014 no two records can have the same value", "The first column of the table", "The field with the largest values"], 1, "Primary key = unique identifier. No duplicates allowed. Example: ID Number, Student Number. It links tables in a relational database."], ["When searching the internet, placing a phrase in quotation marks (e.g. \"financial statements\") means:", ["Search for either word", "Exclude those words", "Search for the exact phrase", "Search in a specific website"], 2, "Quotation marks force the search engine to find that exact phrase in that exact order \u2014 not just pages containing both words separately."], ["Which website domain extension indicates a South African organisation?", ["www.site.com", "www.site.org", "www.site.co.za", "www.site.net"], 2, ".co.za is the South African country code top-level domain. .com = commercial (global), .org = organisations, .gov.za = SA government."], ["POPIA stands for:", ["Protection of Personal Information Act", "Public Online Privacy and Internet Act", "Personal Online Protection and Internet Access", "Privacy of Personal and Institutional Assets"], 0, "POPIA = Protection of Personal Information Act. South African law that regulates how personal information is collected, stored and used."], ["Under POPIA, an organisation that collects personal data must:", ["Share it freely with anyone", "Store it indefinitely", "Only collect what is necessary and keep it secure", "Sell it to third parties for revenue"], 2, "POPIA's key principles: collect only what's needed (purpose limitation), keep it secure, don't share without consent, delete when no longer needed."]];
+var cur=0,score=0,done=[],rendered=[];
+function startExam(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("exam").style.display="flex";
+  done=QS.map(function(){return false;});
+  rendered=QS.map(function(){return false;});
+  score=0;cur=0;renderQ(0);
+}
+function renderQ(i){
+  var body=document.getElementById("ebody");
+  if(!rendered[i]){
+    rendered[i]=true;
+    var q=QS[i];
+    var div=document.createElement("div");
+    div.id="qb"+i;
+    var oh=q[1].map(function(o,j){
+      return "<div class='opt' id='o"+i+"_"+j+"' onclick='pick("+i+","+j+","+q[2]+")'>"
+        +"<div class='oltr'>"+String.fromCharCode(65+j)+"</div><span>"+o+"</span></div>";
+    }).join("");
+    div.innerHTML="<div class='qcard'><div class='qtag'>"+MODS[MOD_MAP[i]]+"</div><div class='qtext'>"+q[0]+"</div></div>"
+      +"<div class='opts'>"+oh+"</div><div class='fb' id='fb"+i+"'></div>";
+    body.appendChild(div);
+  }
+  document.querySelectorAll("[id^='qb']").forEach(function(b){b.style.display="none";});
+  var bl=document.getElementById("qb"+i); if(bl)bl.style.display="block";
+  document.getElementById("qn").textContent="Q"+(i+1)+" / "+QS.length;
+  document.getElementById("epf").style.width=(i/QS.length*100)+"%";
+  document.getElementById("bb").className="btn bg"+(i===0?" dn":"");
+  if(done[i]){
+    document.getElementById("nb").className="btn bp";
+    document.getElementById("nb").textContent=i<QS.length-1?"Next →":"See Results 🏆";
+  }else{document.getElementById("nb").className="btn bp dn";}
+  document.getElementById("ebody").scrollTop=0;
+}
+function pick(qi,oi,ans){
+  if(done[qi])return;
+  done[qi]=true;
+  var ok=oi===ans;
+  if(ok){score++;document.getElementById("es").textContent=score+" correct";}
+  var n=QS[qi][1].length;
+  for(var j=0;j<n;j++){
+    var el=document.getElementById("o"+qi+"_"+j);
+    el.classList.add("off");
+    if(j===ans)el.classList.add("correct");
+    else if(j===oi&&!ok)el.classList.add("wrong");
+  }
+  var fb=document.getElementById("fb"+qi);
+  fb.className="fb on "+(ok?"ok":"no");
+  fb.innerHTML=(ok?"✅ <strong>Correct!</strong> ":"❌ <strong>Not quite.</strong> ")+QS[qi][3];
+  document.getElementById("nb").className="btn bp";
+  document.getElementById("nb").textContent=qi<QS.length-1?"Next →":"See Results 🏆";
+}
+function goQ(i){cur=i;renderQ(i);}
+function goNext(){if(cur<QS.length-1){cur++;renderQ(cur);}else{showWin();}}
+function showWin(){
+  document.getElementById("exam").style.display="none";
+  document.getElementById("win").style.display="flex";
+  var pct=Math.round(score/QS.length*100);
+  var pass=score>=10;
+  document.getElementById("ws").textContent=score;
+  document.getElementById("wc").textContent=score;
+  document.getElementById("ww").textContent=QS.length-score;
+  document.getElementById("wpct").textContent=pct+"%";
+  document.getElementById("wres").textContent=pass?"✅ PASS":"❌ Not yet";
+  document.getElementById("wt").textContent=pass?"You passed!":"Keep studying";
+  document.getElementById("we").textContent=pct>=80?"🎓":pct>=60?"💪":"📖";
+  document.getElementById("wsub").textContent=pct>=80?"Excellent! You are exam ready.":pass?"Good work! Review the modules you struggled with.":"Go back to weak modules and retry.";
+}
+function retry(){
+  document.getElementById("win").style.display="none";
+  document.getElementById("ebody").innerHTML="";
+  startExam();
+}
+</script>
+</body>
+</html>
