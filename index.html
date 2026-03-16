@@ -40,7 +40,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 .cvm{display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--surf)}.cvm:active{background:var(--surf)}.cvm:last-child{border-bottom:none}.cvm-n{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}.cvm-info{flex:1}.cvm-name{font-size:13px;font-weight:700;color:var(--ink)}.cvm-meta{font-size:10px;color:var(--mut)}.cvm.done .cvm-n{background:var(--green);color:white}
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:white;padding:10px 18px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:11px;z-index:999;opacity:0;transition:opacity .3s,transform .3s var(--spring);pointer-events:none;white-space:nowrap;max-width:320px;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .confetti-piece{position:fixed;pointer-events:none;width:10px;height:10px;animation:cb 2.5s ease-out forwards}@keyframes cb{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--tx),var(--ty)) rotate(720deg);opacity:0}}
-.onb-btn{width:100%;border:none;border-radius:16px;padding:18px;font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;cursor:pointer;transition:all .2s var(--spring)}.onb-btn:active{transform:scale(.96)}
+.onb-btn{width:100%;border:none;border-radius:16px;padding:18px;font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;cursor:pointer;touch-action:manipulation;transition:all .2s var(--spring)}.onb-btn:active{transform:scale(.96)}
 .onb-input{width:100%;border:2px solid var(--bord);border-radius:14px;padding:16px 18px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:600;color:var(--ink);outline:none;transition:border-color .2s}.onb-input:focus{border-color:var(--p)}.onb-input::placeholder{color:var(--dim);font-weight:400}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 </style>
@@ -68,9 +68,9 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 <div style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:280px">Walking together from here<br>to employment or entrepreneurship.</div>
 </div>
 <div style="padding:20px 24px 0">
-<button class="onb-btn" style="background:white;color:var(--p)" onclick="onbNext(2)">Let's go →</button>
-<div style="text-align:center;margin-top:16px;font-size:13px;color:rgba(255,255,255,.6);padding-bottom:calc(32px + env(safe-area-inset-bottom))">
-Already have an account? <span onclick="onbNext('login')" style="color:white;font-weight:700;text-decoration:underline;cursor:pointer">Log in</span>
+<button class="onb-btn" style="background:white;color:var(--p);touch-action:manipulation;-webkit-tap-highlight-color:rgba(124,58,237,.2)" onclick="onbNext(2)">Let's go →</button>
+<div style="text-align:center;margin-top:12px;padding-bottom:calc(32px + env(safe-area-inset-bottom))">
+<button onclick="onbNext('login')" style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:700;padding:14px 32px;border-radius:14px;cursor:pointer;width:100%;touch-action:manipulation;-webkit-tap-highlight-color:rgba(255,255,255,.2)">Already have an account? Log in</button>
 </div>
 </div>
 </div>
