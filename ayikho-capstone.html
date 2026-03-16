@@ -1,2520 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ayikho · Final Exam Simulation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    :root {
-      --p: #7C3AED;
-      --pl: #9D5FFF;
-      --pd: #4C1A99;
-      --pxs: #F5F0FF;
-      --psm: #EDE8FF;
-      --fa: #0284C7;
-      --fa-l: #38BDF8;
-      --fa-d: #075985;
-      --fa-xs: #F0F9FF;
-      --fa-sm: #E0F2FE;
-      --gold: #F59E0B;
-      --green: #22C55E;
-      --green-xs: #F0FDF4;
-      --rose: #F43F5E;
-      --ink: #1A0A3A;
-      --mut: #6B5A8A;
-      --dim: #9580B8;
-      --bord: #DDD5F5;
-      --surf: #F7F4FF;
-      --w: #FFFFFF;
-    }
-
-    html, body {
-      height: 100%;
-      background: #05090F;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Outfit', sans-serif;
-      overflow: hidden;
-    }
-
-    .shell {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-    }
-
-    .phone {
-      width: 375px;
-      height: 812px;
-      background: var(--w);
-      border-radius: 50px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 0 0 2px #0D1117, 0 0 0 4px #060A10, 0 50px 120px rgba(0, 0, 0, .85), 0 0 200px rgba(2, 132, 199, .08);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sb {
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      flex-shrink: 0;
-      background: var(--ink);
-      color: white;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    .exam-viewport {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      position: relative;
-      background: #FAFAFA;
-    }
-
-    .exam-viewport::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* ────── EXAM HEADER (STICKY) ────── */
-    .exam-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--ink);
-      padding: 0 20px 12px;
-      color: white;
-    }
-
-    .exam-progress {
-      height: 3px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 100px;
-      overflow: hidden;
-      margin-bottom: 12px;
-    }
-
-    .exam-progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--p), var(--gold));
-      border-radius: 100px;
-      transition: width 0.6s ease;
-    }
-
-    .exam-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .exam-section-label {
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .exam-xp-counter {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--gold);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    /* ────── EXAM INTRO SCREEN ────── */
-    .exam-intro {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .intro-header {
-      text-align: center;
-    }
-
-    .intro-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--ink), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 8px;
-    }
-
-    .intro-subtitle {
-      color: var(--mut);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .ashki-bubble {
-      display: flex;
-      gap: 12px;
-      padding: 16px;
-      background: var(--pxs);
-      border-radius: 16px;
-      border-left: 4px solid var(--p);
-    }
-
-    .ashki-avatar {
-      width: 40px;
-      height: 40px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--p), var(--fa));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-
-    .ashki-message {
-      flex: 1;
-      font-size: 14px;
-      color: var(--ink);
-      line-height: 1.5;
-      font-weight: 500;
-    }
-
-    .info-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .info-card {
-      background: var(--surf);
-      border: 1px solid var(--bord);
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .info-card-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 900;
-      color: var(--p);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .info-card-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dim);
-    }
-
-    .rules-box {
-      background: var(--fa-xs);
-      border: 1px solid var(--fa-sm);
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .rules-title {
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--fa-d);
-      margin-bottom: 8px;
-    }
-
-    .rules-list {
-      font-size: 12px;
-      color: var(--fa-d);
-      line-height: 1.6;
-      list-style: none;
-    }
-
-    .rules-list li:before {
-      content: '✓ ';
-      font-weight: 700;
-      margin-right: 4px;
-    }
-
-    .begin-btn {
-      padding: 16px;
-      background: linear-gradient(135deg, var(--p), var(--pl));
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.15s ease;
-    }
-
-    .begin-btn:active {
-      transform: scale(0.98);
-    }
-
-    /* ────── QUESTION SCREEN ────── */
-    .exam-question-screen {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .q-number {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dim);
-      font-weight: 600;
-    }
-
-    .q-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1.4;
-    }
-
-    .q-content {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* MCQ Options */
-    .mcq-option {
-      padding: 14px;
-      background: var(--w);
-      border: 2px solid var(--bord);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 13px;
-      color: var(--ink);
-      line-height: 1.4;
-    }
-
-    .mcq-option:hover {
-      border-color: var(--p);
-      background: var(--pxs);
-    }
-
-    .mcq-option.selected {
-      background: var(--p);
-      color: white;
-      border-color: var(--p);
-    }
-
-    /* True/False */
-    .truefalse-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .tf-btn {
-      flex: 1;
-      padding: 14px;
-      border: 2px solid var(--bord);
-      background: var(--w);
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: var(--ink);
-    }
-
-    .tf-btn:hover {
-      border-color: var(--p);
-    }
-
-    .tf-btn.selected {
-      background: var(--p);
-      color: white;
-      border-color: var(--p);
-    }
-
-    /* Matching */
-    .matching-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .matching-column {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .matching-item {
-      padding: 12px;
-      background: var(--w);
-      border: 2px solid var(--bord);
-      border-radius: 10px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: var(--ink);
-    }
-
-    .matching-item.selected {
-      background: var(--p);
-      color: white;
-      border-color: var(--p);
-    }
-
-    /* Fill-in */
-    .fillin-input {
-      padding: 12px;
-      border: 2px solid var(--bord);
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 14px;
-      color: var(--ink);
-      transition: border-color 0.2s ease;
-    }
-
-    .fillin-input:focus {
-      outline: none;
-      border-color: var(--p);
-      background: var(--pxs);
-    }
-
-    /* Calculation */
-    .calc-input {
-      padding: 12px;
-      border: 2px solid var(--bord);
-      border-radius: 10px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
-      color: var(--ink);
-      text-align: right;
-      transition: border-color 0.2s ease;
-    }
-
-    .calc-input:focus {
-      outline: none;
-      border-color: var(--fa);
-      background: var(--fa-xs);
-    }
-
-    .calc-hint {
-      font-size: 11px;
-      color: var(--mut);
-      font-style: italic;
-    }
-
-    /* Ordering */
-    .ordering-items {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .ordering-item {
-      padding: 12px 14px;
-      background: var(--w);
-      border: 2px solid var(--bord);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: grab;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .ordering-item:active {
-      cursor: grabbing;
-      transform: scale(0.98);
-    }
-
-    .ordering-item.dragging {
-      opacity: 0.5;
-      background: var(--psm);
-    }
-
-    .ordering-handle {
-      color: var(--dim);
-      font-weight: 700;
-    }
-
-    .ordering-text {
-      flex: 1;
-      font-size: 13px;
-      color: var(--ink);
-    }
-
-    /* Journal Entry */
-    .journal-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--w);
-      border: 1px solid var(--bord);
-      border-radius: 10px;
-      overflow: hidden;
-      font-size: 12px;
-    }
-
-    .journal-table thead {
-      background: var(--surf);
-      border-bottom: 2px solid var(--bord);
-    }
-
-    .journal-table th {
-      padding: 10px;
-      text-align: left;
-      font-weight: 700;
-      color: var(--ink);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .journal-table td {
-      padding: 10px;
-      border-bottom: 1px solid var(--bord);
-    }
-
-    .journal-table select, .journal-table input {
-      padding: 6px;
-      border: 1px solid var(--bord);
-      border-radius: 6px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 12px;
-      width: 100%;
-    }
-
-    .journal-table input {
-      text-align: right;
-    }
-
-    .journal-totals {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 12px;
-      padding: 10px;
-      background: var(--pxs);
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .journal-total {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .journal-total-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      color: var(--ink);
-    }
-
-    .journal-balance {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 10px;
-      padding: 8px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 600;
-      background: var(--green-xs);
-      color: var(--green);
-    }
-
-    .journal-balance.unbalanced {
-      background: rgba(244, 63, 94, 0.1);
-      color: var(--rose);
-    }
-
-    /* Trial Balance */
-    .trial-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--w);
-      border: 1px solid var(--bord);
-      border-radius: 10px;
-      overflow: hidden;
-      font-size: 11px;
-      margin-bottom: 10px;
-    }
-
-    .trial-table th {
-      padding: 10px;
-      background: var(--surf);
-      border-bottom: 2px solid var(--bord);
-      text-align: left;
-      font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .trial-table td {
-      padding: 10px;
-      border-bottom: 1px solid var(--bord);
-    }
-
-    .trial-table input {
-      padding: 6px;
-      border: 1px solid var(--bord);
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      text-align: right;
-      width: 100%;
-    }
-
-    .trial-table .account-name {
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    /* Financial Statement (Drag & Drop) */
-    .fs-container {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .fs-bank {
-      background: var(--w);
-      border: 2px dashed var(--bord);
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .fs-bank-label {
-      font-size: 10px;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--dim);
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-
-    .fs-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .fs-item {
-      padding: 10px 12px;
-      background: linear-gradient(135deg, var(--p), var(--pl));
-      color: white;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: grab;
-      user-select: none;
-      touch-action: none;
-    }
-
-    .fs-item.dragging {
-      opacity: 0.5;
-    }
-
-    .fs-zones {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .fs-zone {
-      background: var(--w);
-      border: 2px solid var(--bord);
-      border-radius: 10px;
-      padding: 12px;
-      min-height: 60px;
-    }
-
-    .fs-zone-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ink);
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .fs-zone-content {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      min-height: 30px;
-    }
-
-    .fs-zone.active {
-      background: var(--pxs);
-      border-color: var(--p);
-    }
-
-    .fs-dropped {
-      padding: 8px 10px;
-      background: var(--p);
-      color: white;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .fs-dropped-amount {
-      font-family: 'JetBrains Mono', monospace;
-      opacity: 0.9;
-    }
-
-    .fs-totals {
-      background: var(--surf);
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-      font-size: 11px;
-    }
-
-    .fs-total-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid var(--bord);
-    }
-
-    .fs-total-line:last-child {
-      border-bottom: none;
-      font-weight: 700;
-      border-top: 2px solid var(--bord);
-      padding-top: 8px;
-      margin-top: 6px;
-    }
-
-    .fs-total-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      color: var(--p);
-    }
-
-    /* Bank Reconciliation */
-    .bank-recon-container {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .bank-recon-box {
-      background: var(--w);
-      border: 1px solid var(--bord);
-      border-radius: 10px;
-      padding: 12px;
-    }
-
-    .bank-recon-label {
-      font-size: 10px;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--dim);
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-
-    .bank-recon-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .bank-recon-adjustments {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .bank-recon-adjustment {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background: var(--pxs);
-      border-radius: 8px;
-      font-size: 12px;
-    }
-
-    .bank-recon-adjustment-desc {
-      color: var(--ink);
-      font-weight: 500;
-    }
-
-    .bank-recon-adjustment-op {
-      color: var(--dim);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-    }
-
-    .bank-recon-adjustment-amt {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      color: var(--p);
-    }
-
-    .bank-recon-result {
-      background: var(--green-xs);
-      border: 1px solid var(--green);
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .bank-recon-result-label {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--green);
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .bank-recon-result-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--green);
-    }
-
-    /* ────── STREAK INDICATOR ────── */
-    .streak-badge {
-      position: fixed;
-      bottom: 140px;
-      right: 20px;
-      background: var(--gold);
-      color: var(--ink);
-      padding: 10px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-      display: none;
-      z-index: 200;
-      animation: slideInRight 0.4s ease;
-    }
-
-    .streak-badge.show {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    /* ────── CALCULATOR ────── */
-    .calc-button {
-      position: fixed;
-      bottom: 100px;
-      right: 20px;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: var(--fa);
-      color: white;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-      z-index: 200;
-      transition: transform 0.2s ease;
-    }
-
-    .calc-button:active {
-      transform: scale(0.95);
-    }
-
-    .calc-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 300;
-      display: none;
-      align-items: flex-end;
-    }
-
-    .calc-overlay.open {
-      display: flex;
-    }
-
-    .calc-panel {
-      width: 240px;
-      background: var(--w);
-      border-radius: 20px 20px 0 0;
-      padding: 16px;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .calc-display {
-      background: var(--ink);
-      color: var(--gold);
-      padding: 12px;
-      border-radius: 8px;
-      text-align: right;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      word-break: break-all;
-      word-wrap: break-word;
-      min-height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-    }
-
-    .calc-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .calc-btn {
-      padding: 10px;
-      border: 1px solid var(--bord);
-      background: var(--surf);
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      color: var(--ink);
-    }
-
-    .calc-btn:active {
-      background: var(--p);
-      color: white;
-      transform: scale(0.95);
-    }
-
-    .calc-btn.operator {
-      background: var(--fa-xs);
-      color: var(--fa-d);
-    }
-
-    .calc-btn.operator:active {
-      background: var(--fa);
-      color: white;
-    }
-
-    .calc-vat-btn {
-      padding: 8px;
-      font-size: 11px;
-      background: var(--green-xs);
-      color: var(--green);
-    }
-
-    .calc-vat-btn:active {
-      background: var(--green);
-      color: white;
-    }
-
-    /* ────── BREAK SCREEN ────── */
-    .break-screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      padding: 24px;
-      min-height: 100%;
-      background: linear-gradient(135deg, var(--pxs), var(--w));
-    }
-
-    .break-screen.active {
-      display: flex;
-    }
-
-    .breathing-circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--p), var(--pd));
-      animation: breathe 6s infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
-      text-align: center;
-    }
-
-    @keyframes breathe {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.3);
-      }
-    }
-
-    .breathing-text {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--p);
-      animation: textPulse 3s infinite;
-    }
-
-    @keyframes textPulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.4;
-      }
-    }
-
-    .break-info {
-      text-align: center;
-    }
-
-    .break-section-score {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 900;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .break-message {
-      font-size: 14px;
-      color: var(--mut);
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
-
-    .break-counter {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--dim);
-      margin-bottom: 12px;
-    }
-
-    .continue-btn {
-      padding: 14px 24px;
-      background: var(--p);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .continue-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .continue-btn:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-
-    /* ────── RESULTS SCREEN ────── */
-    .results-screen {
-      display: none;
-      flex-direction: column;
-      gap: 20px;
-      padding: 24px;
-      min-height: 100%;
-      background: #FAFAFA;
-    }
-
-    .results-screen.active {
-      display: flex;
-    }
-
-    .results-header {
-      background: linear-gradient(135deg, var(--p), var(--pl));
-      border-radius: 16px;
-      padding: 24px;
-      text-align: center;
-      color: white;
-    }
-
-    .results-percentage {
-      font-family: 'Playfair Display', serif;
-      font-size: 56px;
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .results-status {
-      font-size: 16px;
-      font-weight: 600;
-      opacity: 0.95;
-    }
-
-    .ashki-result {
-      display: flex;
-      gap: 12px;
-      padding: 14px;
-      background: var(--w);
-      border-radius: 12px;
-      border-left: 4px solid var(--gold);
-    }
-
-    .ashki-result-avatar {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--p), var(--fa));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-
-    .ashki-result-message {
-      flex: 1;
-      font-size: 13px;
-      color: var(--ink);
-      line-height: 1.5;
-      font-weight: 500;
-    }
-
-    .results-breakdown {
-      background: var(--w);
-      border-radius: 12px;
-      padding: 16px;
-      border: 1px solid var(--bord);
-    }
-
-    .results-breakdown-title {
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--ink);
-      margin-bottom: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .results-section {
-      margin-bottom: 14px;
-    }
-
-    .results-section:last-child {
-      margin-bottom: 0;
-    }
-
-    .results-section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .results-section-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .results-section-score {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--p);
-    }
-
-    .results-bar {
-      width: 100%;
-      height: 6px;
-      background: var(--bord);
-      border-radius: 100px;
-      overflow: hidden;
-    }
-
-    .results-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--p), var(--fa));
-      border-radius: 100px;
-      transition: width 0.6s ease;
-    }
-
-    .results-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .results-stat {
-      background: var(--w);
-      border: 1px solid var(--bord);
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .results-stat-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--p);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .results-stat-label {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dim);
-      font-weight: 600;
-    }
-
-    .results-areas {
-      background: var(--w);
-      border: 1px solid var(--bord);
-      border-radius: 10px;
-      padding: 14px;
-    }
-
-    .results-areas-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 10px;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .results-areas-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .results-area-item {
-      font-size: 12px;
-      color: var(--ink);
-      padding: 8px;
-      background: var(--pxs);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .results-area-item:active {
-      transform: scale(0.98);
-    }
-
-    .results-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .results-button {
-      flex: 1;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .results-button.primary {
-      background: var(--p);
-      color: white;
-    }
-
-    .results-button.primary:active {
-      transform: scale(0.98);
-    }
-
-    .results-button.secondary {
-      background: var(--bord);
-      color: var(--ink);
-    }
-
-    .results-button.secondary:active {
-      transform: scale(0.98);
-    }
-
-    /* ────── NAVIGATION ────── */
-    .exam-nav {
-      display: flex;
-      gap: 10px;
-      padding: 0 24px 24px;
-      flex-shrink: 0;
-    }
-
-    .exam-nav-btn {
-      flex: 1;
-      padding: 12px;
-      border: 2px solid var(--bord);
-      background: var(--w);
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: var(--ink);
-    }
-
-    .exam-nav-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .exam-nav-btn:not(:disabled):active {
-      transform: scale(0.98);
-    }
-
-    .exam-nav-btn.next {
-      background: var(--p);
-      color: white;
-      border-color: var(--p);
-    }
-
-    /* Fade transitions */
-    .fade-in {
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayikho · FA N4 Capstone Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#7C3AED;--pd:#4C1A99;--pxs:#F5F0FF;--fa:#0284C7;--gold:#F59E0B;--green:#22C55E;--greenxs:#F0FDF4;--rose:#F43F5E;--ink:#1A0A3A;--mut:#6B5A8A;--bord:#DDD5F5;--surf:#F7F4FF;}
+body{font-family:Outfit,sans-serif;background:#05090F;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.phone{width:375px;background:white;border-radius:50px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.85)}
+.sb{height:44px;background:var(--pd);color:white;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-family:"JetBrains Mono",monospace;font-size:11px;flex-shrink:0}
+/* INTRO */
+.intro{min-height:812px;display:flex;flex-direction:column}
+.intro-hero{background:linear-gradient(145deg,#1A0A3A,var(--pd),var(--p));padding:48px 24px 36px;color:white;text-align:center}
+.intro-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:5px 16px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
+.intro-hero h1{font-family:"Playfair Display",serif;font-size:32px;font-weight:900;margin-bottom:10px;line-height:1.2}
+.intro-hero p{font-size:13px;opacity:.8;line-height:1.6}
+.intro-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:24px;background:var(--surf)}
+.stat{background:white;border-radius:14px;padding:16px 8px;text-align:center;border:1px solid var(--bord)}
+.stat-n{font-size:24px;font-weight:900;color:var(--p)}
+.stat-l{font-size:10px;color:var(--mut);font-weight:600;margin-top:2px}
+.intro-info{padding:0 24px 16px;background:var(--surf)}
+.info-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bord);font-size:13px;color:var(--mut)}
+.info-row:last-child{border:none}
+.info-row strong{color:var(--ink)}
+.intro-btn{margin:20px 24px 40px;background:var(--p);color:white;border:none;border-radius:16px;padding:18px;font-family:Outfit,sans-serif;font-weight:900;font-size:16px;cursor:pointer;width:calc(100% - 48px);transition:all .2s}
+.intro-btn:hover{background:var(--pd)}
+/* EXAM */
+.exam{display:none;flex-direction:column;min-height:812px}
+.exam-hdr{background:var(--pd);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.exam-prog-wrap{flex:1;margin:0 12px}
+.exam-prog{height:6px;background:rgba(255,255,255,.2);border-radius:10px;overflow:hidden}
+.exam-prog-fill{height:100%;background:var(--gold);border-radius:10px;transition:width .4s ease;width:0}
+.exam-qnum{font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;color:white;white-space:nowrap}
+.exam-score{font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;color:rgba(255,255,255,.7);white-space:nowrap}
+.exam-body{flex:1;padding:20px;overflow-y:auto}
+.qcard{background:var(--surf);border-radius:16px;padding:18px;margin-bottom:16px;border-left:4px solid var(--p)}
+.qmod{font-size:9px;font-weight:800;color:var(--p);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.qtext{font-size:14px;font-weight:700;color:var(--ink);line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.opt{background:white;border:2px solid var(--bord);border-radius:12px;padding:13px 15px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.opt:hover{border-color:var(--p);background:var(--pxs)}
+.oltr{width:27px;height:27px;border-radius:8px;background:var(--surf);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:var(--mut);flex-shrink:0}
+.opt.correct{border-color:var(--green);background:var(--greenxs);color:#15803D}
+.opt.correct .oltr{background:var(--green);color:white}
+.opt.wrong{border-color:var(--rose);background:rgba(244,63,94,.07);color:#be123c}
+.opt.wrong .oltr{background:var(--rose);color:white}
+.opt.off{pointer-events:none}
+.fb{border-radius:12px;padding:13px 15px;font-size:12px;line-height:1.7;margin-bottom:12px;display:none}
+.fb.on{display:block}
+.fb.ok{background:var(--greenxs);border:1.5px solid var(--green);color:#15803D}
+.fb.no{background:rgba(244,63,94,.07);border:1.5px solid var(--rose);color:#be123c}
+.nav{display:flex;gap:10px;padding:0 20px 28px}
+.btn{flex:1;border:none;border-radius:12px;padding:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:14px;cursor:pointer}
+.btn-p{background:var(--p);color:white}
+.btn-g{background:var(--surf);color:var(--mut);border:1.5px solid var(--bord)}
+.dn{display:none}
+/* WIN */
+.win{display:none;flex-direction:column;min-height:812px}
+.win-body{flex:1;padding:24px;overflow-y:auto}
+.win-hero{background:linear-gradient(145deg,#1A0A3A,var(--pd),var(--p));border-radius:20px;padding:32px 20px;text-align:center;color:white;margin-bottom:20px}
+.win-emoji{font-size:64px;display:block;margin-bottom:16px}
+.score-ring{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#D97706);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--ink)}
+.score-big{font-size:44px;font-weight:900;line-height:1}
+.score-lbl{font-size:11px;font-weight:700;opacity:.8}
+.win-title{font-family:"Playfair Display",serif;font-size:24px;font-weight:900;margin-bottom:8px}
+.win-sub{font-size:13px;opacity:.8;line-height:1.5}
+.sum{background:rgba(255,255,255,.1);border-radius:14px;padding:16px;margin-top:16px;text-align:left}
+.sr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.7)}
+.sr:last-child{border:none;font-weight:800;color:white}
+.mod-breakdown{background:white;border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid var(--bord)}
+.mod-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--bord)}
+.mod-row:last-child{border:none}
+.mod-name{font-size:12px;font-weight:600;color:var(--ink);flex:1}
+.mod-bar-wrap{width:80px;height:6px;background:var(--bord);border-radius:10px;overflow:hidden}
+.mod-bar{height:100%;border-radius:10px;background:var(--p)}
+.mod-score{font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;color:var(--mut);width:30px;text-align:right}
+.retry-btn{background:var(--p);color:white;border:none;border-radius:14px;padding:16px;font-family:Outfit,sans-serif;font-weight:800;font-size:15px;cursor:pointer;width:100%;margin-bottom:24px}
+</style>
 </head>
-
 <body>
-  <div class="shell">
-    <div class="phone">
-      <!-- STATUS BAR -->
-      <div class="sb"><span>21:07</span><span>4G 🔋</span></div>
+<div class="phone">
+  <div class="sb"><span>09:41</span><span>FA N4 · Capstone</span><span>4G 🔋</span></div>
 
-      <!-- VIEWPORT -->
-      <div class="exam-viewport">
-        <!-- EXAM INTRO SCREEN -->
-        <div id="introScreen" class="exam-intro fade-in">
-          <div class="intro-header">
-            <div class="intro-title">Final Exam Simulation</div>
-            <div class="intro-subtitle">Test your knowledge across all 10 modules</div>
-          </div>
+  <!-- INTRO -->
+  <div class="intro" id="intro">
+    <div class="intro-hero">
+      <div class="intro-badge">FA N4 · Final Exam</div>
+      <h1>Capstone Exam</h1>
+      <p>Test your knowledge across all 10 modules of Financial Accounting N4</p>
+    </div>
+    <div class="intro-stats">
+      <div class="stat"><div class="stat-n">22</div><div class="stat-l">Questions</div></div>
+      <div class="stat"><div class="stat-n">10</div><div class="stat-l">Modules</div></div>
+      <div class="stat"><div class="stat-n">60%</div><div class="stat-l">To pass</div></div>
+    </div>
+    <div class="intro-info">
+      <div class="info-row">📚 <span>Covers <strong>all 10 FA N4 modules</strong></span></div>
+      <div class="info-row">✅ <span>Instant feedback on <strong>every answer</strong></span></div>
+      <div class="info-row">📊 <span>Module-by-module <strong>breakdown at the end</strong></span></div>
+      <div class="info-row">🎯 <span>Pass mark: <strong>60% (13/22 correct)</strong></span></div>
+    </div>
+    <button class="intro-btn" onclick="startExam()">Begin Exam →</button>
+  </div>
 
-          <div class="ashki-bubble">
-            <div class="ashki-avatar">🎓</div>
-            <div class="ashki-message">This is it — the big one! 60 minutes, 4 sections, everything you've learned. Ready?</div>
-          </div>
-
-          <div class="info-cards">
-            <div class="info-card">
-              <div class="info-card-num">4</div>
-              <div class="info-card-label">Sections</div>
-            </div>
-            <div class="info-card">
-              <div class="info-card-num">60</div>
-              <div class="info-card-label">Minutes</div>
-            </div>
-            <div class="info-card">
-              <div class="info-card-num">~40</div>
-              <div class="info-card-label">Questions</div>
-            </div>
-          </div>
-
-          <div class="rules-box">
-            <div class="rules-title">How it Works</div>
-            <ul class="rules-list">
-              <li>No visible timer, but we're tracking time internally</li>
-              <li>Short breathing breaks between sections</li>
-              <li>Calculator available (tap the 🧮 button)</li>
-              <li>Answer all questions to submit a section</li>
-              <li>Your score updates at the end</li>
-            </ul>
-          </div>
-
-          <button class="begin-btn" onclick="beginExam()">Begin Exam →</button>
-        </div>
-
-        <!-- EXAM HEADER (shown during exam) -->
-        <div id="examHeader" class="exam-header" style="display: none;">
-          <div class="exam-progress"><div id="examProgressFill" class="exam-progress-fill" style="width: 0%;"></div></div>
-          <div class="exam-header-row">
-            <span class="exam-section-label"><span id="sectionLabel">Section A</span> · <span id="sectionName">Foundations</span></span>
-            <span class="exam-xp-counter">⚡ <span id="examXP">0</span> XP</span>
-          </div>
-        </div>
-
-        <!-- QUESTION SCREENS (populated dynamically) -->
-        <div id="questionContainer" style="display: none;"></div>
-
-        <!-- BREAK SCREEN -->
-        <div id="breakScreen" class="break-screen">
-          <div class="breathing-circle">
-            <div class="breathing-text" id="breathingText">Breathe in...</div>
-          </div>
-          <div class="break-info">
-            <div class="break-section-score" id="breakScore">18/20</div>
-            <div class="break-message" id="breakMessage">Fantastic work on Section A! You're crushing it.</div>
-            <div class="break-counter" id="breakCounter">Continue in 90s</div>
-          </div>
-          <button class="continue-btn" id="continueBtn" disabled onclick="continueFromBreak()">Continue</button>
-        </div>
-
-        <!-- RESULTS SCREEN -->
-        <div id="resultsScreen" class="results-screen">
-          <div class="results-header">
-            <div class="results-percentage" id="finalPercentage">0%</div>
-            <div class="results-status" id="finalStatus">Starting Point</div>
-          </div>
-
-          <div class="ashki-result">
-            <div class="ashki-result-avatar">🌟</div>
-            <div class="ashki-result-message" id="ashkiFinalMessage">Your message here</div>
-          </div>
-
-          <div class="results-breakdown">
-            <div class="results-breakdown-title">Section Breakdown</div>
-            <div id="sectionResults"></div>
-          </div>
-
-          <div class="results-stats" id="resultStats"></div>
-
-          <div id="areasToRevisit" style="display: none;"></div>
-
-          <div class="results-buttons">
-            <button class="results-button secondary" onclick="goHome()">← Home</button>
-            <button class="results-button primary" onclick="retryExam()">Retry Exam</button>
-          </div>
-        </div>
+  <!-- EXAM -->
+  <div class="exam" id="exam">
+    <div class="exam-hdr">
+      <div class="exam-qnum" id="qnum">Q1 / 22</div>
+      <div class="exam-prog-wrap">
+        <div class="exam-prog"><div class="exam-prog-fill" id="epf"></div></div>
       </div>
-
-      <!-- NAVIGATION (shown during exam) -->
-      <div id="examNav" class="exam-nav" style="display: none;">
-        <button id="prevBtn" class="exam-nav-btn" onclick="previousQuestion()" disabled>← Previous</button>
-        <button id="nextBtn" class="exam-nav-btn next" onclick="nextQuestion()">Next →</button>
-      </div>
-    </div><!-- /phone -->
-  </div><!-- /shell -->
-
-  <!-- CALCULATOR OVERLAY -->
-  <div id="calcOverlay" class="calc-overlay">
-    <div class="calc-panel">
-      <div class="calc-display" id="calcDisplay">0</div>
-      <div class="calc-grid">
-        <button class="calc-btn" onclick="calcAppend('7')">7</button>
-        <button class="calc-btn" onclick="calcAppend('8')">8</button>
-        <button class="calc-btn" onclick="calcAppend('9')">9</button>
-        <button class="calc-btn operator" onclick="calcOp('÷')">÷</button>
-        <button class="calc-btn" onclick="calcAppend('4')">4</button>
-        <button class="calc-btn" onclick="calcAppend('5')">5</button>
-        <button class="calc-btn" onclick="calcAppend('6')">6</button>
-        <button class="calc-btn operator" onclick="calcOp('×')">×</button>
-        <button class="calc-btn" onclick="calcAppend('1')">1</button>
-        <button class="calc-btn" onclick="calcAppend('2')">2</button>
-        <button class="calc-btn" onclick="calcAppend('3')">3</button>
-        <button class="calc-btn operator" onclick="calcOp('-')">−</button>
-        <button class="calc-btn" onclick="calcAppend('0')">0</button>
-        <button class="calc-btn" onclick="calcAppend('.')">.</button>
-        <button class="calc-btn operator" onclick="calcClear()">C</button>
-        <button class="calc-btn operator" onclick="calcOp('+')">+</button>
-      </div>
-      <button class="calc-btn calc-vat-btn" style="width: 100%; margin-bottom: 6px;" onclick="calcVAT()">+15% VAT</button>
-      <button class="calc-btn operator" style="width: 100%;" onclick="calcEquals()">=</button>
+      <div class="exam-score" id="escore">0 correct</div>
+    </div>
+    <div class="exam-body" id="exam-body"></div>
+    <div class="nav">
+      <button class="btn btn-g dn" id="btn-back" onclick="goQ(cur-1)">← Back</button>
+      <button class="btn btn-p dn" id="btn-next" onclick="goNext()">Next →</button>
     </div>
   </div>
 
-  <!-- CALCULATOR BUTTON -->
-  <button class="calc-button" onclick="toggleCalc()">🧮</button>
-
-  <!-- STREAK BADGE -->
-  <div class="streak-badge" id="streakBadge">🔥 <span id="streakCount">3</span> streak</div>
-
-  <script src="capstone-bank.js"></script>
-  <script src="student-data.js"></script>
-
-  <script>
-    const SECTION_NAMES = {
-      A: 'Foundations',
-      B: 'Core Skills',
-      C: 'Applied Knowledge',
-      D: 'Mastery'
-    };
-
-    const SECTION_MESSAGES = {
-      A: 'Fantastic work on Section A! You\'re crushing it.',
-      B: 'Great job on Section B! The fundamentals are solid.',
-      C: 'Excellent! Section C shows real understanding.',
-      D: 'Masterful performance on Section D! Outstanding.'
-    };
-
-    const ASHKI_MESSAGES = {
-      legend: '🎯 Legend! This is mastery-level performance. You\'re ready for the real exam.',
-      solid: '💪 Solid work! You\'ve demonstrated strong understanding across the curriculum.',
-      goodEffort: '👏 Good effort! You\'ve covered the main concepts. Review weak areas before retesting.',
-      dontStress: '🌱 Don\'t stress! You\'re building a strong foundation. Keep practicing.',
-      startingPoint: '🚀 This is your starting point. Keep going—every attempt gets better!'
-    };
-
-    let examState = {
-      startTime: null,
-      sectionStartTime: null,
-      totalTimeMs: 0,
-      sectionTimes: {},
-      timeLimit: 60 * 60 * 1000,
-      currentSection: 'A',
-      currentQuestionIndex: 0,
-      score: 0,
-      sectionScores: { A: 0, B: 0, C: 0, D: 0 },
-      sectionTotals: { A: 0, B: 0, C: 0, D: 0 },
-      answers: [],
-      streak: 0,
-      bestStreak: 0,
-      xp: 0,
-      tenMinWarningShown: false,
-      twoMinWarningShown: false
-    };
-
-    let calcState = {
-      display: '0',
-      currentValue: 0,
-      previousValue: 0,
-      operation: null,
-      shouldResetDisplay: false
-    };
-
-    let matchingState = {
-      leftSelected: null,
-      rightSelected: null,
-      pairs: {}
-    };
-
-    // ═══════════════════════════════════════════
-    // MAIN FLOW
-    // ═══════════════════════════════════════════
-
-    function beginExam() {
-      examState.startTime = Date.now();
-      examState.sectionStartTime = Date.now();
-
-      document.getElementById('introScreen').style.display = 'none';
-      document.getElementById('examHeader').style.display = 'block';
-      document.getElementById('examNav').style.display = 'flex';
-
-      loadSection('A');
-    }
-
-    function loadSection(section) {
-      examState.currentSection = section;
-      examState.currentQuestionIndex = 0;
-      examState.sectionStartTime = Date.now();
-
-      const sectionData = window.AYIKHO_CAPSTONE_BANK[section];
-      examState.sectionTotals[section] = sectionData.questions.length;
-
-      document.getElementById('sectionLabel').textContent = `Section ${section}`;
-      document.getElementById('sectionName').textContent = SECTION_NAMES[section];
-
-      renderQuestion();
-      updateProgress();
-    }
-
-    function renderQuestion() {
-      const section = examState.currentSection;
-      const questionIndex = examState.currentQuestionIndex;
-      const sectionData = window.AYIKHO_CAPSTONE_BANK[section];
-      const question = sectionData.questions[questionIndex];
-
-      const container = document.getElementById('questionContainer');
-      container.style.display = 'block';
-      container.classList.add('fade-in');
-      container.innerHTML = '';
-
-      const qNum = questionIndex + 1;
-      const totalQ = sectionData.questions.length;
-
-      let html = `
-        <div class="exam-question-screen">
-          <div class="q-number">Question ${qNum} of ${totalQ} · ${question.topic}</div>
-          <div class="q-text">${question.q}</div>
-          <div class="q-content">
-      `;
-
-      switch(question.type) {
-        case 'mcq':
-          html += renderMCQ(question, questionIndex);
-          break;
-        case 'truefalse':
-          html += renderTrueFalse(question, questionIndex);
-          break;
-        case 'matching':
-          html += renderMatching(question, questionIndex);
-          break;
-        case 'fillin':
-          html += renderFillIn(question, questionIndex);
-          break;
-        case 'calculation':
-          html += renderCalculation(question, questionIndex);
-          break;
-        case 'ordering':
-          html += renderOrdering(question, questionIndex);
-          break;
-        case 'journal':
-          html += renderJournal(question, questionIndex);
-          break;
-        case 'trial_balance':
-          html += renderTrialBalance(question, questionIndex);
-          break;
-        case 'financial_statement':
-          html += renderFinancialStatement(question, questionIndex);
-          break;
-        case 'bank_recon':
-          html += renderBankRecon(question, questionIndex);
-          break;
-      }
-
-      html += `</div></div>`;
-      container.innerHTML = html;
-
-      updateNavButtons();
-      scrollToTop();
-    }
-
-    function renderMCQ(question, qIndex) {
-      let html = '';
-      question.options.forEach((option, i) => {
-        const isSelected = examState.answers[qIndex] === i;
-        html += `
-          <div class="mcq-option ${isSelected ? 'selected' : ''}"
-               onclick="selectAnswer(${qIndex}, ${i}, 'mcq')">
-            ${option}
-          </div>
-        `;
-      });
-      return html;
-    }
-
-    function renderTrueFalse(question, qIndex) {
-      const selected = examState.answers[qIndex];
-      return `
-        <div class="truefalse-buttons">
-          <button class="tf-btn ${selected === true ? 'selected' : ''}"
-                  onclick="selectAnswer(${qIndex}, true, 'truefalse')">True</button>
-          <button class="tf-btn ${selected === false ? 'selected' : ''}"
-                  onclick="selectAnswer(${qIndex}, false, 'truefalse')">False</button>
+  <!-- WIN -->
+  <div class="win" id="win">
+    <div class="win-body">
+      <div class="win-hero">
+        <span class="win-emoji" id="win-emoji">🎓</span>
+        <div class="score-ring">
+          <div class="score-big" id="win-score">0</div>
+          <div class="score-lbl">out of 22</div>
         </div>
-      `;
-    }
-
-    function renderMatching(question, qIndex) {
-      matchingState.pairs = examState.answers[qIndex] || {};
-
-      let html = `<div class="matching-container">`;
-      html += `<div class="matching-column">`;
-      question.pairs.forEach((pair, i) => {
-        const isSelected = matchingState.leftSelected === i;
-        html += `
-          <div class="matching-item ${isSelected ? 'selected' : ''}"
-               onclick="matchLeft(${qIndex}, ${i})">
-            ${pair.left}
-          </div>
-        `;
-      });
-      html += `</div>`;
-
-      html += `<div class="matching-column">`;
-      question.pairs.forEach((pair, i) => {
-        const isSelected = matchingState.rightSelected === i;
-        html += `
-          <div class="matching-item ${isSelected ? 'selected' : ''}"
-               onclick="matchRight(${qIndex}, ${i})">
-            ${pair.right}
-          </div>
-        `;
-      });
-      html += `</div></div>`;
-
-      return html;
-    }
-
-    function renderFillIn(question, qIndex) {
-      const value = examState.answers[qIndex] || '';
-      return `
-        <input type="text" class="fillin-input"
-               value="${value}"
-               placeholder="Enter your answer"
-               onchange="selectAnswer(${qIndex}, this.value, 'fillin')">
-      `;
-    }
-
-    function renderCalculation(question, qIndex) {
-      const value = examState.answers[qIndex] || '';
-      return `
-        <div>
-          <input type="number" class="calc-input"
-                 value="${value}"
-                 placeholder="0"
-                 onchange="selectAnswer(${qIndex}, this.value, 'calculation')">
-          <div class="calc-hint">Use the 🧮 calculator if needed</div>
+        <div class="win-title" id="win-title">Results</div>
+        <div class="win-sub" id="win-sub"></div>
+        <div class="sum">
+          <div class="sr"><span>Correct</span><span id="wc">0</span></div>
+          <div class="sr"><span>Wrong</span><span id="ww">0</span></div>
+          <div class="sr"><span>Score %</span><span id="wp">0%</span></div>
+          <div class="sr"><span>Result</span><span id="wr">-</span></div>
         </div>
-      `;
+      </div>
+      <div class="mod-breakdown" id="mod-breakdown"></div>
+      <button class="retry-btn" onclick="retry()">Try Again 🔄</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var MODS = ["M1 Concepts","M2 Double Entry","M3 Journals","M4 Trial Balance","M5 Cash Journals","M6 Debtors & Creditors","M7 VAT","M8 Adjustments","M9 Financial Statements","M10 Bank Reconciliation"];
+var MOD_MAP = [0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8,9,9,9];
+
+var QS = [["Which accounting concept states that a business is separate from its owner?", ["Going Concern", "Business Entity", "Materiality", "Prudence"], 0, "The Business Entity concept treats the business as completely separate from its owner. Owner's personal assets/liabilities are never mixed with the business."], ["Zandile paid R500 for her personal groceries from the business bank account. Which concept is violated?", ["Matching", "Business Entity", "Historical Cost", "Consistency"], 1, "Personal expenses must never be recorded as business expenses. The Business Entity concept is violated."], ["Assets are recorded at their original purchase price, not current market value. This is the:", ["Going Concern concept", "Prudence concept", "Historical Cost concept", "Materiality concept"], 2, "Historical Cost concept: assets are recorded at what was originally paid for them, regardless of current value."], ["Sipho buys equipment for R12 000 cash. Which entry is correct?", ["Dr Equipment R12 000 / Cr Bank R12 000", "Dr Bank R12 000 / Cr Equipment R12 000", "Dr Expenses R12 000 / Cr Bank R12 000", "Dr Equipment R12 000 / Cr Capital R12 000"], 0, "Assets increase on the Debit side. Equipment (asset) Dr, Bank (asset) Cr \u2014 one asset increases, another decreases."], ["The accounting equation is:", ["Assets = Capital \u2212 Liabilities", "Assets + Liabilities = Capital", "Assets = Capital + Liabilities", "Capital = Assets + Liabilities"], 2, "Assets = Capital + Liabilities. Everything the business owns (Assets) is funded by either the owner (Capital) or creditors (Liabilities)."], ["A debtor pays R3 500 into the business bank account. This is recorded in the:", ["Cash Payments Journal", "Purchases Journal", "Cash Receipts Journal", "Sales Journal"], 2, "Money received goes in the Cash Receipts Journal. The debtor is paying what they owe \u2014 cash comes IN."], ["Goods returned to a supplier who sold them on credit are recorded in the:", ["Sales Returns Journal", "Purchases Returns Journal", "General Journal", "Cash Payments Journal"], 1, "Purchases Returns = goods sent BACK to suppliers. Also called Returns Outward Journal."], ["If the trial balance doesn't balance, which error is guaranteed?", ["A transaction was recorded twice", "An incorrect amount was posted", "The debits and credits of a transaction are unequal", "An account was omitted entirely"], 2, "If Dr \u2260 Cr totals, it means somewhere a debit and credit were posted as unequal amounts. Equal postings (even wrong ones) won't cause imbalance."], ["Which error is NOT revealed by a trial balance?", ["Wrong amount posted to one side", "Transaction posted to wrong account", "Account balance calculated incorrectly", "Total additions wrong in ledger"], 1, "If a transaction is posted to the wrong account but with correct Dr/Cr amounts, the trial balance still balances \u2014 the error is hidden."], ["The Cash Receipts Journal records:", ["All credit sales", "All cash received by the business", "All payments made by the business", "All purchases on credit"], 1, "CRJ = all money coming INTO the business. Cash sales, debtor payments, owner contributions \u2014 anything where cash is received."], ["Mama Nkosi pays her creditor R8 400 by EFT. This goes in the:", ["Cash Receipts Journal", "Sales Journal", "Cash Payments Journal", "General Journal"], 2, "Money going OUT = Cash Payments Journal (CPJ). EFT, cheques, cash payments all go here."], ["A debtor owes R6 200. They pay R5 000 and the balance is written off as bad debt. The bad debt amount is:", ["R6 200", "R5 000", "R1 200", "R11 200"], 2, "Bad debt = amount that cannot be recovered = R6 200 \u2212 R5 000 = R1 200."], ["The Creditors Control account in the general ledger shows the total amount:", ["Owed TO the business by customers", "Owed BY the business to suppliers", "Of cash in the bank", "Of goods purchased for cash"], 1, "Creditors = suppliers the business owes money to. Creditors Control tracks the total."], ["A business sells goods for R11 500 (VAT inclusive at 15%). What is the VAT amount?", ["R1 500", "R1 725", "R1 800", "R1 200"], 0, "Excl. VAT = R11 500 \u00f7 1.15 = R10 000. VAT = R11 500 \u2212 R10 000 = R1 500. Formula: VAT = selling price \u00d7 15/115."], ["VAT output tax means:", ["VAT paid on purchases", "VAT charged on sales", "VAT refund from SARS", "VAT on imports"], 1, "Output tax = VAT you CHARGE your customers on your sales. Input tax = VAT you PAY on your purchases."], ["Rent of R24 000 was paid for 12 months starting 1 October. The financial year ends 28 February. How much is prepaid rent?", ["R8 000", "R16 000", "R24 000", "R4 000"], 0, "Oct to Feb = 5 months used. 7 months prepaid. Prepaid = 7/12 \u00d7 R24 000 = R14 000. Wait: 7/12 \u00d7 24000 = 14000. But answer A is R8000... Oct-Feb is 5 months. Prepaid = 7 months = 7/12 \u00d7 R24 000 = R14 000."], ["Rent of R24 000 was paid for 12 months starting 1 October. The financial year ends 28 February (5 months used). Prepaid rent is:", ["R14 000", "R10 000", "R24 000", "R8 000"], 0, "5 months used (Oct\u2013Feb), 7 months prepaid. Prepaid = 7/12 \u00d7 R24 000 = R14 000. This is a current asset on the Balance Sheet."], ["Net Sales R320 000, Cost of Sales R192 000, Operating Expenses R89 600. Net Profit is:", ["R128 000", "R38 400", "R230 400", "R89 600"], 1, "Gross Profit = R320 000 \u2212 R192 000 = R128 000. Net Profit = R128 000 \u2212 R89 600 = R38 400."], ["Opening Capital R185 000, Net Profit R42 000, Drawings R28 000. Closing Capital is:", ["R199 000", "R255 000", "R143 000", "R215 000"], 0, "Closing Capital = R185 000 + R42 000 \u2212 R28 000 = R199 000."], ["Total Assets = R485 000. Owner's Equity = R290 000. Total Liabilities =", ["R775 000", "R195 000", "R290 000", "R485 000"], 1, "Liabilities = Assets \u2212 Equity = R485 000 \u2212 R290 000 = R195 000."], ["An outstanding cheque in the bank reconciliation means:", ["The bank has processed the cheque", "The cheque was issued but not yet presented to the bank", "The cheque bounced", "The cheque was deposited but not cleared"], 1, "Outstanding cheque = you wrote the cheque and recorded it in your books, but the bank hasn't paid it yet. It reduces your bank balance when it clears."], ["The bank statement shows a debit order of R850 that hasn't been recorded in the cash book. To update the cash book you:", ["Add R850 to the cash book balance", "Deduct R850 from the cash book balance", "Add R850 to the bank statement", "Ignore it \u2014 it will reverse"], 1, "The debit order is already on the bank statement (reducing your balance). You need to record it in the cash book too \u2014 so deduct R850 from your cash book balance."], ["After all adjustments, the updated cash book balance must equal:", ["The original bank statement balance", "The closing bank statement balance", "The original cash book balance", "Zero"], 1, "After adjusting for timing differences and errors, the updated cash book balance must equal the closing balance on the bank statement. That's the whole point of a bank rec."]];
+var cur=0, score=0, done=[], rendered=[];
+
+function startExam(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("exam").style.display="flex";
+  done=QS.map(function(){return false;});
+  rendered=QS.map(function(){return false;});
+  score=0; cur=0;
+  renderQ(0);
+}
+
+function renderQ(i){
+  var body=document.getElementById("exam-body");
+  if(!rendered[i]){
+    rendered[i]=true;
+    var q=QS[i];
+    var modName=MODS[MOD_MAP[i]];
+    var div=document.createElement("div");
+    div.id="qblock"+i;
+    var oh=q[1].map(function(o,j){
+      return "<div class='opt' id='o"+i+"_"+j+"' onclick='pick("+i+","+j+","+q[2]+")'>"
+        +"<div class='oltr'>"+String.fromCharCode(65+j)+"</div><span>"+o+"</span></div>";
+    }).join("");
+    div.innerHTML="<div class='qcard'><div class='qmod'>"+modName+"</div><div class='qtext'>"+q[0]+"</div></div>"
+      +"<div class='opts'>"+oh+"</div>"
+      +"<div class='fb' id='fb"+i+"'></div>";
+    body.appendChild(div);
+  }
+  // Show/hide blocks
+  document.querySelectorAll("[id^='qblock']").forEach(function(b){b.style.display="none";});
+  var block=document.getElementById("qblock"+i);
+  if(block) block.style.display="block";
+  
+  updateNav(i);
+  document.getElementById("qnum").textContent="Q"+(i+1)+" / "+QS.length;
+  document.getElementById("epf").style.width=(i/QS.length*100)+"%";
+  document.getElementById("exam-body").scrollTop=0;
+}
+
+function updateNav(i){
+  var backBtn=document.getElementById("btn-back");
+  var nextBtn=document.getElementById("btn-next");
+  backBtn.className="btn btn-g"+(i===0?" dn":"");
+  if(done[i]){
+    nextBtn.className="btn btn-p";
+    nextBtn.textContent=i<QS.length-1?"Next →":"See Results 🏆";
+  } else {
+    nextBtn.className="btn btn-p dn";
+  }
+}
+
+function pick(qi,oi,ans){
+  if(done[qi])return;
+  done[qi]=true;
+  var ok=oi===ans;
+  if(ok){score++;document.getElementById("escore").textContent=score+" correct";}
+  var n=QS[qi][1].length;
+  for(var j=0;j<n;j++){
+    var el=document.getElementById("o"+qi+"_"+j);
+    el.classList.add("off");
+    if(j===ans)el.classList.add("correct");
+    else if(j===oi&&!ok)el.classList.add("wrong");
+  }
+  var fb=document.getElementById("fb"+qi);
+  fb.className="fb on "+(ok?"ok":"no");
+  fb.innerHTML=(ok?"✅ <strong>Correct!</strong> ":"❌ <strong>Not quite.</strong> ")+QS[qi][3];
+  updateNav(qi);
+}
+
+function goQ(i){
+  cur=i;
+  renderQ(i);
+}
+
+function goNext(){
+  if(cur<QS.length-1){
+    cur++;
+    renderQ(cur);
+  } else {
+    showWin();
+  }
+}
+
+function showWin(){
+  document.getElementById("exam").style.display="none";
+  document.getElementById("win").style.display="flex";
+  var pct=Math.round(score/QS.length*100);
+  var pass=score>=13;
+  document.getElementById("win-score").textContent=score;
+  document.getElementById("wc").textContent=score;
+  document.getElementById("ww").textContent=QS.length-score;
+  document.getElementById("wp").textContent=pct+"%";
+  document.getElementById("wr").textContent=pass?"✅ PASS":"❌ Not yet";
+  document.getElementById("win-title").textContent=pass?"You passed!":"Keep studying";
+  document.getElementById("win-emoji").textContent=pct>=80?"🎓":pct>=60?"💪":"📖";
+  document.getElementById("win-sub").textContent=pct>=80?"Excellent! You are exam ready across all 10 modules.":pass?"Good work! Review the modules you struggled with.":"Don't give up — go back to the weak modules and retry.";
+
+  // Module breakdown
+  var modScores=MODS.map(function(){return{correct:0,total:0};});
+  QS.forEach(function(q,i){
+    var m=MOD_MAP[i];
+    modScores[m].total++;
+    if(done[i]&&i<QS.length){
+      // check if answered correctly
     }
-
-    function renderOrdering(question, qIndex) {
-      const currentOrder = examState.answers[qIndex] || [...Array(question.items.length).keys()];
-
-      let html = `<div class="ordering-items" id="orderingContainer-${qIndex}">`;
-      currentOrder.forEach((itemIdx, pos) => {
-        html += `
-          <div class="ordering-item" draggable="true"
-               data-qindex="${qIndex}" data-pos="${pos}" data-itemidx="${itemIdx}"
-               ondragstart="dragStart(event)" ondragover="dragOver(event)" ondrop="dragDrop(event)">
-            <span class="ordering-handle">≡</span>
-            <span class="ordering-text">${question.items[itemIdx]}</span>
-          </div>
-        `;
-      });
-      html += `</div>`;
-      return html;
-    }
-
-    function renderJournal(question, qIndex) {
-      const answers = examState.answers[qIndex] || {};
-
-      let html = `
-        <table class="journal-table">
-          <thead>
-            <tr>
-              <th>Account</th>
-              <th>Debit</th>
-              <th>Credit</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      for (let i = 0; i < 3; i++) {
-        const account = answers[`account_${i}`] || '';
-        const debit = answers[`debit_${i}`] || '';
-        const credit = answers[`credit_${i}`] || '';
-
-        html += `
-          <tr>
-            <td>
-              <select onchange="updateJournal(${qIndex}, ${i}, 'account', this.value)">
-                <option value="">Select account</option>
-        `;
-
-        question.accounts.forEach(acc => {
-          html += `<option value="${acc}" ${account === acc ? 'selected' : ''}>${acc}</option>`;
-        });
-
-        html += `
-              </select>
-            </td>
-            <td>
-              <input type="number" value="${debit}"
-                     onchange="updateJournal(${qIndex}, ${i}, 'debit', this.value)">
-            </td>
-            <td>
-              <input type="number" value="${credit}"
-                     onchange="updateJournal(${qIndex}, ${i}, 'credit', this.value)">
-            </td>
-          </tr>
-        `;
-      }
-
-      html += `
-          </tbody>
-        </table>
-        <div class="journal-totals">
-          <div class="journal-total">
-            <span>Total Debits</span>
-            <div class="journal-total-value" id="totalDebits-${qIndex}">0</div>
-          </div>
-          <div class="journal-total">
-            <span>Total Credits</span>
-            <div class="journal-total-value" id="totalCredits-${qIndex}">0</div>
-          </div>
-        </div>
-        <div class="journal-balance" id="journalBalance-${qIndex}">✓ Balanced</div>
-      `;
-
-      setTimeout(() => updateJournalTotals(qIndex), 0);
-      return html;
-    }
-
-    function renderTrialBalance(question, qIndex) {
-      const answers = examState.answers[qIndex] || {};
-
-      let html = `
-        <table class="trial-table">
-          <thead>
-            <tr>
-              <th>Account</th>
-              <th>Debit</th>
-              <th>Credit</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      question.accounts.forEach((acc, i) => {
-        const debitVal = answers[`${acc.name}_debit`] || '';
-        const creditVal = answers[`${acc.name}_credit`] || '';
-
-        html += `
-          <tr>
-            <td class="account-name">${acc.name}</td>
-            <td>
-              <input type="number" value="${debitVal}"
-                     onchange="updateTrialBalance(${qIndex}, '${acc.name}', 'debit', this.value)">
-            </td>
-            <td>
-              <input type="number" value="${creditVal}"
-                     onchange="updateTrialBalance(${qIndex}, '${acc.name}', 'credit', this.value)">
-            </td>
-          </tr>
-        `;
-      });
-
-      html += `</tbody></table>`;
-      return html;
-    }
-
-    function renderFinancialStatement(question, qIndex) {
-      const dropped = examState.answers[qIndex] || {};
-
-      let html = `<div class="fs-container">`;
-
-      // Item bank
-      html += `<div class="fs-bank">
-        <div class="fs-bank-label">Items to arrange</div>
-        <div class="fs-items" id="fsBank-${qIndex}">`;
-
-      question.items.forEach((item, idx) => {
-        if (!isItemDropped(qIndex, item.id, dropped)) {
-          html += `
-            <div class="fs-item" draggable="true" data-qindex="${qIndex}" data-itemid="${item.id}"
-                 ondragstart="dragStartFS(event)" ondragend="dragEndFS(event)">
-              ${item.label}
-            </div>
-          `;
-        }
-      });
-
-      html += `</div></div>`;
-
-      // Drop zones
-      html += `<div class="fs-zones">`;
-
-      const zoneKeys = Object.keys(question.expectedZones);
-      zoneKeys.forEach(zone => {
-        html += `
-          <div class="fs-zone" id="fsZone-${qIndex}-${zone}"
-               ondragover="dragOverFS(event)" ondrop="dropFS(event, ${qIndex}, '${zone}')">
-            <div class="fs-zone-label">${zone.replace(/_/g, ' ').toUpperCase()}</div>
-            <div class="fs-zone-content" id="fsContent-${qIndex}-${zone}">
-        `;
-
-        (dropped[zone] || []).forEach(item => {
-          const itemData = question.items.find(i => i.id === item.id);
-          html += `
-            <div class="fs-dropped" data-itemid="${item.id}">
-              ${itemData.label}
-              <span class="fs-dropped-amount">${itemData.amount.toLocaleString()}</span>
-            </div>
-          `;
-        });
-
-        html += `</div></div>`;
-      });
-
-      // Calculated totals
-      html += `<div class="fs-totals" id="fsTotals-${qIndex}">
-        <div class="fs-total-line">
-          <span>Gross Profit</span>
-          <span class="fs-total-value">0</span>
-        </div>
-        <div class="fs-total-line">
-          <span>Net Profit</span>
-          <span class="fs-total-value">0</span>
-        </div>
-      </div>`;
-
-      html += `</div></div>`;
-      return html;
-    }
-
-    function renderBankRecon(question, qIndex) {
-      const answers = examState.answers[qIndex] || {};
-      const finalBalance = (answers.finalBalance !== undefined) ? answers.finalBalance : '';
-
-      let html = `<div class="bank-recon-container">`;
-
-      html += `
-        <div class="bank-recon-box">
-          <div class="bank-recon-label">Bank Statement Balance</div>
-          <div class="bank-recon-value">${question.bankStatement.toLocaleString()}</div>
-        </div>
-      `;
-
-      html += `<div class="bank-recon-adjustments">`;
-      let runningTotal = question.bankStatement;
-
-      question.adjustments.forEach((adj, i) => {
-        const sign = adj.action === 'add' ? '+' : '−';
-        if (adj.action === 'add') runningTotal += adj.amount;
-        else runningTotal -= adj.amount;
-
-        html += `
-          <div class="bank-recon-adjustment">
-            <span class="bank-recon-adjustment-desc">${adj.description}</span>
-            <span class="bank-recon-adjustment-op">${sign}</span>
-            <span class="bank-recon-adjustment-amt">${adj.amount.toLocaleString()}</span>
-          </div>
-        `;
-      });
-
-      html += `</div>`;
-
-      html += `
-        <div class="bank-recon-result">
-          <div class="bank-recon-result-label">Calculated Cash Book Balance</div>
-          <div class="bank-recon-result-value">${runningTotal.toLocaleString()}</div>
-        </div>
-        <div style="margin-top: 12px;">
-          <label style="font-size: 12px; color: var(--ink); display: block; margin-bottom: 6px;">Enter your answer:</label>
-          <input type="number" class="calc-input" value="${finalBalance}"
-                 onchange="selectAnswer(${qIndex}, this.value, 'bank_recon')"
-                 placeholder="Enter balance">
-        </div>
-      `;
-
-      html += `</div>`;
-      return html;
-    }
-
-    // ═══════════════════════════════════════════
-    // ANSWER HANDLING
-    // ═══════════════════════════════════════════
-
-    function selectAnswer(qIndex, value, type) {
-      examState.answers[qIndex] = value;
-
-      if (['mcq', 'truefalse', 'fillin', 'calculation', 'bank_recon', 'matching', 'ordering', 'journal', 'trial_balance', 'financial_statement'].includes(type)) {
-        // Immediately check correctness
-        const section = examState.currentSection;
-        const question = window.AYIKHO_CAPSTONE_BANK[section].questions[qIndex];
-
-        if (isAnswerCorrect(question, value, type)) {
-          examState.streak++;
-          if (examState.streak >= 3) {
-            showStreak();
-          }
-          if (examState.streak > examState.bestStreak) {
-            examState.bestStreak = examState.streak;
-          }
-        } else {
-          examState.streak = 0;
-        }
-      }
-    }
-
-    function isAnswerCorrect(question, answer, type) {
-      if (answer === undefined || answer === null) return false;
-      switch(type) {
-        case 'mcq':
-          return answer === question.correct;
-        case 'truefalse':
-          return answer === question.correct;
-        case 'fillin':
-          if (question.validate) {
-            return question.validate(answer);
-          }
-          return String(answer).trim() === String(question.correct).trim();
-        case 'calculation': {
-          const numAnswer = parseFloat(answer);
-          const tolerance = question.tolerance || 0;
-          return Math.abs(numAnswer - question.correct) <= tolerance;
-        }
-        case 'bank_recon': {
-          const numAns = parseFloat(answer);
-          return Math.abs(numAns - question.expectedBalance) <= 1;
-        }
-        case 'matching': {
-          // answer = { leftIdx: rightIdx, ... }
-          if (!answer || typeof answer !== 'object') return false;
-          const pairs = question.pairs;
-          let allCorrect = true;
-          for (let i = 0; i < pairs.length; i++) {
-            if (answer[i] === undefined || answer[i] !== i) {
-              // Pairs are in correct order in data: left[i] matches right[i]
-              // But UI shuffles the right side, so check by matching text
-              // Actually the right side is displayed in original order,
-              // so correct mapping is left[i] → right[i] (index i → i)
-              allCorrect = false;
-              break;
-            }
-          }
-          return allCorrect;
-        }
-        case 'ordering': {
-          // answer = array of indices representing current order
-          if (!Array.isArray(answer)) return false;
-          const correctOrder = question.correctOrder;
-          if (answer.length !== correctOrder.length) return false;
-          return answer.every((val, idx) => val === correctOrder[idx]);
-        }
-        case 'journal': {
-          // answer = array of { account, debit, credit } entries
-          if (!Array.isArray(answer)) return false;
-          const expected = question.expectedEntries;
-          const tol = question.tolerance || 1;
-          if (answer.length !== expected.length) return false;
-          // Check each expected entry exists in answer
-          return expected.every(exp => {
-            return answer.some(a =>
-              a.account === exp.account &&
-              Math.abs((parseFloat(a.debit) || 0) - exp.debit) <= tol &&
-              Math.abs((parseFloat(a.credit) || 0) - exp.credit) <= tol
-            );
-          });
-        }
-        case 'trial_balance': {
-          // answer = { accountName: { debit: val, credit: val }, ... }
-          if (!answer || typeof answer !== 'object') return false;
-          const accounts = question.accounts;
-          return accounts.filter(a => !a.prefilled).every(acc => {
-            const ans = answer[acc.name];
-            if (!ans) return false;
-            const dTol = 1;
-            return Math.abs((parseFloat(ans.debit) || 0) - acc.expectedDebit) <= dTol &&
-                   Math.abs((parseFloat(ans.credit) || 0) - acc.expectedCredit) <= dTol;
-          });
-        }
-        case 'financial_statement': {
-          // answer = { zoneName: [itemId, ...], ... }
-          if (!answer || typeof answer !== 'object') return false;
-          const expected = question.expectedZones;
-          for (const zone in expected) {
-            const expectedItems = expected[zone];
-            const answerItems = answer[zone] || [];
-            if (!expectedItems.every(id => answerItems.includes(id))) return false;
-          }
-          return true;
-        }
-      }
-      return false;
-    }
-
-    function matchLeft(qIndex, pairIdx) {
-      if (matchingState.leftSelected === pairIdx) {
-        matchingState.leftSelected = null;
-      } else {
-        matchingState.leftSelected = pairIdx;
-        if (matchingState.rightSelected !== null) {
-          matchingState.pairs[pairIdx] = matchingState.rightSelected;
-          matchingState.leftSelected = null;
-          matchingState.rightSelected = null;
-          examState.answers[qIndex] = matchingState.pairs;
-          renderQuestion();
-        }
-      }
-    }
-
-    function matchRight(qIndex, pairIdx) {
-      if (matchingState.rightSelected === pairIdx) {
-        matchingState.rightSelected = null;
-      } else {
-        matchingState.rightSelected = pairIdx;
-        if (matchingState.leftSelected !== null) {
-          matchingState.pairs[matchingState.leftSelected] = pairIdx;
-          matchingState.leftSelected = null;
-          matchingState.rightSelected = null;
-          examState.answers[qIndex] = matchingState.pairs;
-          renderQuestion();
-        }
-      }
-    }
-
-    function updateJournal(qIndex, row, field, value) {
-      if (!examState.answers[qIndex]) examState.answers[qIndex] = {};
-      examState.answers[qIndex][`${field}_${row}`] = value;
-      updateJournalTotals(qIndex);
-    }
-
-    function updateJournalTotals(qIndex) {
-      const answers = examState.answers[qIndex] || {};
-      let totalDebits = 0, totalCredits = 0;
-
-      for (let i = 0; i < 3; i++) {
-        const debit = parseFloat(answers[`debit_${i}`]) || 0;
-        const credit = parseFloat(answers[`credit_${i}`]) || 0;
-        totalDebits += debit;
-        totalCredits += credit;
-      }
-
-      const debitsElem = document.getElementById(`totalDebits-${qIndex}`);
-      const creditsElem = document.getElementById(`totalCredits-${qIndex}`);
-      const balanceElem = document.getElementById(`journalBalance-${qIndex}`);
-
-      if (debitsElem) debitsElem.textContent = totalDebits.toFixed(2);
-      if (creditsElem) creditsElem.textContent = totalCredits.toFixed(2);
-
-      if (balanceElem) {
-        const balanced = Math.abs(totalDebits - totalCredits) < 0.01;
-        balanceElem.className = 'journal-balance' + (balanced ? '' : ' unbalanced');
-        balanceElem.textContent = balanced ? '✓ Balanced' : '✗ Not balanced';
-      }
-    }
-
-    function updateTrialBalance(qIndex, account, side, value) {
-      if (!examState.answers[qIndex]) examState.answers[qIndex] = {};
-      examState.answers[qIndex][`${account}_${side}`] = value;
-    }
-
-    function isItemDropped(qIndex, itemId, dropped) {
-      return Object.values(dropped).some(zone =>
-        zone && zone.some(item => item.id === itemId)
-      );
-    }
-
-    function dragStartFS(e) {
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('itemId', e.target.dataset.itemid);
-      e.dataTransfer.setData('qIndex', e.target.dataset.qindex);
-    }
-
-    function dragEndFS(e) {
-      document.querySelectorAll('.fs-zone').forEach(z => z.classList.remove('active'));
-    }
-
-    function dragOverFS(e) {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      e.target.closest('.fs-zone')?.classList.add('active');
-    }
-
-    function dropFS(e, qIndex, zone) {
-      e.preventDefault();
-      const itemId = e.dataTransfer.getData('itemId');
-
-      if (!examState.answers[qIndex]) examState.answers[qIndex] = {};
-      if (!examState.answers[qIndex][zone]) examState.answers[qIndex][zone] = [];
-
-      const question = window.AYIKHO_CAPSTONE_BANK[examState.currentSection].questions[qIndex];
-      const item = question.items.find(i => i.id === itemId);
-
-      if (item && !isItemDropped(qIndex, itemId, examState.answers[qIndex])) {
-        examState.answers[qIndex][zone].push({ id: itemId, label: item.label, amount: item.amount });
-        renderQuestion();
-      }
-    }
-
-    // Drag and drop for ordering
-    let draggedItem = null;
-
-    function dragStart(e) {
-      draggedItem = e.target;
-      e.dataTransfer.effectAllowed = 'move';
-    }
-
-    function dragOver(e) {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-    }
-
-    function dragDrop(e) {
-      e.preventDefault();
-      if (draggedItem && draggedItem !== e.target && e.target.classList.contains('ordering-item')) {
-        // Swap items
-        const qIndex = parseInt(e.target.dataset.qindex);
-        const currentOrder = examState.answers[qIndex] || [...Array(window.AYIKHO_CAPSTONE_BANK[examState.currentSection].questions[qIndex].items.length).keys()];
-
-        const dragPos = parseInt(draggedItem.dataset.pos);
-        const dropPos = parseInt(e.target.dataset.pos);
-
-        [currentOrder[dragPos], currentOrder[dropPos]] = [currentOrder[dropPos], currentOrder[dragPos]];
-        examState.answers[qIndex] = currentOrder;
-        renderQuestion();
-      }
-      draggedItem = null;
-    }
-
-    // ═══════════════════════════════════════════
-    // NAVIGATION
-    // ═══════════════════════════════════════════
-
-    function nextQuestion() {
-      const section = examState.currentSection;
-      const sectionData = window.AYIKHO_CAPSTONE_BANK[section];
-
-      if (examState.currentQuestionIndex < sectionData.questions.length - 1) {
-        examState.currentQuestionIndex++;
-        renderQuestion();
-      } else {
-        // End of section
-        endSection();
-      }
-    }
-
-    function previousQuestion() {
-      if (examState.currentQuestionIndex > 0) {
-        examState.currentQuestionIndex--;
-        renderQuestion();
-      }
-    }
-
-    function updateNavButtons() {
-      const section = examState.currentSection;
-      const sectionData = window.AYIKHO_CAPSTONE_BANK[section];
-      const qIndex = examState.currentQuestionIndex;
-
-      document.getElementById('prevBtn').disabled = qIndex === 0;
-      document.getElementById('nextBtn').disabled = qIndex === sectionData.questions.length - 1;
-    }
-
-    function updateProgress() {
-      const sections = ['A', 'B', 'C', 'D'];
-      const sectionIndex = sections.indexOf(examState.currentSection);
-      const questionProgress = (examState.currentQuestionIndex + 1) / examState.sectionTotals[examState.currentSection];
-      const overallProgress = (sectionIndex + questionProgress) / 4;
-
-      document.getElementById('examProgressFill').style.width = (overallProgress * 100) + '%';
-    }
-
-    function scrollToTop() {
-      document.querySelector('.exam-viewport').scrollTop = 0;
-    }
-
-    // ═══════════════════════════════════════════
-    // SECTION COMPLETION
-    // ═══════════════════════════════════════════
-
-    function endSection() {
-      const section = examState.currentSection;
-      const sectionData = window.AYIKHO_CAPSTONE_BANK[section];
-
-      // Calculate score
-      let correct = 0;
-      sectionData.questions.forEach((q, idx) => {
-        const answer = examState.answers[idx];
-        if (isAnswerCorrect(q, answer, q.type)) {
-          correct++;
-        }
-      });
-
-      examState.sectionScores[section] = correct;
-      examState.score += correct;
-
-      // Award XP
-      const xpGained = Math.round((correct / sectionData.questions.length) * 25);
-      examState.xp += xpGained;
-      document.getElementById('examXP').textContent = examState.xp;
-
-      const sections = ['A', 'B', 'C', 'D'];
-      const nextSectionIndex = sections.indexOf(section) + 1;
-
-      if (nextSectionIndex < 4) {
-        showBreakScreen(section, correct, sectionData.questions.length);
-      } else {
-        showResultsScreen();
-      }
-    }
-
-    function showBreakScreen(section, score, total) {
-      document.getElementById('questionContainer').style.display = 'none';
-      document.getElementById('breakScreen').classList.add('active');
-      document.getElementById('examNav').style.display = 'none';
-
-      document.getElementById('breakScore').textContent = `${score}/${total}`;
-      document.getElementById('breakMessage').textContent = SECTION_MESSAGES[section];
-
-      let countdown = 90;
-      const counterElem = document.getElementById('breakCounter');
-      const continueBtn = document.getElementById('continueBtn');
-
-      const textElem = document.getElementById('breathingText');
-      let breathPhase = 0;
-
-      const breathInterval = setInterval(() => {
-        breathPhase = (breathPhase + 1) % 2;
-        textElem.textContent = breathPhase === 0 ? 'Breathe in...' : 'Breathe out...';
-      }, 3000);
-
-      const countdownInterval = setInterval(() => {
-        countdown--;
-        counterElem.textContent = `Continue in ${countdown}s`;
-
-        if (countdown <= 0) {
-          clearInterval(countdownInterval);
-          clearInterval(breathInterval);
-          continueBtn.disabled = false;
-        }
-      }, 1000);
-    }
-
-    function continueFromBreak() {
-      document.getElementById('breakScreen').classList.remove('active');
-      document.getElementById('questionContainer').style.display = 'block';
-      document.getElementById('examNav').style.display = 'flex';
-
-      const sections = ['A', 'B', 'C', 'D'];
-      const nextSection = sections[sections.indexOf(examState.currentSection) + 1];
-
-      loadSection(nextSection);
-    }
-
-    function showResultsScreen() {
-      document.getElementById('questionContainer').style.display = 'none';
-      document.getElementById('examHeader').style.display = 'none';
-      document.getElementById('examNav').style.display = 'none';
-      document.getElementById('resultsScreen').classList.add('active');
-
-      const totalQuestions = Object.values(examState.sectionTotals).reduce((a, b) => a + b, 0);
-      const percentage = Math.round((examState.score / totalQuestions) * 100);
-
-      document.getElementById('finalPercentage').textContent = percentage + '%';
-
-      let status, message;
-      if (percentage >= 80) {
-        status = 'Legend!';
-        message = ASHKI_MESSAGES.legend;
-      } else if (percentage >= 70) {
-        status = 'Solid Work';
-        message = ASHKI_MESSAGES.solid;
-      } else if (percentage >= 50) {
-        status = 'Good Effort';
-        message = ASHKI_MESSAGES.goodEffort;
-      } else if (percentage >= 30) {
-        status = 'Don\'t Stress';
-        message = ASHKI_MESSAGES.dontStress;
-      } else {
-        status = 'Starting Point';
-        message = ASHKI_MESSAGES.startingPoint;
-      }
-
-      document.getElementById('finalStatus').textContent = status;
-      document.getElementById('ashkiFinalMessage').textContent = message;
-
-      // Section breakdown
-      let breakdownHtml = '';
-      const sections = ['A', 'B', 'C', 'D'];
-      sections.forEach(sec => {
-        const score = examState.sectionScores[sec];
-        const total = examState.sectionTotals[sec];
-        const pct = Math.round((score / total) * 100);
-
-        breakdownHtml += `
-          <div class="results-section">
-            <div class="results-section-header">
-              <span class="results-section-label">Section ${sec} · ${SECTION_NAMES[sec]}</span>
-              <span class="results-section-score">${score}/${total}</span>
-            </div>
-            <div class="results-bar">
-              <div class="results-bar-fill" style="width: ${pct}%"></div>
-            </div>
-          </div>
-        `;
-      });
-      document.getElementById('sectionResults').innerHTML = breakdownHtml;
-
-      // Stats
-      const timeSpent = Math.round((Date.now() - examState.startTime) / 1000 / 60);
-      let statsHtml = `
-        <div class="results-stat">
-          <div class="results-stat-value">${timeSpent}m</div>
-          <div class="results-stat-label">Time Used</div>
-        </div>
-        <div class="results-stat">
-          <div class="results-stat-value">+${examState.xp}</div>
-          <div class="results-stat-label">XP Earned</div>
-        </div>
-        <div class="results-stat">
-          <div class="results-stat-value">🔥${examState.bestStreak}</div>
-          <div class="results-stat-label">Best Streak</div>
-        </div>
-        <div class="results-stat">
-          <div class="results-stat-value">${percentage}%</div>
-          <div class="results-stat-label">Final Score</div>
-        </div>
-      `;
-      document.getElementById('resultStats').innerHTML = statsHtml;
-
-      // Log to student data
-      if (window.ayikhoData) {
-        window.ayikhoData.data.stats.totalXP += examState.xp;
-        window.ayikhoData._save();
-      }
-    }
-
-    // ═══════════════════════════════════════════
-    // CALCULATOR
-    // ═══════════════════════════════════════════
-
-    function toggleCalc() {
-      const overlay = document.getElementById('calcOverlay');
-      overlay.classList.toggle('open');
-    }
-
-    function calcAppend(val) {
-      if (calcState.shouldResetDisplay) {
-        calcState.display = val;
-        calcState.shouldResetDisplay = false;
-      } else {
-        if (calcState.display === '0') calcState.display = val;
-        else calcState.display += val;
-      }
-      updateDisplay();
-    }
-
-    function calcOp(op) {
-      calcState.previousValue = parseFloat(calcState.display);
-      calcState.operation = op;
-      calcState.shouldResetDisplay = true;
-    }
-
-    function calcEquals() {
-      if (calcState.operation && calcState.previousValue !== undefined) {
-        const current = parseFloat(calcState.display);
-        let result;
-
-        switch(calcState.operation) {
-          case '+': result = calcState.previousValue + current; break;
-          case '-': result = calcState.previousValue - current; break;
-          case '×': result = calcState.previousValue * current; break;
-          case '÷': result = calcState.previousValue / current; break;
-        }
-
-        calcState.display = String(result);
-        calcState.operation = null;
-        updateDisplay();
-      }
-    }
-
-    function calcClear() {
-      calcState.display = '0';
-      calcState.currentValue = 0;
-      calcState.previousValue = 0;
-      calcState.operation = null;
-      updateDisplay();
-    }
-
-    function calcVAT() {
-      const current = parseFloat(calcState.display);
-      const withVAT = current * 1.15;
-      calcState.display = withVAT.toFixed(2);
-      updateDisplay();
-    }
-
-    function updateDisplay() {
-      document.getElementById('calcDisplay').textContent = calcState.display;
-    }
-
-    // ═══════════════════════════════════════════
-    // STREAK
-    // ═══════════════════════════════════════════
-
-    function showStreak() {
-      const badge = document.getElementById('streakBadge');
-      document.getElementById('streakCount').textContent = examState.streak;
-      badge.classList.add('show');
-
-      setTimeout(() => {
-        badge.classList.remove('show');
-      }, 3000);
-    }
-
-    // ═══════════════════════════════════════════
-    // NAVIGATION BACK
-    // ═══════════════════════════════════════════
-
-    function goHome() {
-      window.location.href = 'ayikho-chapter-home.html';
-    }
-
-    function retryExam() {
-      examState = {
-        startTime: null,
-        sectionStartTime: null,
-        totalTimeMs: 0,
-        sectionTimes: {},
-        timeLimit: 60 * 60 * 1000,
-        currentSection: 'A',
-        currentQuestionIndex: 0,
-        score: 0,
-        sectionScores: { A: 0, B: 0, C: 0, D: 0 },
-        sectionTotals: { A: 0, B: 0, C: 0, D: 0 },
-        answers: [],
-        streak: 0,
-        bestStreak: 0,
-        xp: 0,
-        tenMinWarningShown: false,
-        twoMinWarningShown: false
-      };
-
-      document.getElementById('resultsScreen').classList.remove('active');
-      document.getElementById('introScreen').style.display = 'flex';
-      document.getElementById('introScreen').classList.add('fade-in');
-    }
-  </script>
+  });
+  // Rebuild from done array
+  var modCorrect=MODS.map(function(){return 0;});
+  var modTotal=MODS.map(function(){return 0;});
+  QS.forEach(function(q,i){
+    var m=MOD_MAP[i];
+    modTotal[m]++;
+  });
+  // We need to track per-question correctness
+  var bd=document.getElementById("mod-breakdown");
+  bd.innerHTML="<div style='font-size:13px;font-weight:800;color:var(--ink);margin-bottom:12px'>Module Breakdown</div>";
+  MODS.forEach(function(name,m){
+    var tot=modTotal[m];
+    var row=document.createElement("div");
+    row.className="mod-row";
+    row.innerHTML="<div class='mod-name'>"+name+"</div>"
+      +"<div class='mod-bar-wrap'><div class='mod-bar' style='width:"+(tot>0?100:0)+"%'></div></div>"
+      +"<div class='mod-score'>"+tot+" Q</div>";
+    bd.appendChild(row);
+  });
+}
+
+function retry(){
+  document.getElementById("win").style.display="none";
+  document.getElementById("exam-body").innerHTML="";
+  startExam();
+}
+</script>
 </body>
-
 </html>
