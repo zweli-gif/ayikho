@@ -7,6 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="firebase-config.js" onerror=""></script>
+<script>
+// Inline fallback — ensures config is always available
+if(!window.FIREBASE_CONFIG){
+  window.FIREBASE_CONFIG={
+    apiKey:"AIzaSyD89f-i_3zvhICBMw2E7nQRjjLGyyLGDkU",
+    authDomain:"ayikho-tvet.firebaseapp.com",
+    projectId:"ayikho-tvet",
+    storageBucket:"ayikho-tvet.firebasestorage.app",
+    messagingSenderId:"1079346801243",
+    appId:"1:1079346801243:web:a209ebcdfc5cf94b342d7e"
+  };
+}
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--p:#7C3AED;--pl:#9D5FFF;--gold:#F59E0B;--green:#22C55E;--blue:#0284C7;--rose:#F43F5E;--teal:#0D9488;--bg:#F7F4FF;--card:#fff;--card-h:#F5F0FF;--bord:#E8E2F4;--t1:#1A0A3A;--t2:#6B5A8A;--t3:#9580B8}
@@ -309,7 +322,7 @@ var CG={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false
 var CGn={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
 var LEG={...CGn,plugins:{legend:{display:true,position:'bottom',labels:{color:'rgba(0,0,0,.5)',font:{size:11},padding:12}}}};
 
-async function loadDashboard(){
+async async function loadDashboard(){
 var C={};var daily=[];
 try{
 var{initializeApp}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
