@@ -1050,57 +1050,6 @@ function showAshkiReaction(isCorrect) {
 
         const MODULE_ID = 10;
 
-        // Real video player
-        var moduleVideo = null;
-
-        function initializeVideo() {
-            moduleVideo = document.getElementById('moduleVideo');
-            if (moduleVideo) {
-                moduleVideo.addEventListener('timeupdate', function() {
-                    if (!moduleVideo.duration) return;
-                    var minutes = Math.floor(moduleVideo.currentTime / 60);
-                    var seconds = Math.floor(moduleVideo.currentTime % 60);
-                    var dmins = Math.floor(moduleVideo.duration / 60);
-                    var dsecs = Math.floor(moduleVideo.duration % 60);
-                    var vidTime = document.getElementById('videoTime');
-                    if (vidTime) vidTime.textContent = minutes + ':' + (seconds<10?'0':'') + seconds + ' / ' + dmins + ':' + (dsecs<10?'0':'') + dsecs;
-                });
-
-                moduleVideo.addEventListener('ended', function() {
-                    setTimeout(function() { nextScreen ? nextScreen() : goToScreen && goToScreen(currentScreen + 1); }, 1500);
-                });
-
-                // Graceful fallback
-                moduleVideo.addEventListener('error', function() {
-                    var wrapper = moduleVideo.parentElement;
-                    if (wrapper) {
-                        var notice = document.createElement('div');
-                        notice.style.cssText = 'text-align:center; padding:32px 16px; color:var(--mut); font:500 14px/1.5 Outfit;';
-                        notice.innerHTML = '🎬 Video coming soon!<br><small>Lesson content is available below</small>';
-                        wrapper.replaceChild(notice, moduleVideo);
-                    }
-                });
-            }
-        }
-
-        function playVid() {
-            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
-            if (!moduleVideo) return;
-            if (moduleVideo.paused) {
-                moduleVideo.play().catch(function(e) { console.log('Video not available yet'); });
-            } else {
-                moduleVideo.pause();
-            }
-        }
-
-        function jumpToMarker(seconds) {
-            if (!moduleVideo) moduleVideo = document.getElementById('moduleVideo');
-            if (moduleVideo) {
-                moduleVideo.currentTime = seconds;
-                moduleVideo.play();
-            }
-        }
-
         // Screen Data
         const screens = [
             {
@@ -1159,77 +1108,6 @@ function showAshkiReaction(isCorrect) {
                     <div class="callout real-life">
                         <h4>🏪 Why It Matters</h4>
                         <p>Zandile needs to know her real cash position for the bank loan application next month. Bank reconciliation tells her exactly what the bank has available to lend against.</p>
-                    </div>
-                `
-            },
-            {
-                id: 'video',
-                title: 'Video Lesson',
-                subtitle: 'Module 10 of 12',
-                type: 'video',
-                content: `
-                    <div class="landoh-video-wrap" id="landohVideo">
-                        <!-- Real video element -->
-                        <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
-                          style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
-                          <source src="assets/videos/module-10.mp4" type="video/mp4">
-                        </video>
-                        <!-- Title Card -->
-                        <div class="lv-title-card" id="lvTitle">
-                            <div class="lv-mod-num">Module 10</div>
-                            <h1>Bank<br>Reconciliation</h1>
-                            <div class="lv-accent-line"></div>
-                            <div class="lv-mini-icon">✏️</div>
-                            <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
-                        </div>
-                        <!-- Outro Card -->
-                        <div class="lv-outro" id="lvOutro">
-                            <div class="lv-emoji">🎯</div>
-                            <h2>Now try the interactive exercise!</h2>
-                            <p>Tap to continue</p>
-                        </div>
-                        <!-- Main Content — Pen on Board -->
-                        <div class="lv-main" id="lvMain">
-                            <!-- Voice-over bar (compact, replaces avatar) -->
-                            <div class="lv-voice-bar">
-                                <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
-                                    <div class="lv-voice-bar-line"></div>
-                                    <div class="lv-voice-bar-line"></div>
-                                    <div class="lv-voice-bar-line"></div>
-                                    <div class="lv-voice-bar-line"></div>
-                                    <div class="lv-voice-bar-line"></div>
-                                </div>
-                                <div class="lv-voice-text" id="lvSpeech"></div>
-                                <div class="lv-chapter-ind" id="lvChapter">0:00</div>
-                            </div>
-                            <!-- Full whiteboard -->
-                            <div class="lv-board" id="lvBoard">
-                                <div class="lv-board-title">✏️ Board</div>
-                                <div id="lvBoardContent"></div>
-                                <!-- Animated pen SVG -->
-                                <svg class="lv-pen" id="lvPen" width="28" height="28" viewBox="0 0 100 100">
-                                    <g transform="rotate(-45, 50, 50)">
-                                        <!-- Pen body -->
-                                        <rect x="42" y="10" width="16" height="60" rx="2" fill="#1A1A2E"/>
-                                        <!-- Grip section -->
-                                        <rect x="42" y="45" width="16" height="15" rx="1" fill="#334155"/>
-                                        <!-- Pen tip -->
-                                        <polygon points="42,70 58,70 50,90" fill="#94a3b8"/>
-                                        <polygon points="46,82 54,82 50,90" fill="#1A1A2E"/>
-                                        <!-- Clip -->
-                                        <rect x="58" y="12" width="4" height="30" rx="2" fill="#64748b"/>
-                                        <!-- Cap ring -->
-                                        <rect x="40" y="8" width="20" height="4" rx="2" fill="#0284C7"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="lv-prog"><div class="lv-prog-fill" id="lvProg"></div></div>
-                            <div class="lv-ctrls">
-                                <div class="lv-btn" id="lvPrev" title="Previous">◀</div>
-                                <div class="lv-btn" id="lvPlay" title="Play/Pause">▶</div>
-                                <div class="lv-btn" id="lvNext" title="Next">▶</div>
-                            </div>
-                        </div>
                     </div>
                 `
             },
@@ -1542,7 +1420,7 @@ function showAshkiReaction(isCorrect) {
                         </div>
 
                         <div class="nav-buttons" style="flex-direction: column; border-top: none; margin-top: auto;">
-                            <button class="btn btn-ghost" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                            <button class="btn btn-ghost" onclick="goToScreen(9)">📝 Past Papers & Practice</button>
                             <button class="btn-secondary" onclick="goToScreen(0)">Review Bank Recon Module</button>
                             <button onclick="alert('Excellent work! In a full app, this would lead to Module 11.')">Next Module →</button>
                         </div>
@@ -1737,17 +1615,13 @@ function showAshkiReaction(isCorrect) {
             screenEls[currentScreen].classList.add('active');
 
             notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: screens.length });
-            if (currentScreen === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            if (currentScreen === 8) notifyParent('moduleComplete', { moduleId: MODULE_ID });
             // Track screen view
             if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(10, currentScreen);
 
             updateProgress();
             renderNavigation();
-            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/11`;
-            // Initialize video if on video screen
-            if (screens[currentScreen].type === 'video') {
-                setTimeout(initializeVideo, 50);
-            }
+            document.getElementById('currentScreen').textContent = `${currentScreen + 1}/10`;
         }
 
         function nextScreen() {
@@ -1817,186 +1691,7 @@ function showAshkiReaction(isCorrect) {
         // Initialize on load
         document.addEventListener('DOMContentLoaded', init);
 
-        // ===== LANDOH VIDEO PLAYER (Module 10) =====
-        (function() {
-            const lvSlides = [
-                { speech: "The bank statement and your cashbook record the same transactions — but from different perspectives and at different times. There are four main reasons why they don't match.", chapter: "0:00 — INTRO", board: '<div class="lv-bi"><h3>MODULE 10</h3><p style="font-size:14px;font-weight:700;color:#1A1A2E;">Bank Reconciliation Why don\'t the bank and books match?</p></div>', point: false },
-                { speech: "Let's call them the Big Four differences. Outstanding deposits, unpresented cheques, bank charges, and direct debits.", chapter: "0:00 — THE BIG 4", board: '<div class="lv-bi"><h3>THE 4 KEY DIFFERENCES</h3><ol class="lv-num-list"><li data-num="1">Outstanding Deposits</li><li data-num="2">Unpresented Cheques</li><li data-num="3">Bank Charges</li><li data-num="4">Direct Debits/Credits</li></ol></div>', point: false, stagger: true },
-                { speech: "Outstanding deposits -- you deposited money but the bank hasn't processed it yet. Unpresented cheques -- you wrote a cheque but the person hasn't cashed it yet.", chapter: "1:00 — TIMING DIFFERENCES", board: '<div class="lv-bi"><h3><span class="lv-key">Timing Differences</span></h3><p>Outstanding Deposits:</p><p style="font-size:12px">In YOUR books, not yet at BANK</p><p style="margin-top:8px">Unpresented Cheques:</p><p style="font-size:12px">In YOUR books, not yet at BANK</p><p style="margin-top:8px">→ Both are <strong>TIMING differences</strong></p></div>', point: true },
-                { speech: "Bank charges -- the bank took fees but you didn't know about them yet. Direct debits and credits -- payments or deposits the bank made that you haven't recorded.", chapter: "2:15 — BANK CORRECTIONS", board: '<div class="lv-bi"><h3><span class="lv-key">Bank Corrections</span></h3><p>Bank Charges:</p><p style="font-size:12px">At BANK, not in your books yet</p><p style="margin-top:8px">Direct Debits:</p><p style="font-size:12px">At BANK, not in your books yet</p><p style="margin-top:8px">→ These need <strong>JOURNAL ENTRIES</strong> to fix</p></div>', point: true },
-                { speech: "Here's the key: timing differences like outstanding deposits and unpresented cheques appear on the bank reconciliation statement only. But bank corrections like charges and direct debits need journal entries to update your cashbook.", chapter: "2:15 — IMPORTANT", board: '<div class="lv-bi"><h3>IMPORTANT</h3><div class="lv-hl"><p style="margin-bottom:5px">Timing differences →</p><p style="font-size:11px;margin-bottom:8px">Reconciliation statement only</p></div><div class="lv-hl"><p style="margin-bottom:5px">Bank corrections →</p><p style="font-size:11px">Update YOUR cashbook!</p></div></div>', point: false },
-                { speech: "Exam tip: the reconciliation question is a guaranteed 20+ marks. Start with the bank balance, adjust for timing differences, and you should arrive at the cashbook balance. Practice identifying what goes where!", chapter: "3:15 — RECAP", board: '<div class="lv-bi"><div class="lv-tip"><div class="lv-tip-label">🎯 Exam Tip</div><p style="font-size:12px;font-weight:600;color:#1A1A2E">Worth 20+ marks!</p><p style="font-size:11px;color:var(--fa);font-weight:700;margin-top:3px">Start with bank balance<br>Adjust for timing differences<br>Must end at cashbook balance!</p></div></div>', point: false }
-            ];
-
-            let lvCurrent = -1, lvPlaying = false, lvTimer = null;
-            const lvSpeech = document.getElementById('lvSpeech');
-            const lvBoardContent = document.getElementById('lvBoardContent');
-            const lvProg = document.getElementById('lvProg');
-            const lvChapter = document.getElementById('lvChapter');
-            const lvTitle = document.getElementById('lvTitle');
-            const lvOutro = document.getElementById('lvOutro');
-            const lvMain = document.getElementById('lvMain');
-            const lvPlayBtn = document.getElementById('lvPlay');
-            const lvPen = document.getElementById('lvPen');
-            const lvVoiceInd = document.getElementById('lvVoiceInd');
-
-            const audioPath = 'assets/audio/';
-            let currentAudio = null;
-
-            function lvPlaySlideAudio(idx, onEnd) {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-                const slideNumber = (idx + 1).toString().padStart(2, '0');
-                const audioUrl = `${audioPath}module-10-slide-${slideNumber}.mp3`;
-                currentAudio = new Audio(audioUrl);
-
-                lvStartTalk();
-                currentAudio.onended = () => {
-                    lvStopTalk();
-                    if (onEnd) onEnd();
-                };
-                currentAudio.onerror = () => {
-                    console.warn(`Could not load ${audioUrl}, falling back to timer.`);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                };
-                currentAudio.play().catch(e => {
-                    console.log("Audio play prevented:", e);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                });
-            }
-
-            function lvSpeechCancel() {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-            }
-
-            function lvStartTalk() {
-                lvVoiceInd.classList.remove('lv-paused');
-            }
-            function lvStopTalk() {
-                lvVoiceInd.classList.add('lv-paused');
-            }
-
-            function lvMovePen(target) {
-                if (!target) return;
-                const board = document.getElementById('lvBoard');
-                const boardRect = board.getBoundingClientRect();
-                const targetRect = target.getBoundingClientRect();
-                const x = targetRect.left - boardRect.left + targetRect.width - 10;
-                const y = targetRect.top - boardRect.top + targetRect.height / 2 - 14;
-                lvPen.style.left = Math.min(x, boardRect.width - 30) + 'px';
-                lvPen.style.top = Math.max(0, y) + 'px';
-                lvPen.classList.add('lv-vis');
-            }
-
-            function lvShowSlide(idx) {
-                if (idx < 0 || idx >= lvSlides.length) return;
-                lvCurrent = idx;
-                const s = lvSlides[idx];
-                lvSpeech.textContent = s.speech;
-                lvSpeech.classList.add('lv-vis');
-
-                lvChapter.textContent = s.chapter;
-                const div = document.createElement('div');
-                div.innerHTML = s.board;
-                const newItem = div.firstElementChild;
-                lvBoardContent.appendChild(newItem);
-                requestAnimationFrame(() => {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    const last = items[items.length - 1];
-                    last.classList.add('lv-vis');
-                    last.classList.add('lv-writing');
-                    setTimeout(() => last.classList.remove('lv-writing'), 1200);
-                    setTimeout(() => lvMovePen(last), 100);
-                    setTimeout(() => lvPen.classList.remove('lv-vis'), 1500);
-                    document.getElementById('lvBoard').scrollTo({ top: 99999, behavior: 'smooth' });
-                });
-                if (s.stagger) {
-                    setTimeout(() => {
-                        document.querySelectorAll('ol.lv-num-list li').forEach((li, i) => { setTimeout(() => li.classList.add('lv-pop'), i * 300); });
-                    }, 400);
-                }
-                lvProg.style.width = ((idx + 1) / lvSlides.length * 100) + '%';
-            }
-
-            function lvAutoAdv() {
-                const s = lvSlides[lvCurrent];
-                function advanceNext() {
-                    if (!lvPlaying) return;
-                    if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
-                    else {
-                        lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
-                        lvSpeech.classList.remove('lv-vis');
-                        setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
-                    }
-                }
-                lvPlaySlideAudio(lvCurrent, advanceNext);
-            }
-
-            function lvTogglePlay() {
-                if (lvPlaying) {
-                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
-                } else {
-                    lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                    if (lvCurrent === -1) {
-                        lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                        setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-                    } else if (lvCurrent >= lvSlides.length - 1) {
-                        lvRestart();
-                    } else { lvAutoAdv(); }
-                }
-            }
-
-            function lvRestart() {
-                lvSpeechCancel();
-                lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProg.style.width = '0%';
-                lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
-                lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
-                lvPen.classList.remove('lv-vis');
-                lvStopTalk(); lvPlaying = false; lvPlayBtn.textContent = '▶';
-            }
-
-            lvPlayBtn.addEventListener('click', lvTogglePlay);
-            document.getElementById('lvStartBtn').addEventListener('click', () => {
-                lvPlaying = true; lvPlayBtn.textContent = '\u23F8';
-                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-            });
-            document.getElementById('lvNext').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent === -1) {
-                    lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                    setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
-                } else if (lvCurrent < lvSlides.length - 1) {
-                    lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-                else { nextScreen(); }
-            });
-            document.getElementById('lvPrev').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent > 0) {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    if (items.length > 0) items[items.length - 1].remove();
-                    lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-            });
-            lvOutro.addEventListener('click', () => { nextScreen(); });
-        })();
-    </script>
+</script>
 
 <!-- ASHKI REACTION OVERLAY -->
 <div id="ashki-reaction" style="position:fixed; bottom:90px; left:50%; transform:translateX(-50%); z-index:100; display:none; flex-direction:column; align-items:center; pointer-events:none;">
@@ -2008,5 +1703,11 @@ function showAshkiReaction(isCorrect) {
   </div>
 </div>
 
+<!-- ayikho-escape:start -->
+<div id="ayikhoEscapeBtn" role="button" tabindex="0" aria-label="Home" title="Home" onclick="ayikhoEscape()" style="position:fixed;top:12px;right:12px;z-index:2147483600;width:38px;height:38px;border-radius:11px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:19px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:system-ui,-apple-system,sans-serif;user-select:none">&#8962;</div>
+<script>
+(function(){function esc(){try{if(window.top!==window.self){parent.postMessage({type:'goHome'},'*');return;}}catch(e){}if(history.length>1){history.back();return;}location.href='index.html';}window.ayikhoEscape=esc;var b=document.getElementById('ayikhoEscapeBtn');if(b){b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();esc();}});}})();
+</script>
+<!-- ayikho-escape:end -->
 </body>
 </html>

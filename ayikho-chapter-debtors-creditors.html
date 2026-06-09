@@ -1002,16 +1002,15 @@
         <div class="sidebar-title">Module 6</div>
         <ul class="sidebar-menu" id="sidebarMenu">
             <li><a onclick="goToScreen(0)">1. Intro</a></li>
-            <li><a onclick="goToScreen(1)">2. Video</a></li>
-            <li><a onclick="goToScreen(2)">3. Lesson: DJ</a></li>
-            <li><a onclick="goToScreen(3)">4. Invoice Builder</a></li>
-            <li><a onclick="goToScreen(4)">5. Lesson: CJ</a></li>
-            <li><a onclick="goToScreen(5)">6. Worked Example</a></li>
-            <li><a onclick="goToScreen(6)">7. Quiz Q1</a></li>
-            <li><a onclick="goToScreen(7)">8. Quiz Q2</a></li>
-            <li><a onclick="goToScreen(8)">9. Quiz Q3</a></li>
-            <li><a onclick="goToScreen(9)">10. Win Screen</a></li>
-            <li><a onclick="goToScreen(10)">11. Past Papers</a></li>
+            <li><a onclick="goToScreen(1)">2. Lesson: DJ</a></li>
+            <li><a onclick="goToScreen(2)">3. Invoice Builder</a></li>
+            <li><a onclick="goToScreen(3)">4. Lesson: CJ</a></li>
+            <li><a onclick="goToScreen(4)">5. Worked Example</a></li>
+            <li><a onclick="goToScreen(5)">6. Quiz Q1</a></li>
+            <li><a onclick="goToScreen(6)">7. Quiz Q2</a></li>
+            <li><a onclick="goToScreen(7)">8. Quiz Q3</a></li>
+            <li><a onclick="goToScreen(8)">9. Win Screen</a></li>
+            <li><a onclick="goToScreen(9)">10. Past Papers</a></li>
         </ul>
     </div>
 
@@ -1059,64 +1058,6 @@
                 <div class="nav-hint">→ Press RIGHT arrow or click Next</div>
             </div>
 
-            <!-- Screen 1: Video Player -->
-            <div class="screen" id="screen1">
-                <div class="landoh-video-wrap" id="landohVideo">
-                    <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
-                      style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
-                      <source src="assets/videos/module-6.mp4" type="video/mp4">
-                    </video>
-                    <!-- Title Card -->
-                    <div class="lv-title-card" id="lvTitle">
-                        <div class="lv-mod-num">Module 6</div>
-                        <h1>Debtors & Creditors Journals</h1>
-                        <div class="lv-accent-line"></div>
-                        <div class="lv-mini-icon">🤝</div>
-                        <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
-                    </div>
-                    <!-- Outro Card -->
-                    <div class="lv-outro" id="lvOutro">
-                        <div class="lv-emoji">🎯</div>
-                        <h2>Now try the interactive exercise!</h2>
-                        <p>Tap to continue</p>
-                    </div>
-                    <!-- Main Content - Pen on Board -->
-                    <div class="lv-main" id="lvMain">
-                        <div class="lv-voice-bar">
-                            <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                            </div>
-                            <div class="lv-voice-text" id="lvSpeech"></div>
-                            <div class="lv-chapter-ind" id="lvChapter">0:00</div>
-                        </div>
-                        <div class="lv-board" id="lvBoard">
-                            <div class="lv-board-title">✏️ Board</div>
-                            <div id="lvBoardContent"></div>
-                            <svg class="lv-pen" id="lvPen" width="28" height="28" viewBox="0 0 100 100">
-                                <g transform="rotate(-45, 50, 50)">
-                                    <rect x="45" y="10" width="10" height="50" fill="#1A1A2E" rx="5"/>
-                                    <circle cx="50" cy="65" r="6" fill="#FF6B35"/>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <!-- Controls & Progress -->
-                    <div class="lv-prog" id="lvProg">
-                        <div class="lv-prog-fill" id="lvProgFill"></div>
-                    </div>
-                    <div class="lv-ctrls">
-                        <button class="lv-btn" id="lvPrev">◀</button>
-                        <button class="lv-btn" id="lvPlay">▶</button>
-                        <button class="lv-btn" id="lvNext">▶▶</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 2: Lesson Part 1 - Debtors Journal -->
             <div class="screen" id="screen2">
                 <div class="screen-header">
                     <h1>Debtors Journal</h1>
@@ -1536,7 +1477,7 @@
                     <p style="font-size: 12px; margin-top: 20px; color: var(--mut);">You're crushing it! Ready for Module 7?</p>
                 </div>
                 <div class="screen-footer">
-                    <button class="btn btn-secondary" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                    <button class="btn btn-secondary" onclick="goToScreen(9)">📝 Past Papers & Practice</button>
                     <button class="btn btn-secondary" onclick="goToScreen(0)">Start Over</button>
                     <button class="btn btn-primary" onclick="alert('🎓 Module 7 coming soon: Bank Reconciliation!')">Next Module</button>
                 </div>
@@ -1585,7 +1526,7 @@
                     </div>
                 </div>
                 <div class="screen-footer">
-                    <button class="btn btn-primary" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                    <button class="btn btn-primary" onclick="goToScreen(8)" style="background:var(--p)">Back to module ←</button>
                 </div>
                 <div class="nav-hint">← Press LEFT arrow to go back</div>
             </div>
@@ -1604,7 +1545,7 @@
 
         const MODULE_ID = 6;
         let currentScreen = 0;
-        const totalScreens = 11;
+        const totalScreens = 10;
 
         const CORRECT_REACTIONS = [
           "Yebo! You nailed it! 🎉",
@@ -1632,40 +1573,6 @@
           el.style.animation = 'ashki-pop .4s cubic-bezier(.34,1.56,.64,1)';
           clearTimeout(window._ashkiTimer);
           window._ashkiTimer = setTimeout(() => { el.style.display = 'none'; }, 3000);
-        }
-
-        // Real video player
-        var moduleVideo = document.getElementById('moduleVideo');
-        var playButton = null;
-
-        function playVid() {
-            if (!moduleVideo) return;
-            if (moduleVideo.paused) {
-                moduleVideo.play().catch(function(e) { console.log('Video not available yet'); });
-            } else {
-                moduleVideo.pause();
-            }
-        }
-
-        if (moduleVideo) {
-            moduleVideo.addEventListener('timeupdate', function() {
-                if (!moduleVideo.duration) return;
-            });
-
-            moduleVideo.addEventListener('ended', function() {
-                setTimeout(function() { nextScreen ? nextScreen() : goToScreen && goToScreen(currentScreen + 1); }, 1500);
-            });
-
-            // Graceful fallback
-            moduleVideo.addEventListener('error', function() {
-                var wrapper = moduleVideo.parentElement;
-                if (wrapper) {
-                    var notice = document.createElement('div');
-                    notice.style.cssText = 'text-align:center; padding:32px 16px; color:var(--mut); font:500 14px/1.5 Outfit;';
-                    notice.innerHTML = '🎬 Video coming soon!<br><small>Lesson content is available below</small>';
-                    wrapper.replaceChild(notice, moduleVideo);
-                }
-            });
         }
 
         function updateProgress() {
@@ -1703,7 +1610,7 @@
 
         function goToScreen(screenIndex) {
             if (screenIndex >= 0 && screenIndex < totalScreens) {
-                if (screenIndex === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+                if (screenIndex === 8) notifyParent('moduleComplete', { moduleId: MODULE_ID });
                 // Track screen view
                 if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(6, screenIndex);
                 showScreen(screenIndex);
@@ -1809,181 +1716,6 @@
             }
         }
 
-        // ===== LANDOH VIDEO PLAYER =====
-        (function() {
-            const lvSlides = [
-                { speech: "A debtor is someone who owes YOU money. They bought goods on credit and will pay later. The Debtors Journal records all credit SALES.", chapter: "0:00 — INTRO", board: '<div class="lv-bi"><h3>MODULE 6</h3><p style="font-size:14px;font-weight:700;color:#1A1A2E;">Debtors & Creditors Journals</p></div>', point: false },
-                { speech: "So when Zandile's Spaza Shop sells 1,200 of goods on credit to a school, that goes in the Debtors Journal. The school is now a debtor.", chapter: "1:10 — DEBTORS", board: '<div class="lv-bi"><h3><span class="lv-key">DEBTOR = They owe US</span></h3><p>Debtors Journal = Credit SALES<br/>Columns: Date | Customer | Invoice # | Amount | VAT</p></div>', point: true },
-                { speech: "A creditor is someone you OWE money to. You bought goods on credit and will pay later. The Creditors Journal records all credit PURCHASES.", chapter: "2:15 — CREDITORS", board: '<div class="lv-bi"><h3><span class="lv-key">CREDITOR = We owe THEM</span></h3><p>Creditors Journal = Credit PURCHASES<br/>Columns: Date | Supplier | Invoice # | Amount | VAT</p></div>', point: true },
-                { speech: "When Zandile buys 3,000 of stock from a wholesaler on credit, that goes in the Creditors Journal. The wholesaler is now a creditor.", chapter: "2:15 — EXAMPLE", board: '<div class="lv-bi"><h3>Key Difference</h3><p><strong>Debtors:</strong> Money coming IN (credit sales)<br/><strong>Creditors:</strong> Money going OUT (credit purchases)</p></div>', point: false },
-                { speech: "Exam tip: don't mix them up! Debtors Journal is for SALES on credit. Creditors Journal is for PURCHASES on credit. If it's cash, it goes in the CRJ or CPJ instead!", chapter: "3:15 — EXAM TIP", board: '<div class="lv-bi"><div class="lv-tip"><div class="lv-tip-label">🎯 Exam Tip</div><p style="font-size:12px;font-weight:600;color:#1A1A2E">Debtors Journal = CREDIT SALES</p><p style="font-size:11px;color:var(--fa);font-weight:700;margin-top:6px">Creditors Journal = CREDIT PURCHASES<br/>Cash? Use CRJ/CPJ instead!</p></div></div>', point: false }
-            ];
-
-            let lvCurrent = -1, lvPlaying = false, lvTimer = null;
-            const lvSpeech = document.getElementById('lvSpeech');
-            const lvBoardContent = document.getElementById('lvBoardContent');
-            const lvProg = document.getElementById('lvProg');
-            const lvProgFill = document.getElementById('lvProgFill');
-            const lvChapter = document.getElementById('lvChapter');
-            const lvTitle = document.getElementById('lvTitle');
-            const lvOutro = document.getElementById('lvOutro');
-            const lvMain = document.getElementById('lvMain');
-            const lvPlayBtn = document.getElementById('lvPlay');
-            const lvPen = document.getElementById('lvPen');
-            const lvVoiceInd = document.getElementById('lvVoiceInd');
-
-            const audioPath = 'assets/audio/';
-            let currentAudio = null;
-
-            function lvPlaySlideAudio(idx, onEnd) {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-                const slideNumber = (idx + 1).toString().padStart(2, '0');
-                const audioUrl = `${audioPath}module-6-slide-${slideNumber}.mp3`;
-                currentAudio = new Audio(audioUrl);
-
-                lvStartTalk();
-                currentAudio.onended = () => {
-                    lvStopTalk();
-                    if (onEnd) onEnd();
-                };
-                currentAudio.onerror = () => {
-                    console.warn(`Could not load ${audioUrl}, falling back to timer.`);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                };
-                currentAudio.play().catch(e => {
-                    console.log("Audio play prevented:", e);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                });
-            }
-
-            function lvSpeechCancel() {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-            }
-
-            function lvStartTalk() {
-                lvVoiceInd.classList.remove('lv-paused');
-            }
-            function lvStopTalk() {
-                lvVoiceInd.classList.add('lv-paused');
-            }
-
-            function lvMovePen(target) {
-                if (!target) return;
-                const board = document.getElementById('lvBoard');
-                const boardRect = board.getBoundingClientRect();
-                const targetRect = target.getBoundingClientRect();
-                const x = targetRect.left - boardRect.left + targetRect.width - 10;
-                const y = targetRect.top - boardRect.top + targetRect.height / 2 - 14;
-                lvPen.style.left = Math.min(x, boardRect.width - 30) + 'px';
-                lvPen.style.top = Math.max(0, y) + 'px';
-                lvPen.classList.add('lv-vis');
-            }
-
-            function lvShowSlide(idx) {
-                if (idx < 0 || idx >= lvSlides.length) return;
-                lvCurrent = idx;
-                const s = lvSlides[idx];
-                lvSpeech.textContent = s.speech;
-                lvSpeech.classList.add('lv-vis');
-
-                lvChapter.textContent = s.chapter;
-                const div = document.createElement('div');
-                div.innerHTML = s.board;
-                const newItem = div.firstElementChild;
-                lvBoardContent.appendChild(newItem);
-                requestAnimationFrame(() => {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    const last = items[items.length - 1];
-                    last.classList.add('lv-vis');
-                    last.classList.add('lv-writing');
-                    setTimeout(() => last.classList.remove('lv-writing'), 1200);
-                    setTimeout(() => lvMovePen(last), 100);
-                    setTimeout(() => lvPen.classList.remove('lv-vis'), 1500);
-                    document.getElementById('lvBoard').scrollTo({ top: 99999, behavior: 'smooth' });
-                });
-                lvProgFill.style.width = ((idx + 1) / lvSlides.length * 100) + '%';
-            }
-
-            function lvAutoAdv() {
-                const s = lvSlides[lvCurrent];
-                function advanceNext() {
-                    if (!lvPlaying) return;
-                    if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
-                    else {
-                        lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
-                        lvSpeech.classList.remove('lv-vis');
-                        setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
-                    }
-                }
-                lvPlaySlideAudio(lvCurrent, advanceNext);
-            }
-
-            function lvTogglePlay() {
-                if (lvPlaying) {
-                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
-                } else {
-                    lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                    if (lvCurrent === -1) {
-                        lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                        setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-                    } else if (lvCurrent >= lvSlides.length - 1) {
-                        lvRestart();
-                    } else { lvAutoAdv(); }
-                }
-            }
-
-            function lvRestart() {
-                lvSpeechCancel();
-                lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProgFill.style.width = '0%';
-                lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
-                lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
-                lvPen.classList.remove('lv-vis');
-                lvStopTalk(); lvPlaying = false; lvPlayBtn.textContent = '▶';
-            }
-
-            lvPlayBtn.addEventListener('click', lvTogglePlay);
-            document.getElementById('lvStartBtn').addEventListener('click', () => {
-                lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-            });
-            document.getElementById('lvNext').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent === -1) {
-                    lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                    setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
-                } else if (lvCurrent < lvSlides.length - 1) {
-                    lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-                else { nextScreen(); }
-            });
-            document.getElementById('lvPrev').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent > 0) {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    if (items.length > 0) items[items.length - 1].remove();
-                    lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-            });
-            lvOutro.addEventListener('click', () => { nextScreen(); });
-        })();
-
         // Initialize
         updateProgress();
     </script>
@@ -1993,5 +1725,11 @@
         <div id="ashki-reaction-text" style="font:600 13px/1.4 'Outfit',sans-serif;color:#1A0A3A;max-width:200px"></div>
       </div>
     </div>
+<!-- ayikho-escape:start -->
+<div id="ayikhoEscapeBtn" role="button" tabindex="0" aria-label="Home" title="Home" onclick="ayikhoEscape()" style="position:fixed;top:12px;right:12px;z-index:2147483600;width:38px;height:38px;border-radius:11px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:19px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:system-ui,-apple-system,sans-serif;user-select:none">&#8962;</div>
+<script>
+(function(){function esc(){try{if(window.top!==window.self){parent.postMessage({type:'goHome'},'*');return;}}catch(e){}if(history.length>1){history.back();return;}location.href='index.html';}window.ayikhoEscape=esc;var b=document.getElementById('ayikhoEscapeBtn');if(b){b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();esc();}});}})();
+</script>
+<!-- ayikho-escape:end -->
 </body>
 </html>

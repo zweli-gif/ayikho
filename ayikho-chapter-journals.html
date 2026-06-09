@@ -440,7 +440,6 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
       <div class="ci-title">Journals &<br>Ledgers</div>
       <div class="ci-meta-row">
         <div class="ci-meta">⏱ 9 minutes</div>
-        <div class="ci-meta">🎬 3:30 video</div>
         <div class="ci-meta">❓ 3 questions</div>
       </div>
     </div>
@@ -476,7 +475,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
     <div style="height:16px"></div>
   </div>
   <div class="foot">
-    <button class="btn btn-fa" onclick="goTo('s-prequiz')">🎬 Watch intro video first →</button>
+    <button class="btn btn-fa" onclick="goTo('s-prequiz')">Start →</button>
   </div>
 </div>
 
@@ -605,76 +604,15 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
     </div>
   </div>
   <div class="foot">
-    <button class="btn btn-fa" onclick="goTo('s-video')">Start lesson →</button>
+    <button class="btn btn-fa" onclick="goTo('s-lesson1')">Start lesson →</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════
-   S3: VIDEO PLAYER
-══════════════════════════════ -->
-<div class="screen" id="s-video">
-  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:32</span><span class="sb-i">4G 🔋</span></div>
-  <div class="gp" style="background:rgba(255,255,255,.06)"><div class="gp-fill" style="width:20%;background:var(--fa-l)"></div></div>
-  <div class="landoh-video-wrap" id="landohVideo">
-    <video id="moduleVideo" playsinline webkit-playsinline preload="metadata" style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
-      <source src="assets/videos/module-3.mp4" type="video/mp4">
-    </video>
-    <div class="lv-title-card" id="lvTitle">
-      <div class="lv-mod-num">Module 3</div>
-      <h1>Journals &<br>Ledgers</h1>
-      <div class="lv-accent-line"></div>
-      <div class="lv-mini-icon">📔</div>
-      <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
-    </div>
-    <div class="lv-outro" id="lvOutro">
-      <div class="lv-emoji">🎯</div>
-      <h2>Now try the interactive exercise!</h2>
-      <p>Tap to continue</p>
-    </div>
-    <div class="lv-main" id="lvMain">
-      <div class="lv-voice-bar">
-        <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
-          <div class="lv-voice-bar-line"></div>
-          <div class="lv-voice-bar-line"></div>
-          <div class="lv-voice-bar-line"></div>
-          <div class="lv-voice-bar-line"></div>
-          <div class="lv-voice-bar-line"></div>
-        </div>
-        <div class="lv-voice-text" id="lvSpeech"></div>
-        <div class="lv-chapter-ind" id="lvChapter">0:00</div>
-      </div>
-      <div class="lv-board" id="lvBoard">
-        <div class="lv-board-title">✏️ Board</div>
-        <div id="lvBoardContent"></div>
-        <svg class="lv-pen" id="lvPen" width="28" height="28" viewBox="0 0 100 100">
-          <g transform="rotate(-45, 50, 50)">
-            <rect x="42" y="10" width="16" height="60" rx="2" fill="#1A1A2E"/>
-            <rect x="42" y="45" width="16" height="15" rx="1" fill="#334155"/>
-            <polygon points="42,70 58,70 50,90" fill="#94a3b8"/>
-            <polygon points="46,82 54,82 50,90" fill="#1A1A2E"/>
-            <rect x="58" y="12" width="4" height="30" rx="2" fill="#64748b"/>
-            <rect x="40" y="8" width="20" height="4" rx="2" fill="#0284C7"/>
-          </g>
-        </svg>
-      </div>
-      <div class="lv-prog"><div class="lv-prog-fill" id="lvProg"></div></div>
-      <div class="lv-ctrls">
-        <div class="lv-btn" id="lvPrev" title="Previous">◀</div>
-        <div class="lv-btn" id="lvPlay" title="Play/Pause">▶</div>
-        <div class="lv-btn" id="lvNext" title="Next">▶</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════
-   S3: LESSON PART 1 — THE GENERAL JOURNAL
-══════════════════════════════ -->
 <div class="screen" id="s-lesson1">
   <div class="sb sb-w"><span class="sb-t">21:32</span><span class="sb-i">4G 🔋</span></div>
   <div class="gp"><div class="gp-fill" style="width:35%"></div></div>
   <div class="nav-hdr">
-    <button class="nav-back" onclick="goTo('s-video')">‹</button>
+    <button class="nav-back" onclick="goTo('s-prequiz-results')">‹</button>
     <div class="nav-hdr-info">
       <div class="nav-hdr-sub">FA N4 · Module 3</div>
       <div class="nav-hdr-title">The General Journal</div>
@@ -1262,7 +1200,7 @@ function notifyParent(type, data) {
 
 const MODULE_ID = 3;
 // ── NAVIGATION ──
-const SCREENS = ['s-intro','s-prequiz','s-prequiz2','s-prequiz3','s-prequiz-results','s-video','s-lesson1','s-builder','s-lesson2','s-example','s-q1','s-q2','s-q3','s-win','s-resources'];
+const SCREENS = ['s-intro','s-prequiz','s-prequiz2','s-prequiz3','s-prequiz-results','s-lesson1','s-builder','s-lesson2','s-example','s-q1','s-q2','s-q3','s-win','s-resources'];
 let current = 's-intro';
 
 function goTo(id) {
@@ -1306,7 +1244,6 @@ document.addEventListener('keydown', e => {
 const SB_ITEMS = [
   {id:'s-intro',   label:'Chapter intro'},
   {id:'s-prequiz', label:'Pre-quiz'},
-  {id:'s-video',   label:'Video · 3:30'},
   {id:'s-lesson1', label:'General Journal'},
   {id:'s-builder', label:'Journal builder'},
   {id:'s-lesson2', label:'General Ledger'},
@@ -1330,66 +1267,6 @@ const SB_ITEMS = [
 })();
 function updateSidebar(id) {
   document.querySelectorAll('.si').forEach(el => el.classList.toggle('active', el.dataset.id === id));
-}
-
-// ── REAL VIDEO PLAYER (Module 3) ──
-var moduleVideo = document.getElementById('moduleVideo');
-var vidFill = document.getElementById('vid-fill');
-var vidTime = document.getElementById('vid-time');
-var vidThumb = document.querySelector('.vid-thumb');
-
-function playVid() {
-  if (!moduleVideo) return;
-  if (moduleVideo.paused) {
-    if (vidThumb) vidThumb.style.display = 'none';
-    moduleVideo.style.display = 'block';
-    moduleVideo.play().catch(function(e) {
-      console.log('Video not available yet');
-      if (vidThumb) vidThumb.style.display = 'block';
-      moduleVideo.style.display = 'none';
-    });
-  } else {
-    moduleVideo.pause();
-  }
-}
-
-if (moduleVideo) {
-  moduleVideo.addEventListener('timeupdate', function() {
-    if (!moduleVideo.duration) return;
-    var pct = (moduleVideo.currentTime / moduleVideo.duration) * 100;
-    if (vidFill) vidFill.style.width = pct + '%';
-    var cm = Math.floor(moduleVideo.currentTime / 60);
-    var cs = Math.floor(moduleVideo.currentTime % 60);
-    var dm = Math.floor(moduleVideo.duration / 60);
-    var ds = Math.floor(moduleVideo.duration % 60);
-    if (vidTime) vidTime.textContent = cm + ':' + (cs<10?'0':'') + cs + ' / ' + dm + ':' + (ds<10?'0':'') + ds;
-    // Highlight chapter markers
-    var chapters = document.querySelectorAll('.vc-chapter');
-    var breaks = [0, 29, 57, 86]; // percentages
-    var active = 0;
-    breaks.forEach(function(b,i) { if (pct >= b) active = i; });
-    chapters.forEach(function(c,i) { c.classList.toggle('active', i === active); });
-  });
-
-  moduleVideo.addEventListener('ended', function() {
-    setTimeout(function() { goTo && goTo(getNextScreen()); }, 1500);
-  });
-
-  moduleVideo.addEventListener('error', function() {
-    var wrapper = moduleVideo.parentElement;
-    if (wrapper && vidThumb) {
-      vidThumb.style.display = 'block';
-      moduleVideo.style.display = 'none';
-    }
-  });
-}
-
-function seekVid(e) {
-  if (!moduleVideo) return;
-  var bar = e.currentTarget;
-  var rect = bar.getBoundingClientRect();
-  var pct = Math.max(0, Math.min(100, (e.clientX - rect.left) / rect.width * 100));
-  moduleVideo.currentTime = (pct / 100) * moduleVideo.duration;
 }
 
 // ── JOURNAL ENTRY BUILDER ──
@@ -1626,180 +1503,7 @@ function answerQ(qNum, chosen, result) {
   document.getElementById('ws-score').textContent = `${scores.correct}/3`;
 }
 
-// ===== LANDOH VIDEO PLAYER - CHAPTER 3 =====
-(function() {
-    const lvSlides = [
-        { speech: "A journal is the first place you write down a transaction. It's called the 'book of first entry.' Every transaction gets a date, the accounts affected, and the amounts.", chapter: "0:00 — INTRO", board: '<div class="lv-bi"><h3>MODULE 3</h3><p style="font-size:14px;font-weight:700;color:#1A1A2E;">Journals & Ledgers</p></div>', point: false },
-        { speech: "The format is simple. The account being debited goes first, then the credit is indented below it. There's always a short narration explaining what happened.", chapter: "0:30 — FORMAT", board: '<div class="lv-bi"><h3>JOURNAL = Book of First Entry</h3><p>Records: Date | Accounts | Debit | Credit</p><div class="lv-hl"><p style="font-size:10px">Every transaction documented here first</p></div></div>', point: false },
-        { speech: "Let's say Sipho buys cleaning equipment for R2,500 cash. The journal entry would be: Debit Equipment R2,500, Credit Bank R2,500. Narration: bought cleaning equipment.", chapter: "1:00 — EXAMPLE", board: '<div class="lv-bi"><h3>Journal Entry Format</h3><p>Dr: Equipment R2,500<br>Cr: Bank R2,500<br><span style="color:#94a3b8;font-size:11px">(Narration: bought cleaning equipment)</span></p></div>', point: true },
-        { speech: "But journals get messy if you have hundreds of transactions. So we organise everything into a Ledger — each account gets its own page. This is called 'posting.'", chapter: "1:45 — LEDGER", board: '<div class="lv-bi"><h3><span class="lv-key">LEDGER = Organised by account</span></h3><p>Each account gets a T-Account:</p><p style="font-size:13px">Account Name<br>Debit | Credit</p></div>', point: false },
-        { speech: "When you post to the ledger, you take each entry from the journal and put it in the right T-account. The debit goes on the left, credit on the right. Then you balance each account.", chapter: "2:30 — POSTING", board: '<div class="lv-bi"><h3>Journal → Post to Ledger → Balance accounts</h3><p><span class="lv-key">This is the FLOW of accounting!</span></p><div class="lv-hl"><p style="font-size:10px">Each account gets organized into a T-shape</p></div></div>', point: true },
-        { speech: "Exam tip: they love giving you transactions and asking you to journalise them and then post to the ledger. Practice the flow — transaction to journal to ledger.", chapter: "3:30 — RECAP", board: '<div class="lv-bi"><div class="lv-tip"><div class="lv-tip-label">🎯 Exam Tip</div><p style="font-size:12px;font-weight:600;color:#1A1A2E">Master the flow:<br>Transaction → Journal → Ledger<br><span style="color:var(--fa)">Practice makes perfect!</span></p></div></div>', point: false }
-    ];
 
-    let lvCurrent = -1, lvPlaying = false, lvTimer = null;
-    const lvSpeech = document.getElementById('lvSpeech');
-    const lvBoardContent = document.getElementById('lvBoardContent');
-    const lvProg = document.getElementById('lvProg');
-    const lvChapter = document.getElementById('lvChapter');
-    const lvTitle = document.getElementById('lvTitle');
-    const lvOutro = document.getElementById('lvOutro');
-    const lvMain = document.getElementById('lvMain');
-    const lvPlayBtn = document.getElementById('lvPlay');
-    const lvPen = document.getElementById('lvPen');
-    const lvVoiceInd = document.getElementById('lvVoiceInd');
-
-    const audioPath = 'assets/audio/';
-    let currentAudio = null;
-
-    function lvPlaySlideAudio(idx, onEnd) {
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-        }
-        const slideNumber = (idx + 1).toString().padStart(2, '0');
-        const audioUrl = `${audioPath}module-3-slide-${slideNumber}.mp3`;
-        currentAudio = new Audio(audioUrl);
-
-        lvStartTalk();
-        currentAudio.onended = () => {
-            lvStopTalk();
-            if (onEnd) onEnd();
-        };
-        currentAudio.onerror = () => {
-            console.warn(`Could not load ${audioUrl}, falling back to timer.`);
-            const words = lvSlides[idx].speech.split(' ').length;
-            setTimeout(() => {
-                lvStopTalk();
-                if (onEnd) onEnd();
-            }, Math.max(2000, words * 180));
-        };
-        currentAudio.play().catch(e => {
-            console.log("Audio play prevented:", e);
-            const words = lvSlides[idx].speech.split(' ').length;
-            setTimeout(() => {
-                lvStopTalk();
-                if (onEnd) onEnd();
-            }, Math.max(2000, words * 180));
-        });
-    }
-
-    function lvSpeechCancel() {
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-        }
-    }
-
-    function lvStartTalk() {
-        lvVoiceInd.classList.remove('lv-paused');
-    }
-    function lvStopTalk() {
-        lvVoiceInd.classList.add('lv-paused');
-    }
-
-    function lvMovePen(target) {
-        if (!target) return;
-        const board = document.getElementById('lvBoard');
-        const boardRect = board.getBoundingClientRect();
-        const targetRect = target.getBoundingClientRect();
-        const x = targetRect.left - boardRect.left + targetRect.width - 10;
-        const y = targetRect.top - boardRect.top + targetRect.height / 2 - 14;
-        lvPen.style.left = Math.min(x, boardRect.width - 30) + 'px';
-        lvPen.style.top = Math.max(0, y) + 'px';
-        lvPen.classList.add('lv-vis');
-    }
-
-    function lvShowSlide(idx) {
-        if (idx < 0 || idx >= lvSlides.length) return;
-        lvCurrent = idx;
-        const s = lvSlides[idx];
-        lvSpeech.textContent = s.speech;
-        lvSpeech.classList.add('lv-vis');
-
-        lvChapter.textContent = s.chapter;
-        const div = document.createElement('div');
-        div.innerHTML = s.board;
-        const newItem = div.firstElementChild;
-        lvBoardContent.appendChild(newItem);
-        requestAnimationFrame(() => {
-            const items = lvBoardContent.querySelectorAll('.lv-bi');
-            const last = items[items.length - 1];
-            last.classList.add('lv-vis');
-            last.classList.add('lv-writing');
-            setTimeout(() => last.classList.remove('lv-writing'), 1200);
-            setTimeout(() => lvMovePen(last), 100);
-            setTimeout(() => lvPen.classList.remove('lv-vis'), 1500);
-            document.getElementById('lvBoard').scrollTo({ top: 99999, behavior: 'smooth' });
-        });
-        lvProg.style.width = ((idx + 1) / lvSlides.length * 100) + '%';
-    }
-
-    function lvAutoAdv() {
-        const s = lvSlides[lvCurrent];
-        function advanceNext() {
-            if (!lvPlaying) return;
-            if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
-            else {
-                lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
-                lvSpeech.classList.remove('lv-vis');
-                setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
-            }
-        }
-        lvPlaySlideAudio(lvCurrent, advanceNext);
-    }
-
-    function lvTogglePlay() {
-        if (lvPlaying) {
-            lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
-        } else {
-            lvPlaying = true; lvPlayBtn.textContent = '⏸';
-            if (lvCurrent === -1) {
-                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-            } else if (lvCurrent >= lvSlides.length - 1) {
-                lvRestart();
-            } else { lvAutoAdv(); }
-        }
-    }
-
-    function lvRestart() {
-        lvSpeechCancel();
-        lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProg.style.width = '0%';
-        lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
-        lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
-        lvPen.classList.remove('lv-vis');
-        lvStopTalk(); lvPlaying = false; lvPlayBtn.textContent = '▶';
-    }
-
-    lvPlayBtn.addEventListener('click', lvTogglePlay);
-    document.getElementById('lvStartBtn').addEventListener('click', () => {
-        lvPlaying = true; lvPlayBtn.textContent = '⏸';
-        lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-        setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-    });
-    document.getElementById('lvNext').addEventListener('click', () => {
-        lvSpeechCancel(); clearTimeout(lvTimer);
-        if (lvCurrent === -1) {
-            lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-            setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
-        } else if (lvCurrent < lvSlides.length - 1) {
-            lvShowSlide(lvCurrent + 1);
-            if (lvPlaying) lvAutoAdv();
-        }
-        else { goTo('s-lesson1'); }
-    });
-    document.getElementById('lvPrev').addEventListener('click', () => {
-        lvSpeechCancel(); clearTimeout(lvTimer);
-        if (lvCurrent > 0) {
-            const items = lvBoardContent.querySelectorAll('.lv-bi');
-            if (items.length > 0) items[items.length - 1].remove();
-            lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
-            if (lvPlaying) lvAutoAdv();
-        }
-    });
-    lvOutro.addEventListener('click', () => { goTo('s-lesson1'); });
-})();
 </script>
 
 <!-- ASHKI REACTION OVERLAY -->
@@ -1812,5 +1516,11 @@ function answerQ(qNum, chosen, result) {
   </div>
 </div>
 
+<!-- ayikho-escape:start -->
+<div id="ayikhoEscapeBtn" role="button" tabindex="0" aria-label="Home" title="Home" onclick="ayikhoEscape()" style="position:fixed;top:12px;right:12px;z-index:2147483600;width:38px;height:38px;border-radius:11px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:19px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:system-ui,-apple-system,sans-serif;user-select:none">&#8962;</div>
+<script>
+(function(){function esc(){try{if(window.top!==window.self){parent.postMessage({type:'goHome'},'*');return;}}catch(e){}if(history.length>1){history.back();return;}location.href='index.html';}window.ayikhoEscape=esc;var b=document.getElementById('ayikhoEscapeBtn');if(b){b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();esc();}});}})();
+</script>
+<!-- ayikho-escape:end -->
 </body>
 </html>

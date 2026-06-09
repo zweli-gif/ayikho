@@ -1073,16 +1073,15 @@
             <div class="sidebar-title">Module 4</div>
             <ul class="screen-nav" id="screenNav">
                 <li><button class="active" data-screen="0">1. Chapter Intro</button></li>
-                <li><button data-screen="1">2. Video Player</button></li>
-                <li><button data-screen="2">3. Lesson Part 1</button></li>
-                <li><button data-screen="3">4. TB Builder</button></li>
-                <li><button data-screen="4">5. Lesson Part 2</button></li>
-                <li><button data-screen="5">6. Worked Example</button></li>
-                <li><button data-screen="6">7. Quiz Q1</button></li>
-                <li><button data-screen="7">8. Quiz Q2</button></li>
-                <li><button data-screen="8">9. Quiz Q3</button></li>
-                <li><button data-screen="9">10. Win Screen</button></li>
-                <li><button data-screen="10">11. Past Papers</button></li>
+                <li><button data-screen="1">2. Lesson Part 1</button></li>
+                <li><button data-screen="2">3. TB Builder</button></li>
+                <li><button data-screen="3">4. Lesson Part 2</button></li>
+                <li><button data-screen="4">5. Worked Example</button></li>
+                <li><button data-screen="5">6. Quiz Q1</button></li>
+                <li><button data-screen="6">7. Quiz Q2</button></li>
+                <li><button data-screen="7">8. Quiz Q3</button></li>
+                <li><button data-screen="8">9. Win Screen</button></li>
+                <li><button data-screen="9">10. Past Papers</button></li>
             </ul>
         </div>
 
@@ -1151,61 +1150,6 @@
                         </div>
                     </div>
 
-                    <!-- Screen 1: Video Player -->
-                    <div class="screen">
-                        <div class="landoh-video-wrap" id="landohVideo">
-                            <video id="moduleVideo" playsinline webkit-playsinline preload="metadata" style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
-                                <source src="assets/videos/module-4.mp4" type="video/mp4">
-                            </video>
-                            <div class="lv-title-card" id="lvTitle">
-                                <div class="lv-mod-num">Module 4</div>
-                                <h1>Trial Balance</h1>
-                                <div class="lv-accent-line"></div>
-                                <div class="lv-mini-icon">⚖️</div>
-                                <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
-                            </div>
-                            <div class="lv-outro" id="lvOutro">
-                                <div class="lv-emoji">🎯</div>
-                                <h2>Now try the interactive exercise!</h2>
-                                <p>Tap to continue</p>
-                            </div>
-                            <div class="lv-main" id="lvMain">
-                                <div class="lv-voice-bar">
-                                    <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
-                                        <div class="lv-voice-bar-line"></div>
-                                        <div class="lv-voice-bar-line"></div>
-                                        <div class="lv-voice-bar-line"></div>
-                                        <div class="lv-voice-bar-line"></div>
-                                        <div class="lv-voice-bar-line"></div>
-                                    </div>
-                                    <div class="lv-voice-text" id="lvSpeech"></div>
-                                    <div class="lv-chapter-ind" id="lvChapter">0:00</div>
-                                </div>
-                                <div class="lv-board" id="lvBoard">
-                                    <div class="lv-board-title">✏️ Board</div>
-                                    <div id="lvBoardContent"></div>
-                                    <svg class="lv-pen" id="lvPen" width="28" height="28" viewBox="0 0 100 100">
-                                        <g transform="rotate(-45, 50, 50)">
-                                            <rect x="42" y="10" width="16" height="60" rx="2" fill="#1A1A2E"/>
-                                            <rect x="42" y="45" width="16" height="15" rx="1" fill="#334155"/>
-                                            <polygon points="42,70 58,70 50,90" fill="#94a3b8"/>
-                                            <polygon points="46,82 54,82 50,90" fill="#1A1A2E"/>
-                                            <rect x="58" y="12" width="4" height="30" rx="2" fill="#64748b"/>
-                                            <rect x="40" y="8" width="20" height="4" rx="2" fill="#0284C7"/>
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="lv-prog"><div class="lv-prog-fill" id="lvProg"></div></div>
-                                <div class="lv-ctrls">
-                                    <div class="lv-btn" id="lvPrev" title="Previous">◀</div>
-                                    <div class="lv-btn" id="lvPlay" title="Play/Pause">▶</div>
-                                    <div class="lv-btn" id="lvNext" title="Next">▶</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Screen 2: Lesson Part 1 -->
                     <div class="screen">
                         <div class="lesson-header">
                             <div class="lesson-title">What is a Trial Balance?</div>
@@ -1564,7 +1508,7 @@
                             </div>
 
                             <div class="nav-buttons">
-                                <button class="btn-secondary" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                                <button class="btn-secondary" onclick="goToScreen(9)">📝 Past Papers & Practice</button>
                                 <button class="btn-primary">Module 5 →</button>
                                 <button class="btn-secondary">Review</button>
                             </div>
@@ -1617,7 +1561,7 @@
                             </div>
                         </div>
                         <div style="padding:14px 20px;border-top:1px solid var(--bord)">
-                            <button class="btn-primary" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                            <button class="btn-primary" onclick="goToScreen(8)" style="background:var(--p)">Back to module ←</button>
                         </div>
                     </div>
                 </div>
@@ -1639,7 +1583,7 @@
 
         const MODULE_ID = 4;
         let currentScreen = 0;
-        const totalScreens = 11;
+        const totalScreens = 10;
 
         // Trial Balance Builder Data
         const accounts = [
@@ -1659,7 +1603,7 @@
         };
 
         function initScreen() {
-            if (currentScreen === 3) {
+            if (currentScreen === 2) {
                 initTrialBalanceBuilder();
             }
             updateProgress();
@@ -1810,7 +1754,7 @@
             });
 
             notifyParent('screenChange', { moduleId: MODULE_ID, screenIndex: currentScreen, totalScreens: totalScreens });
-            if (currentScreen === 9) notifyParent('moduleComplete', { moduleId: MODULE_ID });
+            if (currentScreen === 8) notifyParent('moduleComplete', { moduleId: MODULE_ID });
             // Track screen view
             if (window.ayikhoTracker) window.ayikhoTracker.trackScreen(4, currentScreen);
             updateNavButtons();
@@ -1855,205 +1799,9 @@
             });
         });
 
-        // ── REAL VIDEO PLAYER (Module 4) ──
-        function playModuleVideo() {
-            var moduleVideo = document.getElementById('moduleVideo');
-            var videoPlaceholder = document.getElementById('videoPlaceholder');
-            if (!moduleVideo) return;
-            if (videoPlaceholder) videoPlaceholder.style.display = 'none';
-            moduleVideo.style.display = 'block';
-            moduleVideo.play().catch(function(e) {
-                console.log('Video not available yet');
-                if (videoPlaceholder) videoPlaceholder.style.display = 'flex';
-                moduleVideo.style.display = 'none';
-            });
-        }
-
-        var moduleVideo = document.getElementById('moduleVideo');
-        if (moduleVideo) {
-            moduleVideo.addEventListener('error', function() {
-                var videoPlaceholder = document.getElementById('videoPlaceholder');
-                if (videoPlaceholder) videoPlaceholder.style.display = 'flex';
-                moduleVideo.style.display = 'none';
-            });
-        }
-
         // Initialize
         initScreen();
 
-        // ===== LANDOH VIDEO PLAYER - CHAPTER 4 =====
-        (function() {
-            const lvSlides = [
-                { speech: "Remember the accounting equation? Assets equals Liabilities plus Capital. The trial balance checks that all your debits still equal all your credits.", chapter: "0:00 — INTRO", board: '<div class="lv-bi"><h3>MODULE 4</h3><p style="font-size:14px;font-weight:700;color:#1A1A2E;">Trial Balance</p></div>', point: false },
-                { speech: "To make one, you go through every ledger account, take the closing balance, and list it as either a debit or credit balance. Then you add up both columns.", chapter: "0:45 — BUILDING", board: '<div class="lv-bi"><h3><span class="lv-key">Trial Balance = Test of Balance</span></h3><p>Total Debits MUST = Total Credits</p><div class="lv-hl"><p style="font-size:10px">If they don\'t match, there\'s an error!</p></div></div>', point: false },
-                { speech: "Assets and expenses are debit balances. Liabilities, income, and capital are credit balances. Easy way to remember — DEAD CLIC again!", chapter: "1:30 — BALANCES", board: '<div class="lv-bi"><h3>Debit vs Credit Balances</h3><p>Debit balances: Assets, Expenses, Drawings<br>Credit balances: Liabilities, Income, Capital</p></div>', point: false },
-                { speech: "But here's the catch — a trial balance doesn't catch everything. If you put the right amount in the wrong account, it still balances. If you forgot a transaction completely, it still balances.", chapter: "2:20 — CATCH", board: '<div class="lv-bi"><h3>What TB Catches & Misses</h3><p>Catches: one-sided entries, math errors<br>Misses: wrong accounts, missing entries, errors of principle</p></div>', point: true },
-                { speech: "Exam tip: they always ask what errors a trial balance can and cannot detect. Know both lists! Try the builder next to practice making one from scratch.", chapter: "3:10 — RECAP", board: '<div class="lv-bi"><div class="lv-tip"><div class="lv-tip-label">🎯 Exam Tip</div><p style="font-size:12px;font-weight:600;color:#1A1A2E">Know what TB catches AND misses<br><span style="color:var(--fa)">This appears almost every exam!</span></p></div></div>', point: false }
-            ];
-
-            let lvCurrent = -1, lvPlaying = false, lvTimer = null;
-            const lvSpeech = document.getElementById('lvSpeech');
-            const lvBoardContent = document.getElementById('lvBoardContent');
-            const lvProg = document.getElementById('lvProg');
-            const lvChapter = document.getElementById('lvChapter');
-            const lvTitle = document.getElementById('lvTitle');
-            const lvOutro = document.getElementById('lvOutro');
-            const lvMain = document.getElementById('lvMain');
-            const lvPlayBtn = document.getElementById('lvPlay');
-            const lvPen = document.getElementById('lvPen');
-            const lvVoiceInd = document.getElementById('lvVoiceInd');
-
-            const audioPath = 'assets/audio/';
-            let currentAudio = null;
-
-            function lvPlaySlideAudio(idx, onEnd) {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-                const slideNumber = (idx + 1).toString().padStart(2, '0');
-                const audioUrl = `${audioPath}module-4-slide-${slideNumber}.mp3`;
-                currentAudio = new Audio(audioUrl);
-
-                lvStartTalk();
-                currentAudio.onended = () => {
-                    lvStopTalk();
-                    if (onEnd) onEnd();
-                };
-                currentAudio.onerror = () => {
-                    console.warn(`Could not load ${audioUrl}, falling back to timer.`);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                };
-                currentAudio.play().catch(e => {
-                    console.log("Audio play prevented:", e);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                });
-            }
-
-            function lvSpeechCancel() {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-            }
-
-            function lvStartTalk() {
-                lvVoiceInd.classList.remove('lv-paused');
-            }
-            function lvStopTalk() {
-                lvVoiceInd.classList.add('lv-paused');
-            }
-
-            function lvMovePen(target) {
-                if (!target) return;
-                const board = document.getElementById('lvBoard');
-                const boardRect = board.getBoundingClientRect();
-                const targetRect = target.getBoundingClientRect();
-                const x = targetRect.left - boardRect.left + targetRect.width - 10;
-                const y = targetRect.top - boardRect.top + targetRect.height / 2 - 14;
-                lvPen.style.left = Math.min(x, boardRect.width - 30) + 'px';
-                lvPen.style.top = Math.max(0, y) + 'px';
-                lvPen.classList.add('lv-vis');
-            }
-
-            function lvShowSlide(idx) {
-                if (idx < 0 || idx >= lvSlides.length) return;
-                lvCurrent = idx;
-                const s = lvSlides[idx];
-                lvSpeech.textContent = s.speech;
-                lvSpeech.classList.add('lv-vis');
-
-                lvChapter.textContent = s.chapter;
-                const div = document.createElement('div');
-                div.innerHTML = s.board;
-                const newItem = div.firstElementChild;
-                lvBoardContent.appendChild(newItem);
-                requestAnimationFrame(() => {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    const last = items[items.length - 1];
-                    last.classList.add('lv-vis');
-                    last.classList.add('lv-writing');
-                    setTimeout(() => last.classList.remove('lv-writing'), 1200);
-                    setTimeout(() => lvMovePen(last), 100);
-                    setTimeout(() => lvPen.classList.remove('lv-vis'), 1500);
-                    document.getElementById('lvBoard').scrollTo({ top: 99999, behavior: 'smooth' });
-                });
-                lvProg.style.width = ((idx + 1) / lvSlides.length * 100) + '%';
-            }
-
-            function lvAutoAdv() {
-                const s = lvSlides[lvCurrent];
-                function advanceNext() {
-                    if (!lvPlaying) return;
-                    if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
-                    else {
-                        lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
-                        lvSpeech.classList.remove('lv-vis');
-                        setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
-                    }
-                }
-                lvPlaySlideAudio(lvCurrent, advanceNext);
-            }
-
-            function lvTogglePlay() {
-                if (lvPlaying) {
-                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
-                } else {
-                    lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                    if (lvCurrent === -1) {
-                        lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                        setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-                    } else if (lvCurrent >= lvSlides.length - 1) {
-                        lvRestart();
-                    } else { lvAutoAdv(); }
-                }
-            }
-
-            function lvRestart() {
-                lvSpeechCancel();
-                lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProg.style.width = '0%';
-                lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
-                lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
-                lvPen.classList.remove('lv-vis');
-                lvStopTalk(); lvPlaying = false; lvPlayBtn.textContent = '▶';
-            }
-
-            lvPlayBtn.addEventListener('click', lvTogglePlay);
-            document.getElementById('lvStartBtn').addEventListener('click', () => {
-                lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-            });
-            document.getElementById('lvNext').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent === -1) {
-                    lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                    setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
-                } else if (lvCurrent < lvSlides.length - 1) {
-                    lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-                else { screenIndex++; initScreen(); }
-            });
-            document.getElementById('lvPrev').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent > 0) {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    if (items.length > 0) items[items.length - 1].remove();
-                    lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-            });
-            lvOutro.addEventListener('click', () => { screenIndex++; initScreen(); });
-        })();
     </script>
 
 <!-- ASHKI REACTION OVERLAY -->
@@ -2066,5 +1814,11 @@
   </div>
 </div>
 
+<!-- ayikho-escape:start -->
+<div id="ayikhoEscapeBtn" role="button" tabindex="0" aria-label="Home" title="Home" onclick="ayikhoEscape()" style="position:fixed;top:12px;right:12px;z-index:2147483600;width:38px;height:38px;border-radius:11px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:19px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:system-ui,-apple-system,sans-serif;user-select:none">&#8962;</div>
+<script>
+(function(){function esc(){try{if(window.top!==window.self){parent.postMessage({type:'goHome'},'*');return;}}catch(e){}if(history.length>1){history.back();return;}location.href='index.html';}window.ayikhoEscape=esc;var b=document.getElementById('ayikhoEscapeBtn');if(b){b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();esc();}});}})();
+</script>
+<!-- ayikho-escape:end -->
 </body>
 </html>

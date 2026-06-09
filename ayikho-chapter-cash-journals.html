@@ -1124,13 +1124,6 @@
                 type: 'intro'
             },
             {
-                id: 'video',
-                label: '2. Video',
-                title: 'Module Video',
-                subtitle: 'Watch the lesson',
-                type: 'video'
-            },
-            {
                 id: 'lesson-crj',
                 label: '3. Cash Receipts Journal',
                 title: 'Cash Receipts Journal',
@@ -1252,8 +1245,6 @@
 
                 if (screen.type === 'intro') {
                     element.innerHTML = renderIntro();
-                } else if (screen.type === 'video') {
-                    element.innerHTML = renderVideo();
                 } else if (screen.type === 'lesson') {
                     element.innerHTML = screen.id === 'lesson-crj' ? renderLessonCRJ() : renderLessonCPJ();
                 } else if (screen.type === 'sorter') {
@@ -1261,7 +1252,7 @@
                 } else if (screen.type === 'example') {
                     element.innerHTML = renderWorkedExample();
                 } else if (screen.type === 'quiz') {
-                    element.innerHTML = renderQuiz(index - 6);
+                    element.innerHTML = renderQuiz(index - 5);
                 } else if (screen.type === 'win') {
                     element.innerHTML = renderWin();
                 } else if (screen.type === 'resources') {
@@ -1334,64 +1325,6 @@
                 </div>
                 <div class="nav-buttons">
                     <button class="btn primary" data-action="next">Start Lesson</button>
-                </div>
-            `;
-        }
-
-        function renderVideo() {
-            return `
-                <div class="landoh-video-wrap" id="landohVideo">
-                    <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
-                      style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
-                      <source src="assets/videos/module-5.mp4" type="video/mp4">
-                    </video>
-                    <!-- Title Card -->
-                    <div class="lv-title-card" id="lvTitle">
-                        <div class="lv-mod-num">Module 5</div>
-                        <h1>Cash Receipts & Payments Journals</h1>
-                        <div class="lv-accent-line"></div>
-                        <div class="lv-mini-icon">💰</div>
-                        <button class="lv-start-btn" id="lvStartBtn">Start lesson</button>
-                    </div>
-                    <!-- Outro Card -->
-                    <div class="lv-outro" id="lvOutro">
-                        <div class="lv-emoji">🎯</div>
-                        <h2>Now try the interactive exercise!</h2>
-                        <p>Tap to continue</p>
-                    </div>
-                    <!-- Main Content - Pen on Board -->
-                    <div class="lv-main" id="lvMain">
-                        <div class="lv-voice-bar">
-                            <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                                <div class="lv-voice-bar-line"></div>
-                            </div>
-                            <div class="lv-voice-text" id="lvSpeech"></div>
-                            <div class="lv-chapter-ind" id="lvChapter">0:00</div>
-                        </div>
-                        <div class="lv-board" id="lvBoard">
-                            <div class="lv-board-title">✏️ Board</div>
-                            <div id="lvBoardContent"></div>
-                            <svg class="lv-pen" id="lvPen" width="28" height="28" viewBox="0 0 100 100">
-                                <g transform="rotate(-45, 50, 50)">
-                                    <rect x="45" y="10" width="10" height="50" fill="#1A1A2E" rx="5"/>
-                                    <circle cx="50" cy="65" r="6" fill="#FF6B35"/>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <!-- Controls & Progress -->
-                    <div class="lv-prog" id="lvProg">
-                        <div class="lv-prog-fill" id="lvProgFill"></div>
-                    </div>
-                    <div class="lv-ctrls">
-                        <button class="lv-btn" id="lvPrev">◀</button>
-                        <button class="lv-btn" id="lvPlay">▶</button>
-                        <button class="lv-btn" id="lvNext">▶▶</button>
-                    </div>
                 </div>
             `;
         }
@@ -1817,7 +1750,7 @@
                     </div>
                 </div>
                 <div class="nav-buttons">
-                    <button class="btn" onclick="goToScreen(10)">📝 Past Papers & Practice</button>
+                    <button class="btn" onclick="goToScreen(9)">📝 Past Papers & Practice</button>
                     <button class="btn" data-action="home">Home</button>
                     <button class="btn primary" data-action="next">Next Module</button>
                 </div>
@@ -1868,7 +1801,7 @@
                     </div>
                 </div>
                 <div class="nav-buttons">
-                    <button class="btn primary" onclick="goToScreen(9)" style="background:var(--p)">Back to module ←</button>
+                    <button class="btn primary" onclick="goToScreen(8)" style="background:var(--p)">Back to module ←</button>
                 </div>
             `;
         }
@@ -1953,226 +1886,8 @@
 
         // Init
         initScreenNav();
-        // ── REAL VIDEO PLAYER (Module 5) ──
-        function playModule5Video() {
-            var moduleVideo = document.getElementById('moduleVideo');
-            var videoPlaceholder = document.getElementById('videoPlaceholder');
-            if (!moduleVideo) return;
-            if (videoPlaceholder) videoPlaceholder.style.display = 'none';
-            moduleVideo.style.display = 'block';
-            moduleVideo.play().catch(function(e) {
-                console.log('Video not available yet');
-                if (videoPlaceholder) videoPlaceholder.style.display = 'flex';
-                moduleVideo.style.display = 'none';
-            });
-        }
-
-        // Setup error handling for module video
-        document.addEventListener('DOMContentLoaded', function() {
-            var moduleVideo = document.getElementById('moduleVideo');
-            if (moduleVideo) {
-                moduleVideo.addEventListener('error', function() {
-                    var videoPlaceholder = document.getElementById('videoPlaceholder');
-                    if (videoPlaceholder) videoPlaceholder.style.display = 'flex';
-                    moduleVideo.style.display = 'none';
-                });
-            }
-        });
-
-        // ===== LANDOH VIDEO PLAYER =====
-        (function() {
-            const lvSlides = [
-                { speech: "When cash comes IN to the business, it goes in the Cash Receipts Journal -- or CRJ. When cash goes OUT, it goes in the Cash Payments Journal -- or CPJ.", chapter: "0:00 — INTRO", board: '<div class="lv-bi"><h3>MODULE 5</h3><p style="font-size:14px;font-weight:700;color:#1A1A2E;">Cash Receipts & Payments Journals</p></div>', point: false },
-                { speech: "The CRJ has columns for date, details, receipt number, bank, sales, debtors control, sundry accounts, and VAT. Each column makes it easy to total at month-end.", chapter: "1:00 — CRJ COLUMNS", board: '<div class="lv-bi"><h3><span class="lv-key">CRJ Columns</span></h3><p>Date | Details | Rec # | Bank | Sales | Debtors | Sundry | VAT</p></div>', point: true },
-                { speech: "The CPJ is similar but for payments. It has date, details, cheque number, bank, trading stock, creditors control, sundry accounts, and VAT.", chapter: "2:10 — CPJ COLUMNS", board: '<div class="lv-bi"><h3><span class="lv-key">CPJ Columns</span></h3><p>Date | Details | Chq # | Bank | Stock | Creditors | Sundry | VAT</p></div>', point: true },
-                { speech: "The key thing is -- the Bank column is your total. All the other columns must add up to the Bank column on each line. That's your cross-check.", chapter: "2:15 — GOLDEN RULE", board: '<div class="lv-bi"><h3>Golden Rule</h3><div class="lv-formula">Bank column = Sum of all other columns</div><p style="margin-top:6px">This is your <strong>error-check!</strong></p></div>', point: false },
-                { speech: "At month-end, you total each column and post the totals to the ledger. The individual sundry items get posted separately. Exam tip: they give you transactions and ask you to fill in the journal. Pay attention to which column each amount goes in!", chapter: "3:20 — EXAM TIP", board: '<div class="lv-bi"><div class="lv-tip"><div class="lv-tip-label">🎯 Exam Tip</div><p style="font-size:12px;font-weight:600;color:#1A1A2E">Practice placing amounts in correct columns</p><p style="font-size:11px;color:var(--fa);font-weight:700;margin-top:3px">Bank must always balance!</p></div></div>', point: false }
-            ];
-
-            let lvCurrent = -1, lvPlaying = false, lvTimer = null;
-            const lvSpeech = document.getElementById('lvSpeech');
-            const lvBoardContent = document.getElementById('lvBoardContent');
-            const lvProg = document.getElementById('lvProg');
-            const lvProgFill = document.getElementById('lvProgFill');
-            const lvChapter = document.getElementById('lvChapter');
-            const lvTitle = document.getElementById('lvTitle');
-            const lvOutro = document.getElementById('lvOutro');
-            const lvMain = document.getElementById('lvMain');
-            const lvPlayBtn = document.getElementById('lvPlay');
-            const lvPen = document.getElementById('lvPen');
-            const lvVoiceInd = document.getElementById('lvVoiceInd');
-
-            const audioPath = 'assets/audio/';
-            let currentAudio = null;
-
-            function lvPlaySlideAudio(idx, onEnd) {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-                const slideNumber = (idx + 1).toString().padStart(2, '0');
-                const audioUrl = `${audioPath}module-5-slide-${slideNumber}.mp3`;
-                currentAudio = new Audio(audioUrl);
-
-                lvStartTalk();
-                currentAudio.onended = () => {
-                    lvStopTalk();
-                    if (onEnd) onEnd();
-                };
-                currentAudio.onerror = () => {
-                    console.warn(`Could not load ${audioUrl}, falling back to timer.`);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                };
-                currentAudio.play().catch(e => {
-                    console.log("Audio play prevented:", e);
-                    const words = lvSlides[idx].speech.split(' ').length;
-                    setTimeout(() => {
-                        lvStopTalk();
-                        if (onEnd) onEnd();
-                    }, Math.max(2000, words * 180));
-                });
-            }
-
-            function lvSpeechCancel() {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-            }
-
-            function lvStartTalk() {
-                lvVoiceInd.classList.remove('lv-paused');
-            }
-            function lvStopTalk() {
-                lvVoiceInd.classList.add('lv-paused');
-            }
-
-            function lvMovePen(target) {
-                if (!target) return;
-                const board = document.getElementById('lvBoard');
-                const boardRect = board.getBoundingClientRect();
-                const targetRect = target.getBoundingClientRect();
-                const x = targetRect.left - boardRect.left + targetRect.width - 10;
-                const y = targetRect.top - boardRect.top + targetRect.height / 2 - 14;
-                lvPen.style.left = Math.min(x, boardRect.width - 30) + 'px';
-                lvPen.style.top = Math.max(0, y) + 'px';
-                lvPen.classList.add('lv-vis');
-            }
-
-            function lvShowSlide(idx) {
-                if (idx < 0 || idx >= lvSlides.length) return;
-                lvCurrent = idx;
-                const s = lvSlides[idx];
-                lvSpeech.textContent = s.speech;
-                lvSpeech.classList.add('lv-vis');
-
-                lvChapter.textContent = s.chapter;
-                const div = document.createElement('div');
-                div.innerHTML = s.board;
-                const newItem = div.firstElementChild;
-                lvBoardContent.appendChild(newItem);
-                requestAnimationFrame(() => {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    const last = items[items.length - 1];
-                    last.classList.add('lv-vis');
-                    last.classList.add('lv-writing');
-                    setTimeout(() => last.classList.remove('lv-writing'), 1200);
-                    setTimeout(() => lvMovePen(last), 100);
-                    setTimeout(() => lvPen.classList.remove('lv-vis'), 1500);
-                    document.getElementById('lvBoard').scrollTo({ top: 99999, behavior: 'smooth' });
-                });
-                if (s.stagger) {
-                    setTimeout(() => {
-                        document.querySelectorAll('#lvBig6 li').forEach((li, i) => { setTimeout(() => li.classList.add('lv-pop'), i * 300); });
-                    }, 400);
-                }
-                lvProgFill.style.width = ((idx + 1) / lvSlides.length * 100) + '%';
-            }
-
-            function lvAutoAdv() {
-                const s = lvSlides[lvCurrent];
-                function advanceNext() {
-                    if (!lvPlaying) return;
-                    if (lvCurrent < lvSlides.length - 1) { lvShowSlide(lvCurrent + 1); if (lvPlaying) lvAutoAdv(); }
-                    else {
-                        lvPlaying = false; lvPlayBtn.textContent = '▶'; lvStopTalk();
-                        lvSpeech.classList.remove('lv-vis');
-                        setTimeout(() => { lvOutro.classList.add('lv-vis'); }, 800);
-                    }
-                }
-                lvPlaySlideAudio(lvCurrent, advanceNext);
-            }
-
-            function lvTogglePlay() {
-                if (lvPlaying) {
-                    lvPlaying = false; lvPlayBtn.textContent = '▶'; clearTimeout(lvTimer); lvSpeechCancel(); lvStopTalk();
-                } else {
-                    lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                    if (lvCurrent === -1) {
-                        lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                        setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-                    } else if (lvCurrent >= lvSlides.length - 1) {
-                        lvRestart();
-                    } else { lvAutoAdv(); }
-                }
-            }
-
-            function lvRestart() {
-                lvSpeechCancel();
-                lvCurrent = -1; lvBoardContent.innerHTML = ''; lvProgFill.style.width = '0%';
-                lvOutro.classList.remove('lv-vis'); lvSpeech.classList.remove('lv-vis');
-                lvTitle.classList.remove('lv-hidden'); lvMain.classList.remove('lv-vis');
-                lvPen.classList.remove('lv-vis');
-                lvStopTalk(); lvPlaying = false; lvPlayBtn.textContent = '▶';
-            }
-
-            lvPlayBtn.addEventListener('click', lvTogglePlay);
-            document.getElementById('lvStartBtn').addEventListener('click', () => {
-                lvPlaying = true; lvPlayBtn.textContent = '⏸';
-                lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                setTimeout(() => { lvShowSlide(0); lvAutoAdv(); }, 600);
-            });
-            document.getElementById('lvNext').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent === -1) {
-                    lvTitle.classList.add('lv-hidden'); lvMain.classList.add('lv-vis');
-                    setTimeout(() => { lvShowSlide(0); if (lvPlaying) lvAutoAdv(); }, 600);
-                } else if (lvCurrent < lvSlides.length - 1) {
-                    lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-                else { goToScreen(currentScreen + 1); }
-            });
-            document.getElementById('lvPrev').addEventListener('click', () => {
-                lvSpeechCancel(); clearTimeout(lvTimer);
-                if (lvCurrent > 0) {
-                    const items = lvBoardContent.querySelectorAll('.lv-bi');
-                    if (items.length > 0) items[items.length - 1].remove();
-                    lvCurrent -= 2; lvShowSlide(lvCurrent + 1);
-                    if (lvPlaying) lvAutoAdv();
-                }
-            });
-            lvOutro.addEventListener('click', () => { goToScreen(currentScreen + 1); });
-        })();
-
         renderScreens();
         goToScreen(0);
-
-        // Setup video player for current screen
-        setTimeout(function() {
-            var moduleVideo = document.getElementById('moduleVideo');
-            if (moduleVideo) {
-                moduleVideo.addEventListener('error', function() {
-                    var videoPlaceholder = document.getElementById('videoPlaceholder');
-                    if (videoPlaceholder) videoPlaceholder.style.display = 'flex';
-                    moduleVideo.style.display = 'none';
-                });
-            }
-        }, 100);
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
@@ -2191,5 +1906,11 @@
   </div>
 </div>
 
+<!-- ayikho-escape:start -->
+<div id="ayikhoEscapeBtn" role="button" tabindex="0" aria-label="Home" title="Home" onclick="ayikhoEscape()" style="position:fixed;top:12px;right:12px;z-index:2147483600;width:38px;height:38px;border-radius:11px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:19px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:system-ui,-apple-system,sans-serif;user-select:none">&#8962;</div>
+<script>
+(function(){function esc(){try{if(window.top!==window.self){parent.postMessage({type:'goHome'},'*');return;}}catch(e){}if(history.length>1){history.back();return;}location.href='index.html';}window.ayikhoEscape=esc;var b=document.getElementById('ayikhoEscapeBtn');if(b){b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();esc();}});}})();
+</script>
+<!-- ayikho-escape:end -->
 </body>
 </html>

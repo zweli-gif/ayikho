@@ -284,7 +284,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
 </head>
 <body>
 <div class="shell">
-<div class="sidebar" id="sidebar"><div class="si">Intro</div><div class="si">Video</div><div class="si">Part 1</div><div class="si">Worked Eg</div><div class="si">Part 2</div><div class="si">Q1</div><div class="si">Q2</div><div class="si">Q3</div><div class="si">Complete</div></div>
+<div class="sidebar" id="sidebar"><div class="si">Intro</div><div class="si">Part 1</div><div class="si">Worked Eg</div><div class="si">Part 2</div><div class="si">Q1</div><div class="si">Q2</div><div class="si">Q3</div><div class="si">Complete</div></div>
 <div>
 <div class="phone"><div class="stack" id="stack">
 
@@ -299,7 +299,7 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
       <div class="ci-num">Module 5 of 9</div>
       <div class="ci-title">Meeting Procedures</div>
       <div class="ci-meta-row">
-        <div class="ci-meta">⏱ 9 min</div><div class="ci-meta">🎬 3:55 video</div><div class="ci-meta">❓ 3 questions</div>
+        <div class="ci-meta">⏱ 9 min</div><div class="ci-meta">❓ 3 questions</div>
       </div>
     </div>
     <div class="ci-tldr">
@@ -340,57 +340,6 @@ html,body{height:100%;background:#05090F;display:flex;align-items:center;justify
   </div>
 </div>
 
-<!-- S2: VIDEO -->
-<div class="screen" id="s-video">
-  <div class="sb sb-ink"><span class="sb-t" style="color:white">21:07</span><span class="sb-i">4G 🔋</span></div>
-  <div class="gp"><div class="gp-fill" style="width:18%"></div></div>
-  
-  <div class="landoh-video-wrap" id="landohVideo">
-    <video id="moduleVideo" playsinline webkit-playsinline preload="metadata"
-      style="width:100%; height:100%; border-radius:12px; background:#000; object-fit:contain; position:absolute; top:0; left:0; display:none;">
-    </video>
-    <div class="lv-title-card" id="lvTitle">
-        <div class="lv-mod-num">PREVIEW</div>
-        <h1>Animated Video Lesson</h1>
-        <div class="lv-accent-line"></div>
-        <div class="lv-mini-icon">🎬</div>
-        <button class="lv-start-btn" id="lvStartBtn" onclick="document.getElementById('lvTitle').style.display='none'; document.getElementById('lvMain').style.opacity='1'; document.getElementById('lvMain').style.pointerEvents='auto';">Start lesson</button>
-    </div>
-    <div class="lv-outro" id="lvOutro">
-        <div class="lv-emoji">🎯</div>
-        <h2>Now try the interactive exercise!</h2>
-        <p>Tap to continue</p>
-    </div>
-    <div class="lv-main" id="lvMain">
-        <div class="lv-voice-bar">
-            <div class="lv-voice-indicator lv-paused" id="lvVoiceInd">
-                <div class="lv-voice-bar-line"></div>
-                <div class="lv-voice-bar-line"></div>
-                <div class="lv-voice-bar-line"></div>
-                <div class="lv-voice-bar-line"></div>
-                <div class="lv-voice-bar-line"></div>
-            </div>
-            <div class="lv-voice-text" id="lvSpeech">Video lessons are coming soon to this module. For now, continue to the interactive lesson.</div>
-            <div class="lv-chapter-ind" id="lvChapter">0:00</div>
-        </div>
-        <div class="lv-board" id="lvBoard">
-            <div class="lv-board-title">✏️ Board</div>
-            <div id="lvBoardContent" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:rgba(0,0,0,0.4);text-align:center;">
-                <div style="font-size:32px;margin-bottom:12px">🚧</div>
-                <div style="font-weight:700;font-size:16px;color:#1A1A2E;margin-bottom:6px">Under Construction</div>
-                <div style="font-size:13px">Animated lesson logic isn't generated for this module yet.</div>
-            </div>
-        </div>
-        <div class="lv-prog"><div class="lv-prog-fill" id="lvProg" style="width:100%"></div></div>
-        <div class="lv-ctrls" style="justify-content:center">
-            <button class="btn btn-mc" style="width:auto;padding:12px 24px;border:none;border-radius:12px;background:var(--p);color:white;font-weight:700;cursor:pointer" onclick="next()">Skip to Lesson →</button>
-        </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- S3: LESSON PART 1 -->
 <div class="screen" id="s-lesson1">
   <div class="sb sb-w"><span class="sb-t">21:07</span><span class="sb-i">4G 🔋</span></div>
   <div class="gp"><div class="gp-fill" style="width:30%"></div></div>
@@ -712,5 +661,11 @@ sideItems.forEach((s, i) => s.addEventListener('click', () => go(i)));
   </div>
 </div>
 
+<!-- ayikho-escape:start -->
+<div id="ayikhoEscapeBtn" role="button" tabindex="0" aria-label="Home" title="Home" onclick="ayikhoEscape()" style="position:fixed;top:12px;right:12px;z-index:2147483600;width:38px;height:38px;border-radius:11px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:19px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:system-ui,-apple-system,sans-serif;user-select:none">&#8962;</div>
+<script>
+(function(){function esc(){try{if(window.top!==window.self){parent.postMessage({type:'goHome'},'*');return;}}catch(e){}if(history.length>1){history.back();return;}location.href='index.html';}window.ayikhoEscape=esc;var b=document.getElementById('ayikhoEscapeBtn');if(b){b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();esc();}});}})();
+</script>
+<!-- ayikho-escape:end -->
 </body>
 </html>
