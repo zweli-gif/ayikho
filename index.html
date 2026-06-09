@@ -168,6 +168,9 @@ Forgot password? <span onclick="onbNext('reset')" style="color:white;font-weight
 <div id="reset-err" style="font-size:12px;color:#FCA5A5;min-height:18px;margin-bottom:16px"></div>
 <button onclick="doReset()" id="reset-btn"
   style="width:100%;background:white;color:#7C3AED;border:none;border-radius:14px;padding:16px;font-family:Outfit,sans-serif;font-weight:900;font-size:15px;cursor:pointer;margin-bottom:16px">Send reset link &#x2192;</button>
+<div style="text-align:center;font-size:12px;color:rgba(255,255,255,.45);margin:2px 0 12px;letter-spacing:.05em">— or —</div>
+<button onclick="waReset()" id="reset-wa-btn"
+  style="width:100%;background:#25D366;color:white;border:none;border-radius:14px;padding:16px;font-family:Outfit,sans-serif;font-weight:900;font-size:15px;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px">&#x1F4AC; Reset via WhatsApp</button>
 <div style="text-align:center;font-size:13px;color:rgba(255,255,255,.6)">
 Remember it? <span onclick="onbNext('login')" style="color:white;font-weight:700;text-decoration:underline;cursor:pointer">Back to login</span>
 </div>
@@ -493,11 +496,21 @@ window.doReset = async function(){
     err.textContent='Too many attempts. Please wait a minute and try again.';
   } else if(savedEmail && email===savedEmail){
     err.style.color='#FCD34D';
-    err.textContent="✓ That's the email you signed up with. Your account logs in with your cellphone number — please go back and log in with your phone. Forgotten your password too? Contact the Ayikho team and we'll reset it for you.";
+    err.textContent="✓ That's the email you signed up with. Email reset isn't available for cellphone accounts — tap ‘Reset via WhatsApp’ below and we'll reset it for you right away.";
   } else {
     err.style.color='#FCA5A5';
     err.textContent="We couldn't match this email to an account on this device. Make sure it's the email you added at signup, or log in with your cellphone number instead.";
   }
+};
+
+window.waReset = function(){
+  var phone='';
+  try{ phone=(localStorage.getItem('ayikho_phone')||'').trim(); }catch(e){}
+  if(!phone){ try{ if(window.ayikhoData&&window.ayikhoData.getProfile){var p=window.ayikhoData.getProfile(); if(p&&p.phone)phone=String(p.phone).trim();} }catch(e){} }
+  var line = phone ? ('My cellphone number (login): '+phone) : 'My cellphone number (login): ____';
+  var msg = 'Hi Ayikho \uD83D\uDC4B I forgot my password and need to reset it.\n\n'+line+'\nMy name: ____';
+  var url = 'https://wa.me/27717051987?text='+encodeURIComponent(msg);
+  var w=window.open(url,'_blank'); if(!w){ location.href=url; }
 };
 
 });
