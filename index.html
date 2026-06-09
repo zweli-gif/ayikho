@@ -261,7 +261,7 @@ var curMod=null,curSubj='fa',demo=false,onbDone=false,modStart=null;
 var STRIP='html,body{background:#05090F!important;overflow:auto!important;height:100%!important;display:block!important}.shell{display:block!important;gap:0!important;height:100%!important}.sidebar{display:none!important}.phone{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}.shell-meta{display:none!important}.shell>div{height:100%!important}.app-container,.container{height:100%!important}body>div:first-child{height:100%!important}.phone-col{display:block!important;height:100%!important}';
 
 /* Onboarding */
-function onbNext(n){document.querySelectorAll('.onb-screen').forEach(function(s){s.classList.remove('active')});document.getElementById('onb-'+n).classList.add('active');if(n===2)setTimeout(function(){document.getElementById('onb-phone').focus()},400);if(n===3)setTimeout(function(){document.getElementById('onb-name').focus()},400);if(n==='login')setTimeout(function(){var el=document.getElementById('login-ph');if(el)el.focus()},400);if(n==='reset')setTimeout(function(){var el=document.getElementById('reset-ph');if(el)el.focus()},400)}
+function onbNext(n){document.querySelectorAll('.onb-screen').forEach(function(s){s.classList.remove('active')});document.getElementById('onb-'+n).classList.add('active');if(n===2)setTimeout(function(){document.getElementById('onb-phone').focus()},400);if(n===3)setTimeout(function(){document.getElementById('onb-name').focus()},400);if(n==='login')setTimeout(function(){var el=document.getElementById('login-ph');if(el)el.focus()},400);if(n==='reset')setTimeout(function(){var el=document.getElementById('reset-email');if(el)el.focus()},400)}
 function validateAccount(){var ph1=document.getElementById('onb-phone').value.replace(/\s/g,'');var ph2=document.getElementById('onb-phone2').value.replace(/\s/g,'');var p1=document.getElementById('onb-pass').value;var p2=document.getElementById('onb-pass2').value;var err=document.getElementById('onb-reg-error');if(ph1.length<9){err.textContent='Please enter a valid SA number (9 digits)';err.style.display='block';return}if(ph1!==ph2){err.textContent='Phone numbers don\'t match. Please check.';err.style.display='block';return}if(p1.length<6){err.textContent='Password must be at least 6 characters';err.style.display='block';return}if(p1!==p2){err.textContent='Passwords don\'t match';err.style.display='block';return}err.style.display='none';
 var fullPhone='+27'+ph1.replace(/^0/,'');
 var btn=document.querySelector('#onb-2 .onb-btn');
@@ -460,21 +460,43 @@ window.doReset = async function(){
   var email=(document.getElementById('reset-email').value||'').trim().toLowerCase();
   var err=document.getElementById('reset-err');
   var btn=document.getElementById('reset-btn');
-  if(!email||!email.includes('@')){err.textContent='Enter a valid email address';return;}
-  err.textContent=''; btn.textContent='Sending...'; btn.disabled=true;
-  var result = window.sendPasswordReset ? await window.sendPasswordReset(email) : {success:false,error:'not_ready'};
-  if(result.success){
+  err.style.color='#FCA5A5';
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='Please enter a valid email address.';return;}
+
+  // The email this person saved when they signed up (on this device).
+  var savedEmail='';
+  try{ if(window.ayikhoData&&window.ayikhoData.getProfile){var p=window.ayikhoData.getProfile();if(p&&p.email)savedEmail=String(p.email).trim().toLowerCase();} }catch(e){}
+  if(!savedEmail){ try{var raw=localStorage.getItem('ayikho_student');if(raw){var d=JSON.parse(raw);if(d&&d.profile&&d.profile.email)savedEmail=String(d.profile.email).trim().toLowerCase();}}catch(e){} }
+  if(!savedEmail){ try{savedEmail=(localStorage.getItem('ayikho_real_email')||'').trim().toLowerCase();}catch(e){} }
+
+  // 1) We know their signup email and this isn't it.
+  if(savedEmail && email!==savedEmail){
+    err.textContent="That's not the email you used when you signed up. Try the email you added at registration.";
+    return;
+  }
+
+  // 2) It matches (or we have nothing to check against) - try to send a link if the service exists.
+  err.style.color=''; err.textContent=''; btn.textContent='Sending...'; btn.disabled=true;
+  var result = (typeof window.sendPasswordReset==='function') ? await window.sendPasswordReset(email) : {success:false,error:'unavailable'};
+  if(result && result.success){
     err.style.color='#86EFAC';
-    err.textContent='Reset link sent! Check your email (and spam folder).';
-    btn.textContent='Sent ✓'; 
+    err.textContent='Reset link sent! Check your email (and your spam folder).';
+    btn.textContent='Sent ✓';
     setTimeout(function(){ onbNext('login'); },3000);
+    return;
+  }
+
+  // 3) Couldn't send - give honest, useful guidance.
+  btn.textContent='Send reset link →'; btn.disabled=false;
+  if(result && result.error==='auth/too-many-requests'){
+    err.style.color='#FCA5A5';
+    err.textContent='Too many attempts. Please wait a minute and try again.';
+  } else if(savedEmail && email===savedEmail){
+    err.style.color='#FCD34D';
+    err.textContent="✓ That's the email you signed up with. Your account logs in with your cellphone number — please go back and log in with your phone. Forgotten your password too? Contact the Ayikho team and we'll reset it for you.";
   } else {
-    var msg = 'Something went wrong. Try again.';
-    if(result.error==='auth/user-not-found') msg='No account found with this email.';
-    if(result.error==='auth/invalid-email') msg='Enter a valid email address.';
-    if(result.error==='auth/too-many-requests') msg='Too many attempts. Wait a minute.';
-    err.style.color='#FCA5A5'; err.textContent=msg;
-    btn.textContent='Send reset link'; btn.disabled=false;
+    err.style.color='#FCA5A5';
+    err.textContent="We couldn't match this email to an account on this device. Make sure it's the email you added at signup, or log in with your cellphone number instead.";
   }
 };
 

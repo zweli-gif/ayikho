@@ -291,15 +291,11 @@ window.loginUser = async function () {
 
 // ── UPDATE REAL EMAIL + ENABLE PASSWORD RESET ──
 window.updateUserEmail = async function(realEmail) {
-  initAuth();
-  if (!auth || !auth.currentUser) return;
-  try {
-    await updateEmail(auth.currentUser, realEmail);
-    localStorage.setItem('ayikho_real_email', realEmail);
-    console.log('[Auth] Real email updated:', realEmail);
-  } catch (e) {
-    console.warn('[Auth] Email update failed:', e.message);
-  }
+  // Always remember the recovery email locally so the reset screen can validate it.
+  try { localStorage.setItem('ayikho_real_email', String(realEmail || '').trim().toLowerCase()); } catch (e) {}
+  // NOTE: we deliberately do NOT call updateEmail() here. Accounts log in via a
+  // synthetic <phone>@ayikho.app address, so changing the account email to the
+  // real one would break cellphone login. Reset delivery needs a backend instead.
 };
 
 window.sendPasswordReset = async function(realEmail) {
